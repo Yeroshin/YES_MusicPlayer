@@ -1,0 +1,26 @@
+<resources>
+    <style name="Theme.AppCompat.NoActionBar.Launcher">
+        <item name="android:windowBackground">@drawable/splash</item>
+
+        <!-- для Android 5+ вы можете поменять цвет colorPrimaryDark, чтобы соответствовать цвету windowBackground -->
+        <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
+    </style>
+    <!-- Base application theme. -->
+    <style name="text" >
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#00ff00</item>
+        <item name="android:shadowColor">#333333</item>
+        <item name="android:shadowDx">5</item>
+        <item name="android:shadowDy">5</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:singleLine">true</item>
+    </style >
+    <style name="ratingBar">
+        <item name="colorControlNormal">#ffa800</item>
+        <item name="colorControlActivated">#ffa800</item>
+    </style>
+    <style name="mainDisplay">
+
+        <item name="android:background">@drawable/display</item>
+    </style>
+</resources>

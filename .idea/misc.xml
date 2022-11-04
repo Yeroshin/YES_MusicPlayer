@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/ResourceModule/src/main/res/drawable/arrow_back.xml" value="0.1" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/ResourceModule/src/main/res/drawable/display.xml" value="0.1" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/ResourceModule/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/ResourceModule/src/main/res/layout/item_playlist.xml" value="0.3494791666666667" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/app/src/main/res/drawable/arrow_back.xml" value="0.1725" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/app/src/main/res/drawable/button_center.xml" value="0.1725" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/app/src/main/res/drawable/button_right.xml" value="0.21818181345285476" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/app/src/main/res/drawable/button_space.xml" value="0.21818181345285476" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/app/src/main/res/drawable/display.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/app/src/main/res/drawable/logo.xml" value="0.1" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/app/src/main/res/drawable/panel_flat.xml" value="0.1725" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/app/src/main/res/drawable/playlist_edit.xml" value="0.1725" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/app/src/main/res/drawable/splash.xml" value="0.1" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/app/src/main/res/layout/activity_main.xml" value="0.18605927552140505" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/app/src/main/res/layout/item_playlist.xml" value="0.3494791666666667" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/app/src/main/res/layout/player.xml" value="0.3494791666666667" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.185" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.184" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable-v21/logo.xml" value="0.185" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable-v21/splash.xml" value="0.185" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/arrow_back.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/border_top_bottom.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/button_center.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/button_left.xml" value="0.2727272668160684" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/button_play_state.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/button_r.xml" value="0.35" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/button_right.xml" value="0.35999999219721035" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/button_single.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/display.xml" value="0.35999999219721035" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/display_small.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/fast_forward.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/folder.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/ic_launcher_background.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/ic_launcher_foreground.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/ic_trackbardisabled.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/ic_trackbardisabledl.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/item_color_text_state.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/logo.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/panel_flat.xml" value="0.8181818004482052" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/playlist_edit.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/playlist_item.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/rewind.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/rotaryknob.xml" value="0.1" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/seek_bar.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/splash.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/thumb.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/thumb_layer.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/widget_background.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/window_close.xml" value="0.351" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/activity_main.xml" value="0.3494791666666667" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/cancel_ok.xml" value="0.3494791666666667" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/dialog.xml" value="0.5454545336321368" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/frafment_audio_effect.xml" value="0.3494791666666667" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/fragment_equalizer.xml" value="0.5454545336321368" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/fragment_playlist.xml" value="0.2727272668160684" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/item_media.xml" value="0.3494791666666667" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/item_playlist.xml" value="0.40382165605095544" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/item_presets_spinner.xml" value="0.3494791666666667" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/media_dialog.xml" value="0.35999999219721035" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/notification.xml" value="0.2727272668160684" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/player.xml" value="0.3494791666666667" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/playlist_dialog.xml" value="0.2727272668160684" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/widget.xml" value="0.5454545336321368" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.185" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/player/src/main/res/layout/player.xml" value="0.1" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/playerFeature/src/main/res/layout/player.xml" value="0.35999999219721035" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/playlistFeature/src/main/res/layout/fragment_playlist_feature.xml" value="0.4872665534804754" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/trackDiialogFeature/src/main/res/layout/track_dialog.xml" value="0.3494791666666667" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

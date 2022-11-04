@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:orientation="vertical"
+    tools:visibility="visible">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="158dp"
+        android:background="@drawable/display"
+        android:orientation="vertical"
+        android:padding="18dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/black"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="@string/playList"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_size_regular" />
+
+                <TextView
+                    android:id="@+id/playlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:fontFamily="@font/a_lcdnova_allfont_ru"
+                    android:gravity="center_vertical"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/font_size_large"
+                    tools:text="hello" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/black"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="@string/song"
+
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_size_regular"
+                    app:autoSizeTextType="uniform" />
+
+                <TextView
+                    android:id="@+id/track_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:ellipsize="marquee"
+                    android:fontFamily="@font/a_lcdnova_allfont_ru"
+                    android:gravity="center_vertical"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/font_size_large"
+                    tools:text="привет" />
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@drawable/border_left_right">
+
+                <com.yes.player.presentation.VisualizerView
+                    android:id="@+id/visualizer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+
+            android:background="@color/black"
+            android:gravity="center_horizontal|center_vertical"
+
+            android:text="@string/duration"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_top_bottom"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/duration_counter"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:background="@drawable/border_right"
+
+                android:fontFamily="@font/a_lcdnova_allfont_ru"
+                android:gravity="center_horizontal|center_vertical"
+                android:lines="1"
+                android:maxLines="1"
+                android:singleLine="false"
+                android:text="00:00"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_size_coloss" />
+
+            <SeekBar
+                android:id="@+id/seekBar"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+
+                android:max="100"
+                android:progress="100"
+                android:progressDrawable="@drawable/seek_bar"
+                android:thumb="@android:color/background_dark" />
+
+            <TextView
+                android:id="@+id/duration_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:background="@drawable/border_left"
+
+                android:fontFamily="@font/a_lcdnova_allfont_ru"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="00:00"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_size_coloss" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_rew"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height_regular"
+
+
+            android:layout_weight="1"
+            android:background="@drawable/button_left"
+            app:srcCompat="@drawable/rewind"
+            app:tint="@color/tint_pressed_state_list" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_play"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height_regular"
+
+
+            android:layout_weight="1"
+            android:background="@drawable/button_center"
+            android:src="@drawable/button_play_state"
+            app:tint="@color/tint_pressed_state_list" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_fwd"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height_regular"
+
+
+            android:layout_weight="1"
+            android:background="@drawable/button_right"
+            app:srcCompat="@drawable/fast_forward"
+            app:tint="@color/tint_pressed_state_list" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

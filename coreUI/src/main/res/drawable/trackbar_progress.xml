@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@android:id/background"
+        android:top="15dp"
+        android:bottom="15dp"
+            android:drawable="@drawable/trackbardisabled">
+    </item>
+
+    <item android:id="@android:id/progress"
+        android:bottom="15dp"
+
+        android:top="15dp">
+        <clip
+            android:clipOrientation="vertical"
+            android:gravity="bottom"
+
+            android:drawable="@drawable/trackbarenabled"/>
+    </item>
+
+</layer-list>

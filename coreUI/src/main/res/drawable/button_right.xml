@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="false"
+        >
+        <layer-list>
+            <item >
+                <shape
+                    android:shape="rectangle">
+                    <corners
+                        android:topRightRadius="10dp"
+                        android:bottomRightRadius="10dp" />
+                    <solid
+                        android:color="@color/light" />
+                    <padding
+                        android:left="0dp"
+                        android:top="0dp"
+                        android:right="0dp"
+                        android:bottom="1dp" />
+                </shape>
+            </item>
+            <item >
+                <shape
+                    android:shape="rectangle">
+                    <corners
+                        android:topRightRadius="10dp"
+                        android:bottomRightRadius="10dp" />
+                    <padding
+                        android:left="1dp"
+                        android:top="2dp"
+                        android:right="2dp"
+                        android:bottom="0dp" />
+                    <solid
+                        android:color="@color/black" />
+                </shape>
+            </item>
+            <item>
+                <shape
+                    android:shape="rectangle">
+                    <corners
+                        android:topRightRadius="10dp"
+                        android:bottomRightRadius="10dp" />
+                    <solid
+                        android:color="@color/light" />
+                    <padding
+                        android:left="0dp"
+                        android:top="1dp"
+                        android:right="0dp"
+                        android:bottom="0dp" />
+                </shape>
+            </item>
+            <item >
+                <shape
+                    android:shape="rectangle">
+                    <corners
+                        android:topRightRadius="10dp"
+                        android:bottomRightRadius="10dp" />
+                    <padding
+                        android:left="0dp"
+                        android:top="0dp"
+                        android:right="0dp"
+                        android:bottom="2dp" />
+                    <solid
+                        android:color="@color/black" />
+                </shape>
+            </item>
+
+
+
+            <item >
+                <shape
+                    android:shape="rectangle">
+                    <corners
+                        android:topRightRadius="10dp"
+                        android:bottomRightRadius="10dp"
+                        />
+
+                    <gradient
+                        android:angle="90"
+                        android:startColor="@color/button_startColor"
+                        android:centerColor="@color/button_centerColor"
+                        android:endColor="@color/button_endColor"
+                        android:type="linear" />
+
+
+                </shape>
+            </item>
+
+        </layer-list>
+
+    </item>
+    <item android:state_pressed="true"
+        >
+        <layer-list>
+            <item >
+                <shape
+                    android:shape="rectangle">
+                    <corners
+                        android:topRightRadius="10dp"
+                        android:bottomRightRadius="10dp" />
+                    <solid
+                        android:color="@color/light" />
+                    <padding
+                        android:left="0dp"
+                        android:top="0dp"
+                        android:right="0dp"
+                        android:bottom="1dp" />
+                </shape>
+            </item>
+            <item >
+                <shape
+                    android:shape="rectangle">
+                    <corners
+                        android:topRightRadius="10dp"
+                        android:bottomRightRadius="10dp" />
+                    <padding
+                        android:left="1dp"
+                        android:top="2dp"
+                        android:right="2dp"
+                        android:bottom="0dp" />
+                    <solid
+                        android:color="@color/black" />
+                </shape>
+            </item>
+            <item>
+                <shape
+                    android:shape="rectangle">
+                    <corners
+                        android:topRightRadius="10dp"
+                        android:bottomRightRadius="10dp" />
+                    <solid
+                        android:color="@color/light" />
+                    <padding
+                        android:left="0dp"
+                        android:top="1dp"
+                        android:right="0dp"
+                        android:bottom="0dp" />
+                </shape>
+            </item>
+            <item >
+                <shape
+                    android:shape="rectangle">
+                    <corners
+                        android:topRightRadius="10dp"
+                        android:bottomRightRadius="10dp" />
+                    <padding
+                        android:left="0dp"
+                        android:top="0dp"
+                        android:right="0dp"
+                        android:bottom="2dp" />
+                    <solid
+                        android:color="@color/black" />
+                </shape>
+            </item>
+
+
+
+            <item >
+                <shape
+                    android:shape="rectangle">
+                    <corners
+                        android:topRightRadius="10dp"
+                        android:bottomRightRadius="10dp"
+                         />
+
+                    <gradient
+                        android:angle="90"
+                        android:startColor="@color/button_startColor_pressed"
+                        android:centerColor="@color/button_centerColor_pressed"
+                        android:endColor="@color/button_endColor_pressed"
+                        android:type="linear" />
+
+
+                </shape>
+            </item>
+
+        </layer-list>
+
+    </item>
+
+</selector>
+

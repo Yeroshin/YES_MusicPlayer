@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ЕС Музыкальный плеер</string>
+    <string name="sunday">вск</string>
+    <string name="monday">пнд</string>
+    <string name="tuesday">втр</string>
+    <string name="wednesday">срд</string>
+    <string name="thursday">чтв</string>
+    <string name="friday">птн</string>
+    <string name="saturday">сбт</string>
+    <string name="label">Метка</string>
+    <string name="repeat">ПОВТОР</string>
+    <string name="hour">ч</string>
+    <string name="minute">м</string>
+    <string name="left">осталось</string>
+    <string name="widget_name">ЕС Музыкальный Проигрыватель</string>
+    <string name="loudness_enhancer">УСИЛИТЕЛЬ ГРОМКОСТИ</string>
+    <string name="song">ПЕСНЯ</string>
+    <string name="duration">ДЛИТЕЛЬНОСТЬ</string>
+
+    <string name="playList">ПЛЕЙЛИСТ</string>
+    <string name="alarm">БУДИЛЬНИК</string>
+    <string name="equalizer">ЭКВАЛАЙЗЕР</string>
+    <string name="custom">Пользовательский</string>
+
+    <string name="preset">ПРЕДУСТАНОВКИ</string>
+    <string-array name="days_array">
+        <item>вск</item>
+        <item>пон</item>
+        <item>втр</item>
+        <item>срд</item>
+        <item>чтв</item>
+        <item>птн</item>
+        <item>сбт</item>
+    </string-array>
+    <string name="access_restricted">доступ запрещен к директории: </string>
+    <string name="notSupported">Не поддерживается</string>
+    <string name="selectPlaylist">выберите плейлист для загрузки</string>
+    <string name="InternalStorage">Internal Storage</string>
+    <string name="SDCard">SD Card</string>
+    <string name="buffering">буферизация...</string>
+    <string name="networkUnavailable">сеть не доступна</string>
+    <string name="pleaseRateThisApp">Пожалуйста оцените это приложение</string>
+    <string name="alreadyRated">уже оценил</string>
+    <string name="remindMeLater">напомнить позже</string>
+    <string name="rate">Оценить</string>
+    <string name="aPlaylistWithTheSameNameAlreadyExists">Плейлист с таким именем уже существует</string>
+    <string name="def">По умолчанию</string>
+    <string name="newPlaylist">Новый плейлист</string>
+    <string name="error">Ошибка</string>
+
+
+</resources>

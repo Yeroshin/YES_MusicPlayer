@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FF22222A"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/display">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="11.7dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.2"
+                        android:background="#000000"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="@string/playList"
+
+                        android:textColor="#FFFFFF"
+                        app:autoSizeMaxTextSize="10sp"
+                        app:autoSizeMinTextSize="8sp"
+                        app:autoSizeTextType="uniform" />
+
+                    <com.ys.musicplayer.custom_views.FontView
+                        android:id="@+id/playlist"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.1"
+                        android:fontFamily="@font/a_lcdnova_allfont_ru"
+                        android:gravity="center_vertical"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:singleLine="true"
+                        android:textColor="#000000"
+                        app:autoSizeMaxTextSize="60sp"
+                        app:autoSizeMinTextSize="8sp"
+                        app:autoSizeTextType="uniform"
+                        tools:text="hello" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.2"
+                        android:background="#000000"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="@string/song"
+
+                        android:textColor="#FFFFFF"
+                        app:autoSizeMaxTextSize="10sp"
+                        app:autoSizeMinTextSize="8sp"
+                        app:autoSizeTextType="uniform" />
+
+                    <com.ys.musicplayer.custom_views.FontView
+                        android:id="@+id/track_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:layout_weight="1"
+                        android:ellipsize="marquee"
+
+                        android:gravity="center_vertical"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:singleLine="true"
+                        android:textColor="#000000"
+                        app:autoSizeMaxTextSize="60sp"
+                        app:autoSizeMinTextSize="20sp"
+                        app:autoSizeTextType="uniform"
+                        tools:text="привет" />
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="2"
+                    android:background="@drawable/border_left_right">
+
+                    <com.ys.musicplayer.custom_views.Visualizer_view
+                        android:id="@+id/visualizer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="9"
+                android:background="#000000"
+                android:gravity="center_horizontal|center_vertical"
+
+                android:text="@string/duration"
+                android:textColor="#FCFFFFFF"
+                app:autoSizeMaxTextSize="20sp"
+                app:autoSizeMinTextSize="8sp"
+                app:autoSizeTextType="uniform" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="8"
+                android:background="@drawable/border_top_bottom"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.ys.musicplayer.custom_views.FontView
+                    android:id="@+id/duration_counter"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:background="@drawable/border_right"
+                    android:fontFamily="@font/a_lcdnova_allfont_ru"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:singleLine="false"
+                    android:text="00:00"
+                    android:textColor="#000000"
+                    app:autoSizeMaxTextSize="60sp"
+                    app:autoSizeMinTextSize="8sp"
+                    app:autoSizeTextType="uniform" />
+
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    style="?attr/seekBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:paddingStart="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="0dp"
+                    android:progress="0"
+                    android:progressDrawable="@drawable/seek_bar"
+                    android:thumb="@android:color/background_dark" />
+
+                <com.ys.musicplayer.custom_views.FontView
+                    android:id="@+id/duration_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:background="@drawable/border_left"
+                    android:fontFamily="@font/a_lcdnova_allfont_ru"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="00:00"
+                    android:textColor="#000000"
+                    app:autoSizeMaxTextSize="60sp"
+                    app:autoSizeMinTextSize="8sp"
+                    app:autoSizeTextType="uniform" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_space"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_rew"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_left"
+            android:textColor="#A3B3CE"
+            app:srcCompat="@drawable/rewind"
+            app:tint="@color/pressed_state_list" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_play"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_center"
+            android:src="@drawable/button_play_state"
+            android:textColor="#A3B3CE"
+            app:tint="@color/pressed_state_list" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_fwd"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_right"
+            android:textColor="#A3B3CE"
+            app:srcCompat="@drawable/fast_forward"
+            app:tint="@color/pressed_state_list" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

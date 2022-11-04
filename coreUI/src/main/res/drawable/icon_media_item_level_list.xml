@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level-list
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:drawable="@drawable/folder"
+        android:maxLevel="1"
+        />
+    <item
+        android:drawable="@drawable/file_music"
+        android:maxLevel="2"
+        />
+    <item
+        android:drawable="@drawable/arrow_back"
+        android:maxLevel="3"
+        />
+</level-list>

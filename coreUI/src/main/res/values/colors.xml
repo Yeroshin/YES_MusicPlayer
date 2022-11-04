@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="tint">#A3B3CE</color>
+    <color name="branded_color">#222329</color>
+    <color name="branded_light">#5d5d5d</color>
+    <color name="branded_dark">#242424</color>
+    <color name="text_gray">#939292</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="light">#48484e</color>
+    <color name="green">#4CAF50</color>
+
+    <color name="button_startColor">#222228</color>
+    <color name="button_centerColor">#1c1c22</color>
+    <color name="button_endColor">#353539</color>
+    <color name="button_startColor_pressed">#151419</color>
+    <color name="button_centerColor_pressed">#111115</color>
+    <color name="button_endColor_pressed">#1f1f25</color>
+
+</resources>
