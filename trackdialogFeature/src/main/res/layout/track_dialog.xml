@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/panel_flat"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:theme="@style/Theme.MusicPlayer">
 
 
     <LinearLayout
@@ -58,7 +59,9 @@
 
         </LinearLayout>
 
-        <include layout="@layout/cancel_ok" />
+        <include
+            android:id="@+id/buttons"
+            layout="@layout/cancel_ok" />
 
     </LinearLayout>
 

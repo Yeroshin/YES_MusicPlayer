@@ -14,8 +14,7 @@ internal class MainActivityModule(val activity: FragmentActivity) {
 
     @Provides
     fun provideFragment(): Fragment {
-        val playerFragment= PlayerFragment()
-        return playerFragment
+        return PlayerFragment()
     }
     @Provides
     fun provideFragmentAdapter(): FragmentAdapter {

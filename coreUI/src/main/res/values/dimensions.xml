@@ -6,6 +6,6 @@
 
     <dimen name="button_height_regular">40dp</dimen>
     <dimen name="button_height_small">36dp</dimen>
-    <dimen name="button_Width_small">144dp</dimen>
+    <dimen name="button_Width_small">80dp</dimen>
 
 </resources>
