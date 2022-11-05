@@ -7,7 +7,6 @@ import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.view.*
-import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
@@ -52,8 +51,9 @@ abstract class UniversalDialog : DialogFragment() {
         disp.getCurrentSizeRange(outSmallestSize, outLargestSize)
 
         val screeSize1 = Point()
-
-        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        //todo
+/*
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
               val rect: Rect =(requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics.bounds
          } else {
               disp.getSize(screeSize1)
@@ -62,7 +62,10 @@ abstract class UniversalDialog : DialogFragment() {
         disp.getSize(screeSize1)
         binding.root.minimumWidth = (screeSize1.x * 0.9f).toInt()
         binding.root.minimumHeight = (screeSize1.y * 0.9f).toInt()
-
+        dialog!!.window!!.setLayout(
+            (screeSize1.x * 0.92f).toInt(),
+            (screeSize1.y * 0.92f).toInt(),
+        )
         dialog!!.window!!.setLayout(
             (screeSize1.x * 0.9f).toInt(),
             (screeSize1.y * 0.9f).toInt()
@@ -70,7 +73,9 @@ abstract class UniversalDialog : DialogFragment() {
 
         isCancelable = false
         /////////////////////////////
+        /////////////////////////
 
+        dialog!!.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         /////////////////////////////
         return binding.root
     }

@@ -1,10 +1,12 @@
 package com.yes.trackdiialogfeature.presentation
 
 import android.app.Dialog
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +29,7 @@ class TrackDialog():UniversalDialog() {
         (binding as TrackDialogBinding ).buttons.okBtn.setOnClickListener{
             dismiss()
         }
+
        /* binding.root.minimumWidth=ViewGroup.LayoutParams.MATCH_PARENT
         binding.root.minimumHeight = ViewGroup.LayoutParams.MATCH_PARENT*/
         return binding.root
