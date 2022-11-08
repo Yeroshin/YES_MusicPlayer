@@ -1,6 +1,8 @@
 package com.yes.trackdiialogfeature.presentation
 
+import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +16,11 @@ import com.yes.trackdiialogfeature.databinding.TrackDialogBinding
 
 class TrackDialog():UniversalDialog() {
     override var layout: Int= R.layout.track_dialog
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
 
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,8 +33,7 @@ class TrackDialog():UniversalDialog() {
         (binding as TrackDialogBinding ).buttons.okBtn.setOnClickListener{
             dismiss()
         }
-       /* binding.root.minimumWidth=ViewGroup.LayoutParams.MATCH_PARENT
-        binding.root.minimumHeight = ViewGroup.LayoutParams.MATCH_PARENT*/
+
         return binding.root
     }
 

@@ -1,5 +1,12 @@
 package com.yes.trackdiialogfeature.di.module
 
-class TrackDialogModule {
+import dagger.Module
+import dagger.Provides
 
+@Module
+class TrackDialogModule {
+    @Provides
+    fun provideMediaDialogAdapter(){
+
+    }
 }

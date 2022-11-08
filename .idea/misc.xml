@@ -54,7 +54,7 @@
         <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/widget_background.xml" value="0.351" />
         <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/drawable/window_close.xml" value="0.351" />
         <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/activity_main.xml" value="0.3494791666666667" />
-        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/cancel_ok.xml" value="0.3494791666666667" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/cancel_ok.xml" value="0.291005291005291" />
         <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/dialog.xml" value="0.5454545336321368" />
         <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/frafment_audio_effect.xml" value="0.3494791666666667" />
         <entry key="..\:/ANDROIDprj/YESMusicPlayer/coreUI/src/main/res/layout/fragment_equalizer.xml" value="0.5454545336321368" />
@@ -74,6 +74,8 @@
         <entry key="..\:/ANDROIDprj/YESMusicPlayer/playlistFeature/src/main/res/layout/fragment_playlist.xml" value="0.2727272668160684" />
         <entry key="..\:/ANDROIDprj/YESMusicPlayer/playlistFeature/src/main/res/layout/fragment_playlist_feature.xml" value="0.4872665534804754" />
         <entry key="..\:/ANDROIDprj/YESMusicPlayer/trackDiialogFeature/src/main/res/layout/track_dialog.xml" value="0.3494791666666667" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/trackdialogFeature/src/main/res/layout/item_media.xml" value="0.3494791666666667" />
+        <entry key="..\:/ANDROIDprj/YESMusicPlayer/trackdialogFeature/src/main/res/layout/item_track.xml" value="0.3494791666666667" />
         <entry key="..\:/ANDROIDprj/YESMusicPlayer/trackdialogFeature/src/main/res/layout/track_dialog.xml" value="0.35999999219721035" />
       </map>
     </option>

@@ -1,7 +1,9 @@
 package com.yes.trackdiialogfeature.domain
 
-import com.yes.trackdiialogfeature.data.entity.MediaParam
+import com.yes.trackdiialogfeature.data.repository.entity.MediaParam
 
 interface IMediaRepository {
-    fun getMedia(param:MediaParam)
+    // mediaModel.query(MediaStore.Audio.Media.TITLE,MediaStore.Audio.Media.ARTIST,title);
+    //mediaModel.query(MediaStore.Audio.Media.ARTIST,null,null);
+
 }

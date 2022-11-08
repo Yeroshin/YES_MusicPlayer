@@ -1,4 +1,4 @@
-package com.yes.trackdiialogfeature.data.entity
+package com.yes.trackdiialogfeature.data.repository.entity
 
 class MediaParam {
     private lateinit var where:String
