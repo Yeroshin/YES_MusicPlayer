@@ -1,9 +1,11 @@
 package com.yes.trackdiialogfeature.domain
 
 import android.net.Uri
+import com.yes.coreui.BaseAdapterItem
 
 class MediaItem {
-
+    var selected: Boolean=false
+    var activated: Boolean=false
 
     var uri: Uri?=null
     var title: String?=null
@@ -12,4 +14,5 @@ class MediaItem {
     var genre: String?=null
     var duration: Int?=null
     var size: Int?=null
+
 }
