@@ -3,30 +3,24 @@ package com.yes.coreui
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Point
-import android.graphics.Rect
-import android.os.Build
 import android.os.Bundle
 import android.view.*
-import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
 
-abstract class UniversalDialog : DialogFragment() {
-    private lateinit var recyclerView:RecyclerView
-    private lateinit var cancel_btn:ImageButton
-    private lateinit var ok_btn:ImageButton
-    //private lateinit var dialog_layout: FrameLayout
-    private var myDialog: Dialog?=dialog
-    public lateinit var binding:ViewBinding
+abstract class UniversalDialog (): DialogFragment() {
+
+    private var myDialog: Dialog? = dialog
+    lateinit var binding: ViewBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NO_FRAME, 0);
     }
 
-    abstract var layout:Int
+    abstract var layout: Int
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,14 +33,15 @@ abstract class UniversalDialog : DialogFragment() {
         dialog!!.window!!.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         /////////////////////
         /////////////////////
-        myDialog=dialog
+        myDialog = dialog
         //myDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
         ///////////////////
 
         ///////////////////
         myDialog!!.setContentView(layout)
 
-        val disp: Display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+        val disp: Display =
+            (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
         val outSmallestSize = Point()
         val outLargestSize = Point()
         disp.getCurrentSizeRange(outSmallestSize, outLargestSize)
@@ -70,7 +65,8 @@ abstract class UniversalDialog : DialogFragment() {
 
         isCancelable = false
         /////////////////////////////
-
+        /////////////////////////
+        dialog!!.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         /////////////////////////////
         return binding.root
     }

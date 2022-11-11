@@ -9,7 +9,7 @@ import com.yes.trackdiialogfeature.databinding.ItemMediaBinding
 import com.yes.trackdiialogfeature.domain.MediaItem
 import com.yes.trackdiialogfeature.presentation.TrackDialogAdapter.TrackHolder
 
-class TrackDialogAdapter: RecyclerView.Adapter<TrackHolder>()  {
+class TrackDialogAdapter(): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>()  {
 
 
     private var trackList= arrayListOf<MediaItem>()
@@ -26,18 +26,16 @@ class TrackDialogAdapter: RecyclerView.Adapter<TrackHolder>()  {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackHolder {
        val binding = ItemMediaBinding
            .inflate(LayoutInflater.from(parent.context), parent, false)
+
        return TrackHolder(binding)
 
 
     }
 
-    override fun onBindViewHolder(holder: TrackHolder, position: Int, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(holder: TrackHolder, position: Int) {
 
-        holder.itemView.isSelected=true
-       // holder.binding.itemTitle.isActivated=false
-
-       // holder.itemView.isActivated = true
-       // holder.itemView.isSelected = false
+        holder.itemView.isSelected=false
+        holder.itemView.isActivated=false
         holder.binding.itemTitle.setText(trackList[position].title)
     }
 
@@ -52,7 +50,7 @@ class TrackDialogAdapter: RecyclerView.Adapter<TrackHolder>()  {
         trackList=items
     }
 
-    inner class TrackHolder(binding:ItemMediaBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class TrackHolder(val binding:ItemMediaBinding) : RecyclerView.ViewHolder(binding.root) {
 
     }
 

@@ -19,7 +19,8 @@ import com.yes.trackdiialogfeature.di.module.TrackDialogModule
 import com.yes.trackdiialogfeature.domain.MediaItem
 import javax.inject.Inject
 
-class TrackDialog() : UniversalDialog() {
+class TrackDialog: UniversalDialog() {
+
     @Inject
     lateinit var adapter: TrackDialogAdapter
     override var layout: Int = R.layout.track_dialog
@@ -46,13 +47,16 @@ class TrackDialog() : UniversalDialog() {
         /////////////////
         val items= arrayListOf<MediaItem>()
         for (i in 0..10){
-            val item:MediaItem= MediaItem()
+            val item= MediaItem()
             item.title="message"
             items.add(item)
         }
         adapter.setItems(items)
 
         /////////////////
+        (binding as TrackDialogBinding).buttons.cancelBtn.setOnClickListener {
+            dismiss()
+        }
         (binding as TrackDialogBinding).buttons.okBtn.setOnClickListener {
             dismiss()
         }
