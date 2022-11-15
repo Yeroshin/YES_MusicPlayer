@@ -1,33 +1,34 @@
 package com.yes.trackdiialogfeature.presentation
 
 import android.app.Activity
-import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageButton
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.yes.coreui.UniversalDialog
 import com.yes.trackdiialogfeature.R
 import com.yes.trackdiialogfeature.databinding.TrackDialogBinding
 import com.yes.trackdiialogfeature.di.components.DaggerTrackDialogComponent
 import com.yes.trackdiialogfeature.di.module.TrackDialogModule
-import com.yes.trackdiialogfeature.domain.MediaItem
+import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
-class TrackDialog: UniversalDialog() {
-
+class TrackDialog : UniversalDialog() {
+    // private val viewModel: TrackDialogViewModel by viewModels()
+    @Inject
+    lateinit var vmFactory: TrackDialogViewModelFactory
+    private  lateinit var vm:TrackDialogViewModel
     @Inject
     lateinit var adapter: TrackDialogAdapter
     override var layout: Int = R.layout.track_dialog
     override fun onAttach(context: Context) {
         super.onAttach(context)
         DaggerTrackDialogComponent.builder()
-            .trackDialogModule(TrackDialogModule())
+            .trackDialogModule(TrackDialogModule(getContext() as Activity))
             .build()
             .inject(this)
 
@@ -41,17 +42,19 @@ class TrackDialog: UniversalDialog() {
         binding = TrackDialogBinding.inflate(inflater)
         super.onCreateView(inflater, container, savedInstanceState)
         /////////////////////
-        val layoutManager:LinearLayoutManager= LinearLayoutManager(context)
-        (binding as TrackDialogBinding).recyclerViewContainer.recyclerView.layoutManager=layoutManager
-        (binding as TrackDialogBinding).recyclerViewContainer.recyclerView.adapter=adapter
+        vm=ViewModelProvider(this,vmFactory).get(TrackDialogViewModel::class.java)
+        /////////////////////
+        val layoutManager = LinearLayoutManager(context)
+        (binding as TrackDialogBinding).recyclerViewContainer.recyclerView.layoutManager =
+            layoutManager
+        (binding as TrackDialogBinding).recyclerViewContainer.recyclerView.adapter = adapter
         /////////////////
-        val items= arrayListOf<MediaItem>()
-        for (i in 0..10){
-            val item= MediaItem()
-            item.title="message"
-            items.add(item)
-        }
-        adapter.setItems(items)
+
+        //adapter.setItems(items)
+        initObserver()
+        vm.init()
+        /////////////////
+
 
         /////////////////
         (binding as TrackDialogBinding).buttons.cancelBtn.setOnClickListener {
@@ -62,6 +65,15 @@ class TrackDialog: UniversalDialog() {
         }
 
         return binding.root
+    }
+
+    fun initObserver() {
+        lifecycleScope.launchWhenStarted {
+            vm.uiState.collectLatest {
+                adapter.setItems(it)
+            }
+        }
+
     }
 
 

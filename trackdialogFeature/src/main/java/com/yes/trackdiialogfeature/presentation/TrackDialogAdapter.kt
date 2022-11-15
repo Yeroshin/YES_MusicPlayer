@@ -37,6 +37,7 @@ class TrackDialogAdapter(): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>
         holder.itemView.isSelected=false
         holder.itemView.isActivated=false
         holder.binding.itemTitle.setText(trackList[position].title)
+
     }
 
 
@@ -51,7 +52,7 @@ class TrackDialogAdapter(): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>
     }
 
     inner class TrackHolder(val binding:ItemMediaBinding) : RecyclerView.ViewHolder(binding.root) {
-
+        
     }
 
 
