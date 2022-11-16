@@ -1,4 +1,4 @@
-package com.yes.trackdiialogfeature.presentation
+package com.yes.trackdiialogfeature.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

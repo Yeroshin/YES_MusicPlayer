@@ -5,12 +5,13 @@ import com.yes.trackdiialogfeature.data.repository.MediaRepository
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MenuInteractor(private val categoryRepository: ICategoryRepository, mediaRepository: IMediaRepository) {
-    private lateinit var items:LinkedList<MediaItem>
+class MenuInteractor(private val categoryRepository: ICategoryRepository,private val mediaRepository: IMediaRepository) {
+    private lateinit var items:ArrayList<Menu>
+    private lateinit var stack:Stack<Menu>
     fun init(){
         categoryRepository.getCategory()
     }
-    fun onSelected(position:Int){
+    fun getMenu(){
 
     }
     fun getCategories():ArrayList<MediaItem>{

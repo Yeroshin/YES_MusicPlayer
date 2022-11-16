@@ -1,7 +1,6 @@
-package com.yes.trackdiialogfeature.presentation
+package com.yes.trackdiialogfeature.ui
 
 import androidx.lifecycle.ViewModel
-import com.yes.trackdiialogfeature.data.common.ItemsMediaUIState
 import com.yes.trackdiialogfeature.domain.MediaItem
 import com.yes.trackdiialogfeature.domain.MenuInteractor
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +18,9 @@ class TrackDialogViewModel(private val menuInteractor: MenuInteractor):ViewModel
         }
 
         _stateItemsMedia.value=menuInteractor.getCategories()
+    }
+    fun selectItem(){
+
     }
 
 }

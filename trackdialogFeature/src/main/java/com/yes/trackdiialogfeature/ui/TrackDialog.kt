@@ -1,4 +1,4 @@
-package com.yes.trackdiialogfeature.presentation
+package com.yes.trackdiialogfeature.ui
 
 import android.app.Activity
 import android.content.Context
@@ -40,11 +40,12 @@ class TrackDialog : UniversalDialog() {
         savedInstanceState: Bundle?
     ): View? {
         binding = TrackDialogBinding.inflate(inflater)
-        super.onCreateView(inflater, container, savedInstanceState)
+      // super.onCreateView(inflater, container, savedInstanceState)
         /////////////////////
         vm=ViewModelProvider(this,vmFactory).get(TrackDialogViewModel::class.java)
         /////////////////////
         val layoutManager = LinearLayoutManager(context)
+
         (binding as TrackDialogBinding).recyclerViewContainer.recyclerView.layoutManager =
             layoutManager
         (binding as TrackDialogBinding).recyclerViewContainer.recyclerView.adapter = adapter

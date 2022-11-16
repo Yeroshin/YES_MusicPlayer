@@ -10,4 +10,7 @@ class CategoryRepository(private val categoryDataStore: CategoryDataStore,privat
     override fun getCategory(): ArrayList<MediaItem> {
         return mapper.mapToDomain(categoryDataStore.getCategories())
     }
+    fun getMenu(){
+
+    }
 }

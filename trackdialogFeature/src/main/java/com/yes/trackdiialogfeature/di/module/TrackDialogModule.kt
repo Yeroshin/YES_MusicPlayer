@@ -1,7 +1,6 @@
 package com.yes.trackdiialogfeature.di.module
 
 import android.app.Activity
-import com.yes.trackdiialogfeature.data.mapper.Mapper
 import com.yes.trackdiialogfeature.data.repository.CategoryRepository
 import com.yes.trackdiialogfeature.data.repository.MediaRepository
 import com.yes.trackdiialogfeature.data.repository.dataSource.CategoryDataStore
@@ -10,8 +9,8 @@ import com.yes.trackdiialogfeature.data.repository.entity.MediaMapper
 import com.yes.trackdiialogfeature.domain.ICategoryRepository
 import com.yes.trackdiialogfeature.domain.IMediaRepository
 import com.yes.trackdiialogfeature.domain.MenuInteractor
-import com.yes.trackdiialogfeature.presentation.TrackDialogAdapter
-import com.yes.trackdiialogfeature.presentation.TrackDialogViewModelFactory
+import com.yes.trackdiialogfeature.ui.TrackDialogAdapter
+import com.yes.trackdiialogfeature.ui.TrackDialogViewModelFactory
 import dagger.Module
 import dagger.Provides
 
