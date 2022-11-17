@@ -1,6 +1,6 @@
 package com.yes.trackdiialogfeature.data.repository.entity
 
-class MediaParam {
-    private lateinit var where:String
-    private lateinit var what:String
-}
+class MediaParam (
+    private val where:String,
+    private val what:String
+    )

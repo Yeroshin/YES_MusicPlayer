@@ -2,6 +2,7 @@ package com.yes.trackdiialogfeature.domain
 
 class Menu (
     val name:String,
-    val position:Int,
-    val items:ArrayList<MediaItem>
+    var selected:Int?,
+    val parent:Menu?,
+    var items:ArrayList<MediaItem>
 )

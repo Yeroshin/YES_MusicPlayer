@@ -1,9 +1,9 @@
-package com.yes.trackdiialogfeature.data.repository.entity
+package com.yes.trackdiialogfeature.data.mapper
 
-import com.yes.trackdiialogfeature.data.mapper.Mapper
+import com.yes.trackdiialogfeature.data.repository.entity.MediaEntity
 import com.yes.trackdiialogfeature.domain.MediaItem
 
-class MediaMapper:Mapper<MediaItem,MediaEntity> {
+class MediaMapper:Mapper<ArrayList<MediaItem>,ArrayList<MediaEntity>> {
     override fun mapToDomain(repositoryEntity: ArrayList<MediaEntity>): ArrayList<MediaItem> {
         val items= arrayListOf<MediaItem>()
         for (i in 0 until repositoryEntity.size){
@@ -20,7 +20,7 @@ class MediaMapper:Mapper<MediaItem,MediaEntity> {
         return items
     }
 
-    override fun matToRepository(domainEntity: ArrayList<MediaItem>): ArrayList<MediaEntity> {
+    override fun mapToRepository(domainEntity: ArrayList<MediaItem>): ArrayList<MediaEntity> {
         TODO("Not yet implemented")
     }
 }

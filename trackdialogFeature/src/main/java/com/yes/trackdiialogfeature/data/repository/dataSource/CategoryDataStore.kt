@@ -7,6 +7,12 @@ import android.provider.MediaStore
 import com.yes.trackdiialogfeature.data.repository.entity.MediaEntity
 
 class CategoryDataStore(private val appContext: Activity) {
+    fun getMenuNameForCategories(): String {
+        return appContext.getPreferences(Context.MODE_PRIVATE).getString(
+            "categoryName",
+            appContext.getResources().getString(com.yes.coreui.R.string.categories)
+        )!!
+    }
     fun getCategories(): ArrayList<MediaEntity> {
         val items= arrayListOf<MediaEntity>()
 

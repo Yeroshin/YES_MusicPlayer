@@ -5,10 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yes.trackdiialogfeature.databinding.ItemMediaBinding
 import com.yes.trackdiialogfeature.domain.MediaItem
+import com.yes.trackdiialogfeature.domain.Menu
 
-class TrackDialogAdapter(private val vm:TrackDialogViewModel): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>(),RecyclerItemListener  {
-
+class TrackDialogAdapter(): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>(),RecyclerItemListener  {
+    private lateinit var vm:TrackDialogViewModel
     private var trackList= arrayListOf<MediaItem>()
+    private lateinit var menu:Menu
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackHolder {
        val binding = ItemMediaBinding
@@ -21,16 +23,17 @@ class TrackDialogAdapter(private val vm:TrackDialogViewModel): RecyclerView.Adap
 
     override fun onBindViewHolder(holder: TrackHolder, position: Int) {
         holder.bind(trackList[position],this)
-
-
     }
 
     override fun getItemCount(): Int {
         return trackList.size
     }
-
-    fun setItems(items:ArrayList<MediaItem>){
-        trackList=items
+    fun setViewModel(vm:TrackDialogViewModel){
+        this.vm=vm
+    }
+    fun setItems(menu: Menu){
+        this.menu=menu
+        trackList=menu.items
     }
 
     inner class TrackHolder(private val binding:ItemMediaBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -40,13 +43,15 @@ class TrackDialogAdapter(private val vm:TrackDialogViewModel): RecyclerView.Adap
             binding.root.isActivated=false
             binding.itemTitle.setText(item.title)
             binding.root.setOnClickListener {
-                recyclerItemListener.onItemSelected(item)
+                recyclerItemListener.onItemSelected(adapterPosition)
             }
         }
     }
 
-    override fun onItemSelected(item: MediaItem) {
-        TODO("Not yet implemented")
+    override fun onItemSelected(position: Int) {
+        menu.selected=position
+        vm.getMenuItemContent(menu)
+
     }
 
 

@@ -6,15 +6,10 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class MenuInteractor(private val categoryRepository: ICategoryRepository,private val mediaRepository: IMediaRepository) {
-    private lateinit var items:ArrayList<Menu>
-    private lateinit var stack:Stack<Menu>
-    fun init(){
-        categoryRepository.getCategory()
+    fun getMenu():Menu{
+        return categoryRepository.getCategories()
     }
-    fun getMenu(){
-
-    }
-    fun getCategories():ArrayList<MediaItem>{
-        return categoryRepository.getCategory()
+    fun getMenuContent(menu:Menu):Menu{
+        return mediaRepository.getMenu(menu)
     }
 }

@@ -56,5 +56,6 @@
     <string name="albums">albums</string>
     <string name="folder">folder</string>
     <string name="genres">genres</string>
+    <string name="categories">categories</string>
 
 </resources>

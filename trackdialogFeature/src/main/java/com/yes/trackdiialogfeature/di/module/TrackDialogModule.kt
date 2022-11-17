@@ -5,7 +5,8 @@ import com.yes.trackdiialogfeature.data.repository.CategoryRepository
 import com.yes.trackdiialogfeature.data.repository.MediaRepository
 import com.yes.trackdiialogfeature.data.repository.dataSource.CategoryDataStore
 import com.yes.trackdiialogfeature.data.repository.dataSource.MediaDataStore
-import com.yes.trackdiialogfeature.data.repository.entity.MediaMapper
+import com.yes.trackdiialogfeature.data.mapper.MediaMapper
+import com.yes.trackdiialogfeature.data.mapper.MenuToParamMapper
 import com.yes.trackdiialogfeature.domain.ICategoryRepository
 import com.yes.trackdiialogfeature.domain.IMediaRepository
 import com.yes.trackdiialogfeature.domain.MenuInteractor
@@ -32,14 +33,21 @@ class TrackDialogModule(val context: Activity) {
     fun provideCategoryRepository(categoryDataStore: CategoryDataStore,mapper: MediaMapper):ICategoryRepository{
         return CategoryRepository(categoryDataStore,mapper)
     }
+    ///////////////////////////
     @Provides
     fun providesMediaDataStore():MediaDataStore{
         return MediaDataStore(context)
     }
     @Provides
-    fun provideMediaRepository(mediaDataStore: MediaDataStore):IMediaRepository{
-        return MediaRepository(mediaDataStore)
+    fun providesMenuToParamMapper():MenuToParamMapper{
+        return MenuToParamMapper()
     }
+
+    @Provides
+    fun provideMediaRepository(mediaDataStore: MediaDataStore,menuToParamMapper: MenuToParamMapper,mediaMapper: MediaMapper):IMediaRepository{
+        return MediaRepository(mediaDataStore,menuToParamMapper,mediaMapper)
+    }
+    /////////////////////////
     @Provides
     fun provideMenuInteractor(categoryRepository: ICategoryRepository, mediaRepository: IMediaRepository):MenuInteractor{
         return MenuInteractor(categoryRepository, mediaRepository)

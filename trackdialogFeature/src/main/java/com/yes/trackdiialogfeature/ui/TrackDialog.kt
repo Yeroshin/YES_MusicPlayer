@@ -21,7 +21,8 @@ class TrackDialog : UniversalDialog() {
     // private val viewModel: TrackDialogViewModel by viewModels()
     @Inject
     lateinit var vmFactory: TrackDialogViewModelFactory
-    private  lateinit var vm:TrackDialogViewModel
+    private lateinit var vm: TrackDialogViewModel
+
     @Inject
     lateinit var adapter: TrackDialogAdapter
     override var layout: Int = R.layout.track_dialog
@@ -39,10 +40,12 @@ class TrackDialog : UniversalDialog() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = TrackDialogBinding.inflate(inflater)
-      // super.onCreateView(inflater, container, savedInstanceState)
+        super.onCreateView(inflater, container, savedInstanceState)
         /////////////////////
-        vm=ViewModelProvider(this,vmFactory).get(TrackDialogViewModel::class.java)
+        vm = ViewModelProvider(this, vmFactory)[TrackDialogViewModel::class.java]
+        adapter.setViewModel(vm)
         /////////////////////
         val layoutManager = LinearLayoutManager(context)
 
@@ -53,7 +56,7 @@ class TrackDialog : UniversalDialog() {
 
         //adapter.setItems(items)
         initObserver()
-        vm.init()
+
         /////////////////
 
 
@@ -71,6 +74,7 @@ class TrackDialog : UniversalDialog() {
     fun initObserver() {
         lifecycleScope.launchWhenStarted {
             vm.uiState.collectLatest {
+                (binding as TrackDialogBinding).recyclerViewContainer.playlist.text = it.name
                 adapter.setItems(it)
             }
         }
