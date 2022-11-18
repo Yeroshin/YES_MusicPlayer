@@ -34,6 +34,7 @@ class TrackDialogAdapter(): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>
     fun setItems(menu: Menu){
         this.menu=menu
         trackList=menu.items
+        notifyDataSetChanged()
     }
 
     inner class TrackHolder(private val binding:ItemMediaBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -50,7 +51,7 @@ class TrackDialogAdapter(): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>
 
     override fun onItemSelected(position: Int) {
         menu.selected=position
-        vm.getMenuItemContent(menu)
+        setItems(vm.getMenuItemContent(menu))
 
     }
 

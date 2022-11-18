@@ -21,8 +21,8 @@ class TrackDialogViewModel(private val menuInteractor: MenuInteractor):ViewModel
 
         _stateItemsMedia.value=menuInteractor.getMenu()
     }*/
-    fun getMenuItemContent(menu:Menu){
-        menuInteractor.getMenuContent(menu)
+    fun getMenuItemContent(menu:Menu):Menu{
+        return menuInteractor.getMenuContent(menu)
     }
 
 }

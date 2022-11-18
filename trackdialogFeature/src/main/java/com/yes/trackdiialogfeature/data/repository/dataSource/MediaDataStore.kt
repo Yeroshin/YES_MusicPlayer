@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
 class MediaDataStore(private val appContext: Context) : IMediaDataStore {
     fun getMedia(param: MediaParam): ArrayList<MediaEntity> {
 
-        val audioList = mutableListOf<MediaEntity>()
+        val audioList = ArrayList<MediaEntity>()
 
         val collection =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -26,13 +26,14 @@ class MediaDataStore(private val appContext: Context) : IMediaDataStore {
 
         val projection = arrayOf(
             MediaStore.Audio.Media._ID,
+            MediaStore.Audio.Media.TITLE
         )
 
         // Show only videos that are at least 5 minutes in duration.
-        val selection = "${MediaStore.Video.Media.DURATION} >= ?"
+       /* val selection = "${MediaStore.Video.Media.DURATION} >= ?"
         val selectionArgs = arrayOf(
-            TimeUnit.MILLISECONDS.convert(5, TimeUnit.MINUTES).toString()
-        )
+            TimeUnit.MILLISECONDS.convert(1, TimeUnit.MINUTES).toString()
+        )*/
 
         // Display videos in alphabetical order based on their display name.
         val sortOrder = "${MediaStore.Video.Media.DISPLAY_NAME} ASC"
@@ -40,29 +41,29 @@ class MediaDataStore(private val appContext: Context) : IMediaDataStore {
         val query = appContext.contentResolver.query(
             collection,
             projection,
-            selection,
-            selectionArgs,
-            sortOrder
+            null,
+            null,
+            null
         )
         query?.use { cursor ->
             // Cache column indices.
-            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
-            val titleColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
-            val artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
-            val albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
-            val genreColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.GENRE)
-            val durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
-            val sizeColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)
+            val idColumn = cursor.getColumnIndex(MediaStore.Audio.Media._ID)
+            val titleColumn = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)
+          /*  val artistColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)
+            val albumColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)
+            val genreColumn = cursor.getColumnIndex(MediaStore.Audio.Media.GENRE)
+            val durationColumn = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)
+            val sizeColumn = cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)*/
 
             while (cursor.moveToNext()) {
                 // Get values of columns for a given video.
                 val id = cursor.getLong(idColumn)
-                val title = cursor.getString(titleColumn)
-                val artist = cursor.getString(artistColumn)
+               val title = cursor.getString(titleColumn)
+               /* val artist = cursor.getString(artistColumn)
                 val album = cursor.getString(albumColumn)
                 val genre = cursor.getString(genreColumn)
                 val duration = cursor.getInt(durationColumn)
-                val size = cursor.getInt(sizeColumn)
+                val size = cursor.getInt(sizeColumn)*/
 
                 val contentUri: Uri = ContentUris.withAppendedId(
                     MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
@@ -73,9 +74,10 @@ class MediaDataStore(private val appContext: Context) : IMediaDataStore {
                 // that represents the media file.
                 val media=MediaEntity()
                 media.uri=contentUri
+                media.title=title
                 audioList += media
             }
         }
-        return ArrayList()
+        return audioList
     }
 }

@@ -8,8 +8,8 @@ class MediaMapper:Mapper<ArrayList<MediaItem>,ArrayList<MediaEntity>> {
         val items= arrayListOf<MediaItem>()
         for (i in 0 until repositoryEntity.size){
             val mediaItem=MediaItem()
+           // mediaItem.title=repositoryEntity[i].categoryName
             mediaItem.title=repositoryEntity[i].title
-            mediaItem.title=repositoryEntity[i].categoryName
             mediaItem.album=repositoryEntity[i].album
             mediaItem.uri= repositoryEntity[i].uri
             mediaItem.artist= repositoryEntity[i].artist

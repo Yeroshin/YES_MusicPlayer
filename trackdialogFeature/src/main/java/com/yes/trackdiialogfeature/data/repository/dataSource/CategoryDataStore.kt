@@ -18,33 +18,33 @@ class CategoryDataStore(private val appContext: Activity) {
 
         val mediaTracks = MediaEntity()
         //tracks
-        mediaTracks .categoryName = appContext.getResources().getString(com.yes.coreui.R.string.tracks)
+        mediaTracks .title = appContext.getResources().getString(com.yes.coreui.R.string.tracks)
         mediaTracks .projection = appContext.getPreferences(Context.MODE_PRIVATE).getString(
-            mediaTracks .categoryName,
+            mediaTracks .title,
             MediaStore.Audio.Media.TITLE
         )
         items+=mediaTracks
         //artists
         val mediaAretists = MediaEntity()
-        mediaAretists.categoryName = appContext.getResources().getString(com.yes.coreui.R.string.artists)
+        mediaAretists.title = appContext.getResources().getString(com.yes.coreui.R.string.artists)
         mediaAretists.projection = appContext.getPreferences(Context.MODE_PRIVATE).getString(
-            mediaAretists.categoryName,
+            mediaAretists.title,
             MediaStore.Audio.Media.ARTIST
         )
         items+=mediaAretists
         //albums
         val mediaAlbums = MediaEntity()
-        mediaAlbums.categoryName = appContext.getResources().getString(com.yes.coreui.R.string.albums)
+        mediaAlbums.title = appContext.getResources().getString(com.yes.coreui.R.string.albums)
         mediaAlbums.projection = appContext.getPreferences(Context.MODE_PRIVATE).getString(
-            mediaAlbums.categoryName,
+            mediaAlbums.title,
             MediaStore.Audio.Media.ALBUM
         )
         items+=mediaAlbums
         //genres
         val mediaGenres = MediaEntity()
-        mediaGenres.categoryName = appContext.getResources().getString(com.yes.coreui.R.string.genres)
+        mediaGenres.title = appContext.getResources().getString(com.yes.coreui.R.string.genres)
         mediaGenres.projection = appContext.getPreferences(Context.MODE_PRIVATE).getString(
-            mediaGenres.categoryName,
+            mediaGenres.title,
             MediaStore.Audio.Media.GENRE
         )
         items+=mediaGenres
