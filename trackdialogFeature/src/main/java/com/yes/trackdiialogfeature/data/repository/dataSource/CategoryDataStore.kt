@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.provider.MediaStore
 import com.yes.trackdiialogfeature.data.repository.entity.MediaEntity
+import com.yes.trackdiialogfeature.domain.MediaItem
 
 class CategoryDataStore(private val appContext: Activity) {
     fun getMenuNameForCategories(): String {
@@ -13,7 +14,7 @@ class CategoryDataStore(private val appContext: Activity) {
             appContext.getResources().getString(com.yes.coreui.R.string.categories)
         )!!
     }
-    fun getCategories(): ArrayList<MediaEntity> {
+  /*  fun getCategories(): ArrayList<MediaEntity> {
         val items= arrayListOf<MediaEntity>()
 
         val mediaTracks = MediaEntity()
@@ -48,6 +49,22 @@ class CategoryDataStore(private val appContext: Activity) {
             MediaStore.Audio.Media.GENRE
         )
         items+=mediaGenres
+        return items
+    }*/
+    fun getCategories(): ArrayList<MediaEntity>{
+        val items= arrayListOf<MediaEntity>()
+        val itemsMap= mapOf(
+            appContext.resources.getString(com.yes.coreui.R.string.tracks) to MediaStore.Audio.Media.TITLE,
+            appContext.resources.getString(com.yes.coreui.R.string.artists) to MediaStore.Audio.Media.ARTIST,
+            appContext.resources.getString(com.yes.coreui.R.string.albums) to MediaStore.Audio.Media.ALBUM,
+            appContext.resources.getString(com.yes.coreui.R.string.genres) to MediaStore.Audio.Media.GENRE
+        )
+        for (keys in itemsMap){
+            val item=MediaEntity()
+            item.title=keys.key
+            item.projection=keys.value
+            items.add(item)
+        }
         return items
     }
 }

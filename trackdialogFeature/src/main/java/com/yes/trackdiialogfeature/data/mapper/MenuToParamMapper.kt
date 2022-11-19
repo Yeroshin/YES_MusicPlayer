@@ -6,7 +6,7 @@ import com.yes.trackdiialogfeature.domain.Menu
 
 class MenuToParamMapper() {
     fun map(menu: Menu): MediaParam{
-        return MediaParam(menu.items[menu.selected!!].title!!,menu.items[menu.selected!!].title!!)
+       // return MediaParam(menu.items[menu.selected!!].title!!,menu.items[menu.selected!!].title!!)
+        return MediaParam(menu.items[menu.selected!!].title!!,Array<String>(1){"'The Soundtrack'"})
     }
-
 }

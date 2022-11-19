@@ -1,6 +1,6 @@
 package com.yes.trackdiialogfeature.data.repository.entity
 
 class MediaParam (
-    private val where:String,
-    private val what:String
+    val where:String?,
+    val what:Array<String>
     )
