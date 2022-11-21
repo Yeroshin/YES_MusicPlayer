@@ -1,7 +1,7 @@
 package com.yes.trackdiialogfeature.data.mapper
 
 
-import com.yes.trackdiialogfeature.data.repository.entity.MediaParam
+import com.yes.trackdiialogfeature.data.repository.entity.MenuParam
 import com.yes.trackdiialogfeature.domain.MediaItem
 import com.yes.trackdiialogfeature.domain.Menu
 import org.junit.Test
@@ -25,8 +25,8 @@ internal class MenuToParamMapperTest {
         val item=MediaItem()
         item.title="artists"
         itemsParam.add(item)
-        val actual:MediaParam=mapper.map(menu)
-        val expected= MediaParam("artists",null)
+        val actual:MenuParam=mapper.map(menu)
+        val expected= MenuParam("artists",null)
         assertEquals(actual.what,expected.what)
         assertEquals(actual.where,expected.where)
     }

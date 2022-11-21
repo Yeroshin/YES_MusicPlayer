@@ -1,6 +1,7 @@
 package com.yes.trackdiialogfeature.data.repository.entity
 
-class MediaParam (
-    val where:String?,
+class MenuParam(
+    val type:String?,
+    val where: String,
     val what:Array<String>
     )

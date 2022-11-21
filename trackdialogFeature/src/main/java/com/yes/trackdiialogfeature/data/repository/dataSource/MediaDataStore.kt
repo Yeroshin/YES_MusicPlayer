@@ -7,13 +7,13 @@ import android.os.Build
 import android.provider.MediaStore
 import com.yes.trackdiialogfeature.data.IMediaDataStore
 import com.yes.trackdiialogfeature.data.repository.entity.MediaEntity
-import com.yes.trackdiialogfeature.data.repository.entity.MediaParam
+import com.yes.trackdiialogfeature.data.repository.entity.MenuParam
 
 
 class MediaDataStore(private val appContext: Context) : IMediaDataStore {
-    fun getMedia(param: MediaParam): ArrayList<MediaEntity> {
+    fun getMedia(param: MenuParam): ArrayList<MediaEntity> {
 
-        val par=MediaParam(MediaStore.Audio.Media.ARTIST+"=?",Array<String>(1){"The Soundtrack"})
+        val par=MenuParam(MediaStore.Audio.Media.TITLE,MediaStore.Audio.Media.ARTIST+"=?",Array(1){"The Soundtrack"})
         val audioList = ArrayList<MediaEntity>()
 
         val collection =
@@ -82,7 +82,7 @@ class MediaDataStore(private val appContext: Context) : IMediaDataStore {
                 media.uri = contentUri
                 media.title = title
                 media.artist=artist
-                media.album=album
+               // media.album=album
                // media.genre=genre
                 media.duration=duration
                 media.size=size
