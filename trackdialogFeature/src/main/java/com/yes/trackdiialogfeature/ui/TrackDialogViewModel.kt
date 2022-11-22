@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class TrackDialogViewModel(private val menuInteractor: MenuInteractor):ViewModel() {
-    private val _stateItemsMedia = MutableStateFlow(menuInteractor.getMenu())
+    private val _stateItemsMedia = MutableStateFlow(menuInteractor.showChildMenu(null))
     val uiState:StateFlow<Menu> =_stateItemsMedia
    /* fun init(){
         val items = arrayListOf<MediaItem>()
@@ -22,7 +22,7 @@ class TrackDialogViewModel(private val menuInteractor: MenuInteractor):ViewModel
         _stateItemsMedia.value=menuInteractor.getMenu()
     }*/
     fun getMenuItemContent(menu:Menu):Menu{
-        return menuInteractor.getMenuContent(menu)
+        return menuInteractor.showChildMenu(menu)
     }
 
 }

@@ -10,19 +10,26 @@ import com.yes.trackdiialogfeature.domain.MediaItem
 import com.yes.trackdiialogfeature.domain.Menu
 
 
-class MediaRepository(private val mediaDataStore:MediaDataStore, private val categoryDataStore: CategoryDataStore, private val mediaMapper:MediaMapper):IMenuRepository {
-    fun getRootMenu():Menu{
-        val menu=Menu(getRootName(),null)
-        menu.items=getRootItems()
+class MediaRepository(
+    private val mediaDataStore: MediaDataStore,
+    private val categoryDataStore: CategoryDataStore,
+    private val mediaMapper: MediaMapper
+) : IMenuRepository {
+    override fun getRootMenu(): Menu {
+        val menu = Menu(getRootName(), null)
+        menu.items = getRootItems()
         return menu
     }
-    fun getRootName() : String{
+
+    fun getRootName(): String {
         return categoryDataStore.getName()
     }
-    fun getRootItems() : ArrayList<MediaItem> {
+
+    fun getRootItems(): ArrayList<MediaItem> {
         return mediaMapper.mapToDomain(categoryDataStore.getItems())
     }
-    fun getMediaItems(menuParam: MenuParam): ArrayList<MediaItem> {
+
+    override fun getMediaItems(menuParam: MenuParam): ArrayList<MediaItem> {
         return mediaMapper.mapToDomain(mediaDataStore.getMedia(menuParam))
     }
 

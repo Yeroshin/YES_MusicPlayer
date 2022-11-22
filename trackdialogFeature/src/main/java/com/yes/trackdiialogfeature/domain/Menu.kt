@@ -4,7 +4,7 @@ class Menu(
     val name: String,
     val parent: Menu?
 ) {
-    var selected: Int? = null
-    var items: ArrayList<MediaItem>? = null
+    var selected: Int = -1
+    var items: ArrayList<MediaItem> = arrayListOf()
 
 }

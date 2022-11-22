@@ -33,7 +33,7 @@ class TrackDialogAdapter(): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>
     }
     fun setItems(menu: Menu){
         this.menu=menu
-        trackList=menu.items
+        trackList= menu.items!!
         notifyDataSetChanged()
     }
 
