@@ -11,9 +11,16 @@ import com.yes.trackdiialogfeature.data.repository.entity.MenuParam
 
 
 class MediaDataStore(private val appContext: Context) : IMediaDataStore {
-    fun getMedia(param: MenuParam): ArrayList<MediaEntity> {
+    fun getMedia(
+        projection: String,
+        selection: String,
+        selectionArgs: ArrayList<String>
+    ): ArrayList<MediaEntity> {
 
-        val par=MenuParam(MediaStore.Audio.Media.TITLE,MediaStore.Audio.Media.ARTIST+"=?",Array(1){"The Soundtrack"})
+       /* val par = MenuParam(
+            MediaStore.Audio.Media.TITLE,
+            MediaStore.Audio.Media.ARTIST + "=?",
+            Array(1) { "The Soundtrack" })*/
         val audioList = ArrayList<MediaEntity>()
 
         val collection =
@@ -30,7 +37,7 @@ class MediaDataStore(private val appContext: Context) : IMediaDataStore {
             MediaStore.Audio.Media.TITLE,
             MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.ALBUM,
-           // MediaStore.Audio.Media.GENRE,
+            // MediaStore.Audio.Media.GENRE,
             MediaStore.Audio.Media.DURATION,
             MediaStore.Audio.Media.SIZE,
         )
@@ -47,8 +54,8 @@ class MediaDataStore(private val appContext: Context) : IMediaDataStore {
         val query = appContext.contentResolver.query(
             collection,
             projection,
-            par.where,
-            par.what,
+            null,
+            null,
             sortOrder
         )
         query?.use { cursor ->
@@ -57,7 +64,7 @@ class MediaDataStore(private val appContext: Context) : IMediaDataStore {
             val titleColumn = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)
             val artistColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)
             val albumColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)
-           //val genreColumn = cursor.getColumnIndex(MediaStore.Audio.Media.GENRE)
+            //val genreColumn = cursor.getColumnIndex(MediaStore.Audio.Media.GENRE)
             val durationColumn = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)
             val sizeColumn = cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)
 
@@ -67,7 +74,7 @@ class MediaDataStore(private val appContext: Context) : IMediaDataStore {
                 val title = cursor.getString(titleColumn)
                 val artist = cursor.getString(artistColumn)
                 val album = cursor.getString(albumColumn)
-               // val genre = cursor.getString(genreColumn)
+                // val genre = cursor.getString(genreColumn)
                 val duration = cursor.getInt(durationColumn)
                 val size = cursor.getInt(sizeColumn)
 
@@ -81,11 +88,11 @@ class MediaDataStore(private val appContext: Context) : IMediaDataStore {
                 val media = MediaEntity()
                 media.uri = contentUri
                 media.title = title
-                media.artist=artist
-               // media.album=album
-               // media.genre=genre
-                media.duration=duration
-                media.size=size
+                media.artist = artist
+                // media.album=album
+                // media.genre=genre
+                media.duration = duration
+                media.size = size
                 audioList += media
             }
         }

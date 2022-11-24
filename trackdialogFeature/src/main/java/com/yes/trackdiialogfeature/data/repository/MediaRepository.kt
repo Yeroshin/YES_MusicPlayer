@@ -15,22 +15,30 @@ class MediaRepository(
     private val categoryDataStore: CategoryDataStore,
     private val mediaMapper: MediaMapper
 ) : IMenuRepository {
-    override fun getRootMenu(): Menu {
+    private fun getRootMenu(): Menu {
         val menu = Menu(getRootName(), null)
         menu.items = getRootItems()
         return menu
     }
 
-    fun getRootName(): String {
+    private fun getRootName(): String {
         return categoryDataStore.getName()
     }
 
-    fun getRootItems(): ArrayList<MediaItem> {
+    private fun getRootItems(): ArrayList<MediaItem> {
         return mediaMapper.mapToDomain(categoryDataStore.getItems())
     }
 
-    override fun getMediaItems(menuParam: MenuParam): ArrayList<MediaItem> {
-        return mediaMapper.mapToDomain(mediaDataStore.getMedia(menuParam))
+    //////////////////////
+    override fun getMenu(param: MenuParam): Menu {
+        return if (param != null) {
+            val childMenu = Menu(param.name, param.parentMenu)
+            val items = mediaMapper.mapToDomain(mediaDataStore.getMedia(param.type, param.where, param.what))
+            childMenu.items=items
+            childMenu
+        } else {
+            getRootMenu()
+        }
     }
 
 
