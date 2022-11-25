@@ -7,10 +7,10 @@ import kotlinx.coroutines.launch
 
 abstract class UseCase<in Params, out Type> {
 
-    abstract suspend fun run(params: Params): Type
+    abstract suspend fun run(params: Params?): Type
 
     operator fun invoke(
-        params: Params,
+        params: Params?,
         scope: CoroutineScope,
         onResult: (Type) -> Unit = {}
     ) {

@@ -3,13 +3,13 @@ package com.yes.trackdiialogfeature.domain
 import android.net.Uri
 import com.yes.coreui.BaseAdapterItem
 
-class MediaItem {
+class MediaItem (val type:String,val title: String){
     var selected: Boolean=false
     var activated: Boolean=false
-    var type:String?=null
+
 
     var uri: Uri?=null
-    var title: String?=null
+
    // var artist: String?=null
   //  var album: String?=null
    //var genre: String?=null

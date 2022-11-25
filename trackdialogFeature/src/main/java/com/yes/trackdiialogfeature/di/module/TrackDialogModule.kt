@@ -5,9 +5,7 @@ import com.yes.trackdiialogfeature.data.repository.MediaRepository
 import com.yes.trackdiialogfeature.data.repository.dataSource.CategoryDataStore
 import com.yes.trackdiialogfeature.data.repository.dataSource.MediaDataStore
 import com.yes.trackdiialogfeature.data.mapper.MediaMapper
-import com.yes.trackdiialogfeature.domain.ICategoryRepository
-import com.yes.trackdiialogfeature.domain.IMenuRepository
-import com.yes.trackdiialogfeature.domain.MenuInteractor
+import com.yes.trackdiialogfeature.domain.*
 import com.yes.trackdiialogfeature.ui.TrackDialogAdapter
 import com.yes.trackdiialogfeature.ui.TrackDialogViewModelFactory
 import dagger.Module
@@ -47,14 +45,18 @@ class TrackDialogModule(val context: Activity) {
     }
 
     /////////////////////////
-    @Provides
+   /* @Provides
     fun provideMenuInteractor(mediaRepository: IMenuRepository): MenuInteractor {
         return MenuInteractor(mediaRepository)
+    }*/
+    @Provides
+    fun provideShowChildMenu(mediaRepository: IMenuRepository): ShowChildMenu {
+        return ShowChildMenu(mediaRepository)
     }
 
     @Provides
-    fun provideViewModelFactory(menuInteractor: MenuInteractor): TrackDialogViewModelFactory {
-        return TrackDialogViewModelFactory(menuInteractor)
+    fun provideViewModelFactory(useCase: ShowChildMenu): TrackDialogViewModelFactory {
+        return TrackDialogViewModelFactory(useCase)
     }
 
     @Provides

@@ -86,6 +86,7 @@ class MediaDataStore(private val appContext: Context) : IMediaDataStore {
                 // Stores column values and the contentUri in a local object
                 // that represents the media file.
                 val media = MediaEntity()
+                media.type=MediaStore.Audio.Media.TITLE
                 media.uri = contentUri
                 media.title = title
                 media.artist = artist

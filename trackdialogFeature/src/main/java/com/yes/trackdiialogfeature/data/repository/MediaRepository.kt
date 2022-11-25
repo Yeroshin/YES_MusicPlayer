@@ -33,7 +33,7 @@ class MediaRepository(
     override fun getMenu(param: MenuParam): Menu {
         return if (param != null) {
             val childMenu = Menu(param.name, param.parentMenu)
-            val items = mediaMapper.mapToDomain(mediaDataStore.getMedia(param.type, param.where, param.what))
+            val items = mediaMapper.mapToDomain(mediaDataStore.getMedia(param.type, param.where!!, param.what!!))
             childMenu.items=items
             childMenu
         } else {

@@ -51,7 +51,8 @@ class TrackDialogAdapter(): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>
 
     override fun onItemSelected(position: Int) {
         menu.selected=position
-        setItems(vm.getMenuItemContent(menu))
+        //setItems(vm.getMenuItemContent(menu))
+        vm.getMenuItemContent(menu)
 
     }
 

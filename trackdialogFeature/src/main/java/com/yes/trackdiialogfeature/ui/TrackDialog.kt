@@ -56,7 +56,7 @@ class TrackDialog : UniversalDialog() {
 
         //adapter.setItems(items)
         initObserver()
-
+        vm.getMenuItemContent(null)
         /////////////////
 
 

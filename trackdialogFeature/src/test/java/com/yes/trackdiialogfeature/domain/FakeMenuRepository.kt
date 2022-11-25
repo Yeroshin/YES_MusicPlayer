@@ -9,21 +9,12 @@ import com.yes.trackdiialogfeature.domain.Menu
 class FakeMenuRepository : IMenuRepository {
     fun getRootMenu(): Menu {
         val menu = Menu("Categories", null)
-
-        val item1 = MediaItem()
-        item1.type = MediaStore.Audio.Media.ARTIST
-        item1.title = "artists"
-        menu.items?.add(item1)
-
-        val item2 = MediaItem()
-        item2.type = MediaStore.Audio.Media.GENRE
-        item2.title = "genres"
-        menu.items?.add(item2)
-
-        val item3 = MediaItem()
-        item3.type = MediaStore.Audio.Media.TITLE
-        item3.title = "tracks"
-        menu.items?.add(item3)
+        val item1 = MediaItem("Media.ARTIST","artists")
+        menu.items.add(item1)
+        val item2 = MediaItem( "Media.GENRE","genres")
+        menu.items.add(item2)
+        val item3 = MediaItem("Media.TITLE", "tracks")
+        menu.items.add(item3)
 
         return menu
     }
@@ -33,39 +24,32 @@ class FakeMenuRepository : IMenuRepository {
         return if(menuParam.type==null
             && menuParam.what == null
             && menuParam.where == null){
+
             val menu = Menu("Categories", null)
 
-            val item1 = MediaItem()
-            item1.type ="Media.ARTIST"
-            item1.title = "artists"
-            menu.items?.add(item1)
-
-            val item2 = MediaItem()
-            item2.type = "Media.GENRE"
-            item2.title = "genres"
-            menu.items?.add(item2)
-
-            val item3 = MediaItem()
-            item3.type = "Media.TITLE"
-            item3.title = "tracks"
-            menu.items?.add(item3)
+            val item1 = MediaItem("Media.ARTIST","artists")
+            menu.items.add(item1)
+            val item2 = MediaItem("Media.GENRE","genres")
+            menu.items.add(item2)
+            val item3 = MediaItem("Media.TITLE","tracks")
+            menu.items.add(item3)
 
             return menu
         } else if (menuParam.type.equals("Media.ARTIST")
             && menuParam.what == null
             && menuParam.where == null) {
-            val item = MediaItem()
-            item.title = "dire straits"
-            item.type = "Media.TITLE"
+
+            val item = MediaItem("Media.ARTIST","dire straits")
             val menu = Menu(menuParam.name, menuParam.parentMenu)
+            menu.items.add(item)
             menu
-        }else if(menuParam.type.equals("Media.ARTIST")
-            && menuParam.what .equals( "Media.TITLE")
-            && menuParam.where.equals("dire straits")){
-            val item = MediaItem()
-            item.title = "money for nothing"
-            item.type = "Media.TITLE"
+        }else if(menuParam.type.equals("Media.TITLE")
+            && menuParam.where.equals( "Media.ARTIST")
+            && menuParam.what!!.get(0).equals("dire straits")){
+
+            val item = MediaItem("Media.TITLE","money for nothing")
             val menu = Menu(menuParam.name, menuParam.parentMenu)
+            menu.items.add(item)
             menu
         } else {
             Menu("", null)

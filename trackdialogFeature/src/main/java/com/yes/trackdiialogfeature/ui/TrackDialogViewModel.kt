@@ -1,14 +1,14 @@
 package com.yes.trackdiialogfeature.ui
 
 import androidx.lifecycle.ViewModel
-import com.yes.trackdiialogfeature.domain.MediaItem
-import com.yes.trackdiialogfeature.domain.Menu
-import com.yes.trackdiialogfeature.domain.MenuInteractor
+import androidx.lifecycle.viewModelScope
+import com.yes.trackdiialogfeature.domain.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class TrackDialogViewModel(private val menuInteractor: MenuInteractor):ViewModel() {
-    private val _stateItemsMedia = MutableStateFlow(menuInteractor.showChildMenu(null))
+class TrackDialogViewModel(private val showChildMenu: UseCase<Menu,Menu>):ViewModel() {
+
+    private val _stateItemsMedia = MutableStateFlow(Menu("",null))
     val uiState:StateFlow<Menu> =_stateItemsMedia
    /* fun init(){
         val items = arrayListOf<MediaItem>()
@@ -21,8 +21,11 @@ class TrackDialogViewModel(private val menuInteractor: MenuInteractor):ViewModel
 
         _stateItemsMedia.value=menuInteractor.getMenu()
     }*/
-    fun getMenuItemContent(menu:Menu):Menu{
-        return menuInteractor.showChildMenu(menu)
+    fun getMenuItemContent(menu:Menu?){
+
+        showChildMenu.invoke(menu,viewModelScope){
+            _stateItemsMedia.value=it
+        }
     }
 
 }

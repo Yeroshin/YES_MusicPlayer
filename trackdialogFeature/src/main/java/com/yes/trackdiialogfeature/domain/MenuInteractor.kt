@@ -10,7 +10,8 @@ class MenuInteractor(private val mediaRepository: IMenuRepository) {
         if (menu!=null){
             return Menu("null",null)
         }else{
-            return mediaRepository.getRootMenu()
+           // return mediaRepository.getRootMenu()
+            return Menu("null",null)
         }
 
     }
