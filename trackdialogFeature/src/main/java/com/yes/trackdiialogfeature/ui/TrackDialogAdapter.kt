@@ -8,7 +8,7 @@ import com.yes.trackdiialogfeature.domain.MediaItem
 import com.yes.trackdiialogfeature.domain.Menu
 
 class TrackDialogAdapter(): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>(),RecyclerItemListener  {
-    private lateinit var vm:TrackDialogViewModel
+    private lateinit var viewModel:TrackDialogViewModel
     private var trackList= arrayListOf<MediaItem>()
     private lateinit var menu:Menu
 
@@ -29,11 +29,11 @@ class TrackDialogAdapter(): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>
         return trackList.size
     }
     fun setViewModel(vm:TrackDialogViewModel){
-        this.vm=vm
+        this.viewModel=vm
     }
     fun setItems(menu: Menu){
         this.menu=menu
-        trackList= menu.items!!
+        trackList= menu.items
         notifyDataSetChanged()
     }
 
@@ -42,7 +42,7 @@ class TrackDialogAdapter(): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>
 
             binding.root.isSelected=false
             binding.root.isActivated=false
-            binding.itemTitle.setText(item.title)
+            binding.itemTitle.text = item.name
             binding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(adapterPosition)
             }
@@ -52,7 +52,7 @@ class TrackDialogAdapter(): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>
     override fun onItemSelected(position: Int) {
         menu.selected=position
         //setItems(vm.getMenuItemContent(menu))
-        vm.getMenuItemContent(menu)
+        viewModel.getMenuItemContent(menu)
 
     }
 

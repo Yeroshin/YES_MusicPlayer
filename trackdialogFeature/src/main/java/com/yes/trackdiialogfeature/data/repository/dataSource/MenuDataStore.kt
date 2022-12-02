@@ -1,14 +1,6 @@
 package com.yes.trackdiialogfeature.data.repository.dataSource
 
-import android.R
-import android.app.Activity
-import android.content.Context
-import android.provider.MediaStore
-import com.yes.trackdiialogfeature.data.repository.entity.MediaEntity
-import com.yes.trackdiialogfeature.domain.MediaItem
-import com.yes.trackdiialogfeature.domain.Menu
-
-class CategoryDataStore(private val appContext: Activity) {
+class MenuDataStore() {
 
 
     /*  fun getCategories(): ArrayList<MediaEntity> {
@@ -48,7 +40,7 @@ class CategoryDataStore(private val appContext: Activity) {
           items+=mediaGenres
           return items
       }*/
-    fun getItems():Map<String,String> {
+    /*fun getItems():Map<String,String> {
         return  mapOf(
             appContext.resources.getString(com.yes.coreui.R.string.tracks) to MediaStore.Audio.Media.TITLE,
             appContext.resources.getString(com.yes.coreui.R.string.artists) to MediaStore.Audio.Media.ARTIST,
@@ -58,5 +50,27 @@ class CategoryDataStore(private val appContext: Activity) {
     }
     fun getName():String {
         return  appContext.resources.getString(com.yes.coreui.R.string.categories)
+    }*/
+
+    fun getMenuTree():Map<String,String?>{
+        return  mapOf(
+            "categories" to null,
+            "artists" to "categories",
+            "artistTracks" to "artists",
+            ////////////////////////////
+            "genres" to "categories",
+            "genreTracks" to "genres"
+        )
+
+    }
+    fun getMenuType(menuName:String): String? {
+        val data= mapOf(
+            "artists" to "Media.ARTIST",
+            "artistTracks" to "Media.TITLE",
+            ////////////////////////////////
+            "genres" to "Media.GENRE",
+            "genreTracks" to "Media.TITLE"
+        )
+        return data[menuName]
     }
 }

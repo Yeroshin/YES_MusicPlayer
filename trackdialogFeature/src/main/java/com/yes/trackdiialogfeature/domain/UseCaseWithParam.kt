@@ -5,19 +5,22 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-abstract class UseCase <out Type>{
-    abstract suspend fun run(): Type
+abstract class UseCaseWithParam<in Params, out Type> {
+
+    abstract suspend fun run(params: Params): Type
 
     operator fun invoke(
+        params: Params,
         scope: CoroutineScope,
         onResult: (Type) -> Unit = {}
     ) {
         scope.launch(Dispatchers.Main) {
             val deferred = async(Dispatchers.IO) {
-                run()
+                run(params)
             }
             onResult(deferred.await())
         }
 
     }
+
 }

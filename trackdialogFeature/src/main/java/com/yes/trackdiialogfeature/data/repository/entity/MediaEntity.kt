@@ -2,7 +2,8 @@ package com.yes.trackdiialogfeature.data.repository.entity
 
 import android.net.Uri
 
-class MediaEntity() {
+class MediaEntity(var name:String?) {
+
     var type:String=""
     var uri: Uri?=null
     var title: String=""

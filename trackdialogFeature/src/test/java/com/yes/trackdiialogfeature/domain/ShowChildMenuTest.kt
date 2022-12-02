@@ -1,5 +1,7 @@
 package com.yes.trackdiialogfeature.domain
 
+import com.yes.trackdiialogfeature.data.repository.MenuRepository
+import com.yes.trackdiialogfeature.data.repository.dataSource.MenuDataStore
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Before
@@ -19,7 +21,7 @@ internal class ShowChildMenuTest {
         repository = FakeMenuRepository()
     }
 
-    @Test
+   /* @Test
     fun `With Menu = null should Return Root Menu`() {
         //arrange
         val parentMenu: Menu? = null
@@ -30,60 +32,73 @@ internal class ShowChildMenuTest {
         //assert
         assertNotNull(childMenu)
         assertNull(childMenu.parent)
-    }
+    }*/
 
     @Test
     fun `Root Menu should Return category Menu from selected item`() {
         //arrange
-        val categoriesMenu = Menu("categories", null)
-        categoriesMenu.selected = 1
-        val item1 = MediaItem("Media.ARTIST", "genres")
-        val item2 = MediaItem("Media.ARTIST", "artists")
-        categoriesMenu.items.add(item1)
-        categoriesMenu.items.add(item2)
-        ///
-        val expectedMenu = Menu("artists", categoriesMenu)
-        val item3 = MediaItem("Media.ARTIST", "dire straits")
-        expectedMenu.items.add(item3)
-        //act
-        val artistsMenu = runBlocking {
-            ShowChildMenu(repository).run(categoriesMenu)
-        }
-        //assert
-        assertNotNull(artistsMenu)
-        assert(artistsMenu.parent!!.name.equals(categoriesMenu.name))
-        assertEquals(1, artistsMenu.items.size)
+        /* val categoriesMenu = Menu("categories", null)
+         categoriesMenu.selected = 1
+         val item1 = MediaItem("Media.ARTIST", "genres")
+         val item2 = MediaItem("Media.ARTIST", "artists")
+         categoriesMenu.children.add(item1)
+         categoriesMenu.children.add(item2)
+         ///
+         val expectedMenu = Menu("artists", categoriesMenu)
+         val item3 = MediaItem("Media.ARTIST", "dire straits")
+         expectedMenu.children.add(item3)
+         //act
+         val artistsMenu = runBlocking {
+             ShowChildMenu(repository).run(categoriesMenu)
+         }
+         //assert
+         assertNotNull(artistsMenu)
+         assert(artistsMenu.parent!!.name.equals(categoriesMenu.name))
+         assertEquals(1, artistsMenu.children.size)
 
-        assert(artistsMenu.name.equals(expectedMenu.name))
-        assert(artistsMenu.items[0].type.equals(item3.type))
-        assert(artistsMenu.items[0].title.equals(item3.title))
+         assert(artistsMenu.name.equals(expectedMenu.name))
+         assert(artistsMenu.children[0].type.equals(item3.type))
+         assert(artistsMenu.children[0].title.equals(item3.title))*/
     }
 
     @Test
-    fun `category Menu should return track Menu from selected item `(){
+    fun `category Menu should return track Menu from selected item `() {
         //arrange
-        val categoriesMenu = Menu("Categories", null)
-        categoriesMenu.selected=0
-        val item1 = MediaItem("Media.ARTIST","artists")
-        categoriesMenu.items.add(item1)
+        /* val categoriesMenu = Menu("Categories", null)
+         categoriesMenu.selected=0
+         val item1 = MediaItem("artists","Media.ARTIST")
+         categoriesMenu.children.add(item1)
 
-        val artistsMenu = Menu("artists", categoriesMenu )
-        artistsMenu.selected=0
-        val item3 = MediaItem("Media.TITLE", "dire straits")
-        artistsMenu.items.add(item3)
+         val artistsMenu = Menu("artists", categoriesMenu )
+         artistsMenu.selected=0
+         val item3 = MediaItem("dire straits","Media.TITLE")
+         artistsMenu.children.add(item3)
 
 
-        val expectedMenu = Menu("tracks", artistsMenu)
-        val item = MediaItem("Media.TITLE","money for nothing")
-        expectedMenu.items.add(item)
-        //act
-        val trackMenu = runBlocking {
-            ShowChildMenu(repository).run(artistsMenu)
-        }
+         val tracksMenu = Menu("tracks", artistsMenu)
+         val item = MediaItem("money for nothing","Media.TITLE")
+         tracksMenu.children.add(item)
+         //act
+         val trackMenu = runBlocking {
+             ShowChildMenu(repository).run(artistsMenu)
+         }*/
         //assert
-      /*  assertEquals(1,trackMenu.items.size)
-        assert(trackMenu.items[0].type.equals(expectedMenu.items[0].type))
-        assert(trackMenu.name.equals(expectedMenu.name))*/
+        /*  assertEquals(1,trackMenu.items.size)
+          assert(trackMenu.items[0].type.equals(expectedMenu.items[0].type))
+          assert(trackMenu.name.equals(expectedMenu.name))*/
 
     }
+
+    @Test
+    fun shouldCreateTreeMenu() {
+        val mediaDataStore = MenuDataStore()
+        val menuRepository = MenuRepository(mediaDataStore)
+        //act
+        val trackMenu = runBlocking {
+            val rootMenu=GetRootMenu(menuRepository)
+        }
+        //assert
+        assert(false)
+}
+
 }

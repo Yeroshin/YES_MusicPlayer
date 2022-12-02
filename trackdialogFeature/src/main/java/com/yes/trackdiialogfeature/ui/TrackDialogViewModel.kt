@@ -6,9 +6,12 @@ import com.yes.trackdiialogfeature.domain.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class TrackDialogViewModel(private val showChildMenu: UseCase<Menu,Menu>):ViewModel() {
+class TrackDialogViewModel(
+    private val showChildMenu: UseCaseWithParam<Menu, Menu>,
+    private val getRootMenu:UseCase<Menu>
+):ViewModel() {
 
-    private val _stateItemsMedia = MutableStateFlow(Menu("",null))
+    private val _stateItemsMedia = MutableStateFlow(Menu("","null"))
     val uiState:StateFlow<Menu> =_stateItemsMedia
    /* fun init(){
         val items = arrayListOf<MediaItem>()
@@ -21,9 +24,17 @@ class TrackDialogViewModel(private val showChildMenu: UseCase<Menu,Menu>):ViewMo
 
         _stateItemsMedia.value=menuInteractor.getMenu()
     }*/
-    fun getMenuItemContent(menu:Menu?){
+    fun trackDialogStateFlow(){
 
-        showChildMenu.invoke(menu,viewModelScope){
+    }
+    fun getMenu(){
+        getRootMenu(viewModelScope){
+            _stateItemsMedia.value=it
+        }
+    }
+    fun getMenuItemContent(menu:Menu){
+
+        showChildMenu(menu,viewModelScope){
             _stateItemsMedia.value=it
         }
     }

@@ -13,10 +13,10 @@ class MediaMapper {
         }
         return items
     }
-    fun mapToDomain(repositoryEntity: ArrayList<MediaEntity>): ArrayList<MediaItem> {
+    fun mapToDomain(mediaEntity: ArrayList<MediaEntity>): ArrayList<MediaItem> {
         val items= arrayListOf<MediaItem>()
-        for (i in 0 until repositoryEntity.size){
-            val mediaItem=MediaItem(repositoryEntity[i].type,repositoryEntity[i].title)
+        for (i in 0 until mediaEntity.size){
+            val mediaItem=MediaItem(mediaEntity[i].name,mediaEntity[i].type)
             items+=mediaItem
         }
 

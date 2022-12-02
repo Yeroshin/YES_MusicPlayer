@@ -14,14 +14,15 @@ import com.yes.trackdiialogfeature.R
 import com.yes.trackdiialogfeature.databinding.TrackDialogBinding
 import com.yes.trackdiialogfeature.di.components.DaggerTrackDialogComponent
 import com.yes.trackdiialogfeature.di.module.TrackDialogModule
+import com.yes.trackdiialogfeature.domain.Menu
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 class TrackDialog : UniversalDialog() {
     // private val viewModel: TrackDialogViewModel by viewModels()
     @Inject
-    lateinit var vmFactory: TrackDialogViewModelFactory
-    private lateinit var vm: TrackDialogViewModel
+    lateinit var viewModelFactory: TrackDialogViewModelFactory
+    private lateinit var viewModel: TrackDialogViewModel
 
     @Inject
     lateinit var adapter: TrackDialogAdapter
@@ -44,9 +45,15 @@ class TrackDialog : UniversalDialog() {
         binding = TrackDialogBinding.inflate(inflater)
         super.onCreateView(inflater, container, savedInstanceState)
         /////////////////////
-        vm = ViewModelProvider(this, vmFactory)[TrackDialogViewModel::class.java]
-        adapter.setViewModel(vm)
+        viewModel = ViewModelProvider(this, viewModelFactory)[TrackDialogViewModel::class.java]
+
         /////////////////////
+        initAdapter()
+
+        return binding.root
+    }
+    private fun initAdapter(){
+        adapter.setViewModel(viewModel)
         val layoutManager = LinearLayoutManager(context)
 
         (binding as TrackDialogBinding).recyclerViewContainer.recyclerView.layoutManager =
@@ -56,7 +63,8 @@ class TrackDialog : UniversalDialog() {
 
         //adapter.setItems(items)
         initObserver()
-        vm.getMenuItemContent(null)
+        viewModel.getMenu()
+       // viewModel.getMenuItemContent(Menu("",""))
         /////////////////
 
 
@@ -67,13 +75,10 @@ class TrackDialog : UniversalDialog() {
         (binding as TrackDialogBinding).buttons.okBtn.setOnClickListener {
             dismiss()
         }
-
-        return binding.root
     }
-
-    fun initObserver() {
+    private fun initObserver() {
         lifecycleScope.launchWhenStarted {
-            vm.uiState.collectLatest {
+            viewModel.uiState.collectLatest {
                 (binding as TrackDialogBinding).recyclerViewContainer.playlist.text = it.name
                 adapter.setItems(it)
             }
