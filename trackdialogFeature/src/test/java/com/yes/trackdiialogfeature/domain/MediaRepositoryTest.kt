@@ -2,16 +2,13 @@ package com.yes.trackdiialogfeature.domain
 
 class MediaRepositoryTest(
 
-) : IMenuRepository {
+) : IMediaRepository {
 
 
-    override fun getMedia(
-        type: String?,
-        what: String?,
-        where: ArrayList<String>
-    ): ArrayList<MediaItem> {
-        // audioDataStore.getMedia(type,what,where)
-        return arrayListOf(MediaItem("", ""))
+
+
+    override fun getMedia(mediaQuery: MediaQuery): ArrayList<MediaItem> {
+        TODO("Not yet implemented")
     }
 }
 

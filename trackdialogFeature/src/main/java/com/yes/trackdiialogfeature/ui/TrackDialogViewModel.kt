@@ -11,7 +11,7 @@ class TrackDialogViewModel(
     private val getRootMenu:UseCase<Menu>
 ):ViewModel() {
 
-    private val _stateItemsMedia = MutableStateFlow(Menu("","null"))
+    private val _stateItemsMedia = MutableStateFlow(Menu(""))
     val uiState:StateFlow<Menu> =_stateItemsMedia
    /* fun init(){
         val items = arrayListOf<MediaItem>()

@@ -2,21 +2,17 @@ package com.yes.trackdiialogfeature.data.repository
 
 import com.yes.trackdiialogfeature.data.mapper.MediaMapper
 import com.yes.trackdiialogfeature.data.mapper.MediaQueryMapper
-import com.yes.trackdiialogfeature.data.repository.dataSource.MenuDataStore
 import com.yes.trackdiialogfeature.data.repository.dataSource.AudioDataStore
-import com.yes.trackdiialogfeature.data.repository.entity.MediaEntity
-import com.yes.trackdiialogfeature.data.repository.entity.MenuParam
-import com.yes.trackdiialogfeature.domain.IMenuRepository
+import com.yes.trackdiialogfeature.domain.IMediaRepository
 import com.yes.trackdiialogfeature.domain.MediaItem
 import com.yes.trackdiialogfeature.domain.MediaQuery
-import com.yes.trackdiialogfeature.domain.Menu
 
 
 class MediaRepository(
     private val audioDataStore: AudioDataStore,
     private val mediaMapper: MediaMapper,
     private val mediaQueryMapper: MediaQueryMapper
-) : IMenuRepository {
+) : IMediaRepository {
 
    /* private fun getRootName(): String {
         return menuDataStore.getName()
@@ -47,7 +43,7 @@ class MediaRepository(
 
     override fun getMedia(mediaQuery: MediaQuery):ArrayList<MediaItem>{
         val mediaQueryEntity=mediaQueryMapper.map(mediaQuery)
-         return mediaMapper.mapToDomain(audioDataStore.getMedia(mediaQueryEntity))
+         return mediaMapper.mapToDomain(audioDataStore.getMediaItems(mediaQueryEntity))
         //return arrayListOf(MediaItem("",""))
     }
 

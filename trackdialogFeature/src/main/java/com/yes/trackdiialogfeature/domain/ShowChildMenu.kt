@@ -1,19 +1,24 @@
 package com.yes.trackdiialogfeature.domain
 
-class ShowChildMenu(private val mediaRepository: IMenuRepository) : UseCaseWithParam<Menu, Menu>() {
+import com.yes.trackdiialogfeature.data.repository.MenuRepository
+
+class ShowChildMenu(
+    private val mediaRepository: IMediaRepository,
+    private val menuRepository: MenuRepository
+) : UseCaseWithParam<Menu, Menu>() {
     override suspend fun run(menu: Menu): Menu {
-        val mediaItems = mediaRepository.getMedia(
-            MediaQuery(
-                menu.children[menu.selected].type,
-                menu.type,
-                menu.name
-            )
+        val query=MediaQuery(
+            menu.type,
+            menu.parent?.type,
+            menu.title
         )
-        /* val mediaItems=mediaRepository.getMedia(
-             menu.children[menu.selected].type,
-             menu.type,
-             arrayListOf(menu.name))*/
-        menu.children[menu.selected].items = mediaItems
-        return menu.children[menu.selected]
+        val childrenItems =mediaRepository.getMedia(query)
+        for(item in childrenItems){
+            val itemMenu=menuRepository.getMenuChild(menu.name)
+            itemMenu.parent=menu
+            itemMenu.title=item.title
+            menu.children.add(itemMenu)
+        }
+        return menu
     }
 }

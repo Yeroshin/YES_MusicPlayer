@@ -24,6 +24,7 @@ class TrackDialogModule(val context: Activity) {
     fun providesMenuDataStore(): MenuDataStore {
         return MenuDataStore()
     }
+
     @Provides
     fun providesMenuRepository(menuDataStore: MenuDataStore): MenuRepository {
         return MenuRepository(menuDataStore)
@@ -33,6 +34,7 @@ class TrackDialogModule(val context: Activity) {
     fun provideMediaMapper(): MediaMapper {
         return MediaMapper()
     }
+
     @Provides
     fun provideMediaQueryMapper(): MediaQueryMapper {
         return MediaQueryMapper()
@@ -51,29 +53,36 @@ class TrackDialogModule(val context: Activity) {
         mediaMapper: MediaMapper,
         mediaQueryMapper: MediaQueryMapper
 
-    ): IMenuRepository {
-        return MediaRepository(audioDataStore, mediaMapper,mediaQueryMapper)
-       // return MediaRepository()
+    ): IMediaRepository {
+        return MediaRepository(audioDataStore, mediaMapper, mediaQueryMapper)
+        // return MediaRepository()
     }
 
 
     /////////////////////////
-   /* @Provides
-    fun provideMenuInteractor(mediaRepository: IMenuRepository): MenuInteractor {
-        return MenuInteractor(mediaRepository)
-    }*/
+    /* @Provides
+     fun provideMenuInteractor(mediaRepository: IMenuRepository): MenuInteractor {
+         return MenuInteractor(mediaRepository)
+     }*/
     @Provides
-    fun provideShowChildMenu(mediaRepository: IMenuRepository): ShowChildMenu {
-        return ShowChildMenu(mediaRepository)
+    fun provideShowChildMenu(
+        mediaRepository: IMediaRepository,
+        menuRepository: MenuRepository
+    ): ShowChildMenu {
+        return ShowChildMenu(mediaRepository, menuRepository)
     }
+
     @Provides
     fun provideGetRootMenu(menuRepository: MenuRepository): GetRootMenu {
         return GetRootMenu(menuRepository)
     }
 
     @Provides
-    fun provideViewModelFactory(showChildMenu: ShowChildMenu,getRootMenu: GetRootMenu): TrackDialogViewModelFactory {
-        return TrackDialogViewModelFactory(showChildMenu,getRootMenu)
+    fun provideViewModelFactory(
+        showChildMenu: ShowChildMenu,
+        getRootMenu: GetRootMenu
+    ): TrackDialogViewModelFactory {
+        return TrackDialogViewModelFactory(showChildMenu, getRootMenu)
     }
 
     @Provides

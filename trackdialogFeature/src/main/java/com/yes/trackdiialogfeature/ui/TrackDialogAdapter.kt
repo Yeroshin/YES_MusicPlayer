@@ -33,7 +33,7 @@ class TrackDialogAdapter(): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>
     }
     fun setItems(menu: Menu){
         this.menu=menu
-        trackList= menu.items
+       // trackList= menu.items
         notifyDataSetChanged()
     }
 
@@ -42,7 +42,7 @@ class TrackDialogAdapter(): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>
 
             binding.root.isSelected=false
             binding.root.isActivated=false
-            binding.itemTitle.text = item.name
+            binding.itemTitle.text = item.title
             binding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(adapterPosition)
             }

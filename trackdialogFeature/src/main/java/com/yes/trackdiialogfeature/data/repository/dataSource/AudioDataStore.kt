@@ -1,8 +1,6 @@
 package com.yes.trackdiialogfeature.data.repository.dataSource
 
-import android.content.ContentUris
 import android.content.Context
-import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import com.yes.trackdiialogfeature.data.IMediaDataStore
@@ -101,14 +99,15 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
          }
          return audioList
      }*/
-    fun getMedia(
+    fun getMediaItems(
         mediaQuery: MediaQueryEntity
     ): ArrayList<MediaEntity> {
 
-        /* val par = MenuParam(
-             MediaStore.Audio.Media.TITLE,
+         val mediaQuer = MediaQueryEntity(
+             Array(1){MediaStore.Audio.Media.TITLE},
              MediaStore.Audio.Media.ARTIST + "=?",
-             Array(1) { "The Soundtrack" })*/
+             Array(1) { "The Soundtrack" }
+         )
         val audioList = ArrayList<MediaEntity>()
 
         val collection =
@@ -119,16 +118,6 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
             } else {
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
             }
-
-        val projection = arrayOf(
-            MediaStore.Audio.Media._ID,
-    //        MediaStore.Audio.Media.TITLE,
-            MediaStore.Audio.Media.ARTIST,
-    //        MediaStore.Audio.Media.ALBUM,
-            // MediaStore.Audio.Genres.NAME,
-            MediaStore.Audio.Media.DURATION,
-            MediaStore.Audio.Media.SIZE,
-        )
 
         // Show only videos that are at least 5 minutes in duration.
         /* val selection = "${MediaStore.Video.Media.DURATION} >= ?"
@@ -141,7 +130,7 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
 
         val query = appContext.contentResolver.query(
             collection,
-            projection,
+            mediaQuery.projection,
             mediaQuery.selection,
             mediaQuery.selectionArgs,
             sortOrder
@@ -149,48 +138,9 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
 
         query?.use { cursor ->
             // Cache column indices.
-            val map = mapOf<String,Int>(
-          //      MediaStore.Audio.Media.TITLE to cursor.getColumnIndex(MediaStore.Audio.Media.TITLE),
-                MediaStore.Audio.Media.ARTIST to cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)
-         //       MediaStore.Audio.Media.ALBUM to cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)
-            )
-            val idColumn = cursor.getColumnIndex(MediaStore.Audio.Media._ID)
-      //      val titleColumn = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)
-            val artistColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)
-      //      val albumColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)
-            // val genreColumn =cursor.getColumnIndex(MediaStore.Audio.Genres.NAME)
-            val durationColumn = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)
-            val sizeColumn = cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)
-
+            val column = cursor.getColumnIndex(mediaQuery.projection[0])
             while (cursor.moveToNext()) {
-                //   map[MediaStore.Audio.Media.GENRE] = cursor.getString(genreColumn)
-                // Get values of columns for a given video.
-                val id = cursor.getLong(idColumn)
-            //    val title = cursor.getString(titleColumn)
-                val artist = cursor.getString(artistColumn)
-            //    val album = cursor.getString(albumColumn)
-                // val genre = cursor.getString(genreColumn)
-                val duration = cursor.getInt(durationColumn)
-                val size = cursor.getInt(sizeColumn)
-
-                val contentUri: Uri = ContentUris.withAppendedId(
-                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                    id
-                )
-
-                // Stores column values and the contentUri in a local object
-                // that represents the media file.
-
-                val media = MediaEntity(cursor.getString(map[mediaQuery.projection[0]]!!))
-
-                media.uri = contentUri
-          //      media.title = title
-                media.artist = artist
-                // media.album=album
-                //media.genre=genre
-                media.duration = duration
-                media.size = size
-                audioList += media
+                audioList.add(MediaEntity(cursor.getString(column)))
             }
         }
         return audioList

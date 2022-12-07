@@ -55,12 +55,17 @@ class MenuDataStore() {
     fun getMenuTree():Map<String,String?>{
         return  mapOf(
             "categories" to null,
+            /////////////////////////
             "artists" to "categories",
             "artistTracks" to "artists",
+            ////////////////////////////
+            "album" to "categories",
+            "albumTracks" to "album",
             ////////////////////////////
             "genres" to "categories",
             "genreTracks" to "genres"
         )
+
 
     }
     fun getMenuType(menuName:String): String? {
@@ -68,9 +73,17 @@ class MenuDataStore() {
             "artists" to "Media.ARTIST",
             "artistTracks" to "Media.TITLE",
             ////////////////////////////////
+            "album" to "Media.ALBUM",
+            "albumTracks" to "Media.TITLE",
+            ////////////////////////////////
             "genres" to "Media.GENRE",
             "genreTracks" to "Media.TITLE"
         )
-        return data[menuName]
+        return if(data.containsKey(menuName)){
+            data[menuName]
+        }else{
+            null
+        }
+
     }
 }

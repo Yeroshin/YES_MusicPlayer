@@ -4,7 +4,7 @@ import com.yes.trackdiialogfeature.data.mapper.MediaQueryMapper
 import com.yes.trackdiialogfeature.data.repository.entity.MediaEntity
 import com.yes.trackdiialogfeature.data.repository.entity.MenuParam
 
-interface IMenuRepository {
+interface IMediaRepository {
    /* fun getMenu(): Menu
     fun getMenu(param: MenuParam): Menu*/
    fun getMedia(mediaQuery: MediaQuery):ArrayList<MediaItem>

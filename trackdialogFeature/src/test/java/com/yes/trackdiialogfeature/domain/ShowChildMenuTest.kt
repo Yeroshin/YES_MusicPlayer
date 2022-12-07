@@ -14,25 +14,25 @@ import org.junit.runners.JUnit4
 internal class ShowChildMenuTest {
 
 
-    private lateinit var repository: FakeMenuRepository
+    private lateinit var repository: FakeMediaRepository
 
     @Before
     fun setUp() {
-        repository = FakeMenuRepository()
+        repository = FakeMediaRepository()
     }
 
-   /* @Test
-    fun `With Menu = null should Return Root Menu`() {
-        //arrange
-        val parentMenu: Menu? = null
-        //act
-        val childMenu = runBlocking {
-            ShowChildMenu(repository).run(parentMenu)
-        }
-        //assert
-        assertNotNull(childMenu)
-        assertNull(childMenu.parent)
-    }*/
+    /* @Test
+     fun `With Menu = null should Return Root Menu`() {
+         //arrange
+         val parentMenu: Menu? = null
+         //act
+         val childMenu = runBlocking {
+             ShowChildMenu(repository).run(parentMenu)
+         }
+         //assert
+         assertNotNull(childMenu)
+         assertNull(childMenu.parent)
+     }*/
 
     @Test
     fun `Root Menu should Return category Menu from selected item`() {
@@ -91,14 +91,76 @@ internal class ShowChildMenuTest {
 
     @Test
     fun shouldCreateTreeMenu() {
-        val mediaDataStore = MenuDataStore()
-        val menuRepository = MenuRepository(mediaDataStore)
+
+        val menuDataStore = MenuDataStore()
+        val menuRepository = MenuRepository(menuDataStore)
+        val mediaRepository = FakeMediaRepository()
+        ///////////////root menu
+        val rootMenu = menuRepository.getMenu()
+        //////////////artists menu
+
+        val artistsMenu = rootMenu.children[0]
+
+        val query = MediaQuery(
+            artistsMenu.type,
+            artistsMenu.parent?.type,
+            artistsMenu.title
+        )
+        val childrenArtists = mediaRepository.getMedia(query)
+        for (item in childrenArtists) {
+            val itemMenu = menuRepository.getMenuChild(artistsMenu.name)
+            itemMenu.parent = artistsMenu
+            itemMenu.title = item.title
+            artistsMenu.children.add(itemMenu)
+        }
+        ///////////////////tracks menu
+        val trackMenu = artistsMenu.children[0]
+        val query2 = MediaQuery(
+            trackMenu.type,
+            trackMenu.parent?.type,
+            trackMenu.title
+        )
+        val childrenTracks = mediaRepository.getMedia(query2)
+        for (item in childrenTracks) {
+            val itemMenu = menuRepository.getMenuChild(artistsMenu.name)
+            itemMenu.parent = trackMenu
+            itemMenu.title = item.title
+            trackMenu.children.add(itemMenu)
+        }
         //act
+        val actualMenu = menuRepository.getMenu()
+        //assert
+        assertNull(null)
+
+
+    }
+
+    @Test
+    fun useCaseTest() {
+        val menuDataStore = MenuDataStore()
+        val menuRepository = MenuRepository(menuDataStore)
+        val mediaRepository = FakeMediaRepository()
+        ///////////////root menu
+        val rootMenu = menuRepository.getMenu()
+        /////////////////////////////////////
+        //act
+        val artistMenu = runBlocking {
+            ShowChildMenu(
+                mediaRepository,
+                menuRepository
+            ).run(rootMenu.children[0])
+        }
         val trackMenu = runBlocking {
-            val rootMenu=GetRootMenu(menuRepository)
+            ShowChildMenu(
+                mediaRepository,
+                menuRepository
+            ).run(artistMenu.children[0])
         }
         //assert
-        assert(false)
-}
+        assertNull(null)
+    }
+
 
 }
+
+
