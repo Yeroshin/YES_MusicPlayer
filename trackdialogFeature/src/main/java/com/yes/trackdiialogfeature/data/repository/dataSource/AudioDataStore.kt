@@ -103,11 +103,16 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
         mediaQuery: MediaQueryEntity
     ): ArrayList<MediaEntity> {
 
-         val mediaQuer = MediaQueryEntity(
+       /*  val mediaQue = MediaQueryEntity(
              Array(1){MediaStore.Audio.Media.TITLE},
              MediaStore.Audio.Media.ARTIST + "=?",
              Array(1) { "The Soundtrack" }
          )
+        val mediaQuer = MediaQueryEntity(
+            Array(1){"title"},
+            MediaStore.Audio.Media.ARTIST + "=?",
+            Array(1) { "Dire Straits" }
+        )*/
         val audioList = ArrayList<MediaEntity>()
 
         val collection =

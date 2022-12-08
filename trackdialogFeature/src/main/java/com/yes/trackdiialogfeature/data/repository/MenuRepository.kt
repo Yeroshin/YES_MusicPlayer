@@ -21,6 +21,7 @@ class MenuRepository(private val menuDataStore: MenuDataStore) {
             if(item.value==rootMenu.name){
                 val menu=Menu(item.key)
                 menu.parent=rootMenu
+                menu.title=item.key
                 menu.type=menuDataStore.getMenuType(item.key)
                 rootMenu.children.add(menu)
             }

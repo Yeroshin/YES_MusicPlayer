@@ -7,9 +7,11 @@ import com.yes.trackdiialogfeature.databinding.ItemMediaBinding
 import com.yes.trackdiialogfeature.domain.MediaItem
 import com.yes.trackdiialogfeature.domain.Menu
 
-class TrackDialogAdapter(): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>(),RecyclerItemListener  {
+class TrackDialogAdapter():
+    RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>(),
+    RecyclerItemListener  {
     private lateinit var viewModel:TrackDialogViewModel
-    private var trackList= arrayListOf<MediaItem>()
+    private var trackList= arrayListOf<Menu>()
     private lateinit var menu:Menu
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackHolder {
@@ -22,7 +24,12 @@ class TrackDialogAdapter(): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>
     }
 
     override fun onBindViewHolder(holder: TrackHolder, position: Int) {
-        holder.bind(trackList[position],this)
+        var iconType=0
+        when(menu.type){
+            "Media.TITLE"->iconType=2
+            else->1
+        }
+        holder.bind(trackList[position],iconType,this)
     }
 
     override fun getItemCount(): Int {
@@ -33,16 +40,17 @@ class TrackDialogAdapter(): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>
     }
     fun setItems(menu: Menu){
         this.menu=menu
-       // trackList= menu.items
+        trackList= menu.children
         notifyDataSetChanged()
     }
 
     inner class TrackHolder(private val binding:ItemMediaBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item:MediaItem,recyclerItemListener: RecyclerItemListener){
+        fun bind(item:Menu,iconType:Int,recyclerItemListener: RecyclerItemListener){
 
             binding.root.isSelected=false
             binding.root.isActivated=false
             binding.itemTitle.text = item.title
+            binding.icon.setImageLevel(iconType)
             binding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(adapterPosition)
             }
@@ -50,9 +58,12 @@ class TrackDialogAdapter(): RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>
     }
 
     override fun onItemSelected(position: Int) {
-        menu.selected=position
+       //menu.selected=position
         //setItems(vm.getMenuItemContent(menu))
-        viewModel.getMenuItemContent(menu)
+
+            viewModel.getMenuItemContent(menu.children[position])
+
+
 
     }
 

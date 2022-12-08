@@ -16,9 +16,9 @@ class MediaQueryMapper {
             "Media.SIZE" to MediaStore.Audio.Media.SIZE
         )
         var where:Array<String>?=null
-        var what=mediaQuery.what
+        var what=values[mediaQuery.what]
         if(mediaQuery.what!=null){
-            what=what+"=?"
+            what="$what=?"
             where= mediaQuery.where?.let { arrayOf(it) }!!
         }
 
