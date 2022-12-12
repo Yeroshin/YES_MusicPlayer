@@ -1,4 +1,4 @@
-package com.yes.trackdiialogfeature.domain
+package com.yes.trackdiialogfeature.domain.usecase
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,8 +16,10 @@ abstract class UseCase <out Type>{
             val deferred = async(Dispatchers.IO) {
                 run()
             }
+
             onResult(deferred.await())
         }
+        
 
     }
 }

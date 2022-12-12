@@ -1,4 +1,4 @@
-package com.yes.trackdiialogfeature.ui
+package com.yes.trackdiialogfeature.presentation
 
 interface RecyclerItemListener {
     fun onItemSelected(position:Int)

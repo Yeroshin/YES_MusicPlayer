@@ -1,13 +1,16 @@
-package com.yes.trackdiialogfeature.domain
+package com.yes.trackdiialogfeature.domain.usecase
 
 import com.yes.trackdiialogfeature.data.repository.MenuRepository
+import com.yes.trackdiialogfeature.domain.IMediaRepository
+import com.yes.trackdiialogfeature.domain.MediaQuery
+import com.yes.trackdiialogfeature.domain.entity.Menu
 
 class ShowChildMenu(
     private val mediaRepository: IMediaRepository,
     private val menuRepository: MenuRepository
 ) : UseCaseWithParam<Menu, Menu>() {
     override suspend fun run(menu: Menu): Menu {
-        val query=MediaQuery(
+        val query= MediaQuery(
             menu.type,
             menu.parent?.type,
             menu.title

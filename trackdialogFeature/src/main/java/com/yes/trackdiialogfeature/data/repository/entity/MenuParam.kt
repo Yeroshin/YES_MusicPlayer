@@ -1,6 +1,6 @@
 package com.yes.trackdiialogfeature.data.repository.entity
 
-import com.yes.trackdiialogfeature.domain.Menu
+import com.yes.trackdiialogfeature.domain.entity.Menu
 
 class MenuParam(
     val type:String,

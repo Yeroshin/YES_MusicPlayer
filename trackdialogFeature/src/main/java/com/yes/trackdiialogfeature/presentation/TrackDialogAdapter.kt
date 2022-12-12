@@ -1,18 +1,17 @@
-package com.yes.trackdiialogfeature.ui
+package com.yes.trackdiialogfeature.presentation
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yes.trackdiialogfeature.databinding.ItemMediaBinding
-import com.yes.trackdiialogfeature.domain.MediaItem
-import com.yes.trackdiialogfeature.domain.Menu
+import com.yes.trackdiialogfeature.domain.entity.Menu
 
 class TrackDialogAdapter():
     RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>(),
     RecyclerItemListener  {
     private lateinit var viewModel:TrackDialogViewModel
     private var trackList= arrayListOf<Menu>()
-    private lateinit var menu:Menu
+    private lateinit var menu: Menu
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackHolder {
        val binding = ItemMediaBinding
@@ -45,7 +44,7 @@ class TrackDialogAdapter():
     }
 
     inner class TrackHolder(private val binding:ItemMediaBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item:Menu,iconType:Int,recyclerItemListener: RecyclerItemListener){
+        fun bind(item: Menu, iconType:Int, recyclerItemListener: RecyclerItemListener){
 
             binding.root.isSelected=false
             binding.root.isActivated=false

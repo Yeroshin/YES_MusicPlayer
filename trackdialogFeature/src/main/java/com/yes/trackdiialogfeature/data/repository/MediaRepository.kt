@@ -4,7 +4,7 @@ import com.yes.trackdiialogfeature.data.mapper.MediaMapper
 import com.yes.trackdiialogfeature.data.mapper.MediaQueryMapper
 import com.yes.trackdiialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdiialogfeature.domain.IMediaRepository
-import com.yes.trackdiialogfeature.domain.MediaItem
+import com.yes.trackdiialogfeature.domain.entity.MediaItem
 import com.yes.trackdiialogfeature.domain.MediaQuery
 
 

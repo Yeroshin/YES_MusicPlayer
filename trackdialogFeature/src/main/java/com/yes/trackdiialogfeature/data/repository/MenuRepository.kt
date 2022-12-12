@@ -1,10 +1,7 @@
 package com.yes.trackdiialogfeature.data.repository
 
-import com.yes.trackdiialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdiialogfeature.data.repository.dataSource.MenuDataStore
-import com.yes.trackdiialogfeature.data.repository.entity.MediaQueryEntity
-import com.yes.trackdiialogfeature.domain.MediaQuery
-import com.yes.trackdiialogfeature.domain.Menu
+import com.yes.trackdiialogfeature.domain.entity.Menu
 
 class MenuRepository(private val menuDataStore: MenuDataStore) {
     private lateinit var rootMenu: Menu
@@ -13,13 +10,13 @@ class MenuRepository(private val menuDataStore: MenuDataStore) {
 
         for (item in menuTree){
             if(item.value==null){
-                rootMenu=Menu(item.key)
+                rootMenu= Menu(item.key)
                 break
             }
         }
         for(item in menuTree){
             if(item.value==rootMenu.name){
-                val menu=Menu(item.key)
+                val menu= Menu(item.key)
                 menu.parent=rootMenu
                 menu.title=item.key
                 menu.type=menuDataStore.getMenuType(item.key)
@@ -30,7 +27,7 @@ class MenuRepository(private val menuDataStore: MenuDataStore) {
 
         return rootMenu
     }
-    fun getMenuChild(name:String):Menu{
+    fun getMenuChild(name:String): Menu {
         for (item in menuTree){
             if(item.value==name){
                 val menu= Menu(item.key)

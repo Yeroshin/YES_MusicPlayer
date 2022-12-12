@@ -1,4 +1,4 @@
-package com.yes.trackdiialogfeature.ui
+package com.yes.trackdiialogfeature.presentation
 
 import android.app.Activity
 import android.content.Context
@@ -14,8 +14,8 @@ import com.yes.trackdiialogfeature.R
 import com.yes.trackdiialogfeature.databinding.TrackDialogBinding
 import com.yes.trackdiialogfeature.di.components.DaggerTrackDialogComponent
 import com.yes.trackdiialogfeature.di.module.TrackDialogModule
-import com.yes.trackdiialogfeature.domain.Menu
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class TrackDialog : UniversalDialog() {
@@ -52,7 +52,8 @@ class TrackDialog : UniversalDialog() {
 
         return binding.root
     }
-    private fun initAdapter(){
+
+    private fun initAdapter() {
         adapter.setViewModel(viewModel)
         val layoutManager = LinearLayoutManager(context)
 
@@ -64,7 +65,7 @@ class TrackDialog : UniversalDialog() {
         //adapter.setItems(items)
         initObserver()
         viewModel.getMenu()
-       // viewModel.getMenuItemContent(Menu("",""))
+        // viewModel.getMenuItemContent(Menu("",""))
         /////////////////
 
 
@@ -76,15 +77,37 @@ class TrackDialog : UniversalDialog() {
             dismiss()
         }
     }
+
     private fun initObserver() {
         lifecycleScope.launchWhenStarted {
-            viewModel.uiState.collectLatest {
-                (binding as TrackDialogBinding).recyclerViewContainer.playlist.text = it.name
-                adapter.setItems(it)
+           /* viewModel.uiState.collectLatest { state ->
+                when (state) {
+                    is TrackDialogViewModelState.Success -> {
+                        (binding as TrackDialogBinding).recyclerViewContainer.playlist.text =
+                            state.menu.name
+                        adapter.setItems(state.menu)
+                    }
+                    is TrackDialogViewModelState.IsLoading -> {}
+                }
+            }*/
+             viewModel.uiState.onEach {
+                 state->handleState(state)
+             }
+        }
+    }
+    private fun handleState(state:TrackDialogViewModelState){
+        when (state) {
+            is TrackDialogViewModelState.Success -> {
+                (binding as TrackDialogBinding).recyclerViewContainer.playlist.text =
+                    state.menu.name
+                adapter.setItems(state.menu)
+            }
+            is TrackDialogViewModelState.IsLoading -> {}
+            is TrackDialogViewModelState.Init -> {}
             }
         }
-
     }
 
 
-}
+
+

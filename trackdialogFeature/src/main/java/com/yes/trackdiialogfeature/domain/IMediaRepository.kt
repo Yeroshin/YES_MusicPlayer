@@ -1,8 +1,6 @@
 package com.yes.trackdiialogfeature.domain
 
-import com.yes.trackdiialogfeature.data.mapper.MediaQueryMapper
-import com.yes.trackdiialogfeature.data.repository.entity.MediaEntity
-import com.yes.trackdiialogfeature.data.repository.entity.MenuParam
+import com.yes.trackdiialogfeature.domain.entity.MediaItem
 
 interface IMediaRepository {
    /* fun getMenu(): Menu

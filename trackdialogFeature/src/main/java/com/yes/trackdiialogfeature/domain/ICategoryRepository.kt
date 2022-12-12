@@ -1,7 +1,7 @@
 package com.yes.trackdiialogfeature.domain
 
-import com.yes.trackdiialogfeature.data.repository.entity.MediaEntity
+import com.yes.trackdiialogfeature.domain.entity.Menu
 
 interface ICategoryRepository {
-    fun getCategories():Menu
+    fun getCategories(): Menu
 }

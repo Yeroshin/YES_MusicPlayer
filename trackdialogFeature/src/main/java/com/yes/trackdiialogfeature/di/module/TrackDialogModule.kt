@@ -8,8 +8,10 @@ import com.yes.trackdiialogfeature.data.mapper.MediaMapper
 import com.yes.trackdiialogfeature.data.mapper.MediaQueryMapper
 import com.yes.trackdiialogfeature.data.repository.MenuRepository
 import com.yes.trackdiialogfeature.domain.*
-import com.yes.trackdiialogfeature.ui.TrackDialogAdapter
-import com.yes.trackdiialogfeature.ui.TrackDialogViewModelFactory
+import com.yes.trackdiialogfeature.domain.usecase.GetRootMenu
+import com.yes.trackdiialogfeature.domain.usecase.ShowChildMenu
+import com.yes.trackdiialogfeature.presentation.TrackDialogAdapter
+import com.yes.trackdiialogfeature.presentation.TrackDialogViewModelFactory
 import dagger.Module
 import dagger.Provides
 

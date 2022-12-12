@@ -1,6 +1,6 @@
 package com.yes.playlistfeature.di.module
 import androidx.fragment.app.DialogFragment
-import com.yes.trackdiialogfeature.ui.TrackDialog
+import com.yes.trackdiialogfeature.presentation.TrackDialog
 import dagger.Module
 import dagger.Provides
 @Module

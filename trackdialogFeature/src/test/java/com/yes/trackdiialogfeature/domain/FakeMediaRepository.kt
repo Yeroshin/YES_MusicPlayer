@@ -1,5 +1,7 @@
 package com.yes.trackdiialogfeature.domain
 
+import com.yes.trackdiialogfeature.domain.entity.MediaItem
+
 class FakeMediaRepository : IMediaRepository {
     /* fun getRootMenu(): Menu {
          val menu = Menu("Categories", null)

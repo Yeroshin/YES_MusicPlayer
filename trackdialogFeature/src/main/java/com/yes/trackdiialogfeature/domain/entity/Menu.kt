@@ -1,6 +1,4 @@
-package com.yes.trackdiialogfeature.domain
-
-import android.view.ViewParent
+package com.yes.trackdiialogfeature.domain.entity
 
 class Menu(
     val name: String
