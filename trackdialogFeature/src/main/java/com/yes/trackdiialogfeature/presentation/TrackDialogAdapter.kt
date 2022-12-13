@@ -60,7 +60,7 @@ class TrackDialogAdapter():
        //menu.selected=position
         //setItems(vm.getMenuItemContent(menu))
 
-            viewModel.getMenuItemContent(menu.children[position])
+           // viewModel.getMenuItemContent(menu.children[position])
 
 
 

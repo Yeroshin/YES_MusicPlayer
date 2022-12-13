@@ -2,15 +2,18 @@ package com.yes.trackdiialogfeature.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yes.trackdiialogfeature.domain.MediaQuery
 import com.yes.trackdiialogfeature.domain.entity.Menu
+import com.yes.trackdiialogfeature.domain.usecase.GetRootMenu
+import com.yes.trackdiialogfeature.domain.usecase.ShowChildMenu
 import com.yes.trackdiialogfeature.domain.usecase.UseCase
 import com.yes.trackdiialogfeature.domain.usecase.UseCaseWithParam
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class TrackDialogViewModel(
-    private val showChildMenu: UseCaseWithParam<Menu, Menu>,
-    private val getRootMenu: UseCase<Menu>
+    private val showChildMenu: ShowChildMenu,
+    private val getRootMenu: GetRootMenu
 ) : ViewModel() {
 
     private val _stateItemsMedia =
@@ -38,14 +41,17 @@ class TrackDialogViewModel(
         }
     }
 
-    fun getMenuItemContent(menu: Menu) {
-        if (menu.parent?.type != "Media.TITLE") {
-            showChildMenu(menu, viewModelScope) { result ->
-                //_stateItemsMedia.value = it
-                _stateItemsMedia.value = TrackDialogViewModelState.Success(result)
-            }
+   /* fun getMenuItemContent(name: String) {
+
+        showChildMenu(
+            MediaQuery(name),
+            viewModelScope
+        ) { result ->
+            //_stateItemsMedia.value = it
+            _stateItemsMedia.value = TrackDialogViewModelState.Success(result)
         }
-    }
+
+    }*/
 }
 
 sealed class TrackDialogViewModelState {

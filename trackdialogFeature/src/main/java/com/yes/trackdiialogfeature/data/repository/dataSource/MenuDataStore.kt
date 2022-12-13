@@ -51,39 +51,43 @@ class MenuDataStore() {
     fun getName():String {
         return  appContext.resources.getString(com.yes.coreui.R.string.categories)
     }*/
+    private val menuTree = mapOf(
+        "categories" to null,
+        /////////////////////////
+        "artists" to "categories",
+        "artistTracks" to "artists",
+        ////////////////////////////
+        "album" to "categories",
+        "albumTracks" to "album",
+        ////////////////////////////
+        "genres" to "categories",
+        "genreTracks" to "genres"
+    )
+    val data = mapOf(
+        "artists" to "Media.ARTIST",
+        "artistTracks" to "Media.TITLE",
+        ////////////////////////////////
+        "album" to "Media.ALBUM",
+        "albumTracks" to "Media.TITLE",
+        ////////////////////////////////
+        "genres" to "Media.GENRE",
+        "genreTracks" to "Media.TITLE"
+    )
 
-    fun getMenuTree():Map<String,String?>{
-        return  mapOf(
-            "categories" to null,
-            /////////////////////////
-            "artists" to "categories",
-            "artistTracks" to "artists",
-            ////////////////////////////
-            "album" to "categories",
-            "albumTracks" to "album",
-            ////////////////////////////
-            "genres" to "categories",
-            "genreTracks" to "genres"
-        )
-
-
+    fun getMenuTree(): Map<String, String?> {
+        return menuTree
     }
-    fun getMenuType(menuName:String): String? {
-        val data= mapOf(
-            "artists" to "Media.ARTIST",
-            "artistTracks" to "Media.TITLE",
-            ////////////////////////////////
-            "album" to "Media.ALBUM",
-            "albumTracks" to "Media.TITLE",
-            ////////////////////////////////
-            "genres" to "Media.GENRE",
-            "genreTracks" to "Media.TITLE"
-        )
-        return if(data.containsKey(menuName)){
-            data[menuName]
-        }else{
-            null
+    fun getMenuChildName(name:String): String {
+        var menuChild:String=""
+        for (item in menuTree) {
+            if (item.value == name) {
+                menuChild=item.key
+                break
+            }
         }
-
+        return menuChild
+    }
+    fun getMenuType(menuName: String): String {
+        return data[menuName]!!
     }
 }

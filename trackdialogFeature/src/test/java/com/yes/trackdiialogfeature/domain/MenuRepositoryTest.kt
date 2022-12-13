@@ -10,10 +10,11 @@ class MenuRepositoryTest {
 
     @Test
     fun shouldReturnRootMenu() {
-        val dataSource = MenuDataStore()
-        val repository = MenuRepository(dataSource)
+        val menuDataStore = MenuDataStore()
+        val mediaRepository = FakeMediaRepository()
+        val menuRepository = MenuRepository(menuDataStore,mediaRepository)
         //act
-        val rootMenu = repository.getMenu()
+        val rootMenu = menuRepository.getMenu()
         //assert
         assert(false)
 

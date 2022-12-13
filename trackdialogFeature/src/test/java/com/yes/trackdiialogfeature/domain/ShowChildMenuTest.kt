@@ -90,77 +90,85 @@ internal class ShowChildMenuTest {
 
     }
 
+    /* @Test
+     fun shouldCreateTreeMenu() {
+
+         val menuDataStore = MenuDataStore()
+         val menuRepository = MenuRepository(menuDataStore)
+         val mediaRepository = FakeMediaRepository()
+         ///////////////root menu
+         val rootMenu = menuRepository.getMenu()
+         //////////////artists menu
+
+         val artistsMenu = rootMenu.children[0]
+
+         val query = MediaQuery(
+             artistsMenu.type,
+             artistsMenu.parent?.type,
+             artistsMenu.title
+         )
+         val childrenArtists = mediaRepository.getMedia(query)
+         for (item in childrenArtists) {
+             val itemMenu = menuRepository.getMenuChild(artistsMenu.name)
+             itemMenu.parent = artistsMenu
+             itemMenu.title = item.title
+             artistsMenu.children.add(itemMenu)
+         }
+         ///////////////////tracks menu
+         val trackMenu = artistsMenu.children[0]
+         val query2 = MediaQuery(
+             trackMenu.type,
+             trackMenu.parent?.type,
+             trackMenu.title
+         )
+         val childrenTracks = mediaRepository.getMedia(query2)
+         for (item in childrenTracks) {
+             val itemMenu = menuRepository.getMenuChild(artistsMenu.name)
+             itemMenu.parent = trackMenu
+             itemMenu.title = item.title
+             trackMenu.children.add(itemMenu)
+         }
+         //act
+         val actualMenu = menuRepository.getMenu()
+         //assert
+         assertNull(null)
+
+
+     }*/
+
+    /* @Test
+     fun useCaseTest() {
+         val menuDataStore = MenuDataStore()
+         val menuRepository = MenuRepository(menuDataStore)
+         val mediaRepository = FakeMediaRepository()
+         ///////////////root menu
+         val rootMenu = menuRepository.getMenu()
+         /////////////////////////////////////
+         //act
+         val artistMenu = runBlocking {
+             ShowChildMenu(
+                 menuRepository
+             ).run(rootMenu.children[0])
+         }
+         val trackMenu = runBlocking {
+             ShowChildMenu(
+                 menuRepository
+             ).run(artistMenu.children[0])
+         }
+         //assert
+         assertNull(null)
+     }*/
     @Test
     fun shouldCreateTreeMenu() {
 
         val menuDataStore = MenuDataStore()
-        val menuRepository = MenuRepository(menuDataStore)
         val mediaRepository = FakeMediaRepository()
+        val menuRepository = MenuRepository(menuDataStore,mediaRepository)
+
         ///////////////root menu
         val rootMenu = menuRepository.getMenu()
         //////////////artists menu
-
-        val artistsMenu = rootMenu.children[0]
-
-        val query = MediaQuery(
-            artistsMenu.type,
-            artistsMenu.parent?.type,
-            artistsMenu.title
-        )
-        val childrenArtists = mediaRepository.getMedia(query)
-        for (item in childrenArtists) {
-            val itemMenu = menuRepository.getMenuChild(artistsMenu.name)
-            itemMenu.parent = artistsMenu
-            itemMenu.title = item.title
-            artistsMenu.children.add(itemMenu)
-        }
-        ///////////////////tracks menu
-        val trackMenu = artistsMenu.children[0]
-        val query2 = MediaQuery(
-            trackMenu.type,
-            trackMenu.parent?.type,
-            trackMenu.title
-        )
-        val childrenTracks = mediaRepository.getMedia(query2)
-        for (item in childrenTracks) {
-            val itemMenu = menuRepository.getMenuChild(artistsMenu.name)
-            itemMenu.parent = trackMenu
-            itemMenu.title = item.title
-            trackMenu.children.add(itemMenu)
-        }
-        //act
-        val actualMenu = menuRepository.getMenu()
-        //assert
-        assertNull(null)
-
-
     }
-
-    @Test
-    fun useCaseTest() {
-        val menuDataStore = MenuDataStore()
-        val menuRepository = MenuRepository(menuDataStore)
-        val mediaRepository = FakeMediaRepository()
-        ///////////////root menu
-        val rootMenu = menuRepository.getMenu()
-        /////////////////////////////////////
-        //act
-        val artistMenu = runBlocking {
-            ShowChildMenu(
-                mediaRepository,
-                menuRepository
-            ).run(rootMenu.children[0])
-        }
-        val trackMenu = runBlocking {
-            ShowChildMenu(
-                mediaRepository,
-                menuRepository
-            ).run(artistMenu.children[0])
-        }
-        //assert
-        assertNull(null)
-    }
-
 
 }
 

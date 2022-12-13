@@ -28,8 +28,11 @@ class TrackDialogModule(val context: Activity) {
     }
 
     @Provides
-    fun providesMenuRepository(menuDataStore: MenuDataStore): MenuRepository {
-        return MenuRepository(menuDataStore)
+    fun providesMenuRepository(
+        menuDataStore: MenuDataStore,
+        mediaRepository: IMediaRepository
+    ): MenuRepository {
+        return MenuRepository(menuDataStore,mediaRepository)
     }
 
     @Provides
@@ -57,21 +60,14 @@ class TrackDialogModule(val context: Activity) {
 
     ): IMediaRepository {
         return MediaRepository(audioDataStore, mediaMapper, mediaQueryMapper)
-        // return MediaRepository()
     }
 
 
-    /////////////////////////
-    /* @Provides
-     fun provideMenuInteractor(mediaRepository: IMenuRepository): MenuInteractor {
-         return MenuInteractor(mediaRepository)
-     }*/
     @Provides
     fun provideShowChildMenu(
-        mediaRepository: IMediaRepository,
         menuRepository: MenuRepository
     ): ShowChildMenu {
-        return ShowChildMenu(mediaRepository, menuRepository)
+        return ShowChildMenu(menuRepository)
     }
 
     @Provides

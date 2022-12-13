@@ -14,7 +14,6 @@ import com.yes.trackdiialogfeature.R
 import com.yes.trackdiialogfeature.databinding.TrackDialogBinding
 import com.yes.trackdiialogfeature.di.components.DaggerTrackDialogComponent
 import com.yes.trackdiialogfeature.di.module.TrackDialogModule
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
@@ -48,12 +47,12 @@ class TrackDialog : UniversalDialog() {
         viewModel = ViewModelProvider(this, viewModelFactory)[TrackDialogViewModel::class.java]
 
         /////////////////////
-        initAdapter()
+        setupRecyclerView()
 
         return binding.root
     }
 
-    private fun initAdapter() {
+    private fun setupRecyclerView() {
         adapter.setViewModel(viewModel)
         val layoutManager = LinearLayoutManager(context)
 
@@ -94,6 +93,9 @@ class TrackDialog : UniversalDialog() {
                  state->handleState(state)
              }
         }
+    }
+    private fun handleRecyclerView(){
+
     }
     private fun handleState(state:TrackDialogViewModelState){
         when (state) {
