@@ -9,7 +9,13 @@ class MediaRepositoryTest(
 
 
 
-    override fun getMedia(mediaQuery: MediaQuery): ArrayList<MediaItem> {
+
+
+    override fun getMediaItems(
+        projection: Array<String>,
+        selection: String?,
+        selectionArgs: Array<String?>
+    ): ArrayList<String> {
         TODO("Not yet implemented")
     }
 }

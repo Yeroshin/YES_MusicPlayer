@@ -8,6 +8,6 @@ class ShowChildMenu(
     private val menuRepository: MenuRepository
 ) : UseCaseWithParam<MediaQuery, BaseResult<Any?>>() {
     override suspend fun run(query: MediaQuery): BaseResult<Any?> {
-        return menuRepository.getMenuChild(query)
+        return menuRepository.getMenu(query)
     }
 }

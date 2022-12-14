@@ -16,16 +16,19 @@ class MediaQueryMapper {
             "Media.SIZE" to MediaStore.Audio.Media.SIZE
         )
         var where:Array<String>?=null
-        var what=values[mediaQuery.what]
+     /*   var what=values[mediaQuery.what]
         if(mediaQuery.what!=null){
             what="$what=?"
             where= mediaQuery.where?.let { arrayOf(it) }!!
-        }
+        }*/
 
         return MediaQueryEntity(
-            arrayOf(values[mediaQuery.type]),
-            what,
-            where
+            //arrayOf(values[mediaQuery.type]),
+            arrayOf(null),
+          //  what,
+          //  where
+            null,
+        null
         )
     }
 }

@@ -100,8 +100,10 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
          return audioList
      }*/
     fun getMediaItems(
-        mediaQuery: MediaQueryEntity
-    ): ArrayList<MediaEntity> {
+        projection:Array<String>,
+    selection:String?,
+    selectionArgs:Array<String>?,
+    ): ArrayList<String> {
 
        /*  val mediaQue = MediaQueryEntity(
              Array(1){MediaStore.Audio.Media.TITLE},
@@ -113,7 +115,7 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
             MediaStore.Audio.Media.ARTIST + "=?",
             Array(1) { "Dire Straits" }
         )*/
-        val audioList = ArrayList<MediaEntity>()
+        val audioList = ArrayList<String>()
 
         val collection =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -135,17 +137,17 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
 
         val query = appContext.contentResolver.query(
             collection,
-            mediaQuery.projection,
-            mediaQuery.selection,
-            mediaQuery.selectionArgs,
+            projection,
+            selection,
+            selectionArgs,
             sortOrder
         )
 
         query?.use { cursor ->
             // Cache column indices.
-            val column = cursor.getColumnIndex(mediaQuery.projection[0])
+            val column = cursor.getColumnIndex(projection[0])
             while (cursor.moveToNext()) {
-                audioList.add(MediaEntity(cursor.getString(column)))
+                audioList.add(cursor.getString(column))
             }
         }
         return audioList

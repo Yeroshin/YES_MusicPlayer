@@ -2,8 +2,8 @@ package com.yes.trackdiialogfeature.domain
 
 import com.yes.trackdiialogfeature.data.repository.MenuRepository
 import com.yes.trackdiialogfeature.data.repository.dataSource.MenuDataStore
-import com.yes.trackdiialogfeature.domain.usecase.ShowChildMenu
-import kotlinx.coroutines.runBlocking
+import com.yes.trackdiialogfeature.domain.common.BaseResult
+import com.yes.trackdiialogfeature.domain.entity.Menu
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -163,11 +163,78 @@ internal class ShowChildMenuTest {
 
         val menuDataStore = MenuDataStore()
         val mediaRepository = FakeMediaRepository()
-        val menuRepository = MenuRepository(menuDataStore,mediaRepository)
+        val menuRepository = MenuRepository(menuDataStore, mediaRepository)
 
         ///////////////root menu
         val rootMenu = menuRepository.getMenu()
         //////////////artists menu
+
+
+    }
+
+    @Test
+    fun shouldGetArtistsMenu() {
+
+        val menuDataStore = MenuDataStore()
+        val mediaRepository = FakeMediaRepository()
+        val menuRepository = MenuRepository(menuDataStore, mediaRepository)
+        ///////////////root menu
+        val rootMenu = menuRepository.getMenu()
+        //////////////artists menu
+        val artistsMenu = menuRepository.getMenu(
+            MediaQuery(
+                "artists",
+                null,
+                null
+            )
+        )
+        //assert
+        assertEquals(
+            ( (artistsMenu as BaseResult.Success).data as Menu).name,
+            "artists"
+        )
+        assertEquals(
+            ((artistsMenu as BaseResult.Success).data as Menu).children[0].name,
+            "artistTracks"
+        )
+        assertEquals(
+            ((artistsMenu as BaseResult.Success).data as Menu).children[0].title,
+            "Dire Straits"
+        )
+
+
+    }
+    @Test
+    fun shouldGetArtistsTracksMenu() {
+
+        val menuDataStore = MenuDataStore()
+        val mediaRepository = FakeMediaRepository()
+        val menuRepository = MenuRepository(menuDataStore, mediaRepository)
+        ///////////////root menu
+        val rootMenu = menuRepository.getMenu()
+        //////////////artists menu
+        val artistsTracksMenu = menuRepository.getMenu(
+            MediaQuery(
+                "artistTracks",
+                "artists",
+                "Dire Straits"
+            )
+        )
+        //assert
+        assertEquals(
+            ((artistsTracksMenu as BaseResult.Success).data as Menu).name,
+            "artistTracks"
+        )
+        assertEquals(
+            ((artistsTracksMenu as BaseResult.Success).data as Menu).children[0].name,
+            ""
+        )
+        assertEquals(
+            ((artistsTracksMenu as BaseResult.Success).data as Menu).children[0].title,
+            "Money for Nothing"
+        )
+
+
     }
 
 }

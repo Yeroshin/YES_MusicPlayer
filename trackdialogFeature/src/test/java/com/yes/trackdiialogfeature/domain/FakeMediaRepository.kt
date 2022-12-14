@@ -53,32 +53,52 @@ class FakeMediaRepository : IMediaRepository {
          return Menu("","")
      }*/
 
-    fun getMedia(
-        type: String,
-        what: String,
-        where: ArrayList<String>
-    ): ArrayList<MediaItem> {
-        TODO("Not yet implemented")
-    }
 
-    override fun getMedia(mediaQuery: MediaQuery): ArrayList<MediaItem> {
-        val items = arrayListOf<MediaItem>()
-        if (mediaQuery.type == "Media.ARTIST" &&
-            mediaQuery.what == null &&
-            mediaQuery.where == null
-        ) {
-            val item = MediaItem("Dire Straits")
-            items.add(item)
-        } else if (mediaQuery.type == "Media.TITLE" &&
-            mediaQuery.what == "Media.ARTIST" &&
-            mediaQuery.where == "Dire Straits"
 
+    override fun getMediaItems(
+        projection: Array<String>,
+        selection: String?,
+        selectionArgs: Array<String?>
+    ): ArrayList<String> {
+        val items = arrayListOf<String>()
+        if (projection[0].equals("artist") &&
+            selection .equals(null) &&
+            selectionArgs[0] .equals(null)
         ) {
-            val item = MediaItem("Money for Nothing")
-            items.add(item)
+            items.add("Dire Straits")
+        } else if (
+            projection[0] == "title" &&
+            selection == "artists" &&
+            selectionArgs[0] .equals("Dire Straits")
+        ) {
+
+            items.add("Money for Nothing")
         }
-
-
         return items
     }
+
+    /*  override fun getMedia(
+          projection:Array<String>,
+          selection:String?,
+          selectionArgs:Array<String?>,
+      ): ArrayList<String> {
+          val items = arrayListOf<MediaItem>()
+          if (projection == "Media.ARTIST" &&
+              selection == null &&
+              selectionArgs == null
+          ) {
+              val item = MediaItem("Dire Straits")
+              items.add(item)
+          } else if (mediaQuery.type == "Media.TITLE" &&
+              mediaQuery.what == "Media.ARTIST" &&
+              mediaQuery.where == "Dire Straits"
+
+          ) {
+              val item = MediaItem("Money for Nothing")
+              items.add(item)
+          }
+
+
+          return items
+      }*/
 }

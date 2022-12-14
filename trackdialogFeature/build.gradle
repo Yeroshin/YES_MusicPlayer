@@ -40,10 +40,10 @@ android {
 }
 
 dependencies {
-    def coreKtx="1.7.0"
-    def fragmentKtx = "1.2.5"
+    def coreKtx="1.9.0"
+    def fragmentKtx = "1.5.5"
     def jUnitVersion="1.1.4"
-    def lifecycle_version = "2.2.0"
+    def lifecycle_version = "2.4.0"
 
 
     implementation "androidx.core:core-ktx:$coreKtx"
@@ -57,7 +57,7 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
 
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+
     //Dagger/////////////////////
     implementation 'com.google.dagger:dagger:2.42'
     kapt 'com.google.dagger:dagger-compiler:2.42'

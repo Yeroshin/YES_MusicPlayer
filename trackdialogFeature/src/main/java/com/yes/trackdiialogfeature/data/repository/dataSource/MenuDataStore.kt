@@ -1,6 +1,8 @@
 package com.yes.trackdiialogfeature.data.repository.dataSource
 
-class MenuDataStore() {
+import android.provider.MediaStore
+
+class MenuDataStore {
 
 
     /*  fun getCategories(): ArrayList<MediaEntity> {
@@ -60,25 +62,26 @@ class MenuDataStore() {
         "album" to "categories",
         "albumTracks" to "album",
         ////////////////////////////
-        "genres" to "categories",
-        "genreTracks" to "genres"
+       /* "genres" to "categories",
+        "genreTracks" to "genres"*/
     )
     val data = mapOf(
-        "artists" to "Media.ARTIST",
-        "artistTracks" to "Media.TITLE",
+        "categories" to null,
+        "artists" to MediaStore.Audio.Media.ARTIST,
+        "artistTracks" to MediaStore.Audio.Media.TITLE,
         ////////////////////////////////
-        "album" to "Media.ALBUM",
-        "albumTracks" to "Media.TITLE",
+        "album" to MediaStore.Audio.Media.ALBUM,
+        "albumTracks" to MediaStore.Audio.Media.TITLE,
         ////////////////////////////////
-        "genres" to "Media.GENRE",
-        "genreTracks" to "Media.TITLE"
+       /* "genres" to "Media.GENRE",
+        "genreTracks" to "Media.TITLE"*/
     )
 
     fun getMenuTree(): Map<String, String?> {
         return menuTree
     }
     fun getMenuChildName(name:String): String {
-        var menuChild:String=""
+        var menuChild=""
         for (item in menuTree) {
             if (item.value == name) {
                 menuChild=item.key
@@ -87,7 +90,7 @@ class MenuDataStore() {
         }
         return menuChild
     }
-    fun getMenuType(menuName: String): String {
-        return data[menuName]!!
+    fun getMenuType(menuName: String): String? {
+        return data[menuName]
     }
 }
