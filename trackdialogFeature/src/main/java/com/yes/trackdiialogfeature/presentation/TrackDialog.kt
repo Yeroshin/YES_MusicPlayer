@@ -16,6 +16,7 @@ import com.yes.trackdiialogfeature.R
 import com.yes.trackdiialogfeature.databinding.TrackDialogBinding
 import com.yes.trackdiialogfeature.di.components.DaggerTrackDialogComponent
 import com.yes.trackdiialogfeature.di.module.TrackDialogModule
+import com.yes.trackdiialogfeature.presentation.entity.MenuUi
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -62,13 +63,7 @@ class TrackDialog : UniversalDialog() {
         (binding as TrackDialogBinding).recyclerViewContainer.recyclerView.layoutManager =
             layoutManager
         (binding as TrackDialogBinding).recyclerViewContainer.recyclerView.adapter = adapter
-        /////////////////
 
-        //adapter.setItems(items)
-        initObserver()
-        viewModel.getMenu()
-        // viewModel.getMenuItemContent(Menu("",""))
-        /////////////////
 
 
         /////////////////
@@ -78,6 +73,13 @@ class TrackDialog : UniversalDialog() {
         (binding as TrackDialogBinding).buttons.okBtn.setOnClickListener {
             dismiss()
         }
+        /////////////////
+
+        //adapter.setItems(items)
+        initObserver()
+        viewModel.getMenu()
+        // viewModel.getMenuItemContent(Menu("",""))
+        /////////////////
     }
 
     private fun initObserver() {
@@ -111,20 +113,15 @@ class TrackDialog : UniversalDialog() {
         }
     }
 
-    private fun handleRecyclerView() {
-
+    private fun showMenu(menu: MenuUi) {
+        (binding as TrackDialogBinding).recyclerViewContainer.playlist.text = menu.title
+        adapter.setItems(menu.items)
     }
 
-    private fun handleState(state: TrackDialogViewModelState) {
-        when (state) {
-            is TrackDialogViewModelState.Success -> {
-                (binding as TrackDialogBinding).recyclerViewContainer.playlist.text =
-                    state.menu.title
-                adapter.setItems(state.menu.items)
-            }
-            is TrackDialogViewModelState.IsLoading -> {}
-            is TrackDialogViewModelState.Init -> {}
-        }
+    private fun handleState(state: TrackDialogViewModelState) = when (state) {
+        is TrackDialogViewModelState.Success -> showMenu(state.menu)
+        is TrackDialogViewModelState.IsLoading -> {}
+        is TrackDialogViewModelState.Init -> {}
     }
 }
 

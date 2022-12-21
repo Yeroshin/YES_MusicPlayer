@@ -7,9 +7,10 @@ data class MenuUi(
 ) {
     class MediaItem(
         val title: String,
-        val name:String
+        val name:String,
+        var onClick: ((String,String) -> Unit)
     ) {
         val iconType:Int=1
-        var onClick: (() -> Unit)? = null
+
     }
 }

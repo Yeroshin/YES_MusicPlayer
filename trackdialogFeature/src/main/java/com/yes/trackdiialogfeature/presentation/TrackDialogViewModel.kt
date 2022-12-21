@@ -8,14 +8,14 @@ import com.yes.trackdiialogfeature.domain.entity.Menu
 import com.yes.trackdiialogfeature.domain.usecase.GetRootMenu
 import com.yes.trackdiialogfeature.domain.usecase.ShowChildMenu
 import com.yes.trackdiialogfeature.presentation.entity.MenuUi
-import com.yes.trackdiialogfeature.presentation.mapper.Mapper
+import com.yes.trackdiialogfeature.presentation.mapper.MenuMapper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class TrackDialogViewModel(
     private val showChildMenu: ShowChildMenu,
     private val getRootMenu: GetRootMenu,
-    private val mapper: Mapper
+    private val menuMapper: MenuMapper
 ) : ViewModel() {
 
     private val _stateItemsMedia =
@@ -25,24 +25,19 @@ class TrackDialogViewModel(
 
     fun getMenu() {
         getRootMenu(viewModelScope) { result ->
-
-            when(result){
-                is BaseResult.Success->{
-                    val item=mapper.map(result.data as Menu)
-                    for (item in item.items){
-                        item.onClick={ getMenuItemContent(item.title,item.name)}
-                    }
-                    successLoading(item)
+            when (result) {
+                is BaseResult.Success -> {
+                    val item = menuMapper.map(
+                        result.data,
+                        ::getMenuItemContent
+                    )
+                    _stateItemsMedia.value = TrackDialogViewModelState.Success(item)
                 }
             }
         }
     }
 
-    private fun successLoading(menu: MenuUi) {
-        _stateItemsMedia.value = TrackDialogViewModelState.Success(menu)
-    }
-
-    fun getMenuItemContent(title: String,name:String) {
+    private fun getMenuItemContent(title: String, name: String) {
 
         showChildMenu(
             MediaQuery(
@@ -51,19 +46,16 @@ class TrackDialogViewModel(
             ),
             viewModelScope
         ) { result ->
-            //_stateItemsMedia.value = it
-
             when (result) {
-                is BaseResult.Success->{
-                    val item=mapper.map(result.data as Menu)
-                    for (item in item.items){
-                        item.onClick={ getMenuItemContent(item.title,item.name)}
-                    }
-                    successLoading(item)
+                is BaseResult.Success -> {
+                    val item = menuMapper.map(
+                        result.data,
+                        ::getMenuItemContent
+                    )
+                    _stateItemsMedia.value = TrackDialogViewModelState.Success(item)
                 }
             }
         }
-
     }
 }
 

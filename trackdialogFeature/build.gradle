@@ -44,18 +44,21 @@ dependencies {
     def fragmentKtx = "1.5.5"
     def jUnitVersion="1.1.4"
     def lifecycle_version = "2.4.0"
+    def espresso_version = "3.5.0"
+    def mockito_version = "4.0.0"
 
 
     implementation "androidx.core:core-ktx:$coreKtx"
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
     implementation project(path: ':coreUI')
+    //test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation "androidx.test.ext:junit:$jUnitVersion"
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_version"
     //viewModel
     implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
-
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
 
     //Dagger/////////////////////
