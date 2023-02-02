@@ -34,18 +34,23 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    dataBinding{
+    dataBinding {
         enabled = true
     }
 }
 
 dependencies {
-    def coreKtx="1.9.0"
+    implementation 'androidx.core:core-ktx:+'
+    implementation project(path: ':core')
+    def coreKtx = "1.9.0"
     def fragmentKtx = "1.5.5"
-    def jUnitVersion="1.1.4"
+    def jUnitVersion = "1.1.4"
     def lifecycle_version = "2.4.0"
     def espresso_version = "3.5.0"
     def mockito_version = "4.0.0"
+    def mockk_version="1.13.3"
+    def turbine_version="0.12.1"
+
 
 
     implementation "androidx.core:core-ktx:$coreKtx"
@@ -56,7 +61,10 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation "androidx.test.ext:junit:$jUnitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
-    testImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_version"
+
+    testImplementation "io.mockk:mockk:$mockk_version"
+    testImplementation "app.cash.turbine:turbine:$turbine_version"
+
     //viewModel
     implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
