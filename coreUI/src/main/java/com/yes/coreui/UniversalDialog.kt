@@ -20,7 +20,7 @@ abstract class UniversalDialog (): DialogFragment() {
         setStyle(DialogFragment.STYLE_NO_FRAME, 0);
     }
 
-    abstract var layout: Int
+    abstract val layout: Int
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

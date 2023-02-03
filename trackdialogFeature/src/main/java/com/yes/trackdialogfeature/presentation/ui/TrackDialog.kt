@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -22,7 +23,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TrackDialog : UniversalDialog() {
-    // private val viewModel: TrackDialogViewModel by viewModels()
+
     @Inject
     lateinit var viewModelFactory: TrackDialogViewModel.Factory
     private lateinit var viewModel: TrackDialogViewModel
@@ -85,11 +86,11 @@ class TrackDialog : UniversalDialog() {
     private fun observeViewModel() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { viewState ->
-                    when (viewState) {
+                viewModel.uiState.collect {
+                    when (it.trackDialogState) {
                         is TrackDialogContract.TrackDialogState.Success ->{
                             (binding as TrackDialogBinding).recyclerViewContainer.playlist.text = viewState.title
-                            adapter.setItems(viewState.menu.items)
+                            adapter.setItems(it.trackDialogState.menu.items)
                         }
                         is TrackDialogContract.TrackDialogState.Loading -> {
 
@@ -98,8 +99,19 @@ class TrackDialog : UniversalDialog() {
                 }
             }
         }
+        lifecycleScope.launchWhenStarted {
+            viewModel.effect.collect {
+                when (it) {
+                    is TrackDialogContract.Effect.UnknownException -> {
+                        showToast("Unknown Exception")
+                    }
+                }
+            }
+        }
     }
-
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
 }
 
 
