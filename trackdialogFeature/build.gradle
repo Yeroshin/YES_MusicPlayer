@@ -2,14 +2,15 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         minSdk 19
-        targetSdk 32
+        targetSdk 33
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -34,19 +35,19 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    dataBinding {
+   /* dataBinding {
         enabled = true
-    }
+    }*/
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:+'
+    implementation project(path: ':coreUI')
     implementation project(path: ':core')
     def coreKtx = "1.9.0"
     def fragmentKtx = "1.5.5"
-    def jUnitVersion = "1.1.4"
+    def jUnitVersion = "1.1.5"
     def lifecycle_version = "2.4.0"
-    def espresso_version = "3.5.0"
+    def espresso_version = "3.5.1"
     def mockito_version = "4.0.0"
     def mockk_version="1.13.3"
     def turbine_version="0.12.1"
@@ -54,9 +55,9 @@ dependencies {
 
 
     implementation "androidx.core:core-ktx:$coreKtx"
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.7.0'
-    implementation project(path: ':coreUI')
+    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'com.google.android.material:material:1.8.0'
+
     //test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation "androidx.test.ext:junit:$jUnitVersion"
@@ -70,8 +71,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
 
     //Dagger/////////////////////
-    implementation 'com.google.dagger:dagger:2.42'
-    kapt 'com.google.dagger:dagger-compiler:2.42'
+    def dagger_version = "2.42"
+    implementation "com.google.dagger:dagger:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0"
 
 
 }

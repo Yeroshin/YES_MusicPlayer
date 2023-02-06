@@ -15,6 +15,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.yes.musicplayer.R
 import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.DaggerMainActivityComponent
+
 import com.yes.musicplayer.di.module.MainActivityModule
 import javax.inject.Inject
 
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var fragment: Fragment
     override fun onCreate(savedInstanceState: Bundle?) {
+
         DaggerMainActivityComponent.builder()
             .mainActivityModule(MainActivityModule(this))
             .build()

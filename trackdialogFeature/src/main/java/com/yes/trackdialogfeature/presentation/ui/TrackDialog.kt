@@ -16,11 +16,13 @@ import com.yes.coreui.UniversalDialog
 import com.yes.trackdialogfeature.R
 import com.yes.trackdialogfeature.databinding.TrackDialogBinding
 import com.yes.trackdialogfeature.di.components.DaggerTrackDialogComponent
+
 import com.yes.trackdialogfeature.di.module.TrackDialogModule
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 class TrackDialog : UniversalDialog() {
 
@@ -89,7 +91,7 @@ class TrackDialog : UniversalDialog() {
                 viewModel.uiState.collect {
                     when (it.trackDialogState) {
                         is TrackDialogContract.TrackDialogState.Success ->{
-                            (binding as TrackDialogBinding).recyclerViewContainer.playlist.text = viewState.title
+                            (binding as TrackDialogBinding).recyclerViewContainer.playlist.text = it.trackDialogState.title
                             adapter.setItems(it.trackDialogState.menu.items)
                         }
                         is TrackDialogContract.TrackDialogState.Loading -> {

@@ -3,6 +3,8 @@ package com.yes.coreui
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Point
+import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
@@ -13,7 +15,7 @@ import androidx.viewbinding.ViewBinding
 
 abstract class UniversalDialog (): DialogFragment() {
 
-    private var myDialog: Dialog? = dialog
+   // private var myDialog: Dialog = dialog!!
     lateinit var binding: ViewBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,28 +35,36 @@ abstract class UniversalDialog (): DialogFragment() {
         dialog!!.window!!.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         /////////////////////
         /////////////////////
-        myDialog = dialog
+       // myDialog = dialog
         //myDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
         ///////////////////
 
         ///////////////////
-        myDialog!!.setContentView(layout)
+        dialog!!.setContentView(layout)
 
-        val disp: Display =
+      /*  val disp: Display =
             (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
         val outSmallestSize = Point()
         val outLargestSize = Point()
         disp.getCurrentSizeRange(outSmallestSize, outLargestSize)
 
+        val screeSize1 = Point()*/
+        /////////////////
+      //  val outSmallestSize = Point()
+        val outLargestSize = Point()
         val screeSize1 = Point()
 
-        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-              val rect: Rect =(requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics.bounds
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+              val rect =(requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics.bounds
+             screeSize1.x=rect.right
+             screeSize1.y=rect.bottom
          } else {
+             val disp: Display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
               disp.getSize(screeSize1)
-          }*/
+          }
+        //////////////////////
 
-        disp.getSize(screeSize1)
+        //disp.getSize(screeSize1)
         binding.root.minimumWidth = (screeSize1.x * 0.9f).toInt()
         binding.root.minimumHeight = (screeSize1.y * 0.9f).toInt()
 
@@ -64,7 +74,6 @@ abstract class UniversalDialog (): DialogFragment() {
         )
 
         isCancelable = false
-        /////////////////////////////
         /////////////////////////
         dialog!!.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         /////////////////////////////

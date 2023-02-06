@@ -10,7 +10,9 @@ import androidx.fragment.app.DialogFragment
 import com.yes.playlistfeature.R
 import com.yes.playlistfeature.databinding.FragmentPlaylistBinding
 import com.yes.playlistfeature.di.components.DaggerPlayListComponent
+
 import com.yes.playlistfeature.di.module.PlayListModule
+import com.yes.trackdialogfeature.di.components.DaggerTrackDialogComponent
 import javax.inject.Inject
 
 
@@ -25,8 +27,8 @@ class PlaylistFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        DaggerPlayListComponent.builder()
 
+        DaggerPlayListComponent.builder()
             .build()
             .inject(this)
     }

@@ -12,6 +12,7 @@ import com.yes.trackdialogfeature.domain.usecase.GetRootMenuUseCase
 import com.yes.trackdialogfeature.domain.usecase.ShowChildMenuUseCase
 import com.yes.trackdialogfeature.presentation.ui.TrackDialogAdapter
 import com.yes.trackdialogfeature.presentation.mapper.MenuMapper
+import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import dagger.Module
 import dagger.Provides
 
@@ -78,14 +79,14 @@ class TrackDialogModule(val context: Activity) {
     fun provideUIMapper(): MenuMapper {
         return MenuMapper()
     }
-   /* @Provides
+    @Provides
     fun provideViewModelFactory(
         getRootMenuUseCase: GetRootMenuUseCase,
         showChildMenuUseCase: ShowChildMenuUseCase,
         menuMapper:MenuMapper
-    ): TrackDialogViewModelFactory {
-        return TrackDialogViewModelFactory(getRootMenuUseCase,showChildMenuUseCase,menuMapper)
-    }*/
+    ): TrackDialogViewModel.Factory {
+        return TrackDialogViewModel.Factory(getRootMenuUseCase,showChildMenuUseCase,menuMapper)
+    }
 
     @Provides
     fun provideMediaDialogAdapter(): TrackDialogAdapter {

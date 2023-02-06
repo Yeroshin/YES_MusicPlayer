@@ -10,19 +10,19 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-internal class MainActivityModule(val activity: FragmentActivity) {
+internal class MainActivityModule(private val activity: FragmentActivity) {
 
     @Provides
     fun provideFragment(): Fragment {
         return PlayerFragment()
     }
+
     @Provides
     fun provideFragmentAdapter(): FragmentAdapter {
 
-        val fragmentsList= mutableListOf<Fragment>()
-        val playerFragment= PlaylistFragment()
+        val fragmentsList = mutableListOf<Fragment>()
+        val playerFragment = PlaylistFragment()
         fragmentsList.add(playerFragment)
-        val fragmentAdapter= FragmentAdapter(activity,fragmentsList)
-        return fragmentAdapter
+        return FragmentAdapter(activity, fragmentsList)
     }
 }

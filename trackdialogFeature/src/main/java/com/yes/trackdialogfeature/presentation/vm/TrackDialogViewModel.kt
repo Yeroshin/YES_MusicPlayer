@@ -25,23 +25,7 @@ class TrackDialogViewModel(
 
     val currentState: TrackDialogContract.State
         get() = uiState.value
-    init {
-        subscribeEvents()
-        viewModelScope.launch(Dispatchers.Main) {
-            val result = getRootMenuUseCase(GetRootMenuUseCase.Params(Unit))
-            when (result) {
-                is Result.Success -> {
-                    val item = menuMapper.map(
-                        result.data,
-                        ::setEvent
-                    )
-                    setState {  }
-                    _uiState.value = TrackDialogContract.State.TrackDialogState.Success(item)
-                }
-                is Result.Error -> {}
-            }
-        }
-    }
+
    /* private val initialState : UiState by lazy { createInitialState() }
     fun createInitialState() : UiState{
         return TrackDialogContract.State(TrackDialogContract.TrackDialogState.Loading)
@@ -60,7 +44,29 @@ class TrackDialogViewModel(
     private val _effect: Channel<TrackDialogContract.Effect> = Channel()
     val effect = _effect.receiveAsFlow()
 
-
+    init {
+        subscribeEvents()
+        viewModelScope.launch(Dispatchers.Main) {
+            val result = getRootMenuUseCase(GetRootMenuUseCase.Params(Unit))
+            when (result) {
+                is Result.Success -> {
+                    val item = menuMapper.map(
+                        result.data,
+                        ::setEvent
+                    )
+                    setState {copy(trackDialogState =TrackDialogContract.TrackDialogState.Success(item))  }
+                }
+                is Result.Error -> {}
+            }
+        }
+    }
+    private fun subscribeEvents() {
+        viewModelScope.launch {
+            event.collect {
+                handleEvent(it)
+            }
+        }
+    }
 
     fun setEvent(event: UiEvent) {
         val newEvent = event
@@ -76,13 +82,7 @@ class TrackDialogViewModel(
         viewModelScope.launch { _effect.send(effectValue) }
     }
 
-    private fun subscribeEvents() {
-        viewModelScope.launch {
-            event.collect {
-                handleEvent(it)
-            }
-        }
-    }
+
 
     private fun handleEvent(event: UiEvent) {
         when (event) {
@@ -116,16 +116,18 @@ class TrackDialogViewModel(
                         result.data,
                         ::setEvent
                     )
-                    _uiState.value = TrackDialogContract.TrackDialogState.Success(item)
+                    _uiState.value = TrackDialogContract.State(TrackDialogContract.TrackDialogState.Success(item))
                 }
                 is Result.Error -> {
                     when (result.data) {
                         is UseCaseException.UnknownException -> setEffect {
                             TrackDialogContract.Effect.UnknownException
                         }
+                        else -> {}
                     }
 
                 }
+                else -> {}
             }
         }
 
