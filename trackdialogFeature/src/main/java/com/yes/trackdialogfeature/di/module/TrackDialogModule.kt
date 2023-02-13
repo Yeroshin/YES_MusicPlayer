@@ -9,7 +9,7 @@ import com.yes.trackdialogfeature.data.mapper.MediaQueryMapper
 import com.yes.trackdialogfeature.data.repository.MenuRepository
 import com.yes.trackdialogfeature.domain.*
 import com.yes.trackdialogfeature.domain.usecase.GetRootMenuUseCase
-import com.yes.trackdialogfeature.domain.usecase.ShowChildMenuUseCase
+import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCase
 import com.yes.trackdialogfeature.presentation.ui.TrackDialogAdapter
 import com.yes.trackdialogfeature.presentation.mapper.MenuMapper
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
@@ -67,8 +67,8 @@ class TrackDialogModule(val context: Activity) {
     @Provides
     fun provideShowChildMenu(
         menuRepository: MenuRepository
-    ): ShowChildMenuUseCase {
-        return ShowChildMenuUseCase(menuRepository)
+    ): GetChildMenuUseCase {
+        return GetChildMenuUseCase(menuRepository)
     }
 
     @Provides
@@ -82,10 +82,10 @@ class TrackDialogModule(val context: Activity) {
     @Provides
     fun provideViewModelFactory(
         getRootMenuUseCase: GetRootMenuUseCase,
-        showChildMenuUseCase: ShowChildMenuUseCase,
+        getChildMenuUseCase: GetChildMenuUseCase,
         menuMapper:MenuMapper
     ): TrackDialogViewModel.Factory {
-        return TrackDialogViewModel.Factory(getRootMenuUseCase,showChildMenuUseCase,menuMapper)
+        return TrackDialogViewModel.Factory(getRootMenuUseCase,getChildMenuUseCase,menuMapper)
     }
 
     @Provides

@@ -73,19 +73,20 @@ class MainActivity : AppCompatActivity() {
                         permissions[i]
                     )
                 ) {
+
                 }
             }
         }
         if (permissionsDenied.size > 0) {
             val permissionsArray = permissionsDenied.toTypedArray()
-            ActivityCompat.requestPermissions((this as Activity)!!, permissionsArray, 1)
+            ActivityCompat.requestPermissions((this as Activity), permissionsArray, 1)
         } else {
             setTabs()
         }
 
     }
 
-    fun setTabs() {
+    private fun setTabs() {
         binding.viewPager.adapter = fragmentAdapter
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
             run {

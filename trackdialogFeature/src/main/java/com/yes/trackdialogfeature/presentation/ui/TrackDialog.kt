@@ -54,10 +54,17 @@ class TrackDialog : UniversalDialog() {
         viewModel = ViewModelProvider(this, viewModelFactory)[TrackDialogViewModel::class.java]
 
         /////////////////////
-        setupRecyclerView()
-
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeViewModel()
+        setupRecyclerView()
+        viewModel.setEvent(TrackDialogContract.Event.OnGetRootMenu)
+    }
+
+
 
     private fun setupRecyclerView() {
         adapter.setViewModel(viewModel)
@@ -79,7 +86,7 @@ class TrackDialog : UniversalDialog() {
         /////////////////
 
         //adapter.setItems(items)
-        observeViewModel()
+
        // viewModel.onGetMenu()
         // viewModel.getMenuItemContent(Menu("",""))
         /////////////////

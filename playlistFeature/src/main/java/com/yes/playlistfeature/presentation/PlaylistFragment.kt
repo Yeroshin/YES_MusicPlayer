@@ -20,10 +20,6 @@ class PlaylistFragment : Fragment() {
     private lateinit var binding: FragmentPlaylistBinding
     @Inject
      lateinit var trackDialog: DialogFragment
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -45,6 +41,7 @@ class PlaylistFragment : Fragment() {
         }
         return binding.root
     }
+
 
 
 }

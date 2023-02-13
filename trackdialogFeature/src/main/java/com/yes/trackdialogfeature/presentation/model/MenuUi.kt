@@ -1,6 +1,7 @@
 package com.yes.trackdialogfeature.presentation.model
 
 import com.yes.core.presentation.UiEvent
+import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 
 
 data class MenuUi(
@@ -10,7 +11,7 @@ data class MenuUi(
     class MediaItem(
         val title: String,
         val name:String,
-        var onClick: ((UiEvent) -> Unit)
+        var onClick: ((TrackDialogContract.Event) -> Unit)
     ) {
         val iconType:Int=1
 

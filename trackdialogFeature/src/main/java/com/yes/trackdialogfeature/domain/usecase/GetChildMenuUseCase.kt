@@ -5,9 +5,9 @@ import com.yes.trackdialogfeature.domain.common.Result
 import com.yes.trackdialogfeature.domain.common.UseCaseException
 import com.yes.trackdialogfeature.domain.entity.Menu
 
-class ShowChildMenuUseCase(
+class GetChildMenuUseCase(
     private val menuRepository: MenuRepository
-    ) : UseCase<ShowChildMenuUseCase.Params, Menu>() {
+    ) : UseCase<GetChildMenuUseCase.Params, Menu>() {
 
     override fun run(params: Params): Result<Menu> {
         if(true){

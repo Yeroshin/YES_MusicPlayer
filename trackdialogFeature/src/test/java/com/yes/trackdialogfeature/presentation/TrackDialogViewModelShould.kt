@@ -1,7 +1,7 @@
 package com.yes.trackdialogfeature.presentation
 
 import com.yes.trackdialogfeature.domain.usecase.GetRootMenuUseCase
-import com.yes.trackdialogfeature.domain.usecase.ShowChildMenuUseCase
+import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCase
 import com.yes.trackdialogfeature.presentation.mapper.MenuMapper
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogState
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
@@ -13,7 +13,7 @@ import io.mockk.mockk
 
 
 class TrackDialogViewModelShould {
-    private val showChildMenuUseCase: ShowChildMenuUseCase = mockk()
+    private val getChildMenuUseCase: GetChildMenuUseCase = mockk()
     private val getRootMenuUseCase: GetRootMenuUseCase = mockk()
     private val menuMapper: MenuMapper = mockk()
 
@@ -22,7 +22,7 @@ class TrackDialogViewModelShould {
     @Test
     fun `emitsLoadingStateInitially`() = runBlocking {
 
-        viewModel = TrackDialogViewModel(showChildMenuUseCase, getRootMenuUseCase, menuMapper)
+        viewModel = TrackDialogViewModel(getChildMenuUseCase, getRootMenuUseCase, menuMapper)
         val actual = viewModel.uiState.value
         assertEquals(TrackDialogState.Loading, actual)
         /* viewModel.uiState.test{

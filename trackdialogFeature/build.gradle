@@ -43,28 +43,18 @@ android {
 dependencies {
     implementation project(path: ':coreUI')
     implementation project(path: ':core')
-    def coreKtx = "1.9.0"
+
     def fragmentKtx = "1.5.5"
-    def jUnitVersion = "1.1.5"
     def lifecycle_version = "2.4.0"
-    def espresso_version = "3.5.1"
-    def mockito_version = "4.0.0"
-    def mockk_version="1.13.3"
-    def turbine_version="0.12.1"
 
 
 
-    implementation "androidx.core:core-ktx:$coreKtx"
+
+    implementation libs.core.ktx
     implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'com.google.android.material:material:1.8.0'
 
-    //test
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation "androidx.test.ext:junit:$jUnitVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
 
-    testImplementation "io.mockk:mockk:$mockk_version"
-    testImplementation "app.cash.turbine:turbine:$turbine_version"
 
     //viewModel
     implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
