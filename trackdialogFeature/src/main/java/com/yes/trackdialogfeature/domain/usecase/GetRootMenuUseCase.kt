@@ -7,24 +7,9 @@ import com.yes.trackdialogfeature.domain.entity.Menu
 
 class GetRootMenuUseCase(
     private val menuRepository: MenuRepository
-    ) : UseCase<GetRootMenuUseCase.Params,Menu>(){
-
-
-
-    override fun run(
-        params: Params
-    ):Result<Menu>{
-        val res=menuRepository.getMenu()
-        return if(res!=null){
-            Result.Success(res)
-        }else{
-            Result.Error(
-                UseCaseException.UnknownException("")
-            )
-        }
-
-
+) : UseCase<GetRootMenuUseCase.Params, Menu>() {
+    override fun run(params: Params): Result<Menu> {
+        return menuRepository.getMenu()
     }
-
     data class Params(val params: Unit)
 }

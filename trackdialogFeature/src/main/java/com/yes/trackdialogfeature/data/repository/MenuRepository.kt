@@ -3,6 +3,7 @@ package com.yes.trackdialogfeature.data.repository
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 import com.yes.trackdialogfeature.domain.IMediaRepository
 import com.yes.trackdialogfeature.domain.entity.Menu
+import com.yes.trackdialogfeature.domain.common.Result
 
 class MenuRepository(
     private val menuDataStore: MenuDataStore,
@@ -10,7 +11,7 @@ class MenuRepository(
 ) {
     private lateinit var menu: Menu
     private val menuParent = menuDataStore.getMenuTree()
-    fun getMenu(): Menu {
+    fun getMenu(): Result<Menu> {
 
         for (item in menuParent) {
             if (item.value == null) {
@@ -28,10 +29,10 @@ class MenuRepository(
                 this.menu.children.add(menu)
             }
         }
-        return menu
+        return Result.Success(menu)
     }
 
-    fun getMenu(title:String, name:String): Menu {
+    fun getMenu(title:String, name:String): Result<Menu> {
 
 
         var what: Array<String>?= null
@@ -55,7 +56,6 @@ class MenuRepository(
             itemMenu.title = item
             childMenu.children.add(itemMenu)
         }
-
-        return childMenu
+        return Result.Success(childMenu)
     }
 }

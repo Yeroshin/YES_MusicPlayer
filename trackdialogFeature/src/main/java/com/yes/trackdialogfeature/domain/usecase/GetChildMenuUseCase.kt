@@ -10,10 +10,10 @@ class GetChildMenuUseCase(
     ) : UseCase<GetChildMenuUseCase.Params, Menu>() {
 
     override fun run(params: Params): Result<Menu> {
-        if(true){
-            return Result.Success(menuRepository.getMenu(params.title, params.name))
+        if(params.title.equals("root")){
+            return menuRepository.getMenu(params.title, params.name)
         }else{
-            return Result.Error(UseCaseException.UnknownException(""))
+            return menuRepository.getMenu()
         }
     }
 
