@@ -10,9 +10,11 @@ class MenuRepository(
     private val mediaRepository: IMediaRepository,
 ) {
     private lateinit var menu: Menu
-    private val menuParent = menuDataStore.getMenuTree()
+    private val menuParent = mapOf<String,String>()
+   // private val menuParent = menuDataStore.getMenuTree()
     fun getMenu(): Result<Menu> {
-
+       val s= arrayOf(1,2,3)
+       val t=s[5]
         for (item in menuParent) {
             if (item.value == null) {
                 menu = Menu(item.key)
@@ -29,11 +31,12 @@ class MenuRepository(
                 this.menu.children.add(menu)
             }
         }
+
         return Result.Success(menu)
     }
 
     fun getMenu(title:String, name:String): Result<Menu> {
-
+        val s= arrayOf(1,2,3)
 
         var what: Array<String>?= null
         var where:String?= menuParent[name]?.let { menuDataStore.getMenuType(it) }
@@ -56,6 +59,7 @@ class MenuRepository(
             itemMenu.title = item
             childMenu.children.add(itemMenu)
         }
+
         return Result.Success(childMenu)
     }
 }

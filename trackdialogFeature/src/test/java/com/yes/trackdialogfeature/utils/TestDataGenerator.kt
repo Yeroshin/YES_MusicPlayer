@@ -11,7 +11,7 @@ class TestDataGenerator {
             val item3 = Menu("test body 3")
             val menu=Menu("categories")
             menu.children = arrayListOf(item1,item2,item3)
-            return Menu("artists")
+            return menu
         }
     }
 

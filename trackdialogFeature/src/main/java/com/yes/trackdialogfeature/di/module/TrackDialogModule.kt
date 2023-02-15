@@ -15,6 +15,7 @@ import com.yes.trackdialogfeature.presentation.mapper.MenuMapper
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.Dispatchers
 
 @Module
 class TrackDialogModule(val context: Activity) {
@@ -68,12 +69,13 @@ class TrackDialogModule(val context: Activity) {
     fun provideShowChildMenu(
         menuRepository: MenuRepository
     ): GetChildMenuUseCase {
-        return GetChildMenuUseCase(menuRepository)
+
+        return GetChildMenuUseCase(Dispatchers.IO,menuRepository)
     }
 
     @Provides
     fun provideGetRootMenu(menuRepository: MenuRepository): GetRootMenuUseCase {
-        return GetRootMenuUseCase(menuRepository)
+        return GetRootMenuUseCase(Dispatchers.IO,menuRepository)
     }
     @Provides
     fun provideUIMapper(): MenuMapper {
