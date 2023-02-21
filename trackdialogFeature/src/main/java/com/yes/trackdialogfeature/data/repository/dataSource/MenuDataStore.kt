@@ -1,6 +1,7 @@
 package com.yes.trackdialogfeature.data.repository.dataSource
 
 import android.provider.MediaStore
+import com.yes.trackdialogfeature.data.repository.entity.MenuApiModel
 
 class MenuDataStore {
 
@@ -59,38 +60,57 @@ class MenuDataStore {
         "artists" to "categories",
         "artistTracks" to "artists",
         ////////////////////////////
-        "album" to "categories",
+        "albums" to "categories",
         "albumTracks" to "album",
         ////////////////////////////
-       /* "genres" to "categories",
-        "genreTracks" to "genres"*/
+        /* "genres" to "categories",
+         "genreTracks" to "genres"*/
     )
     val data = mapOf(
         "categories" to null,
         "artists" to MediaStore.Audio.Media.ARTIST,
         "artistTracks" to MediaStore.Audio.Media.TITLE,
         ////////////////////////////////
-        "album" to MediaStore.Audio.Media.ALBUM,
+        "albums" to MediaStore.Audio.Media.ALBUM,
         "albumTracks" to MediaStore.Audio.Media.TITLE,
         ////////////////////////////////
-       /* "genres" to "Media.GENRE",
-        "genreTracks" to "Media.TITLE"*/
+        /* "genres" to "Media.GENRE",
+         "genreTracks" to "Media.TITLE"*/
     )
 
     fun getMenuTree(): Map<String, String?> {
         return menuTree
     }
-    fun getMenuChildName(name:String): String {
-        var menuChild=""
+
+    fun getMenuChildName(name: String): String {
+        var menuChild = ""
         for (item in menuTree) {
             if (item.value == name) {
-                menuChild=item.key
+                menuChild = item.key
                 break
             }
         }
         return menuChild
     }
+
     fun getMenuType(menuName: String): String? {
         return data[menuName]
+    }
+
+    fun getRoot(): MenuApiModel {
+        val type = menuTree.filter { it.value == null }.keys.first()
+
+        val children = menuTree.filter { it.value == type }.keys
+        val menu = MenuApiModel(type, null)
+        children.forEach { item ->
+            menu.children.add(
+                MenuApiModel(item, null)
+            )
+        }
+        return menu
+    }
+
+    fun getChild(name: String) {
+
     }
 }

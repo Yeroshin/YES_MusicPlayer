@@ -2,10 +2,8 @@ package com.yes.trackdialogfeature.domain.usecase
 
 import com.yes.trackdialogfeature.data.repository.MenuRepository
 import com.yes.trackdialogfeature.domain.common.Result
-import com.yes.trackdialogfeature.domain.common.UseCaseException
 import com.yes.trackdialogfeature.domain.entity.Menu
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.delay
 
 class GetChildMenuUseCase(
     dispatcher: CoroutineDispatcher,
@@ -16,7 +14,6 @@ class GetChildMenuUseCase(
         return if(params.title.equals("root")){
             menuRepository.getMenu()
         }else{
-
             menuRepository.getMenu(params.title, params.name)
         }
     }

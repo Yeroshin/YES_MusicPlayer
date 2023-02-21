@@ -1,11 +1,11 @@
-package com.yes.trackdialogfeature.utils
+package com.yes.trackdialogfeature.domain
 
 import com.yes.trackdialogfeature.domain.entity.Menu
 
-class TestDataGenerator {
+object DomainFixtures {
 
-    companion object {
-        fun generateRootMenu() : Menu {
+
+        fun getRootMenu() : Menu {
             val item1 = Menu("test body 1")
             val item2 = Menu("test body 2")
             val item3 = Menu("test body 3")
@@ -13,6 +13,6 @@ class TestDataGenerator {
             menu.children = arrayListOf(item1,item2,item3)
             return menu
         }
-    }
+
 
 }

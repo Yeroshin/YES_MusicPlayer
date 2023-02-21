@@ -3,14 +3,14 @@ package com.yes.trackdialogfeature.data.repository
 import com.yes.trackdialogfeature.data.mapper.MediaMapper
 import com.yes.trackdialogfeature.data.mapper.MediaQueryMapper
 import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
-import com.yes.trackdialogfeature.domain.IMediaRepository
+import com.yes.trackdialogfeature.domain.IMediaDataStore
 
 
-class MediaRepository(
+class MediaDataStore(
     private val audioDataStore: AudioDataStore,
     private val mediaMapper: MediaMapper,
     private val mediaQueryMapper: MediaQueryMapper
-) : IMediaRepository {
+) : IMediaDataStore {
 
     /* private fun getRootName(): String {
          return menuDataStore.getName()

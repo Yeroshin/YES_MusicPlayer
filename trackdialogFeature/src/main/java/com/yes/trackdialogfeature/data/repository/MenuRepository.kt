@@ -1,20 +1,17 @@
 package com.yes.trackdialogfeature.data.repository
 
+import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
-import com.yes.trackdialogfeature.domain.IMediaRepository
+import com.yes.trackdialogfeature.domain.IMediaDataStore
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.common.Result
-
 class MenuRepository(
     private val menuDataStore: MenuDataStore,
-    private val mediaRepository: IMediaRepository,
+    private val audioDataStore: AudioDataStore,
 ) {
     private lateinit var menu: Menu
-    private val menuParent = mapOf<String,String>()
-   // private val menuParent = menuDataStore.getMenuTree()
+    private val menuParent = menuDataStore.getMenuTree()
     fun getMenu(): Result<Menu> {
-       val s= arrayOf(1,2,3)
-       val t=s[5]
         for (item in menuParent) {
             if (item.value == null) {
                 menu = Menu(item.key)
@@ -27,7 +24,7 @@ class MenuRepository(
                     item.key
                 )
                 menu.parent = this.menu
-                menu.title = item.key
+                menu.type = item.key
                 this.menu.children.add(menu)
             }
         }
@@ -36,7 +33,6 @@ class MenuRepository(
     }
 
     fun getMenu(title:String, name:String): Result<Menu> {
-        val s= arrayOf(1,2,3)
 
         var what: Array<String>?= null
         var where:String?= menuParent[name]?.let { menuDataStore.getMenuType(it) }
@@ -49,14 +45,14 @@ class MenuRepository(
 
         val childMenu = Menu(name)
 
-        val childrenItems = mediaRepository.getMediaItems(
+        val childrenItems = audioDataStore.getMediaItems(
             type,
             where,
             what
         )
         for (item in childrenItems) {
             val itemMenu = Menu(childMenuName)
-            itemMenu.title = item
+            itemMenu.type = item
             childMenu.children.add(itemMenu)
         }
 

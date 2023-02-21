@@ -4,7 +4,7 @@ fragment-ktx="1.5.5"
 viewmodel-ktx="2.5.1"
 
 kotlin = "1.7.20"
-android-gradle-plugin = "7.3.1"
+android-gradle-plugin = "7.4.0"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
@@ -13,9 +13,9 @@ viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version
 test-kotlin-junit = {module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin"}
 
 [plugins]
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version = "1.8.20-Beta" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
+android-application = { id = "com.android.application", version = "7.4.1" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 
 

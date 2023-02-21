@@ -2,10 +2,8 @@ package com.yes.trackdialogfeature.domain.usecase
 
 import com.yes.trackdialogfeature.data.repository.MenuRepository
 import com.yes.trackdialogfeature.domain.common.Result
-import com.yes.trackdialogfeature.domain.common.UseCaseException
 import com.yes.trackdialogfeature.domain.entity.Menu
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 
 class GetRootMenuUseCase(
     dispatcher: CoroutineDispatcher,

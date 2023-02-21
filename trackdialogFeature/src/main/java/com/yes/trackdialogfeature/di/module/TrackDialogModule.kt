@@ -1,7 +1,7 @@
 package com.yes.trackdialogfeature.di.module
 
 import android.app.Activity
-import com.yes.trackdialogfeature.data.repository.MediaRepository
+//import com.yes.trackdialogfeature.data.repository.MediaDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdialogfeature.data.mapper.MediaMapper
@@ -32,9 +32,9 @@ class TrackDialogModule(val context: Activity) {
     @Provides
     fun providesMenuRepository(
         menuDataStore: MenuDataStore,
-        mediaRepository: IMediaRepository
+        audioDataStore: AudioDataStore
     ): MenuRepository {
-        return MenuRepository(menuDataStore,mediaRepository)
+        return MenuRepository(menuDataStore,audioDataStore)
     }
 
     @Provides
@@ -54,15 +54,15 @@ class TrackDialogModule(val context: Activity) {
     }
 
 
-    @Provides
+  /*  @Provides
     fun provideMediaRepository(
         audioDataStore: AudioDataStore,
         mediaMapper: MediaMapper,
         mediaQueryMapper: MediaQueryMapper
 
-    ): IMediaRepository {
-        return MediaRepository(audioDataStore, mediaMapper, mediaQueryMapper)
-    }
+    ): IMediaDataStore {
+        return MediaDataStore(audioDataStore, mediaMapper, mediaQueryMapper)
+    }*/
 
 
     @Provides
@@ -74,7 +74,7 @@ class TrackDialogModule(val context: Activity) {
     }
 
     @Provides
-    fun provideGetRootMenu(menuRepository: MenuRepository): GetRootMenuUseCase {
+    fun provideGetRootMenuUseCase(menuRepository: MenuRepository): GetRootMenuUseCase {
         return GetRootMenuUseCase(Dispatchers.IO,menuRepository)
     }
     @Provides
@@ -91,7 +91,7 @@ class TrackDialogModule(val context: Activity) {
     }
 
     @Provides
-    fun provideMediaDialogAdapter(): TrackDialogAdapter {
+    fun provideTrackDialogAdapter(): TrackDialogAdapter {
         return TrackDialogAdapter()
     }
 }

@@ -1,7 +1,7 @@
 package com.yes.trackdialogfeature.domain
 
 
-interface IMediaRepository {
+interface IMediaDataStore {
    /* fun getMenu(): Menu
     fun getMenu(param: MenuParam): Menu*/
   // fun getMedia(mediaQuery: MediaQuery):ArrayList<MediaItem>
