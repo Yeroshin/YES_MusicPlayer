@@ -99,7 +99,7 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
         projection:Array<String>,
     selection:String?,
     selectionArgs:Array<String>?,
-    ): ArrayList<String> {
+    ): Set<String> {
 
        /*  val mediaQue = MediaQueryEntity(
              Array(1){MediaStore.Audio.Media.TITLE},
@@ -111,7 +111,7 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
             MediaStore.Audio.Media.ARTIST + "=?",
             Array(1) { "Dire Straits" }
         )*/
-        val audioList = ArrayList<String>()
+        val audioList = mutableSetOf<String>()
 
         val collection =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

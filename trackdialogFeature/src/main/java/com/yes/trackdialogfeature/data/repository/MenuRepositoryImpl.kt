@@ -3,6 +3,7 @@ package com.yes.trackdialogfeature.data.repository
 import com.yes.trackdialogfeature.data.mapper.MenuMapper
 import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
+import com.yes.trackdialogfeature.data.repository.entity.MenuApiModel
 import com.yes.trackdialogfeature.domain.common.Result
 import com.yes.trackdialogfeature.domain.entity.Menu
 
@@ -12,17 +13,22 @@ class MenuRepositoryImpl(
     private val menuMapper: MenuMapper
 ) {
 
-    fun getMenu(): Result<Menu> {
-        return Result.Success(
-            menuMapper.mapToDomain(
-                menuDataStore.getRoot()
-            )
-        )
+    fun getMenu(): MenuApiModel {
+        return menuDataStore.getRoot()
+
     }
 
-    fun getMenu(type: String, name: String?): Result<Menu> {
+    fun getMenu(type: String, name: String?): MenuApiModel {
+        val childsType = menuDataStore.getChild(type)
+        val childsChildren = audioDataStore.getMediaItems(
+            arrayOf(type),
+            null,
+            null
+        )
+            .map { item ->
+                MenuApiModel(childsType, item, listOf())
+            }
 
-
-        return Result.Success(Menu(""))
+        return MenuApiModel(type, null, childsChildren)
     }
 }

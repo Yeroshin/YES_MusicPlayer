@@ -1,58 +1,57 @@
 package com.yes.trackdialogfeature.data
 
 import com.yes.trackdialogfeature.data.repository.entity.MenuApiModel
-import com.yes.trackdialogfeature.domain.entity.Menu
 
 object DataFixtures {
     fun getRootMenuApiModel(): MenuApiModel {
         val item1 = MenuApiModel(
             "artists",
-            "artists"
+            "artists",
+            listOf()
         )
         val item2 = MenuApiModel(
             "albums",
-            "albums"
+            "albums",
+            listOf()
         )
-        val menu = MenuApiModel(
+        return MenuApiModel(
             "categories",
-            null
+            null,
+            listOf(item1,item2)
         )
-        menu.children.add(item1)
-        menu.children.add(item2)
-
-        return menu
     }
-    fun getRootMenu(): Menu {
-        val item1 = Menu(
-            "artists"
-        )
-        val item2 = Menu(
-            "albums"
-        )
-        val menu = Menu(
-            "categories"
-        )
-        menu.children.add(item1)
-        menu.children.add(item2)
-
-        return menu
-    }
-
-    fun getChildMenu():MenuApiModel{
+    fun getArtistsMenu(): MenuApiModel {
         val item1 = MenuApiModel(
             "artistTracks",
-            "Dire Straits"
+            "Dire Straits",
+            listOf()
         )
         val item2 = MenuApiModel(
             "artistTracks",
-            "Chris Rea"
+            "Chris Rea",
+            listOf()
         )
-        val children = setOf(item1, item2)
-        val menu = MenuApiModel(
+        return MenuApiModel(
             "artists",
-            null
+            null,
+            listOf(item1,item2)
         )
-
-        return menu
+    }
+    fun getTracksMenu(): MenuApiModel {
+        val item1 = MenuApiModel(
+            "",
+            "Money For Nothing",
+            listOf()
+        )
+        val item2 = MenuApiModel(
+            "",
+            "Sultans of Swing",
+            listOf()
+        )
+        return MenuApiModel(
+            "artistTracks",
+            "Dire Straits",
+            listOf(item1,item2)
+        )
     }
 }

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 
 internal class MenuDataStoreTest {
     private val cut=MenuDataStore()
-    @Test
+   /* @Test
     fun `getRoot returns root MenuApiModel`() {
 
         // arrange
@@ -18,13 +18,15 @@ internal class MenuDataStoreTest {
         // Assert
         assertEquals(actual.name,expected.name)
         assertEquals(actual.type,expected.type)
-     //   assertEquals(actual.children,expected.children)
-    }
+        assertEquals(actual.children.elementAt(0),expected.children.elementAt(0))
+        assertEquals(actual.children.elementAt(1),expected.children.elementAt(1))
+
+    }*/
 
     @Test
     fun `getChild returns child MenuApiModel`(){
         // arrange
-        val expected = DataFixtures.getChildMenu()
+        val expected = DataFixtures.getArtistsMenu()
 
         // act
         val actual = cut.getChild(

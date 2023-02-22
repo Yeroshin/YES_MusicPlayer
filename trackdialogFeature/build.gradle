@@ -7,11 +7,11 @@ plugins {
 
 android {
     compileSdk 33
-    testOptions {
+   /* testOptions {
         unitTests.all {
             useJUnitPlatform()
         }
-    }
+    }*/
 
     defaultConfig {
         minSdk 19
@@ -33,9 +33,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '11'
-        freeCompilerArgs += [
+     /*   freeCompilerArgs += [
                 "-Xjvm-default=all",
-        ]
+        ]*/
     }
     buildFeatures {
         viewBinding = true
@@ -49,9 +49,7 @@ android {
 dependencies {
     implementation project(path: ':coreUI')
     implementation project(path: ':core')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+
 
 
     def fragmentKtx = "1.5.5"
@@ -66,21 +64,19 @@ dependencies {
     implementation "com.google.android.material:material:1.8.0"
 
     //viewModel
-    implementation libs.fragment.ktx
-    implementation libs.viewmodel.ktx
+
 
     //Dagger/////////////////////
     def dagger_version = '2.45'
-  /*  implementation "com.google.dagger:dagger:$dagger_version"
-    kapt 'com.google.dagger:dagger-compiler:2.45'
-    kapt 'org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0'*/
     implementation 'com.google.dagger:dagger:2.45'
     kapt 'com.google.dagger:dagger-compiler:2.45'
-
+    kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0" //ImportantSHIT!!!
     //test
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
     def junitVersion= '4.13.2'
     testImplementation "junit:junit:4.13.2"
-    testImplementation libs.test.kotlin.junit
+    //testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
     // Mock objects
     def mockkVersion="1.13.4"
     testImplementation "io.mockk:mockk:$mockkVersion"

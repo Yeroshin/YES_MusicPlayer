@@ -50,7 +50,7 @@ dependencies {
     implementation project(path: ':playerFeature')
 
     //core
-    implementation libs.androidx.core.ktx
+    implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
 
     implementation 'com.google.android.material:material:1.8.0'
@@ -68,8 +68,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     // JetPack
-    implementation libs.viewmodel.ktx
-    implementation libs.fragment.ktx
+
     //Dagger/////////////////////
     def dagger_version = '2.45'
     implementation "com.google.dagger:dagger:$dagger_version"

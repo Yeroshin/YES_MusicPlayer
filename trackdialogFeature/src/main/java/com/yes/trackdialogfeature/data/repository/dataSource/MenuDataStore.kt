@@ -100,17 +100,16 @@ class MenuDataStore {
     fun getRoot(): MenuApiModel {
         val type = menuTree.filter { it.value == null }.keys.first()
 
-        val children = menuTree.filter { it.value == type }.keys
-        val menu = MenuApiModel(type, null)
-        children.forEach { item ->
-            menu.children.add(
-                MenuApiModel(item, null)
-            )
-        }
-        return menu
+        val children = menuTree
+            .filter { it.value == type }
+            .keys
+            .map { item -> MenuApiModel(item, item, listOf()) }
+
+
+        return MenuApiModel(type, null, children)
     }
 
-    fun getChild(name: String) {
-
+    fun getChild(name: String):String {
+        return ""
     }
 }
