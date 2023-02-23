@@ -54,7 +54,7 @@ class MenuDataStore {
     fun getName():String {
         return  appContext.resources.getString(com.yes.coreui.R.string.categories)
     }*/
-    private val menuTree = mapOf(
+    private val menuGraph = mapOf(
         "categories" to null,
         /////////////////////////
         "artists" to "categories",
@@ -78,15 +78,15 @@ class MenuDataStore {
          "genreTracks" to "Media.TITLE"*/
     )
 
-    fun getMenuTree(): Map<String, String?> {
-        return menuTree
+    fun getMenuGraph(): Map<String, String?> {
+        return menuGraph
     }
 
     fun getMenuChildName(name: String): String {
         var menuChild = ""
-        for (item in menuTree) {
+        for (item in menuGraph) {
             if (item.value == name) {
-                menuChild = item.key
+                menuChild = item.key!!
                 break
             }
         }
@@ -98,9 +98,9 @@ class MenuDataStore {
     }
 
     fun getRoot(): MenuApiModel {
-        val type = menuTree.filter { it.value == null }.keys.first()
+        val type = menuGraph.filter { it.value == null }.keys.first()
 
-        val children = menuTree
+        val children = menuGraph
             .filter { it.value == type }
             .keys
             .map { item -> MenuApiModel(item, item, listOf()) }
@@ -109,7 +109,60 @@ class MenuDataStore {
         return MenuApiModel(type, null, children)
     }
 
-    fun getChild(name: String):String {
-        return ""
+    //////////tmp
+    private val menutree = mapOf<String, Array<String>>(
+
+        "categories" to arrayOf(
+            "artists",
+            "albums"
+        ),
+        /////////////////////////
+        "artists" to arrayOf(
+            "artistTracks",
+            "artistAlbums"
+        ),
+        ////////////////////////////
+        "artistAlbums" to arrayOf(
+            "albumTracks"
+        ),
+        ////////////////////////////
+
+        /* "genres" to "categories",
+         "genreTracks" to "genres"*/
+    )
+fun getChild(name:String):String{
+    return ""
+}
+    fun getChildren(name: String): Array<String> {
+        return menutree.getValue(name)
     }
+
+    fun findRoot(): String {
+        var i = false
+        var c=""
+
+        menutree.forEach { menu->
+            var k= true
+            menutree.forEach { item ->
+               var  f=item.value.filter {
+                    c->c.equals(menu.key)
+                }
+                 if(!f.isEmpty()) {
+                    k=false
+                }
+            }
+            if (k) {
+                if(!c.equals("")){
+                    return "error!"
+                }
+                c = menu.key
+            }
+
+        }
+
+        return c
+    }
+
+
+
 }

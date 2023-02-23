@@ -16,7 +16,7 @@ object DataFixtures {
         )
         return MenuApiModel(
             "categories",
-            null,
+            "categories",
             listOf(item1,item2)
         )
     }

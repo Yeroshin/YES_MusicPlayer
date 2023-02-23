@@ -12,9 +12,30 @@ class MenuRepositoryImpl(
     private val audioDataStore: AudioDataStore,
     private val menuMapper: MenuMapper
 ) {
-
+/*
     fun getMenu(): MenuApiModel {
         return menuDataStore.getRoot()
+
+    }
+
+    fun getMenu(type: String, name: String?): MenuApiModel {
+        val childsType = menuDataStore.getChild(type)
+        val childsChildren = audioDataStore.getMediaItems(
+            arrayOf(type),
+            null,
+            null
+        )
+            .map { item ->
+                MenuApiModel(childsType, item, listOf())
+            }
+
+        return MenuApiModel(type, null, childsChildren)
+    }*/
+
+    fun getMenu(): MenuApiModel {
+        val root= menuDataStore.findRoot()
+        val children=menuDataStore
+        return MenuApiModel()
 
     }
 

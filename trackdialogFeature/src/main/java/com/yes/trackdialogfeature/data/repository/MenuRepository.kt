@@ -2,7 +2,6 @@ package com.yes.trackdialogfeature.data.repository
 
 import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
-import com.yes.trackdialogfeature.domain.IMediaDataStore
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.common.Result
 class MenuRepository(
@@ -10,7 +9,7 @@ class MenuRepository(
     private val audioDataStore: AudioDataStore,
 ) {
     private lateinit var menu: Menu
-    private val menuParent = menuDataStore.getMenuTree()
+    private val menuParent = menuDataStore.getMenuGraph()
     fun getMenu(): Result<Menu> {
         for (item in menuParent) {
             if (item.value == null) {

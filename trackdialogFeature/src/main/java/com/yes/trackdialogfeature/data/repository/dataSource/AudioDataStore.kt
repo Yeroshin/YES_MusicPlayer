@@ -3,6 +3,7 @@ package com.yes.trackdialogfeature.data.repository.dataSource
 import android.content.Context
 import android.os.Build
 import android.provider.MediaStore
+import android.provider.UserDictionary
 import com.yes.trackdialogfeature.data.IMediaDataStore
 
 
@@ -96,21 +97,21 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
          return audioList
      }*/
     fun getMediaItems(
-        projection:Array<String>,
-    selection:String?,
-    selectionArgs:Array<String>?,
+        projection: Array<String>,
+        selection: String?,
+        selectionArgs: Array<String>?,
     ): Set<String> {
 
-       /*  val mediaQue = MediaQueryEntity(
-             Array(1){MediaStore.Audio.Media.TITLE},
+        /*  val mediaQue = MediaQueryEntity(
+              Array(1){MediaStore.Audio.Media.TITLE},
+              MediaStore.Audio.Media.ARTIST + "=?",
+              Array(1) { "The Soundtrack" }
+          )
+         val mediaQuer = MediaQueryEntity(
+             Array(1){"title"},
              MediaStore.Audio.Media.ARTIST + "=?",
-             Array(1) { "The Soundtrack" }
-         )
-        val mediaQuer = MediaQueryEntity(
-            Array(1){"title"},
-            MediaStore.Audio.Media.ARTIST + "=?",
-            Array(1) { "Dire Straits" }
-        )*/
+             Array(1) { "Dire Straits" }
+         )*/
         val audioList = mutableSetOf<String>()
 
         val collection =
@@ -131,17 +132,40 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
         // Display videos in alphabetical order based on their display name.
         val sortOrder = "${MediaStore.Video.Media.DISPLAY_NAME} ASC"
 
+        /* val query = appContext.contentResolver.query(
+             collection,
+             projection,
+             selection,
+             selectionArgs,
+             sortOrder
+         )*/
+        //MediaStore.Audio.Media.ARTIST,
+        // MediaStore.Audio.Media.TITLE,
+        /////////////////////////
+        val projectio = arrayOf(
+           // MediaStore.Audio.Genres.NAME,
+           // MediaStore.Audio.Media.
+           // MediaStore.Audio.Media.GENRE,
+            MediaStore.Audio.Media.ARTIST,
+            MediaStore.Audio.Media.TITLE,
+        )
+       val selectio = null
+        val selectionArg = arrayOf("")
+
+      /*  val selectio = null
+        val selectionArg =null*/
+        ///////////////////////
         val query = appContext.contentResolver.query(
             collection,
-            projection,
-            selection,
-            selectionArgs,
+            projectio,
+            selectio,
+            selectionArg,
             sortOrder
         )
 
         query?.use { cursor ->
             // Cache column indices.
-            val column = cursor.getColumnIndex(projection[0])
+            val column = cursor.getColumnIndex(projectio[1])
             while (cursor.moveToNext()) {
                 audioList.add(cursor.getString(column))
             }
