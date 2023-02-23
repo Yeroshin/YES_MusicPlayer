@@ -25,11 +25,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
 
 
 
@@ -73,5 +73,5 @@ dependencies {
     def dagger_version = '2.45'
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0" //ImportantSHIT!!!
+  //  kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0" //ImportantSHIT!!!
 }
