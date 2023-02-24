@@ -34,22 +34,17 @@ class MenuRepositoryImpl(
 
     fun getMenu(): MenuApiModel {
         val root= menuDataStore.findRoot()
-        val children=menuDataStore
-        return MenuApiModel()
+        val children=menuDataStore.getChildren(root)
+            .map {
+                MenuApiModel(it,it, listOf())
+            }
+        return MenuApiModel(root,"", children )
 
     }
 
     fun getMenu(type: String, name: String?): MenuApiModel {
-        val childsType = menuDataStore.getChild(type)
-        val childsChildren = audioDataStore.getMediaItems(
-            arrayOf(type),
-            null,
-            null
-        )
-            .map { item ->
-                MenuApiModel(childsType, item, listOf())
-            }
+        val childrenType = menuDataStore.getChildren(type)
 
-        return MenuApiModel(type, null, childsChildren)
+        return MenuApiModel(type, null, listOf())
     }
 }

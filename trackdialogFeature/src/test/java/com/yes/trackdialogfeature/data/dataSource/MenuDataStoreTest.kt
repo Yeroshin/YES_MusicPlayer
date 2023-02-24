@@ -1,6 +1,6 @@
 package com.yes.trackdialogfeature.data.dataSource
 
-import com.yes.trackdialogfeature.data.DataFixtures
+import com.yes.trackdialogfeature.data.DataSourceFixtures
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 import org.junit.Assert.assertArrayEquals
 
@@ -29,7 +29,7 @@ internal class MenuDataStoreTest {
     @Test
     fun `getRoot returns root`(){
         // arrange
-        val expected = DataFixtures.getArtistsMenu()
+        val expected = DataSourceFixtures.getArtistsMenu()
 
         // act
         val actual = cut.findRoot()

@@ -1,6 +1,7 @@
 package com.yes.trackdialogfeature.data.repository
 
-import com.yes.trackdialogfeature.data.DataFixtures
+import com.yes.trackdialogfeature.data.DataSourceFixtures
+import com.yes.trackdialogfeature.data.RepositoryFixtures
 import com.yes.trackdialogfeature.data.mapper.MenuMapper
 import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
@@ -23,86 +24,76 @@ class MenuRepositoryImplTest {
     )
 
     @Test
-    fun `getMenu handles api success and returns root MenuApiModel`() {
+    fun `1 getMenu handles api success and returns root MenuApiModel`() {
         // Given
-        val expected = DataFixtures.getRootMenuApiModel()
-        every { menuDataStore.getRoot() } returns expected
+        val expected = RepositoryFixtures.getRootMenu()
+        every { menuDataStore.findRoot() } returns DataSourceFixtures.findRoot()
+        every { menuDataStore.getChildren(any()) } returns DataSourceFixtures.getRootChildren()
         // When
         val actual = cut.getMenu()
         // Assert
-        verify { menuDataStore.getRoot() }
+        verify { menuDataStore.findRoot() }
         assertEquals(expected.type, actual.type)
-        assertEquals(expected.children.elementAt(0), actual.children.elementAt(0))
-        assertEquals(expected.children.elementAt(1), actual.children.elementAt(1))
+        assertEquals(expected.children.elementAt(0).name, actual.children.elementAt(0).name)
+        assertEquals(expected.children.elementAt(1).name, actual.children.elementAt(1).name)
         /* assert(actual is Result.Success)
          assertEquals((actual as Result.Success).data, expected)*/
     }
 
     @Test
-    fun `get artists returns artists with artist Tracks`() {
-        //Given
-        val expected = DataFixtures.getArtistsMenu()
+    fun `2 get artists returns all artists`() {
+        // Given
+        val expected = RepositoryFixtures.getArtistMenu()
         every {
-            menuDataStore.getChild(
-                "artists"
-            )
-        } returns "artistTracks"
+            menuDataStore.getChildren("artists")
+        } returns DataSourceFixtures.getRootChildren()
         every {
             audioDataStore.getMediaItems(
                 arrayOf("artists"),
                 null,
                 null
             )
-        } returns setOf("Dire Straits", "Chris Rea")
-        //When
+        } returns DataSourceFixtures.getArtistsChildren()
+
+        // When
         val actual = cut.getMenu("artists", null)
-        //Assert
-        verify { menuDataStore.getChild("artists") }
-        verify {
-            audioDataStore.getMediaItems(
-                arrayOf("artists"),
-                null,
-                null
-            )
-        }
+        // Assert
+        verify { menuDataStore.getChildren(any())}
+        verify { audioDataStore.getMediaItems(any(),any(),any())}
         assertEquals(expected.type, actual.type)
-        assertEquals(expected.name, actual.name)
         assertEquals(expected.children.elementAt(0).name, actual.children.elementAt(0).name)
+        assertEquals(expected.children.elementAt(1).name, actual.children.elementAt(1).name)
         assertEquals(expected.children.elementAt(1).type, actual.children.elementAt(1).type)
         /* assert(actual is Result.Success)
          assertEquals((actual as Result.Success).data, expected)*/
     }
 
     @Test
-    fun `get artistTracks returns artists with tracks`() {
-
-        //Given
-        val expected = DataFixtures.getTracksMenu()
-        every { menuDataStore.getChild("artistTracks") } returns ""
+    fun `3 get artist returns artist tracks & artist albums`() {
+        // Given
+        val expected = RepositoryFixtures.getArtistMenu()
         every {
+            menuDataStore.getChildren("artists")
+        } returns DataSourceFixtures.getRootChildren()
+      /*  every {
             audioDataStore.getMediaItems(
-                arrayOf("artistTracks"),
-                "artists",
-                arrayOf("Dire Straits")
+                arrayOf("artists"),
+                null,
+                null
             )
-        } returns setOf("Money For Nothing", "Sultans of Swing")
-        //When
-        val actual = cut.getMenu("artistTracks", "Dire Straits")
-        //Assert
-        verify { menuDataStore.getChild("artists") }
-        verify {
-            audioDataStore.getMediaItems(
-                arrayOf("artistTracks"),
-                "artists",
-                arrayOf("Dire Straits")
-            )
-        }
+        } returns DataSourceFixtures.getArtistsChildren()*/
+
+        // When
+        val actual = cut.getMenu("artists", null)
+        // Assert
+        verify { menuDataStore.getChildren(any())}
+        verify(exactly = 0) { audioDataStore.getMediaItems(any(),any(),any())}
         assertEquals(expected.type, actual.type)
-        assertEquals(expected.name, actual.name)
         assertEquals(expected.children.elementAt(0).name, actual.children.elementAt(0).name)
+        assertEquals(expected.children.elementAt(1).name, actual.children.elementAt(1).name)
         assertEquals(expected.children.elementAt(1).type, actual.children.elementAt(1).type)
         /* assert(actual is Result.Success)
-             assertEquals((actual as Result.Success).data, expected)*/
+         assertEquals((actual as Result.Success).data, expected)*/
     }
 
 

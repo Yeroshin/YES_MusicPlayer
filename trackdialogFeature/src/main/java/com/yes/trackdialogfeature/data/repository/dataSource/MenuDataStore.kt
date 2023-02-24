@@ -111,21 +111,37 @@ class MenuDataStore {
 
     //////////tmp
     private val menutree = mapOf<String, Array<String>>(
-
+        //name:"categories"
         "categories" to arrayOf(
+            "tracks",
             "artists",
             "albums"
         ),
         /////////////////////////
+        //name:"artists"
         "artists" to arrayOf(
+            "artist"
+        ),
+        //name:"Dire Straits"
+        "artist" to arrayOf(
             "artistTracks",
             "artistAlbums"
         ),
-        ////////////////////////////
+        //name:"Dire Straits"
+        "artistTracks" to arrayOf(
+            "track"
+        ),
+        //name:"artistAlbums"
         "artistAlbums" to arrayOf(
-            "albumTracks"
+            "album"
+        ),
+        //name:"Brothers in Arms"
+        "album" to arrayOf(
+            "track"
         ),
         ////////////////////////////
+
+
 
         /* "genres" to "categories",
          "genreTracks" to "genres"*/
