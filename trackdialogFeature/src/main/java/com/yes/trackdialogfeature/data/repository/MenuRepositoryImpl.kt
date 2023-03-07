@@ -36,15 +36,40 @@ class MenuRepositoryImpl(
         val root= menuDataStore.findRoot()
         val children=menuDataStore.getChildren(root)
             .map {
-                MenuApiModel(it,it, listOf())
-            }
-        return MenuApiModel(root,"", children )
+                MenuApiModel(it,it, arrayOf())
+            }.toTypedArray()
+        return MenuApiModel(root,root, children )
 
     }
 
-    fun getMenu(type: String, name: String?): MenuApiModel {
+    fun getMenu(type: String, name: String): MenuApiModel {
         val childrenType = menuDataStore.getChildren(type)
+        var selection:String?=null
+        var args:Array<String>
+        return if(childrenType.size==1){
+             args  = type?.takeIf { it.equals(name)}?.let {
+                 emptyArray()
+            }?:run {
+                 selection=type
+                 arrayOf(name)
 
-        return MenuApiModel(type, null, listOf())
+             }
+
+
+            val children=audioDataStore.getMediaItems(childrenType,selection, args)
+                .map {
+                    MenuApiModel(childrenType[0],it, arrayOf())
+                }.toTypedArray()
+            MenuApiModel(type, name, children)
+        }else{
+
+            MenuApiModel(
+                type,
+                name,
+                childrenType
+                    .map { MenuApiModel(it, name, arrayOf()) }
+                    .toTypedArray())
+        }
+
     }
 }

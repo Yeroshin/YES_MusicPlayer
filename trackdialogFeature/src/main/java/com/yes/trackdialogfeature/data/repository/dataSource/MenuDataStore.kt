@@ -1,6 +1,6 @@
 package com.yes.trackdialogfeature.data.repository.dataSource
 
-import android.provider.MediaStore
+
 import com.yes.trackdialogfeature.data.repository.entity.MenuApiModel
 
 class MenuDataStore {
@@ -66,7 +66,7 @@ class MenuDataStore {
         /* "genres" to "categories",
          "genreTracks" to "genres"*/
     )
-    val data = mapOf(
+   /* val data = mapOf(
         "categories" to null,
         "artists" to MediaStore.Audio.Media.ARTIST,
         "artistTracks" to MediaStore.Audio.Media.TITLE,
@@ -76,7 +76,7 @@ class MenuDataStore {
         ////////////////////////////////
         /* "genres" to "Media.GENRE",
          "genreTracks" to "Media.TITLE"*/
-    )
+    )*/
 
     fun getMenuGraph(): Map<String, String?> {
         return menuGraph
@@ -93,9 +93,9 @@ class MenuDataStore {
         return menuChild
     }
 
-    fun getMenuType(menuName: String): String? {
+  /*  fun getMenuType(menuName: String): String? {
         return data[menuName]
-    }
+    }*/
 
     fun getRoot(): MenuApiModel {
         val type = menuGraph.filter { it.value == null }.keys.first()
@@ -103,14 +103,14 @@ class MenuDataStore {
         val children = menuGraph
             .filter { it.value == type }
             .keys
-            .map { item -> MenuApiModel(item, item, listOf()) }
-
+            .map { item -> MenuApiModel(item, item, arrayOf()) }
+            .toTypedArray()
 
         return MenuApiModel(type, null, children)
     }
 
     //////////tmp
-    private val menutree = mapOf<String, Array<String>>(
+    private val menutree = mapOf(
         //name:"categories"
         "categories" to arrayOf(
             "tracks",

@@ -7,51 +7,51 @@ object DataSourceFixtures {
         val item1 = MenuApiModel(
             "artists",
             "artists",
-            listOf()
+            arrayOf()
         )
         val item2 = MenuApiModel(
             "albums",
             "albums",
-            listOf()
+            arrayOf()
         )
         return MenuApiModel(
             "categories",
             "categories",
-            listOf(item1,item2)
+            arrayOf(item1,item2)
         )
     }
     fun getArtistsMenu(): MenuApiModel {
         val item1 = MenuApiModel(
             "artistTracks",
             "Dire Straits",
-            listOf()
+            arrayOf()
         )
         val item2 = MenuApiModel(
             "artistTracks",
             "Chris Rea",
-            listOf()
+            arrayOf()
         )
         return MenuApiModel(
             "artists",
             null,
-            listOf(item1,item2)
+            arrayOf(item1,item2)
         )
     }
     fun getTracksMenu(): MenuApiModel {
         val item1 = MenuApiModel(
             "",
             "Money For Nothing",
-            listOf()
+            arrayOf()
         )
         val item2 = MenuApiModel(
             "",
             "Sultans of Swing",
-            listOf()
+            arrayOf()
         )
         return MenuApiModel(
             "artistTracks",
             "Dire Straits",
-            listOf(item1,item2)
+            arrayOf(item1,item2)
         )
     }
 //////////////////////////////
@@ -66,8 +66,8 @@ object DataSourceFixtures {
             "albums"
         )
     }
-    fun getArtistsChildren():Set<String>{
-        return setOf<String>(
+    fun getArtistsChildren():Array<String>{
+        return arrayOf(
             "artists",
             "albums"
         )
@@ -79,68 +79,85 @@ object RepositoryFixtures {
         val item1 = MenuApiModel(
             "artists",
             "artists",
-            listOf()
+            arrayOf()
         )
         val item2 = MenuApiModel(
             "albums",
             "albums",
-            listOf()
+            arrayOf()
         )
         return MenuApiModel(
             "categories",
             "categories",
-            listOf(item1,item2)
+            arrayOf(item1,item2)
         )
     }
     fun getArtistsMenu(): MenuApiModel{
         val item1 = MenuApiModel(
             "artist",
             "Chris Rea",
-            listOf()
+            arrayOf()
         )
         val item2 = MenuApiModel(
             "artist",
             "Dire Straits",
-            listOf()
+            arrayOf()
         )
         return MenuApiModel(
             "artists",
             "artists",
-            listOf(item1,item2)
+            arrayOf(item1,item2)
         )
     }
     fun getArtistMenu(): MenuApiModel{
         val item1 = MenuApiModel(
             "artistTracks",
-            "artistTracks",
-            listOf()
+            "Dire Straits",
+            arrayOf()
         )
         val item2 = MenuApiModel(
             "artistAlbums",
-            "artistAlbums",
-            listOf()
+            "Dire Straits",
+            arrayOf()
         )
         return MenuApiModel(
             "artist",
-            "artist",
-            listOf(item1,item2)
+            "Dire Straits",
+            arrayOf(item1,item2)
         )
     }
     fun getArtistAlbumsMenu(): MenuApiModel{
         val item1 = MenuApiModel(
-            "albums",
-            "Dire Straits",
-            listOf()
+            "album",
+            "Brothers in Arms",
+            arrayOf()
         )
         val item2 = MenuApiModel(
-            "albums",
-            "Dire Straits",
-            listOf()
+            "album",
+            "Love over Gold",
+            arrayOf()
         )
         return MenuApiModel(
             "artistAlbums",
-            "artistAlbums",
-            listOf(item1,item2)
+            "Dire Straits",
+            arrayOf(item1,item2)
+        )
+    }
+    fun getArtistAlbumTrackMenu(): MenuApiModel{
+        val item1 = MenuApiModel(
+            "track",
+            "So Far Away",
+            arrayOf()
+        )
+        val item2 = MenuApiModel(
+            "track",
+            "Walk of Life",
+            arrayOf()
+        )
+        return MenuApiModel(
+            "album",
+            "Brothers in Arms",
+            arrayOf(item1,item2)
         )
     }
 

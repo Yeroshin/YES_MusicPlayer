@@ -100,7 +100,7 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
         projection: Array<String>,
         selection: String?,
         selectionArgs: Array<String>?,
-    ): Set<String> {
+    ): Array<String> {
 
         /*  val mediaQue = MediaQueryEntity(
               Array(1){MediaStore.Audio.Media.TITLE},
@@ -112,7 +112,7 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
              MediaStore.Audio.Media.ARTIST + "=?",
              Array(1) { "Dire Straits" }
          )*/
-        val audioList = mutableSetOf<String>()
+        val audioList = arrayListOf<String>()
 
         val collection =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -150,7 +150,7 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
             MediaStore.Audio.Media.TITLE,
         )
        val selectio = null
-        val selectionArg = arrayOf("")
+        val selectionArg = emptyArray<String>();
 
       /*  val selectio = null
         val selectionArg =null*/
@@ -170,6 +170,6 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
                 audioList.add(cursor.getString(column))
             }
         }
-        return audioList
+        return audioList.toTypedArray()
     }
 }

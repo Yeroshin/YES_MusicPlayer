@@ -33,18 +33,22 @@ class MenuRepository(
 
     fun getMenu(title:String, name:String): Result<Menu> {
 
-        var what: Array<String>?= null
+      /*  var what: Array<String>?= null
         var where:String?= menuParent[name]?.let { menuDataStore.getMenuType(it) }
         val childMenuName = menuDataStore.getMenuChildName(name)
         val type =arrayOf( menuDataStore.getMenuType(name)!!)
         if(where!=null){
             where += "=?"
             what = arrayOf(title)
-        }
+        }*/
 
         val childMenu = Menu(name)
-
         val childrenItems = audioDataStore.getMediaItems(
+            arrayOf(),
+            null,
+            arrayOf()
+        )
+     /*   val childrenItems = audioDataStore.getMediaItems(
             type,
             where,
             what
@@ -53,7 +57,7 @@ class MenuRepository(
             val itemMenu = Menu(childMenuName)
             itemMenu.type = item
             childMenu.children.add(itemMenu)
-        }
+        }*/
 
         return Result.Success(childMenu)
     }
