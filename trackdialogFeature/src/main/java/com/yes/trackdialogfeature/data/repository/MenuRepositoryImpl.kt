@@ -3,9 +3,7 @@ package com.yes.trackdialogfeature.data.repository
 import com.yes.trackdialogfeature.data.mapper.MenuMapper
 import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
-import com.yes.trackdialogfeature.data.repository.entity.MenuApiModel
-import com.yes.trackdialogfeature.domain.common.Result
-import com.yes.trackdialogfeature.domain.entity.Menu
+import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
 
 class MenuRepositoryImpl(
     private val menuDataStore: MenuDataStore,
@@ -32,18 +30,19 @@ class MenuRepositoryImpl(
         return MenuApiModel(type, null, childsChildren)
     }*/
 
-    fun getMenu(): MenuApiModel {
-        val root= menuDataStore.findRoot()
+    fun getMenu(): MenuDataStoreEntity {
+      /*  val root= menuDataStore.findRoot()
         val children=menuDataStore.getChildren(root)
             .map {
-                MenuApiModel(it,it, arrayOf())
+                MenuDataStoreEntity(it,it, arrayOf())
             }.toTypedArray()
-        return MenuApiModel(root,root, children )
-
+        return MenuDataStoreEntity(root,root, children )*/
+        TODO("Not yet implemented")
     }
 
-    fun getMenu(type: String, name: String): MenuApiModel {
-        val childrenType = menuDataStore.getChildren(type)
+    fun getMenu(type: String, name: String): MenuDataStoreEntity {
+
+       /* val childrenType = menuDataStore.getChildren(type)
         var selection:String?=null
         var args:Array<String>
         return if(childrenType.size==1){
@@ -58,18 +57,18 @@ class MenuRepositoryImpl(
 
             val children=audioDataStore.getMediaItems(childrenType,selection, args)
                 .map {
-                    MenuApiModel(childrenType[0],it, arrayOf())
+                    MenuDataStoreEntity(childrenType[0],it, arrayOf())
                 }.toTypedArray()
-            MenuApiModel(type, name, children)
+            MenuDataStoreEntity(type, name, children)
         }else{
 
-            MenuApiModel(
+            MenuDataStoreEntity(
                 type,
                 name,
                 childrenType
-                    .map { MenuApiModel(it, name, arrayOf()) }
+                    .map { MenuDataStoreEntity(it, name, arrayOf()) }
                     .toTypedArray())
-        }
-
+        }*/
+        TODO("Not yet implemented")
     }
 }

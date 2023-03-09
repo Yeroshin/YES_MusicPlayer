@@ -1,20 +1,14 @@
 package com.yes.trackdialogfeature.data.mapper
 
-import com.yes.trackdialogfeature.data.repository.entity.MenuApiModel
+import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
 import com.yes.trackdialogfeature.domain.entity.Menu
 
-class MenuMapper:Mapper<Menu,MenuApiModel> {
-    override fun mapToDomain(repositoryEntity: MenuApiModel): Menu {
-        val menu=Menu(
-            repositoryEntity.type
-        )
-        menu.type=repositoryEntity.type
-       // repositoryEntity.children.forEach()
-       // menu.children=repositoryEntity.children
-        return  menu
+class MenuMapper:Mapper<Menu,MenuDataStoreEntity> {
+    override fun mapToDomain(repositoryEntity: MenuDataStoreEntity): Menu {
+        TODO("Not yet implemented")
     }
 
-    override fun mapToRepository(domainEntity: Menu): MenuApiModel {
+    override fun mapToRepository(domainEntity: Menu): MenuDataStoreEntity {
         TODO("Not yet implemented")
     }
 }

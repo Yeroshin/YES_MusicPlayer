@@ -1,7 +1,7 @@
 package com.yes.trackdialogfeature.data.repository.dataSource
 
 
-import com.yes.trackdialogfeature.data.repository.entity.MenuApiModel
+import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
 
 class MenuDataStore {
 
@@ -66,17 +66,17 @@ class MenuDataStore {
         /* "genres" to "categories",
          "genreTracks" to "genres"*/
     )
-   /* val data = mapOf(
-        "categories" to null,
-        "artists" to MediaStore.Audio.Media.ARTIST,
-        "artistTracks" to MediaStore.Audio.Media.TITLE,
-        ////////////////////////////////
-        "albums" to MediaStore.Audio.Media.ALBUM,
-        "albumTracks" to MediaStore.Audio.Media.TITLE,
-        ////////////////////////////////
-        /* "genres" to "Media.GENRE",
-         "genreTracks" to "Media.TITLE"*/
-    )*/
+    /* val data = mapOf(
+         "categories" to null,
+         "artists" to MediaStore.Audio.Media.ARTIST,
+         "artistTracks" to MediaStore.Audio.Media.TITLE,
+         ////////////////////////////////
+         "albums" to MediaStore.Audio.Media.ALBUM,
+         "albumTracks" to MediaStore.Audio.Media.TITLE,
+         ////////////////////////////////
+         /* "genres" to "Media.GENRE",
+          "genreTracks" to "Media.TITLE"*/
+     )*/
 
     fun getMenuGraph(): Map<String, String?> {
         return menuGraph
@@ -93,21 +93,21 @@ class MenuDataStore {
         return menuChild
     }
 
-  /*  fun getMenuType(menuName: String): String? {
-        return data[menuName]
-    }*/
+    /*  fun getMenuType(menuName: String): String? {
+          return data[menuName]
+      }*/
 
-    fun getRoot(): MenuApiModel {
-        val type = menuGraph.filter { it.value == null }.keys.first()
+    /*  fun getRoot(): MenuApiModel {
+          val type = menuGraph.filter { it.value == null }.keys.first()
 
-        val children = menuGraph
-            .filter { it.value == type }
-            .keys
-            .map { item -> MenuApiModel(item, item, arrayOf()) }
-            .toTypedArray()
+          val children = menuGraph
+              .filter { it.value == type }
+              .keys
+              .map { item -> MenuApiModel(item, item, arrayOf()) }
+              .toTypedArray()
 
-        return MenuApiModel(type, null, children)
-    }
+          return MenuApiModel(type, null, children)
+      }*/
 
     //////////tmp
     private val menutree = mapOf(
@@ -120,65 +120,123 @@ class MenuDataStore {
         /////////////////////////
         //name:"artists"
         "artists" to arrayOf(
-            "artist"
-        ),
-        //name:"Dire Straits"
-        "artist" to arrayOf(
-            "artistTracks",
-            "artistAlbums"
-        ),
-        //name:"Dire Straits"
-        "artistTracks" to arrayOf(
             "track"
         ),
-        //name:"artistAlbums"
-        "artistAlbums" to arrayOf(
-            "album"
-        ),
+
         //name:"Brothers in Arms"
-        "album" to arrayOf(
+        "albums" to arrayOf(
             "track"
         ),
         ////////////////////////////
 
 
-
         /* "genres" to "categories",
          "genreTracks" to "genres"*/
     )
-fun getChild(name:String):String{
-    return ""
-}
-    fun getChildren(name: String): Array<String> {
-        return menutree.getValue(name)
+
+    fun getChild(name: String): String {
+        return ""
     }
 
-    fun findRoot(): String {
-        var i = false
-        var c=""
+    /*  fun getChildren(name: String): Array<String> {
+          return menutree.getValue(name)
+      }*/
 
-        menutree.forEach { menu->
-            var k= true
-            menutree.forEach { item ->
-               var  f=item.value.filter {
-                    c->c.equals(menu.key)
-                }
-                 if(!f.isEmpty()) {
-                    k=false
-                }
-            }
-            if (k) {
-                if(!c.equals("")){
-                    return "error!"
-                }
-                c = menu.key
-            }
+    /*  fun findRoot(): String {
+          var i = false
+          var c = ""
 
+          menutree.forEach { menu ->
+              var k = true
+              menutree.forEach { item ->
+                  var f = item.value.filter { c ->
+                      c.equals(menu.key)
+                  }
+                  if (!f.isEmpty()) {
+                      k = false
+                  }
+              }
+              if (k) {
+                  if (!c.equals("")) {
+                      return "error!"
+                  }
+                  c = menu.key
+              }
+
+          }
+
+          return c
+      }*/
+
+    private val menuTree = arrayOf(
+        mapOf(
+            "id" to 0,
+            "name" to "categories",
+            "type" to null,
+            "parent" to null
+        ),
+        mapOf(
+            "id" to 1,
+            "name" to "artists",
+            "type" to "artist",
+            "parent" to 0
+        ),
+        mapOf(
+            "id" to 2,
+            "name" to "albums",
+            "type" to "album",
+            "parent" to 0
+        ),
+        mapOf(
+            "id" to 3,
+            "name" to null,
+            "type" to "artist",
+            "parent" to 1
+        ),
+        mapOf(
+            "id" to 4,
+            "name" to "artistAlbums",
+            "type" to "album",
+            "parent" to 2
+        ),
+        mapOf(
+            "id" to 5,
+            "name" to null,
+            "type" to "track",
+            "parent" to 3
+        ),
+        mapOf(
+            "id" to 6,
+            "name" to null,
+            "type" to null,
+            "parent" to 4
+        )
+
+
+    )
+
+    fun getRoot(): MenuDataStoreEntity {
+        for (item in menuTree) {
+            if (item["parent"] == null) {
+                return MenuDataStoreEntity(
+                    item["id"] as Int,
+                    item["name"] as String?,
+                    item["type"] as String?,
+                    item["parent"] as Int?
+                )
+            }
         }
-
-        return c
+        return MenuDataStoreEntity(0, null, null, null)
     }
 
-
+    fun getChildren(id: Int): Array<MenuDataStoreEntity> {
+        val children = arrayOf<MenuDataStoreEntity>()
+        for (item in menuTree) {
+            if (item["parent"] == id) {
+                children.add
+            }
+        }
+        return children
+    }
 
 }

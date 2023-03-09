@@ -5,14 +5,12 @@ import com.yes.trackdialogfeature.data.RepositoryFixtures
 import com.yes.trackdialogfeature.data.mapper.MenuMapper
 import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
-import com.yes.trackdialogfeature.data.repository.entity.MenuApiModel
+import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.Assert
 
 
-import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class MenuRepositoryImplTest {
@@ -30,14 +28,14 @@ class MenuRepositoryImplTest {
     fun `1 getMenu handles api success and returns root MenuApiModel`() {
         // Given
         val expected = RepositoryFixtures.getRootMenu()
-        every { menuDataStore.findRoot() } returns DataSourceFixtures.findRoot()
+       // every { menuDataStore.getRoot() } returns DataSourceFixtures.findRoot()
         every {
             menuDataStore.getChildren(any())
         } returns DataSourceFixtures.getRootChildren()
         // When
         val actual = cut.getMenu()
         // Assert
-        verify { menuDataStore.findRoot() }
+        verify { menuDataStore.getRoot() }
         assert(compareMenuApiModel(expected, actual))
     }
 
@@ -111,10 +109,10 @@ class MenuRepositoryImplTest {
     }
 
     private fun compareMenuApiModel(
-        firstModel: MenuApiModel,
-        secondModel: MenuApiModel
+        firstModel: MenuDataStoreEntity,
+        secondModel: MenuDataStoreEntity
     ): Boolean {
-        var result = false
+    /*    var result = false
         if (firstModel.type == secondModel.type &&
             firstModel.name == secondModel.name &&
             firstModel.children.size == secondModel.children.size
@@ -132,7 +130,8 @@ class MenuRepositoryImplTest {
                 result = true
             }
         }
-        return result
+        return result*/
+        TODO("Not yet implemented")
 
     }
 

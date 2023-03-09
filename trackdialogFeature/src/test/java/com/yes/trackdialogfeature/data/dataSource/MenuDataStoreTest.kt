@@ -1,8 +1,8 @@
 package com.yes.trackdialogfeature.data.dataSource
 
-import com.yes.trackdialogfeature.data.DataSourceFixtures
+
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
-import org.junit.Assert.assertArrayEquals
+import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
 
 
 import org.junit.Assert.assertEquals
@@ -26,7 +26,7 @@ internal class MenuDataStoreTest {
 
     }*/
 
-    @Test
+  /*  @Test
     fun `getRoot returns root`(){
         // arrange
         val expected = DataSourceFixtures.getArtistsMenu()
@@ -49,5 +49,33 @@ internal class MenuDataStoreTest {
         val actual = cut.getChildren("categories")
         // Assert
         assertArrayEquals(expected,actual)
+    }*/
+
+    ////////////////////////////
+    ////////////////////////////
+     @Test
+    fun `getRoot returns root MenuApiModel`() {
+
+        // arrange
+        val expected = MenuDataStoreFixtures.getRoot()
+        // act
+        val actual = cut.getRoot()
+        // Assert
+        assert(actual==expected)
+
     }
+    @Test
+    fun `getChildren returns children MenuApiModels`() {
+
+        // arrange
+        val expected = MenuDataStoreFixtures.getChildren()
+        // act
+        val actual = cut.getChildren(
+            MenuDataStoreFixtures.getParent()
+        )
+        // Assert
+        assert(actual.contentEquals(expected))
+
+    }
+
 }
