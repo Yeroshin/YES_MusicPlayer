@@ -230,13 +230,20 @@ class MenuDataStore {
     }
 
     fun getChildren(id: Int): Array<MenuDataStoreEntity> {
-        val children = arrayOf<MenuDataStoreEntity>()
+        val children = ArrayList<MenuDataStoreEntity>()
         for (item in menuTree) {
             if (item["parent"] == id) {
-                children.add
+                children.add(
+                    MenuDataStoreEntity(
+                        item["id"] as Int,
+                        item["name"] as String?,
+                        item["type"] as String?,
+                        item["parent"] as Int?
+                    )
+                )
             }
         }
-        return children
+        return children.toTypedArray()
     }
 
 }
