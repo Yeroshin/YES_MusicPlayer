@@ -196,20 +196,26 @@ class MenuDataStore {
         mapOf(
             "id" to 4,
             "name" to "artistAlbums",
-            "type" to "album",
-            "parent" to 2
-        ),
-        mapOf(
-            "id" to 5,
-            "name" to null,
-            "type" to "track",
+            "type" to "artist",
             "parent" to 3
         ),
+       /* mapOf(
+            "id" to 5,
+            "name" to "artistTracks",
+            "type" to "track",
+            "parent" to 3
+        ),*/
         mapOf(
             "id" to 6,
             "name" to null,
-            "type" to null,
+            "type" to "album",
             "parent" to 4
+        ),
+        mapOf(
+            "id" to 7,
+            "name" to null,
+            "type" to "track",
+            "parent" to 6
         )
 
 
@@ -227,6 +233,9 @@ class MenuDataStore {
             }
         }
         return MenuDataStoreEntity(0, null, null, null)
+    }
+    fun getItem(id:Int):MenuDataStoreEntity{
+
     }
 
     fun getChildren(id: Int): Array<MenuDataStoreEntity> {

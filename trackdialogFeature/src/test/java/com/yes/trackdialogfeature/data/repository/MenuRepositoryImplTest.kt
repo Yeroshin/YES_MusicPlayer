@@ -1,7 +1,7 @@
 package com.yes.trackdialogfeature.data.repository
 
-import com.yes.trackdialogfeature.data.DataSourceFixtures
-import com.yes.trackdialogfeature.data.RepositoryFixtures
+import com.yes.trackdialogfeature.data.dataSource.AudioDataStoreFixtures
+import com.yes.trackdialogfeature.data.dataSource.MenuDataStoreFixtures
 import com.yes.trackdialogfeature.data.mapper.MenuMapper
 import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
@@ -27,50 +27,51 @@ class MenuRepositoryImplTest {
     @Test
     fun `1 getMenu handles api success and returns root MenuApiModel`() {
         // Given
-     /*   val expected = RepositoryFixtures.getRootMenu()
+       val expected = RepositoryFixtures.getCategoriesMenu()
        // every { menuDataStore.getRoot() } returns DataSourceFixtures.findRoot()
         every {
-            menuDataStore.getChildren(any())
-        } returns DataSourceFixtures.getRootChildren()
+            menuDataStore.getRoot()
+        } returns  MenuDataStoreFixtures.getRoot()
+        every {
+            menuDataStore.getChildren(0)
+        } returns  MenuDataStoreFixtures.getCategoriesChildren()
         // When
         val actual = cut.getMenu()
         // Assert
         verify { menuDataStore.getRoot() }
-        assert(compareMenuApiModel(expected, actual))*/
-        TODO("Not yet implemented")
+        assert(expected==actual)
     }
 
     @Test
     fun `2 get artists returns all artists`() {
         // Given
-     /*   val expected = RepositoryFixtures.getArtistsMenu()
+        val expected = RepositoryFixtures.getArtistsMenu()
         every {
-            menuDataStore.getChildren("artists")
-        } returns arrayOf("artist")
+            menuDataStore.getChildren(1)
+        } returns MenuDataStoreFixtures.getArtistsChildren()
         every {
             audioDataStore.getMediaItems(
                 arrayOf("artist"),
                 null,
                 emptyArray()
             )
-        } returns arrayOf("Chris Rea", "Dire Straits")
+        } returns AudioDataStoreFixtures.getArtists()
 
         // When
-        val actual = cut.getMenu("artists", "artists")
+        val actual = cut.getMenu(1, "artists")
         // Assert
         verify { menuDataStore.getChildren(any()) }
         verify { audioDataStore.getMediaItems(any(), any(), any()) }
-        assert(compareMenuApiModel(expected, actual))*/
-        TODO("Not yet implemented")
+        assert(expected==actual)
     }
 
     @Test
     fun `3 get artist returns artist tracks & artist albums`() {
         // Given
-     /*   val expected = RepositoryFixtures.getArtistMenu()
+        val expected = RepositoryFixtures.getArtistMenu()
         every {
-            menuDataStore.getChildren("artist")
-        } returns arrayOf("artistTracks", "artistAlbums")
+            menuDataStore.getChildren(3)
+        } returns MenuDataStoreFixtures.getArtistChildren()
         /*  every {
               audioDataStore.getMediaItems(
                   arrayOf("artists"),
@@ -80,11 +81,11 @@ class MenuRepositoryImplTest {
           } returns DataSourceFixtures.getArtistsChildren()*/
 
         // When
-        val actual = cut.getMenu("artist", "Dire Straits")
+        val actual = cut.getMenu(3, "Dire Straits")
         // Assert
         verify { menuDataStore.getChildren(any()) }
         verify(exactly = 0) { audioDataStore.getMediaItems(any(), any(), any()) }
-        assert(compareMenuApiModel(expected, actual))*/
+        assert(expected == actual)
         TODO("Not yet implemented")
     }
 

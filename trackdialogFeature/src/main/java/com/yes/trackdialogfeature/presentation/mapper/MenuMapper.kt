@@ -9,7 +9,7 @@ class MenuMapper {
         menu: Menu,
         onClick:((TrackDialogContract.Event) -> Unit)
     ): MenuUi {
-        val itemsUI = arrayListOf<MenuUi.MediaItem>()
+       /* val itemsUI = arrayListOf<MenuUi.MediaItem>()
         for (item in menu.children) {
             val itemUI = MenuUi.MediaItem(
                 item.type,
@@ -18,7 +18,8 @@ class MenuMapper {
             )
             itemsUI.add(itemUI)
         }
-        return MenuUi(menu.type, itemsUI)
+        return MenuUi(menu.type, itemsUI)*/
+        TODO("Not yet implemented")
     }
 
 }

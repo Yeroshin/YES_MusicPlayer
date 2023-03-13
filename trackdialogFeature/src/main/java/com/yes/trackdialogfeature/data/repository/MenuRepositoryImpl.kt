@@ -4,6 +4,8 @@ import com.yes.trackdialogfeature.data.mapper.MenuMapper
 import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
+import com.yes.trackdialogfeature.domain.entity.Menu
+import java.util.*
 
 class MenuRepositoryImpl(
     private val menuDataStore: MenuDataStore,
@@ -29,46 +31,61 @@ class MenuRepositoryImpl(
 
         return MenuApiModel(type, null, childsChildren)
     }*/
-
-    fun getMenu(): MenuDataStoreEntity {
-      /*  val root= menuDataStore.findRoot()
-        val children=menuDataStore.getChildren(root)
+    val stack =Stack<Menu>()
+    fun getMenu(): Menu {
+        val root = menuDataStore.getRoot()
+        val children = menuDataStore.getChildren(0)
             .map {
-                MenuDataStoreEntity(it,it, arrayOf())
-            }.toTypedArray()
-        return MenuDataStoreEntity(root,root, children )*/
-        TODO("Not yet implemented")
+                Menu.Item(
+                    it.name ?: "",
+                    it.id
+                )
+            }
+        return Menu(
+            root.name ?: "",
+            children
+        )
+
     }
 
-    fun getMenu(type: String, name: String): MenuDataStoreEntity {
+    fun getMenu(id: Int, name: String): Menu {
+        val children = menuDataStore.getChildren(id)
+        val items = mutableListOf<Menu.Item>()
+        children.forEach { item ->
+            item.name?.let {
+                items.add(
+                    Menu.Item(
+                        item.name,
+                        item.id
+                    ),
+                )
+            } ?: run {
+                var selection=null
+                if(!stack.isEmpty()){
 
-       /* val childrenType = menuDataStore.getChildren(type)
-        var selection:String?=null
-        var args:Array<String>
-        return if(childrenType.size==1){
-             args  = type?.takeIf { it.equals(name)}?.let {
-                 emptyArray()
-            }?:run {
-                 selection=type
-                 arrayOf(name)
+                }
+                audioDataStore.getMediaItems(
+                    arrayOf(item.type!!),
+                    selection,
+                    emptyArray()
+                )
+                    .forEach { audioItem ->
+                        items.add(
+                            Menu.Item(
+                                audioItem,
+                                item.id
+                            )
+                        )
+                    }
 
-             }
-
-
-            val children=audioDataStore.getMediaItems(childrenType,selection, args)
-                .map {
-                    MenuDataStoreEntity(childrenType[0],it, arrayOf())
-                }.toTypedArray()
-            MenuDataStoreEntity(type, name, children)
-        }else{
-
-            MenuDataStoreEntity(
-                type,
+            }
+        }
+        stack.push(
+            Menu(
                 name,
-                childrenType
-                    .map { MenuDataStoreEntity(it, name, arrayOf()) }
-                    .toTypedArray())
-        }*/
-        TODO("Not yet implemented")
+                items
+            )
+        )
+        return stack.peek()
     }
 }

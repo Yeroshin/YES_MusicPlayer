@@ -1,10 +1,11 @@
 package com.yes.trackdialogfeature.domain.entity
 
-class Menu(
+data class Menu(
     val name: String,
-) {
-    var type: String = ""
-
-    var parent: Menu? = null
-    var children = arrayListOf<Menu>()
+    val children: List<Item>
+){
+    data class Item(
+        val name: String,
+        val id: Int,
+    )
 }

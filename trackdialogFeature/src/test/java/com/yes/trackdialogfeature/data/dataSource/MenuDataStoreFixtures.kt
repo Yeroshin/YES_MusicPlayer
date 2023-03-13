@@ -11,13 +11,15 @@ object MenuDataStoreFixtures {
             null
         )
     }
-    fun getParent():Int{
+
+    fun getParentParam(): Int {
         return 0
     }
-    fun getChildren(): Array<MenuDataStoreEntity> {
+
+    fun getCategoriesChildren(): Array<MenuDataStoreEntity> {
         return arrayOf(
             MenuDataStoreEntity(
-                 1,
+                1,
                 "artists",
                 "artist",
                 0
@@ -28,6 +30,40 @@ object MenuDataStoreFixtures {
                 "album",
                 0
             )
+        )
+    }
+
+    fun getArtistsParam(): Int {
+        return 1
+    }
+
+    fun getArtistsChildren(): Array<MenuDataStoreEntity> {
+        return arrayOf(
+            MenuDataStoreEntity(
+                3,
+                null,
+                "artist",
+                1
+            ),
+
+            )
+    }
+
+    fun getArtistChildren(): Array<MenuDataStoreEntity> {
+        return arrayOf(
+            MenuDataStoreEntity(
+                4,
+                "artistAlbums",
+                "album",
+                3
+            ),
+            MenuDataStoreEntity(
+                5,
+                "artistTracks",
+                "track",
+                3
+            )
+
         )
     }
 }

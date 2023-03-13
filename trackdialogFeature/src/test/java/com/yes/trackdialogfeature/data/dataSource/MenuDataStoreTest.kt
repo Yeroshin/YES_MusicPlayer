@@ -2,58 +2,56 @@ package com.yes.trackdialogfeature.data.dataSource
 
 
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
-import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
 
 
-import org.junit.Assert.assertEquals
 import org.junit.Test
 
 internal class MenuDataStoreTest {
-    private val cut= MenuDataStore()
-   /* @Test
-    fun `getRoot returns root MenuApiModel`() {
+    private val cut = MenuDataStore()
+    /* @Test
+     fun `getRoot returns root MenuApiModel`() {
 
-        // arrange
-        val expected = DataFixtures.getRootMenuApiModel()
+         // arrange
+         val expected = DataFixtures.getRootMenuApiModel()
 
-        // act
-        val actual = cut.getRoot()
-        // Assert
-        assertEquals(actual.name,expected.name)
-        assertEquals(actual.type,expected.type)
-        assertEquals(actual.children.elementAt(0),expected.children.elementAt(0))
-        assertEquals(actual.children.elementAt(1),expected.children.elementAt(1))
+         // act
+         val actual = cut.getRoot()
+         // Assert
+         assertEquals(actual.name,expected.name)
+         assertEquals(actual.type,expected.type)
+         assertEquals(actual.children.elementAt(0),expected.children.elementAt(0))
+         assertEquals(actual.children.elementAt(1),expected.children.elementAt(1))
 
-    }*/
+     }*/
 
-  /*  @Test
-    fun `getRoot returns root`(){
-        // arrange
-        val expected = DataSourceFixtures.getArtistsMenu()
+    /*  @Test
+      fun `getRoot returns root`(){
+          // arrange
+          val expected = DataSourceFixtures.getArtistsMenu()
 
-        // act
-        val actual = cut.findRoot()
-        // Assert
-        assertEquals("categories",actual)
-    }
+          // act
+          val actual = cut.findRoot()
+          // Assert
+          assertEquals("categories",actual)
+      }
 
+      @Test
+      fun `getChildren returns children`(){
+          // arrange
+          val expected = arrayOf(
+              "artists",
+              "albums"
+          )
+
+          // act
+          val actual = cut.getChildren("categories")
+          // Assert
+          assertArrayEquals(expected,actual)
+      }*/
+
+    ////////////////////////////
+    ////////////////////////////
     @Test
-    fun `getChildren returns children`(){
-        // arrange
-        val expected = arrayOf(
-            "artists",
-            "albums"
-        )
-
-        // act
-        val actual = cut.getChildren("categories")
-        // Assert
-        assertArrayEquals(expected,actual)
-    }*/
-
-    ////////////////////////////
-    ////////////////////////////
-     @Test
     fun `getRoot returns root MenuApiModel`() {
 
         // arrange
@@ -61,17 +59,18 @@ internal class MenuDataStoreTest {
         // act
         val actual = cut.getRoot()
         // Assert
-        assert(actual==expected)
+        assert(actual == expected)
 
     }
+
     @Test
     fun `getChildren returns children MenuApiModels`() {
 
         // arrange
-        val expected = MenuDataStoreFixtures.getChildren()
+        val expected = MenuDataStoreFixtures.getCategoriesChildren()
         // act
         val actual = cut.getChildren(
-            MenuDataStoreFixtures.getParent()
+            MenuDataStoreFixtures.getParentParam()
         )
         // Assert
         assert(actual.contentEquals(expected))
