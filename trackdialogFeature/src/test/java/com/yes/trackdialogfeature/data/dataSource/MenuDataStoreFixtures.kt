@@ -12,29 +12,49 @@ object MenuDataStoreFixtures {
         )
     }
 
-    fun getParentParam(): Int {
-        return 0
-    }
 
     fun getCategoriesChildren(): Array<MenuDataStoreEntity> {
         return arrayOf(
             MenuDataStoreEntity(
                 1,
                 "artists",
-                "artist",
+                null,
                 0
             ),
             MenuDataStoreEntity(
                 2,
                 "albums",
-                "album",
+                null,
+                0
+            ),
+            MenuDataStoreEntity(
+                3,
+                "tracks",
+                null,
                 0
             )
         )
     }
 
-    fun getArtistsParam(): Int {
-        return 1
+    fun getAlbumsChildren(): Array<MenuDataStoreEntity> {
+        return arrayOf(
+            MenuDataStoreEntity(
+                5,
+                null,
+                "album",
+                2
+            )
+        )
+    }
+    fun getAlbumChildren(): Array<MenuDataStoreEntity> {
+        return arrayOf(
+            MenuDataStoreEntity(
+                8,
+                null,
+                "track",
+                5
+            )
+        )
     }
 
     fun getArtistsChildren(): Array<MenuDataStoreEntity> {
@@ -49,21 +69,22 @@ object MenuDataStoreFixtures {
             )
     }
 
-    fun getArtistChildren(): Array<MenuDataStoreEntity> {
-        return arrayOf(
-            MenuDataStoreEntity(
-                4,
-                "artistAlbums",
-                "album",
-                3
-            ),
-            MenuDataStoreEntity(
-                5,
-                "artistTracks",
-                "track",
-                3
-            )
 
+
+    fun getAlbums(): MenuDataStoreEntity {
+        return MenuDataStoreEntity(
+            2,
+            "albums",
+            null,
+            0
+        )
+    }
+    fun getAlbum(): MenuDataStoreEntity {
+        return MenuDataStoreEntity(
+            5,
+            null,
+            "album",
+            2
         )
     }
 }

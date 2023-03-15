@@ -16,6 +16,10 @@ object RepositoryFixtures {
                 Menu.Item(
                     "albums",
                     2,
+                ),
+                Menu.Item(
+                    "tracks",
+                    3,
                 )
             )
         )
@@ -52,7 +56,7 @@ object RepositoryFixtures {
         )
     }
 
-    fun getArtistMenu(): Menu{
+    fun getArtistMenu(): Menu {
         /*val item1 = MenuDataStoreEntity(
             "artistTracks",
             "Dire Straits",
@@ -83,7 +87,7 @@ object RepositoryFixtures {
         )
     }
 
-    fun getArtistAlbumsMenu(): Menu{
+    fun getAlbumsMenu(): Menu {
         /*val item1 = MenuDataStoreEntity(
             "album",
             "Brothers in Arms",
@@ -100,11 +104,11 @@ object RepositoryFixtures {
             arrayOf(item1,item2)
         )*/
         return Menu(
-            "artistAlbums",
+            "albums",
             listOf(
                 Menu.Item(
                     "Brothers in Arms",
-                    4
+                    5
                 ),
                 Menu.Item(
                     "Love over Gold",
@@ -114,7 +118,7 @@ object RepositoryFixtures {
         )
     }
 
-    fun getArtistAlbumTrackMenu(): MenuDataStoreEntity {
+    fun getAlbumTracksMenu(): Menu {
         /* val item1 = MenuDataStoreEntity(
              "track",
              "So Far Away",
@@ -130,7 +134,19 @@ object RepositoryFixtures {
              "Brothers in Arms",
              arrayOf(item1,item2)
          )*/
-        TODO("Not yet implemented")
+        return Menu(
+            "Brothers in Arms",
+            listOf(
+                Menu.Item(
+                    "Money for Nothing",
+                    8
+                ),
+                Menu.Item(
+                    "Your Latest Trick",
+                    8
+                )
+            )
+        )
     }
 
 }

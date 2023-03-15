@@ -31,18 +31,18 @@ class MenuRepositoryImpl(
 
         return MenuApiModel(type, null, childsChildren)
     }*/
-    val stack =Stack<Menu>()
+
     fun getMenu(): Menu {
         val root = menuDataStore.getRoot()
         val children = menuDataStore.getChildren(0)
             .map {
                 Menu.Item(
-                    it.name ?: "",
+                    it.name!!,
                     it.id
                 )
             }
         return Menu(
-            root.name ?: "",
+            root.name!!,
             children
         )
 
@@ -51,23 +51,21 @@ class MenuRepositoryImpl(
     fun getMenu(id: Int, name: String): Menu {
         val children = menuDataStore.getChildren(id)
         val items = mutableListOf<Menu.Item>()
-        children.forEach { item ->
-            item.name?.let {
-                items.add(
-                    Menu.Item(
-                        item.name,
-                        item.id
-                    ),
-                )
-            } ?: run {
-                var selection=null
-                if(!stack.isEmpty()){
 
+
+        children.forEach {item->
+            item.type?.let {
+                val parent =menuDataStore.getItem(id)
+                val selection:String?=parent.type
+                val arg=selection?.let {
+                    arrayOf(name)
+                }?: run {
+                    emptyArray()
                 }
                 audioDataStore.getMediaItems(
-                    arrayOf(item.type!!),
+                    arrayOf(item.type),
                     selection,
-                    emptyArray()
+                    arg
                 )
                     .forEach { audioItem ->
                         items.add(
@@ -80,12 +78,10 @@ class MenuRepositoryImpl(
 
             }
         }
-        stack.push(
-            Menu(
-                name,
-                items
-            )
+
+        return Menu(
+            name,
+            items
         )
-        return stack.peek()
     }
 }

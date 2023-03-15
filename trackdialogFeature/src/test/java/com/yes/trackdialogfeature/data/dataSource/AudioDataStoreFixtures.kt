@@ -1,5 +1,7 @@
 package com.yes.trackdialogfeature.data.dataSource
 
+import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
+
 object AudioDataStoreFixtures {
 
     fun getArtists():Array<String>{
@@ -9,6 +11,7 @@ object AudioDataStoreFixtures {
         return arrayOf("Brothers in Arms","Love over Gold")
     }
     fun getTracks():Array<String>{
-        return arrayOf("So Far Away","Walk of Life")
+        return arrayOf("Money for Nothing","Your Latest Trick")
     }
+
 }

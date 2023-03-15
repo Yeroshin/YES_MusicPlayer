@@ -69,12 +69,21 @@ internal class MenuDataStoreTest {
         // arrange
         val expected = MenuDataStoreFixtures.getCategoriesChildren()
         // act
-        val actual = cut.getChildren(
-            MenuDataStoreFixtures.getParentParam()
-        )
+        val actual = cut.getChildren(0)
         // Assert
         assert(actual.contentEquals(expected))
 
+    }
+    @Test
+    fun `getItem with id 3 returns correct Item`(){
+        // arrange
+        val expected = MenuDataStoreFixtures.getAlbums()
+        // act
+        val actual = cut.getItem(
+            3
+        )
+        // Assert
+        assert(actual==expected)
     }
 
 }
