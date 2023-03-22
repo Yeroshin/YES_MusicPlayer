@@ -53,12 +53,12 @@ class TrackDialogAdapter :
 
             binding.root.isSelected = false
             binding.root.isActivated = false
-            binding.itemTitle.text = item.title
+            binding.itemTitle.text = item.name
             binding.icon.setImageLevel(iconType)
             binding.root.setOnClickListener {
                 trackList[adapterPosition].onClick(
                     TrackDialogContract.Event.OnItemClicked(
-                        item.title,
+                        item.id,
                         item.name
                     )
                 )

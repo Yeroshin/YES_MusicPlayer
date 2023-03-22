@@ -3,16 +3,18 @@ package com.yes.trackdialogfeature.data.repository
 import com.yes.trackdialogfeature.data.mapper.MenuMapper
 import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
+import com.yes.trackdialogfeature.data.repository.entity.DataException
 import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
+import com.yes.trackdialogfeature.domain.entity.MenuException
+import com.yes.trackdialogfeature.domain.repository.MenuRepository
 import java.util.*
 
 class MenuRepositoryImpl(
     private val menuDataStore: MenuDataStore,
-    private val audioDataStore: AudioDataStore,
-    private val menuMapper: MenuMapper
-) {
+    private val audioDataStore: AudioDataStore
+):MenuRepository {
 /*
     fun getMenu(): MenuApiModel {
         return menuDataStore.getRoot()
@@ -33,7 +35,7 @@ class MenuRepositoryImpl(
         return MenuApiModel(type, null, childsChildren)
     }*/
 
-    fun getMenu(): DomainResult<Menu> {
+    override fun getMenu(): DomainResult<Menu> {
         val root = menuDataStore.getRoot()
         val children = menuDataStore.getChildren(0)
             .map {
@@ -51,8 +53,12 @@ class MenuRepositoryImpl(
 
     }
 
-    fun getMenu(id: Int, name: String): DomainResult<Menu> {
-        val children = menuDataStore.getChildren(id)
+    override fun getMenu(id: Int, name: String): DomainResult<Menu> {
+        val children = try {
+            menuDataStore.getChildren(id)
+        }catch (e:DataException){
+            return DomainResult.Error(MenuException.Empty)
+        }
         val items = mutableListOf<Menu.Item>()
 
 

@@ -9,7 +9,7 @@ data class MenuUi(
     val items: ArrayList<MediaItem>
 ) {
     class MediaItem(
-        val title: String,
+        val id:Int,
         val name:String,
         var onClick: ((TrackDialogContract.Event) -> Unit)
     ) {

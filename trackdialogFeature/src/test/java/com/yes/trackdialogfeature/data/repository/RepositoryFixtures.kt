@@ -2,6 +2,7 @@ package com.yes.trackdialogfeature.data.repository
 
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
+import com.yes.trackdialogfeature.domain.entity.MenuException
 
 object RepositoryFixtures {
 
@@ -152,6 +153,12 @@ object RepositoryFixtures {
                     )
                 )
             )
+        )
+    }
+
+    fun getError():DomainResult<Menu>{
+        return DomainResult.Error(
+            MenuException.Empty
         )
     }
 

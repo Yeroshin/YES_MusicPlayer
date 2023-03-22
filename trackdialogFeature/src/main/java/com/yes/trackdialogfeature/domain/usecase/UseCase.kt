@@ -2,6 +2,7 @@ package com.yes.trackdialogfeature.domain.usecase
 
 import kotlinx.coroutines.*
 import com.yes.trackdialogfeature.domain.entity.DomainResult
+import com.yes.trackdialogfeature.domain.entity.MenuException
 
 abstract class UseCase<REQUEST, MODEL>(
     private val dispatcher: CoroutineDispatcher
@@ -12,7 +13,7 @@ abstract class UseCase<REQUEST, MODEL>(
             try {
                 run(params)
             }catch (exception: Exception){
-                DomainResult.Error(exception)
+                DomainResult.Error(MenuException.UnknownException)
             }
 
         }

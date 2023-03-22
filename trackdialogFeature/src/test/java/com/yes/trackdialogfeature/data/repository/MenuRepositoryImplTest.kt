@@ -5,25 +5,26 @@ import com.yes.trackdialogfeature.data.dataSource.MenuDataStoreFixtures
 import com.yes.trackdialogfeature.data.mapper.MenuMapper
 import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
+import com.yes.trackdialogfeature.data.repository.entity.DataException
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import org.hamcrest.CoreMatchers.instanceOf
-import org.hamcrest.MatcherAssert.assertThat
+
 
 
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertInstanceOf
 
 class MenuRepositoryImplTest {
     // private val menuDataStore: MenuDataStore = mockk(relaxed = true)
     private val menuDataStore: MenuDataStore = mockk(relaxed = true)
     private val audioDataStore: AudioDataStore = mockk(relaxed = true)
-    private val menuMapper: MenuMapper = MenuMapper()
+
     private val cut = MenuRepositoryImpl(
         menuDataStore,
         audioDataStore,
-        menuMapper
+
     )
 
     @Test
@@ -41,7 +42,7 @@ class MenuRepositoryImplTest {
         val actual = cut.getMenu()
         // Assert
         verify { menuDataStore.getRoot() }
-        assertThat(expected,instanceOf(DomainResult.Success::class.java))
+        assertInstanceOf(DomainResult.Success::class.java,actual)
         assert((expected as DomainResult.Success).data == (actual as DomainResult.Success).data)
     }
 
@@ -67,8 +68,9 @@ class MenuRepositoryImplTest {
         val actual = cut.getMenu(2, "albums")
         // Assert
         verify { menuDataStore.getChildren(any()) }
+        verify (exactly = 1){ menuDataStore.getItem(any()) }
         verify { audioDataStore.getMediaItems(any(), any(), any()) }
-        assertThat(expected,instanceOf(DomainResult.Success::class.java))
+        assertInstanceOf(DomainResult.Success::class.java,actual)
         assert((expected as DomainResult.Success).data == (actual as DomainResult.Success).data)
 
     }
@@ -95,35 +97,27 @@ class MenuRepositoryImplTest {
         val actual = cut.getMenu(5, "Brothers in Arms")
         // Assert
         verify { menuDataStore.getChildren(any()) }
+        verify { menuDataStore.getItem(any()) }
         verify { audioDataStore.getMediaItems(any(), any(), any()) }
-        assertThat(expected,instanceOf(DomainResult.Success::class.java))
+        assertInstanceOf(DomainResult.Success::class.java,actual)
         assert((expected as DomainResult.Success).data == (actual as DomainResult.Success).data)
     }
     @Test
     fun `4 get track children returns DomainResultError`() {
         // Given
-        val expected = RepositoryFixtures.getAlbumTracksMenu()
+        val expected = RepositoryFixtures.getError()
         every {
-            menuDataStore.getChildren(5)
-        } throws
-        every {
-            menuDataStore.getItem(5)
-        } returns MenuDataStoreFixtures.getAlbum()
-        every {
-            audioDataStore.getMediaItems(
-                arrayOf("track"),
-                "album",
-                arrayOf("Brothers in Arms")
-            )
-        } returns AudioDataStoreFixtures.getTracks()
+            menuDataStore.getChildren(8)
+        } throws DataException
 
         // When
-        val actual = cut.getMenu(5, "Brothers in Arms")
+        val actual = cut.getMenu(8, "Money for Nothing")
         // Assert
         verify { menuDataStore.getChildren(any()) }
-        verify { audioDataStore.getMediaItems(any(), any(), any()) }
-        assertThat(expected,instanceOf(DomainResult.Success::class.java))
-        assert((expected as DomainResult.Success).data == (actual as DomainResult.Success).data)
+        verify (exactly = 0){ menuDataStore.getItem(any()) }
+        verify (exactly = 0){ audioDataStore.getMediaItems(any(), any(), any()) }
+        assertInstanceOf(DomainResult.Error::class.java,actual)
+        assert((expected as DomainResult.Error).exception == (actual as DomainResult.Error).exception)
     }
 
 

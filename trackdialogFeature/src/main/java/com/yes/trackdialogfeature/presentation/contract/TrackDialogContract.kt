@@ -9,7 +9,7 @@ class TrackDialogContract {
     sealed class Event : UiEvent {
 
         object OnGetRootMenu : Event()
-        data class OnItemClicked(val title:String,val name :String) : Event()
+        data class OnItemClicked(val id:Int,val name :String) : Event()
     }
 
     data class State(
