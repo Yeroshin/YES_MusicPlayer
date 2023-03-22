@@ -4,6 +4,7 @@ import com.yes.trackdialogfeature.data.mapper.MenuMapper
 import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
+import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
 import java.util.*
 
@@ -32,7 +33,7 @@ class MenuRepositoryImpl(
         return MenuApiModel(type, null, childsChildren)
     }*/
 
-    fun getMenu(): Menu {
+    fun getMenu(): DomainResult<Menu> {
         val root = menuDataStore.getRoot()
         val children = menuDataStore.getChildren(0)
             .map {
@@ -41,25 +42,27 @@ class MenuRepositoryImpl(
                     it.id
                 )
             }
-        return Menu(
-            root.name!!,
-            children
+        return DomainResult.Success(
+            Menu(
+                root.name!!,
+                children
+            )
         )
 
     }
 
-    fun getMenu(id: Int, name: String): Menu {
+    fun getMenu(id: Int, name: String): DomainResult<Menu> {
         val children = menuDataStore.getChildren(id)
         val items = mutableListOf<Menu.Item>()
 
 
-        children.forEach {item->
+        children.forEach { item ->
             item.type?.let {
-                val parent =menuDataStore.getItem(id)
-                val selection:String?=parent.type
-                val arg=selection?.let {
+                val parent = menuDataStore.getItem(id)
+                val selection: String? = parent.type
+                val arg = selection?.let {
                     arrayOf(name)
-                }?: run {
+                } ?: run {
                     emptyArray()
                 }
                 audioDataStore.getMediaItems(
@@ -79,9 +82,11 @@ class MenuRepositoryImpl(
             }
         }
 
-        return Menu(
-            name,
-            items
+        return DomainResult.Success(
+            Menu(
+                name,
+                items
+            )
         )
     }
 }

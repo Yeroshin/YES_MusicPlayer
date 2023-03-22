@@ -2,8 +2,10 @@ package com.yes.trackdialogfeature.data.dataSource
 
 
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
-
-
+import com.yes.trackdialogfeature.data.repository.entity.DataException
+import com.yes.trackdialogfeature.domain.entity.MenuException
+import junit.framework.TestCase.fail
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 
 internal class MenuDataStoreTest {
@@ -72,6 +74,18 @@ internal class MenuDataStoreTest {
         val actual = cut.getChildren(0)
         // Assert
         assert(actual.contentEquals(expected))
+
+    }
+    @Test
+    fun `getChildren returns exception`()  {
+
+        try {
+            cut.getChildren(8)
+            fail("Expected an MenuException.Empty to be thrown")
+        } catch (exception: DataException) {
+            assert(DataException==exception)
+        }
+
 
     }
     @Test

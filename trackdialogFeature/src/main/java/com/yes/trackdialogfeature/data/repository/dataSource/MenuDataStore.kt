@@ -1,6 +1,7 @@
 package com.yes.trackdialogfeature.data.repository.dataSource
 
 
+import com.yes.trackdialogfeature.data.repository.entity.DataException
 import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
 
 class MenuDataStore {
@@ -270,7 +271,10 @@ class MenuDataStore {
                 )
             }
         }
-        return children.toTypedArray()
+        if (children.isEmpty()){
+            throw DataException
+        }
+        return children.toArray() as Array<MenuDataStoreEntity>
     }
 
 }

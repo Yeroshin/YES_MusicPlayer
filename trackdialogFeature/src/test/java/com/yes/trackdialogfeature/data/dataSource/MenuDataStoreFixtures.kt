@@ -57,20 +57,6 @@ object MenuDataStoreFixtures {
         )
     }
 
-    fun getArtistsChildren(): Array<MenuDataStoreEntity> {
-        return arrayOf(
-            MenuDataStoreEntity(
-                3,
-                null,
-                "artist",
-                1
-            ),
-
-            )
-    }
-
-
-
     fun getAlbums(): MenuDataStoreEntity {
         return MenuDataStoreEntity(
             2,
@@ -86,5 +72,8 @@ object MenuDataStoreFixtures {
             "album",
             2
         )
+    }
+    fun getExeption(){
+
     }
 }

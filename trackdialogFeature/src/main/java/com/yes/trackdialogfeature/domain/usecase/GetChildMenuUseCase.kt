@@ -1,7 +1,7 @@
 package com.yes.trackdialogfeature.domain.usecase
 
 import com.yes.trackdialogfeature.data.repository.MenuRepository
-import com.yes.trackdialogfeature.domain.common.Result
+import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
 import kotlinx.coroutines.CoroutineDispatcher
 
@@ -10,7 +10,7 @@ class GetChildMenuUseCase(
     private val menuRepository: MenuRepository
     ) : UseCase<GetChildMenuUseCase.Params, Menu>(dispatcher) {
 
-    override fun run(params: Params): Result<Menu> {
+    override fun run(params: Params): DomainResult<Menu> {
         return if(params.title.equals("root")){
             menuRepository.getMenu()
         }else{

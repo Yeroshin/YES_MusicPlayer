@@ -1,25 +1,27 @@
 package com.yes.trackdialogfeature.data.repository
 
-import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
+import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
 
 object RepositoryFixtures {
 
-    fun getCategoriesMenu(): Menu {
-        return Menu(
-            "categories",
-            listOf(
-                Menu.Item(
-                    "artists",
-                    1
-                ),
-                Menu.Item(
-                    "albums",
-                    2,
-                ),
-                Menu.Item(
-                    "tracks",
-                    3,
+    fun getCategoriesMenu(): DomainResult<Menu> {
+        return DomainResult.Success(
+            Menu(
+                "categories",
+                listOf(
+                    Menu.Item(
+                        "artists",
+                        1
+                    ),
+                    Menu.Item(
+                        "albums",
+                        2,
+                    ),
+                    Menu.Item(
+                        "tracks",
+                        3,
+                    )
                 )
             )
         )
@@ -87,7 +89,7 @@ object RepositoryFixtures {
         )
     }
 
-    fun getAlbumsMenu(): Menu {
+    fun getAlbumsMenu(): DomainResult<Menu> {
         /*val item1 = MenuDataStoreEntity(
             "album",
             "Brothers in Arms",
@@ -103,22 +105,24 @@ object RepositoryFixtures {
             "Dire Straits",
             arrayOf(item1,item2)
         )*/
-        return Menu(
-            "albums",
-            listOf(
-                Menu.Item(
-                    "Brothers in Arms",
-                    5
-                ),
-                Menu.Item(
-                    "Love over Gold",
-                    5
+        return DomainResult.Success(
+            Menu(
+                "albums",
+                listOf(
+                    Menu.Item(
+                        "Brothers in Arms",
+                        5
+                    ),
+                    Menu.Item(
+                        "Love over Gold",
+                        5
+                    )
                 )
             )
         )
     }
 
-    fun getAlbumTracksMenu(): Menu {
+    fun getAlbumTracksMenu(): DomainResult<Menu> {
         /* val item1 = MenuDataStoreEntity(
              "track",
              "So Far Away",
@@ -134,16 +138,18 @@ object RepositoryFixtures {
              "Brothers in Arms",
              arrayOf(item1,item2)
          )*/
-        return Menu(
-            "Brothers in Arms",
-            listOf(
-                Menu.Item(
-                    "Money for Nothing",
-                    8
-                ),
-                Menu.Item(
-                    "Your Latest Trick",
-                    8
+        return DomainResult.Success(
+            Menu(
+                "Brothers in Arms",
+                listOf(
+                    Menu.Item(
+                        "Money for Nothing",
+                        8
+                    ),
+                    Menu.Item(
+                        "Your Latest Trick",
+                        8
+                    )
                 )
             )
         )

@@ -4,8 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 
-import com.yes.trackdialogfeature.domain.common.Result
-import com.yes.trackdialogfeature.domain.common.UseCaseException
+import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.usecase.GetRootMenuUseCase
 import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCase
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
@@ -24,11 +23,10 @@ class TrackDialogViewModel(
     val currentState: TrackDialogContract.State
         get() = uiState.value
 
-   /* private val initialState : UiState by lazy { createInitialState() }
-    fun createInitialState() : UiState{
-        return TrackDialogContract.State(TrackDialogContract.TrackDialogState.Loading)
-    }*/
-
+    /* private val initialState : UiState by lazy { createInitialState() }
+     fun createInitialState() : UiState{
+         return TrackDialogContract.State(TrackDialogContract.TrackDialogState.Loading)
+     }*/
 
 
     private val _uiState = MutableStateFlow<TrackDialogContract.State>(
@@ -46,6 +44,7 @@ class TrackDialogViewModel(
         subscribeEvents()
 
     }
+
     private fun subscribeEvents() {
         viewModelScope.launch {
             event.collect {
@@ -63,25 +62,24 @@ class TrackDialogViewModel(
         val newState = currentState.reduce()
         _uiState.value = newState
     }
+
     private fun setEffect(builder: () -> TrackDialogContract.Effect) {
         val effectValue = builder()
         viewModelScope.launch { _effect.send(effectValue) }
     }
 
 
-
     private fun handleEvent(event: TrackDialogContract.Event) {
         when (event) {
             is TrackDialogContract.Event.OnItemClicked -> {
-                onGetChildMenu(event.title, event.name)
+                getChildMenu(event.title, event.name)
             }
             is TrackDialogContract.Event.OnGetRootMenu -> {
-                onGetRootMenu()
+                getRootMenu()
             }
 
         }
     }
-
 
 
     /*  fun onEvent(event: TrackDialogEvent) {
@@ -91,22 +89,29 @@ class TrackDialogViewModel(
       }*/
 
 
-    private fun onGetRootMenu(){
+    private fun getRootMenu() {
         viewModelScope.launch(Dispatchers.Main) {
             val result = getRootMenuUseCase(GetRootMenuUseCase.Params(Unit))
             when (result) {
-                is Result.Success -> {
+                is DomainResult.Success -> {
                     val item = menuMapper.map(
                         result.data,
                         ::setEvent
                     )
-                    setState {copy(trackDialogState =TrackDialogContract.TrackDialogState.Success(item))  }
+                    setState {
+                        copy(
+                            trackDialogState = TrackDialogContract.TrackDialogState.Success(
+                                item
+                            )
+                        )
+                    }
                 }
-                is Result.Error -> {}
+                is DomainResult.Error -> {}
             }
         }
     }
-    private fun onGetChildMenu(title: String, name: String) {
+
+    private fun getChildMenu(title: String, name: String) {
         viewModelScope.launch(Dispatchers.Main) {
             val result = getChildMenuUseCase(
                 GetChildMenuUseCase.Params(
@@ -115,16 +120,20 @@ class TrackDialogViewModel(
                 )
             )
             when (result) {
-                is Result.Success -> {
-                    val item = menuMapper.map(
-                        result.data,
-                        ::setEvent
-                    )
-                    _uiState.value = TrackDialogContract.State(TrackDialogContract.TrackDialogState.Success(item))
-                }
-                is Result.Error -> {
-                    when (result.data) {
-                        is UseCaseException.UnknownException -> setEffect {
+                is DomainResult.Success -> setState {
+                        TrackDialogContract.State(
+                            TrackDialogContract.TrackDialogState.Success(
+                                menuMapper.map(
+                                    result.data,
+                                    ::setEvent
+                                )
+                            )
+                        )
+                    }
+
+                is DomainResult.Error -> {
+                    when (result.exception) {
+                        is Exception-> setEffect {
                             TrackDialogContract.Effect.UnknownException
                         }
                         else -> {}

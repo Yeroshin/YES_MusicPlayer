@@ -3,14 +3,14 @@ package com.yes.trackdialogfeature.data.repository
 import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 import com.yes.trackdialogfeature.domain.entity.Menu
-import com.yes.trackdialogfeature.domain.common.Result
+import com.yes.trackdialogfeature.domain.entity.DomainResult
 class MenuRepository(
     private val menuDataStore: MenuDataStore,
     private val audioDataStore: AudioDataStore,
 ) {
     private lateinit var menu: Menu
     private val menuParent = menuDataStore.getMenuGraph()
-    fun getMenu(): Result<Menu> {
+    fun getMenu(): DomainResult<Menu> {
      /*   for (item in menuParent) {
             if (item.value == null) {
                 menu = Menu(item.key)
@@ -32,7 +32,7 @@ class MenuRepository(
         TODO("Not yet implemented")
     }
 
-    fun getMenu(title:String, name:String): Result<Menu> {
+    fun getMenu(title:String, name:String): DomainResult<Menu> {
 
       /*  var what: Array<String>?= null
         var where:String?= menuParent[name]?.let { menuDataStore.getMenuType(it) }
