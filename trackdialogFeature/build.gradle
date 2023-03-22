@@ -81,6 +81,8 @@ dependencies {
     // Mock objects
     def mockkVersion="1.13.4"
     testImplementation "io.mockk:mockk:$mockkVersion"
+    //turbine
+    testImplementation 'app.cash.turbine:turbine:0.12.1'
     // Run Blocking Test
     def coreTestingVersion="1.1.1"
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'

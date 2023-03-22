@@ -1,19 +1,15 @@
 package com.yes.coreui
 
-import android.app.Dialog
 import android.content.Context
 import android.graphics.Point
-import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.view.*
-import android.widget.ImageButton
 import androidx.fragment.app.DialogFragment
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
 
-abstract class UniversalDialog (): DialogFragment() {
+abstract class BaseDialog (): DialogFragment() {
 
    // private var myDialog: Dialog = dialog!!
     lateinit var binding: ViewBinding

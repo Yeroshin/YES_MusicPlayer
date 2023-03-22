@@ -4,7 +4,7 @@ import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 
-class MenuMapper {
+class MenuDomainUiMapper {
     fun map(
         menu: Menu,
         onClick:((TrackDialogContract.Event) -> Unit)

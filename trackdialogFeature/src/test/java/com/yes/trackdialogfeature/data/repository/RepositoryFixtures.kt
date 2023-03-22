@@ -6,9 +6,8 @@ import com.yes.trackdialogfeature.domain.entity.MenuException
 
 object RepositoryFixtures {
 
-    fun getCategoriesMenu(): DomainResult<Menu> {
-        return DomainResult.Success(
-            Menu(
+    fun getCategoriesMenu(): Menu {
+        return Menu(
                 "categories",
                 listOf(
                     Menu.Item(
@@ -25,7 +24,7 @@ object RepositoryFixtures {
                     )
                 )
             )
-        )
+
     }
 
     fun getArtistsMenu(): Menu {

@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.yes.coreui.UniversalDialog
+import com.yes.coreui.BaseDialog
 import com.yes.trackdialogfeature.R
 import com.yes.trackdialogfeature.databinding.TrackDialogBinding
 import com.yes.trackdialogfeature.di.components.DaggerTrackDialogComponent
@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class TrackDialog : UniversalDialog() {
+class TrackDialog : BaseDialog() {
 
     @Inject
     lateinit var viewModelFactory: TrackDialogViewModel.Factory
@@ -104,6 +104,7 @@ class TrackDialog : UniversalDialog() {
                         is TrackDialogContract.TrackDialogState.Loading -> {
 
                         }
+                        is TrackDialogContract.TrackDialogState.Idle -> TODO()
                     }
                 }
             }

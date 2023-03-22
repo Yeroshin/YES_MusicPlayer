@@ -7,7 +7,6 @@ import com.yes.trackdialogfeature.presentation.model.MenuUi
 
 class TrackDialogContract {
     sealed class Event : UiEvent {
-
         object OnGetRootMenu : Event()
         data class OnItemClicked(val id:Int,val name :String) : Event()
     }
@@ -19,6 +18,7 @@ class TrackDialogContract {
 
 
     sealed class TrackDialogState {
+        object Idle : TrackDialogState()
         object Loading : TrackDialogState()
         data class Success(val menu: MenuUi) : TrackDialogState() {
             val title: String = menu.title
