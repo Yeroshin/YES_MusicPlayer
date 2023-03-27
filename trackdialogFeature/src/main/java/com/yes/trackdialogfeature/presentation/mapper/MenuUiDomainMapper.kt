@@ -4,12 +4,12 @@ import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 
-class MenuDomainUiMapper {
+class MenuUiDomainMapper {
     fun map(
         menu: Menu,
         onClick:((TrackDialogContract.Event) -> Unit)
     ): MenuUi {
-       /* val itemsUI = arrayListOf<MenuUi.MediaItem>()
+        /*val itemsUI = arrayListOf<MenuUi.MediaItem>()
         for (item in menu.children) {
             val itemUI = MenuUi.MediaItem(
                 item.type,
@@ -19,7 +19,21 @@ class MenuDomainUiMapper {
             itemsUI.add(itemUI)
         }
         return MenuUi(menu.type, itemsUI)*/
-        TODO("Not yet implemented")
+        return MenuUi(
+            menu.name,
+            menu.children.map {
+                MenuUi.MediaItem(
+                    it.id,
+                    it.name,
+                    when(it.id){
+                        1->1
+                        else -> 1
+                    } as Int,
+                    onClick
+                )
+            }
+        )
+
     }
 
 }

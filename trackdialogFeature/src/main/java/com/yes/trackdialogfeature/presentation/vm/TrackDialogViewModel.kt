@@ -8,13 +8,13 @@ import com.yes.core.presentation.BaseViewModel
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCase
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
-import com.yes.trackdialogfeature.presentation.mapper.MenuDomainUiMapper
+import com.yes.trackdialogfeature.presentation.mapper.MenuUiDomainMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TrackDialogViewModel(
     private val getChildMenuUseCase: GetChildMenuUseCase,
-    private val menuDomainUiMapper: MenuDomainUiMapper
+    private val menuUiDomainMapper: MenuUiDomainMapper
 ) : BaseViewModel<TrackDialogContract.Event,TrackDialogContract.State,TrackDialogContract.Effect>() {
     override fun createInitialState(): TrackDialogContract.State {
         return TrackDialogContract.State(
@@ -46,7 +46,7 @@ class TrackDialogViewModel(
             val result = getChildMenuUseCase(GetChildMenuUseCase.Params(0,""))
             when (result) {
                 is DomainResult.Success -> {
-                    val item = menuDomainUiMapper.map(
+                    val item = menuUiDomainMapper.map(
                         result.data,
                         ::setEvent
                     )
@@ -75,7 +75,7 @@ class TrackDialogViewModel(
                 is DomainResult.Success -> setState {
                         TrackDialogContract.State(
                             TrackDialogContract.TrackDialogState.Success(
-                                menuDomainUiMapper.map(
+                                menuUiDomainMapper.map(
                                     result.data,
                                     ::setEvent
                                 )
@@ -100,12 +100,12 @@ class TrackDialogViewModel(
 
     class Factory(
         private val getChildMenuUseCase: GetChildMenuUseCase,
-        private val menuDomainUiMapper: MenuDomainUiMapper
+        private val menuUiDomainMapper: MenuUiDomainMapper
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return TrackDialogViewModel(
                 getChildMenuUseCase,
-                menuDomainUiMapper
+                menuUiDomainMapper
             ) as T
         }
     }

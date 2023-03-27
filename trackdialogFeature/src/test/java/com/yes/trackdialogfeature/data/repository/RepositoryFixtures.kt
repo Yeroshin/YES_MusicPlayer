@@ -89,7 +89,7 @@ object RepositoryFixtures {
         )
     }
 
-    fun getAlbumsMenu(): DomainResult<Menu> {
+    fun getAlbumsMenu(): Menu {
         /*val item1 = MenuDataStoreEntity(
             "album",
             "Brothers in Arms",
@@ -105,8 +105,7 @@ object RepositoryFixtures {
             "Dire Straits",
             arrayOf(item1,item2)
         )*/
-        return DomainResult.Success(
-            Menu(
+        return Menu(
                 "albums",
                 listOf(
                     Menu.Item(
@@ -119,10 +118,9 @@ object RepositoryFixtures {
                     )
                 )
             )
-        )
     }
 
-    fun getAlbumTracksMenu(): DomainResult<Menu> {
+    fun getAlbumTracksMenu(): Menu {
         /* val item1 = MenuDataStoreEntity(
              "track",
              "So Far Away",
@@ -138,8 +136,7 @@ object RepositoryFixtures {
              "Brothers in Arms",
              arrayOf(item1,item2)
          )*/
-        return DomainResult.Success(
-            Menu(
+        return Menu(
                 "Brothers in Arms",
                 listOf(
                     Menu.Item(
@@ -152,13 +149,10 @@ object RepositoryFixtures {
                     )
                 )
             )
-        )
     }
 
-    fun getError():DomainResult<Menu>{
-        return DomainResult.Error(
-            MenuException.Empty
-        )
+    fun getError():MenuException{
+        return MenuException.Empty
     }
 
 }

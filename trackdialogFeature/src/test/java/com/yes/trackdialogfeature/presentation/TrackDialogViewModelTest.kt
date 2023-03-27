@@ -4,7 +4,7 @@ import app.cash.turbine.test
 import com.yes.trackdialogfeature.data.repository.RepositoryFixtures
 import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCase
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
-import com.yes.trackdialogfeature.presentation.mapper.MenuDomainUiMapper
+import com.yes.trackdialogfeature.presentation.mapper.MenuUiDomainMapper
 
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import com.yes.trackdialogfeature.utils.CoroutineRule
@@ -22,7 +22,7 @@ class TrackDialogViewModelTest {
     val mainCoroutineRule = CoroutineRule()
     @MockK
     private lateinit var getChildMenuUseCase: GetChildMenuUseCase
-    private val menuDomainUiMapper = MenuDomainUiMapper()
+    private val menuUiDomainMapper = MenuUiDomainMapper()
     private lateinit var cut: TrackDialogViewModel
 
     @Before
@@ -31,7 +31,7 @@ class TrackDialogViewModelTest {
         // Create DetailViewModel before every test
         cut = TrackDialogViewModel(
             getChildMenuUseCase,
-            menuDomainUiMapper
+            menuUiDomainMapper
         )
     }
 
@@ -58,7 +58,7 @@ class TrackDialogViewModelTest {
             assert(expected==
                 TrackDialogContract.State(
                     TrackDialogContract.TrackDialogState.Success(
-                        menuDomainUiMapper.map(rootMenu,::setEvent)
+                        menuUiDomainMapper.map(rootMenu) {}
                     )
                 )
             )

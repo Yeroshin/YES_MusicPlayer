@@ -11,7 +11,7 @@ import com.yes.trackdialogfeature.presentation.model.MenuUi
 class TrackDialogAdapter :
     RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>() {
     private lateinit var viewModel: TrackDialogViewModel
-    private var trackList = arrayListOf<MenuUi.MediaItem>()
+    private var trackList = listOf<MenuUi.MediaItem>()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackHolder {
@@ -38,7 +38,7 @@ class TrackDialogAdapter :
         this.viewModel = vm
     }
 
-    fun setItems(items: ArrayList<MenuUi.MediaItem>) {
+    fun setItems(items: List<MenuUi.MediaItem>) {
 
         trackList = items
         notifyDataSetChanged()
