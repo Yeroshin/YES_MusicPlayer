@@ -1,13 +1,13 @@
 package com.yes.trackdialogfeature.presentation
 
 import com.yes.trackdialogfeature.domain.entity.Menu
+import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 
 object  PresentationFixtures {
-    fun onClick(){
-
-    }
+    val onClick: (TrackDialogContract.Event) -> Unit ={}
     fun getUiModel(): MenuUi {
+
         return MenuUi(
             "categories",
             listOf(
@@ -15,18 +15,20 @@ object  PresentationFixtures {
                     1,
                     "artists",
                     1,
-                    { }
+                    onClick
                 ),
                 MenuUi.MediaItem(
                     2,
                     "albums",
                 1,
-                ) {},
+                    onClick
+                ),
                 MenuUi.MediaItem(
                     3,
                     "tracks",
-                    1
-                ) {}
+                    1,
+                    onClick
+                )
             )
         )
     }
