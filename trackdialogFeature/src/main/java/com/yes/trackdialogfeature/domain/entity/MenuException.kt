@@ -1,6 +1,6 @@
 package com.yes.trackdialogfeature.domain.entity
 
-sealed class MenuException:Exception() {
+sealed class MenuException:DomainResult.DomainException {
     object Empty:MenuException()
     object UnknownException:MenuException()
 }

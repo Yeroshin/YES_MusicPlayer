@@ -1,7 +1,6 @@
 package com.yes.trackdialogfeature.domain.usecase
 
 
-import com.yes.trackdialogfeature.data.repository.RepositoryFixtures
 import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.MenuException
@@ -9,7 +8,6 @@ import com.yes.trackdialogfeature.domain.repository.MenuRepository
 import com.yes.trackdialogfeature.utils.CoroutineRule
 import io.mockk.*
 
-import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
 import org.junit.Rule

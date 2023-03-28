@@ -61,7 +61,7 @@ class TrackDialog : BaseDialog() {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
         setupRecyclerView()
-        viewModel.setEvent(TrackDialogContract.Event.OnGetRootMenu)
+        viewModel.setEvent(TrackDialogContract.Event.OnItemClicked(0,""))
     }
 
 
@@ -104,7 +104,9 @@ class TrackDialog : BaseDialog() {
                         is TrackDialogContract.TrackDialogState.Loading -> {
 
                         }
-                        is TrackDialogContract.TrackDialogState.Idle -> TODO()
+                        is TrackDialogContract.TrackDialogState.Idle -> {
+
+                        }
                     }
                 }
             }
