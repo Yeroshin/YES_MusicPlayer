@@ -7,16 +7,16 @@ plugins {
 
 android {
     compileSdk 33
-   /* testOptions {
-        unitTests.all {
-            useJUnitPlatform()
-        }
-    }*/
+    /* testOptions {
+         unitTests.all {
+             useJUnitPlatform()
+         }
+     }*/
 
     defaultConfig {
         minSdk 19
         targetSdk 33
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -33,59 +33,67 @@ android {
     }
     kotlinOptions {
         jvmTarget = '11'
-     /*   freeCompilerArgs += [
-                "-Xjvm-default=all",
-        ]*/
+        /* freeCompilerArgs += [
+                  "-Xjvm-default=all",
+          ]*/
     }
     buildFeatures {
         viewBinding = true
     }
     namespace 'com.yes.trackdialogfeature'
-     dataBinding {
+    /* dataBinding {
          enabled = true
-     }
+     }*/
 }
 
 dependencies {
-    implementation project(path: ':coreUI')
     implementation project(path: ':core')
+    implementation project(path: ':coreUI')
 
 
 
-    def fragmentKtx = "1.5.5"
-    def lifecycle_version = "2.4.0"
+    androidTestImplementation 'androidx.multidex:multidex:2.0.1'
+    // androidTestImplementation project(path: ':app')
 
-    def material_version = "1.1.1"
-    def appcompat_version = "1.6.1"
-
-    def core_ktx_version = "1.1.1"
-  /*  implementation "androidx.core:core-ktx:1.9.0"
-    implementation "androidx.appcompat:appcompat:1.6.1"*/
+    implementation 'androidx.core:core-ktx:1.9.0'
     implementation "com.google.android.material:material:1.8.0"
 
     //viewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
-
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
     //Dagger/////////////////////
     def dagger_version = '2.45'
     implementation 'com.google.dagger:dagger:2.45'
     kapt 'com.google.dagger:dagger-compiler:2.45'
-  //  kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0" //ImportantSHIT!!!
+    //  kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0" //ImportantSHIT!!!
 
     //test
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    def junitVersion= '4.13.2'
-    testImplementation "junit:junit:4.13.2"
+    //DO NOT TOUCH - GOOGLE BUG HERE!!!
+    debugImplementation("androidx.fragment:fragment-testing-manifest:1.6.0-alpha04")
+    androidTestImplementation("androidx.fragment:fragment-testing:1.6.0-alpha04")
     //testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
     // Mock objects
-    def mockkVersion="1.13.4"
-    testImplementation "io.mockk:mockk:$mockkVersion"
-    //turbine
-    testImplementation 'app.cash.turbine:turbine:0.12.1'
-    // Run Blocking Test
-    def coreTestingVersion="1.1.1"
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+    /*  def mockkVersion="1.13.4"
+      testImplementation "io.mockk:mockk:$mockkVersion"
+      //turbine
+      testImplementation 'app.cash.turbine:turbine:0.12.1'
+      // Run Blocking Test
+      def coreTestingVersion="1.1.1"
+      testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'*/
+    //Espresso
+    /*  androidTestImplementation('androidx.test.espresso:espresso-core:3.5.1')
+      androidTestImplementation('androidx.test:runner:1.5.2')
+      androidTestImplementation('androidx.test:rules:1.5.0')*/
+
+    /* def fragment_version = "1.5.6"
+     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"*/
+
+    //tmp
+    //debugImplementation "androidx.test:monitor:1.6.1"
 
 
 }

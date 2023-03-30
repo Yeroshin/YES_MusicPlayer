@@ -35,10 +35,10 @@ class TrackDialog : BaseDialog() {
     override var layout: Int = R.layout.track_dialog
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        DaggerTrackDialogComponent.builder()
+       /* DaggerTrackDialogComponent.builder()
             .trackDialogModule(TrackDialogModule(getContext() as Activity))
             .build()
-            .inject(this)
+            .inject(this)*/
 
     }
 

@@ -11,7 +11,7 @@ android {
     defaultConfig {
         minSdk 19
         targetSdk 33
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -36,11 +36,15 @@ android {
 }
 
 dependencies {
+    androidTestImplementation 'androidx.multidex:multidex:2.0.1'
+
+    implementation project(path: ':core')
     implementation project(path: ':coreUI')
     implementation project(path: ':trackdialogFeature')
 
+
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    //implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     //test
     testImplementation 'junit:junit:4.13.2'
@@ -50,5 +54,5 @@ dependencies {
     def dagger_version = '2.45'
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
-   // kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0" //ImportantSHIT!!!
+    // kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0" //ImportantSHIT!!!
 }

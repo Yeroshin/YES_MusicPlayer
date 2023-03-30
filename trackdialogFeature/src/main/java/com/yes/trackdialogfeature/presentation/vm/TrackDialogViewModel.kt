@@ -58,7 +58,7 @@ class TrackDialogViewModel(
                 }
                 is DomainResult.Error -> {
                     when (result.exception) {
-                        is MenuException.UnknownException -> {
+                        is  DomainResult.UnknownException-> {
                             setState {
                                 copy(
                                     trackDialogState = TrackDialogContract.TrackDialogState.Idle

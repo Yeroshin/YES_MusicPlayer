@@ -12,7 +12,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
 import org.junit.Rule
 import org.junit.Test
-import org.junit.jupiter.api.Assertions
+
 
 @ExperimentalCoroutinesApi
 class GetChildMenuUseCaseTest {
@@ -53,29 +53,31 @@ class GetChildMenuUseCaseTest {
         )
         // Assert
         verify(exactly = 1) { menuRepository.getMenu() }
-        Assertions.assertInstanceOf(DomainResult.Success::class.java, actual)
-        assert((expected as DomainResult.Success).data == (actual as DomainResult.Success).data)
+        assert(expected==actual)
+     //   Assertions.assertInstanceOf(DomainResult.Success::class.java, actual)
+      //  assert((expected as DomainResult.Success).data == (actual as DomainResult.Success).data)
     }
 
     @Test
     fun test_get_child_menu_error() = runTest {
         // Given
-        val expected = DomainResult.Error(MenuException.UnknownException)
+        val expected = DomainResult.Error(DomainResult.UnknownException)
         every { menuRepository.getMenu() } throws Exception()
 
         // When
         val actual = cut(GetChildMenuUseCase.Params(0, ""))
 
         // Assert
-        assert(actual is DomainResult.Error)
-        Assertions.assertInstanceOf(DomainResult.Error::class.java, actual)
-        assert((expected as DomainResult.Error).exception == (actual as DomainResult.Error).exception)
+        assert(expected==actual)
+       // assert(actual is DomainResult.Error)
+     //   Assertions.assertInstanceOf(DomainResult.Error::class.java, actual)
+      //  assert((expected as DomainResult.Error).exception == (actual as DomainResult.Error).exception)
 
     }
     @Test
     fun `getMenu with valid not 0 id param returns DomainResultSuccess `() = runTest {
         // Given
-        val expected = DomainFixtures.getAlbumsMenu()
+        val expected =DomainFixtures.getAlbumsMenu()
         every {
             menuRepository.getMenu(2, "albums")
         } returns expected
@@ -84,9 +86,10 @@ class GetChildMenuUseCaseTest {
             GetChildMenuUseCase.Params(2, "albums")
         )
         // Assert
+        assert(expected==actual)
         verify(exactly = 1) { menuRepository.getMenu(2, "albums") }
-        Assertions.assertInstanceOf(DomainResult.Success::class.java, actual)
-        assert((expected as DomainResult.Success).data == (actual as DomainResult.Success).data)
+     //   Assertions.assertInstanceOf(DomainResult.Success::class.java, actual)
+      //  assert((expected as DomainResult.Success).data == (actual as DomainResult.Success).data)
 
     }
 }

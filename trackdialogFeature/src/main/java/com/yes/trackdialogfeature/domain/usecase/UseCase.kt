@@ -13,7 +13,7 @@ abstract class UseCase<REQUEST, MODEL>(
             try {
                 run(params)
             }catch (exception: Exception){
-                DomainResult.Error(MenuException.UnknownException)
+                DomainResult.Error(DomainResult.UnknownException)
             }
 
         }

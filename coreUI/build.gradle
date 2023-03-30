@@ -9,7 +9,7 @@ android {
     defaultConfig {
         minSdk 19
         targetSdk 33
-
+        // multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -27,9 +27,9 @@ android {
     kotlinOptions {
         jvmTarget = '11'
     }
-    dataBinding{
-        enabled = true
-    }
+    /*  dataBinding{
+          enabled = true
+      }*/
     buildFeatures {
         viewBinding = true
     }
@@ -37,9 +37,11 @@ android {
 }
 
 dependencies {
+    // androidTestImplementation 'androidx.multidex:multidex:2.0.1'
+
     implementation 'com.google.android.material:material:1.8.0'
-     implementation 'androidx.core:core-ktx:1.9.0'
-    //implementation 'androidx.appcompat:appcompat:1.6.0'
+    //  implementation 'androidx.core:core-ktx:1.9.0'
+    // implementation 'androidx.appcompat:appcompat:1.6.0'
 /*
 
 
