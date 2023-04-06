@@ -8,9 +8,11 @@ plugins {
 android {
     compileSdk 33
 
+        
+
     defaultConfig {
         applicationId "com.yes.musicplayer"
-        minSdk 19
+        minSdk 21
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -23,6 +25,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    packagingOptions {
+        exclude("META-INF/LICENSE.md")
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11

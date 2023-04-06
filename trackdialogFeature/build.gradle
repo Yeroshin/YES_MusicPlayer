@@ -14,13 +14,17 @@ android {
      }*/
 
     defaultConfig {
-        minSdk 19
+        minSdk 21
         targetSdk 33
-        multiDexEnabled true
+        //multiDexEnabled true
+        //testInstrumentationRunner "com.yes.core.DexOpeningTestRunner"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
+    packagingOptions {
+        exclude("META-INF/LICENSE.md")
 
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -51,16 +55,15 @@ dependencies {
     implementation project(path: ':coreUI')
 
 
-
-    androidTestImplementation 'androidx.multidex:multidex:2.0.1'
+    //androidTestImplementation 'androidx.multidex:multidex:2.0.1'
     // androidTestImplementation project(path: ':app')
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation "com.google.android.material:material:1.8.0"
 
     //viewModel
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
+      implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
+      implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
     //Dagger/////////////////////
     def dagger_version = '2.45'
     implementation 'com.google.dagger:dagger:2.45'
@@ -70,20 +73,22 @@ dependencies {
     //test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+   // androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     //DO NOT TOUCH - GOOGLE BUG HERE!!!
     debugImplementation("androidx.fragment:fragment-testing-manifest:1.6.0-alpha04")
     androidTestImplementation("androidx.fragment:fragment-testing:1.6.0-alpha04")
+   ///////////////////////////////////
     //testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
     // Mock objects
-    /*  def mockkVersion="1.13.4"
-      testImplementation "io.mockk:mockk:$mockkVersion"
-      //turbine
-      testImplementation 'app.cash.turbine:turbine:0.12.1'
-      // Run Blocking Test
-      def coreTestingVersion="1.1.1"
-      testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'*/
+    def mockkVersion = "1.13.4"
+    testImplementation "io.mockk:mockk:$mockkVersion"
+    androidTestImplementation "io.mockk:mockk-android:$mockkVersion"
+    //turbine
+    testImplementation 'app.cash.turbine:turbine:0.12.1'
+    // Run Blocking Test
+    def coreTestingVersion = "1.1.1"
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
     //Espresso
     /*  androidTestImplementation('androidx.test.espresso:espresso-core:3.5.1')
       androidTestImplementation('androidx.test:runner:1.5.2')

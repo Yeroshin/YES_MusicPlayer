@@ -26,7 +26,7 @@ class TrackDialogViewModelTest {
     @get:Rule
     val mainCoroutineRule = CoroutineRule()
 
-    @MockK
+   // @MockK
     private var getChildMenuUseCase: GetChildMenuUseCase = mockk()
     private val menuUiDomainMapper: MenuUiDomainMapper = mockk()
     private lateinit var cut: TrackDialogViewModel

@@ -18,15 +18,15 @@ import javax.inject.Inject
 
 class PlaylistFragment : Fragment() {
     private lateinit var binding: FragmentPlaylistBinding
-    @Inject
-     lateinit var trackDialog: DialogFragment
+  /*  @Inject
+     lateinit var trackDialog: DialogFragment*/
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        DaggerPlayListComponent.builder()
+      /*  DaggerPlayListComponent.builder()
             .build()
-            .inject(this)
+            .inject(this)*/
     }
 
     override fun onCreateView(
@@ -37,7 +37,7 @@ class PlaylistFragment : Fragment() {
         // Inflate the layout for this fragment
         binding=FragmentPlaylistBinding.inflate(inflater)
         binding.btnAdd.setOnClickListener{
-            trackDialog.show(childFragmentManager,null)
+           // trackDialog.show(childFragmentManager,null)
         }
         return binding.root
     }

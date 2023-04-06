@@ -1,5 +1,7 @@
 package com.yes.trackdialogfeature.presentation.vm
 
+import android.content.ContentValues
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -13,7 +15,7 @@ import com.yes.trackdialogfeature.presentation.mapper.MenuUiDomainMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class TrackDialogViewModel(
+open class TrackDialogViewModel(
     private val getChildMenuUseCase: GetChildMenuUseCase,
     private val menuUiDomainMapper: MenuUiDomainMapper
 ) : BaseViewModel<TrackDialogContract.Event, TrackDialogContract.State, TrackDialogContract.Effect>() {
@@ -92,6 +94,10 @@ class TrackDialogViewModel(
                 menuUiDomainMapper
             ) as T
         }
+    }
+    fun test(v:Int):Int{
+        Log.i(ContentValues.TAG, "test: ")
+        return 527
     }
 }
 

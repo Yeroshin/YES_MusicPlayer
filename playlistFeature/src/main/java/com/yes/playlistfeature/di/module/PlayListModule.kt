@@ -5,8 +5,8 @@ import dagger.Module
 import dagger.Provides
 @Module
 class PlayListModule {
-    @Provides
+  /*  @Provides
     fun provideTrackDialog(): DialogFragment {
         return TrackDialog()
-    }
+    }*/
 }
