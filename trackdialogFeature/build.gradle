@@ -17,14 +17,15 @@ android {
         minSdk 21
         targetSdk 33
         //multiDexEnabled true
-        //testInstrumentationRunner "com.yes.core.DexOpeningTestRunner"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.yes.trackdialogfeature.DexOpeningTestRunner"
+        //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
-    packagingOptions {
+   /* packagingOptions {
         exclude("META-INF/LICENSE.md")
 
-    }
+    }*/
+
     buildTypes {
         release {
             minifyEnabled false
@@ -53,12 +54,12 @@ android {
 dependencies {
     implementation project(path: ':core')
     implementation project(path: ':coreUI')
-
+   // androidTestImplementation project(path: ':core')
 
     //androidTestImplementation 'androidx.multidex:multidex:2.0.1'
     // androidTestImplementation project(path: ':app')
 
-    implementation 'androidx.core:core-ktx:1.9.0'
+  //  implementation 'androidx.core:core-ktx:1.9.0'
     implementation "com.google.android.material:material:1.8.0"
 
     //viewModel
@@ -73,17 +74,26 @@ dependencies {
     //test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-   // androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     //DO NOT TOUCH - GOOGLE BUG HERE!!!
-    debugImplementation("androidx.fragment:fragment-testing-manifest:1.6.0-alpha04")
+   debugImplementation("androidx.fragment:fragment-testing-manifest:1.6.0-alpha04")
     androidTestImplementation("androidx.fragment:fragment-testing:1.6.0-alpha04")
    ///////////////////////////////////
     //testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
+    ///////////////////////////
     // Mock objects
-    def mockkVersion = "1.13.4"
+    //DO NOT TOUCH - last version conflicts with espresso!
+    def mockkVersion = "1.12.4"
     testImplementation "io.mockk:mockk:$mockkVersion"
-    androidTestImplementation "io.mockk:mockk-android:$mockkVersion"
+    //shit here!!!!!
+    //androidTestImplementation "io.mockk:mockk-android:$mockkVersion"
+   // testImplementation "io.mockk:mockk-android:${mockkVersion}"
+   // testImplementation "io.mockk:mockk-agent:${mockkVersion}"
+    //noinspection GradleDependency
+    androidTestImplementation "io.mockk:mockk-android:${mockkVersion}"
+    //androidTestImplementation "io.mockk:mockk-agent:${mockkVersion}"
+    ////////////////////////
     //turbine
     testImplementation 'app.cash.turbine:turbine:0.12.1'
     // Run Blocking Test
@@ -98,7 +108,8 @@ dependencies {
      debugImplementation "androidx.fragment:fragment-testing:$fragment_version"*/
 
     //tmp
-    //debugImplementation "androidx.test:monitor:1.6.1"
-
+   // debugImplementation "androidx.test:monitor:1.6.1"
+//Shit for mockk to run on api<p
+    implementation 'com.github.tmurakami:dexopener:2.0.5'
 
 }

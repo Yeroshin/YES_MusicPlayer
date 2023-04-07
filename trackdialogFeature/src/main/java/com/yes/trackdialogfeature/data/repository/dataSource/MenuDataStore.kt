@@ -1,6 +1,8 @@
 package com.yes.trackdialogfeature.data.repository.dataSource
 
 
+import android.content.ContentValues
+import android.util.Log
 import com.yes.trackdialogfeature.data.repository.entity.DataException
 import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
 
@@ -275,6 +277,11 @@ class MenuDataStore {
             throw DataException
         }
         return children.toArray() as Array<MenuDataStoreEntity>
+    }
+
+    fun tmp():Int{
+        Log.i(ContentValues.TAG, "test: ")
+        return 1
     }
 
 }

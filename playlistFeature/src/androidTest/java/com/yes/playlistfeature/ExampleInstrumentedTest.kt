@@ -19,6 +19,7 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        val name=appContext.packageName
         assertEquals("com.yes.playlistfeature.test", appContext.packageName)
     }
 }

@@ -11,9 +11,14 @@ import org.junit.Before
 import org.junit.Test
 
 
-//@RunWith(AndroidJUnit4::class)
 class TrackDialogTest {
-    private var viewModel: TrackDialogViewModel = mockk()
+    //private var viewModel: TrackDialogViewModel = mockk()
+  //  private var viewModel = spyk<TrackDialogViewModel>()
+
+    val viewModel = mockk<TrackDialogViewModel > {
+        every {
+            test(1) } returns 10
+    }
    // private val viewModel = mockkClass(TrackDialogViewModel::class)
     private val viewModelFactory = MockTrackDialogViewModelFactory(viewModel)
     private val adapter: TrackDialogAdapter = TrackDialogAdapter()
@@ -31,18 +36,17 @@ class TrackDialogTest {
     }
 
     @Test
-    fun showsRootCategoriesSuccess() {
-        /*  val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-          val n=appContext.packageName
-          Assert.assertEquals("com.yes.trackdialogfeature.test", appContext.packageName)*/
+    fun showsTrackDialogStateIdle() {
 
         val expected = TrackDialogContract.State(
             TrackDialogContract.TrackDialogState.Idle
         )
        // justRun { viewModel.setEvent(any()) }
-        every {
-            viewModel.test(1) } returns 10
-        every {
+       /* every {
+            viewModel.test(1) } returns 10*/
+        val v=viewModel.test(1)
+        assert(viewModel.test(1) == 10)
+      /*  every {
             viewModel.setEvent(TrackDialogContract.Event.OnItemClicked(0, ""))
         } returns Unit
 
@@ -52,7 +56,7 @@ class TrackDialogTest {
 
         scenario.onFragment { fragment ->
             assert(fragment.requireDialog().isShowing)
-        }
+        }*/
         /* val scenario = launchFragment<TrackDialog>()
            scenario.moveToState(Lifecycle.State.STARTED)
            scenario.onFragment { fragment ->

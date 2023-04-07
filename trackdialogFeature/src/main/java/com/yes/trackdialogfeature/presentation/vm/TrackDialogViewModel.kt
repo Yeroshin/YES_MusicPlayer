@@ -96,7 +96,7 @@ open class TrackDialogViewModel(
         }
     }
     fun test(v:Int):Int{
-        Log.i(ContentValues.TAG, "test: ")
+        Log.i(ContentValues.TAG, "////test: ////")
         return 527
     }
 }

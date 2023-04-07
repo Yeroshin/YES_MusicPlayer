@@ -33,6 +33,11 @@ class MenuRepositoryImplTest {
         val expected = DomainResult.Success(RepositoryFixtures.getCategoriesMenu())
         // every { menuDataStore.getRoot() } returns DataSourceFixtures.findRoot()
         every {
+            menuDataStore.tmp()
+        }returns 55
+        val v=menuDataStore.tmp()
+
+        every {
             menuDataStore.getRoot()
         } returns MenuDataStoreFixtures.getRoot()
         every {
