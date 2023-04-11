@@ -25,7 +25,9 @@ android {
         exclude("META-INF/LICENSE.md")
 
     }*/
-
+    testOptions {
+        animationsDisabled = true
+    }
     buildTypes {
         release {
             minifyEnabled false
