@@ -16,12 +16,13 @@
         android:visibility="visible">
 
         <TextView
-            android:id="@+id/playlist"
+            android:id="@+id/dialogTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:fontFamily="@font/a_lcdnova_allfont_ru"
             android:layout_marginLeft="4dp"
+            android:contentDescription="dialogTitle"
+            android:fontFamily="@font/a_lcdnova_allfont_ru"
             android:gravity="center_vertical"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"

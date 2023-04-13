@@ -10,12 +10,17 @@ import androidx.viewbinding.ViewBinding
 
 
 abstract class BaseDialog (): DialogFragment() {
-
+   /* protected var _binding: ViewBinding? = null
+    // This property is only valid between onCreateView and
+// onDestroyView.
+    protected val binding get() = _binding!!*/
+   lateinit var binding: ViewBinding
+   //////////////////
    // private var myDialog: Dialog = dialog!!
-    lateinit var binding: ViewBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NO_FRAME, 0);
+        setStyle(STYLE_NO_FRAME, 0);
     }
 
     abstract val layout: Int
@@ -75,5 +80,8 @@ abstract class BaseDialog (): DialogFragment() {
         /////////////////////////////
         return binding.root
     }
-
+   /* override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }*/
 }
