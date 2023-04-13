@@ -15,7 +15,7 @@ import com.yes.trackdialogfeature.presentation.mapper.MenuUiDomainMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-open class TrackDialogViewModel(
+ class TrackDialogViewModel(
     private val getChildMenuUseCase: GetChildMenuUseCase,
     private val menuUiDomainMapper: MenuUiDomainMapper
 ) : BaseViewModel<TrackDialogContract.Event, TrackDialogContract.State, TrackDialogContract.Effect>() {
@@ -95,7 +95,7 @@ open class TrackDialogViewModel(
             ) as T
         }
     }
-    fun test(v:Int):Int{
+    fun test():Int{
         Log.i(ContentValues.TAG, "////test: ////")
         return 527
     }

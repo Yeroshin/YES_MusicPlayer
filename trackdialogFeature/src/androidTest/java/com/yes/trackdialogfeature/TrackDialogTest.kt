@@ -3,6 +3,8 @@ package com.yes.trackdialogfeature
 
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragment
+import com.github.tmurakami.dexopener.repackaged.com.google.common.collect.Iterables.any
+import com.yes.core.presentation.BaseViewModel
 import com.yes.trackdialogfeature.api.Dependency
 import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCase
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
@@ -16,29 +18,33 @@ import org.junit.Test
 
 
 class TrackDialogTest {
-    private var viewModel: TrackDialogViewModel = mockk(relaxed = true)
+  /*  private val getChildMenuUseCase: GetChildMenuUseCase=mockk()
 
-    //  private var viewModel = spyk<TrackDialogViewModel>()
+    private val viewModel = spyk(
+        TrackDialogViewModel(getChildMenuUseCase, menuUiDomainMapper),
+        recordPrivateCalls = true
+    ){
 
-    /* val viewModel = mockk<TrackDialogViewModel > {
-         every {
-             test(1) } returns 10
-     }*/
-    // private val viewModel = mockkClass(TrackDialogViewModel::class)
-    //  private val viewModelFactory = MockTrackDialogViewModelFactory(viewModel)
-    private val getChildMenuUseCase: GetChildMenuUseCase = mockk()
-  /*  private val getChildMenuUseCase = mockk< GetChildMenuUseCase  > {
-        every {
-            invoke(GetChildMenuUseCase.Params(any(),any())) } returns Unit
-    }*/
-    private val menuUiDomainMapper: MenuUiDomainMapper = mockk()
+    }
+   // private val viewModel = spyk()
+
+   // private val menuUiDomainMapper: MenuUiDomainMapper = mockk()
+    /*   val viewModel = spyk(TrackDialogViewModel(any)) {
+           every {
+               test()
+              /* setEvent(
+                   any()
+                  // TrackDialogContract.Event.OnItemClicked(0, "")
+               )*/
+           } returns 10
+       }*/
+
+   */
+    private val viewModel=mockk<TrackDialogViewModel>()
+  private val menuUiDomainMapper: MenuUiDomainMapper=mockk()
     private val adapter: TrackDialogAdapter = mockk(relaxed = true)
-   /* private val adapter = mockk<TrackDialogAdapter  > {
-        every {
-            setViewModel(any()) } returns Unit
-    }*/
     private val dependency = TrackDialog.TrackDialogDependency(
-        getChildMenuUseCase,
+        viewModel,
         menuUiDomainMapper,
         adapter
     )
@@ -51,6 +57,9 @@ class TrackDialogTest {
     fun setUp() {
         MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
         // Create DetailViewModel before every test
+        every {
+            viewModel.setEvent(any())
+        } answers { }
         scenario = launchFragment(
             factory = trackDialogFactory
         )
@@ -62,9 +71,10 @@ class TrackDialogTest {
         val expected = TrackDialogContract.State(
             TrackDialogContract.TrackDialogState.Idle
         )
-      /*  every {
-            adapter.setViewModel(any())
-        } returns Unit*/
+        /*  every {
+              adapter.setViewModel(any())
+          } returns Unit*/
+
         scenario.onFragment { fragment ->
             assert(fragment.requireDialog().isShowing)
             verify {

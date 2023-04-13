@@ -1,37 +1,24 @@
 package com.yes.trackdialogfeature.presentation.ui
 
-import android.app.Activity
-import android.content.ContentValues
-import android.content.ContentValues.TAG
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentFactory
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yes.core.presentation.BaseViewModel
 import com.yes.coreui.BaseDialog
 import com.yes.trackdialogfeature.R
 import com.yes.trackdialogfeature.api.Dependency
 
 import com.yes.trackdialogfeature.databinding.TrackDialogBinding
-import com.yes.trackdialogfeature.di.components.DaggerTrackDialogComponent
 
-import com.yes.trackdialogfeature.di.module.TrackDialogModule
-import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCase
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.mapper.MenuUiDomainMapper
-import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 
 class TrackDialog(
@@ -46,13 +33,13 @@ class TrackDialog(
     ///////////////////////////
     /* @Inject
      lateinit var viewModelFactory: TrackDialogViewModel.Factory*/
-    private val viewModel: TrackDialogViewModel by viewModels {
+  /*  private val viewModel: TrackDialogViewModel by viewModels {
         TrackDialogViewModel.Factory(
             trackDialogDependency.getChildMenuUseCase,
             trackDialogDependency.menuUiDomainMapper
         )
-    }
-   // private lateinit var viewModel: TrackDialogViewModel
+    }*/
+    private val viewModel= trackDialogDependency.viewModel
 
     /*  @Inject
       lateinit var adapter: TrackDialogAdapter*/
@@ -71,7 +58,6 @@ class TrackDialog(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         binding = TrackDialogBinding.inflate(inflater)
         super.onCreateView(inflater, container, savedInstanceState)
         /////////////////////
@@ -88,12 +74,12 @@ class TrackDialog(
         viewModel.setEvent(TrackDialogContract.Event.OnItemClicked(0, ""))
     }
     private fun setupRecyclerView() {
-        adapter.setViewModel(viewModel)
+        //adapter.setViewModel(viewModel)
         val layoutManager = LinearLayoutManager(context)
 
         (binding as TrackDialogBinding).recyclerViewContainer.recyclerView.layoutManager =
             layoutManager
-     //   (binding as TrackDialogBinding).recyclerViewContainer.recyclerView.adapter = adapter
+        (binding as TrackDialogBinding).recyclerViewContainer.recyclerView.adapter = adapter
 
 
         /////////////////
@@ -148,7 +134,8 @@ class TrackDialog(
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
     class TrackDialogDependency(
-        val getChildMenuUseCase: GetChildMenuUseCase,
+       // val getChildMenuUseCase: GetChildMenuUseCase,
+        val viewModel: BaseViewModel<TrackDialogContract.Event, TrackDialogContract.State, TrackDialogContract.Effect>,
         val menuUiDomainMapper: MenuUiDomainMapper,
        // val viewModelFactory: ViewModelProvider.Factory,
         val adapter: TrackDialogAdapter

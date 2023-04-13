@@ -10,7 +10,7 @@ import com.yes.trackdialogfeature.presentation.model.MenuUi
 
 class TrackDialogAdapter :
     RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>() {
-    private lateinit var viewModel: TrackDialogViewModel
+   // private lateinit var viewModel: TrackDialogViewModel
     private var trackList = listOf<MenuUi.MediaItem>()
 
 
@@ -34,9 +34,9 @@ class TrackDialogAdapter :
         return trackList.size
     }
 
-    fun setViewModel(vm: TrackDialogViewModel) {
+   /* fun setViewModel(vm: TrackDialogViewModel) {
         this.viewModel = vm
-    }
+    }*/
 
     fun setItems(items: List<MenuUi.MediaItem>) {
 
