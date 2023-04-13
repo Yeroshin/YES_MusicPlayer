@@ -1,11 +1,9 @@
 package com.yes.trackdialogfeature.presentation.ui
 
-import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,13 +11,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yes.core.presentation.IBaseViewModel
 import com.yes.coreui.BaseDialog
-
 import com.yes.trackdialogfeature.api.Dependency
 import com.yes.trackdialogfeature.databinding.TrackDialogBinding
-
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import kotlinx.coroutines.launch
+import com.yes.trackdialogfeature.R
 
 
 class TrackDialog(
@@ -28,9 +25,9 @@ class TrackDialog(
     private val binder by lazy {
          binding as TrackDialogBinding
     }
-    override var layout: Int = R.layout.activity_list_item
+    override val layout: Int = R.layout.track_dialog
     private val trackDialogDependency = dependency as TrackDialogDependency
-
+//val t=R.layout.
     ///////////////////////////
 
     // private val viewModelFactory: ViewModelProvider.Factory=trackDialogDependency.viewModelFactory
@@ -79,7 +76,8 @@ class TrackDialog(
         observeViewModel()
         setupRecyclerView()
         viewModel.setEvent(TrackDialogContract.Event.OnItemClicked(0, ""))
-        val myTextView = com.yes.trackdialogfeature.R.id.recyclerViewContainer as TextView
+        val myTextView = R.id.recyclerViewContainer
+        val y= com.yes.coreui.R.id.dialogTitle
         val t=10
     }
 

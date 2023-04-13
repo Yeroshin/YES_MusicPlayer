@@ -4,7 +4,9 @@ package com.yes.trackdialogfeature
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragment
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.yes.core.presentation.IBaseViewModel
 import com.yes.trackdialogfeature.databinding.TrackDialogBinding
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
@@ -101,7 +103,8 @@ class TrackDialogTest {
         scenario.onFragment { fragment ->
             assert(fragment.requireDialog().isShowing)
         }
-      //  onView(withId(R.id.recyclerViewContainer.))
+        onView(withId(com.yes.coreui.R.id.dialogTitle))
+            .check(matches(withText("hello world")))
         // justRun { viewModel.setEvent(any()) }
         /* every {
              viewModel.test(1) } returns 10*/

@@ -21,12 +21,12 @@
             android:layout_height="wrap_content"
 
             android:layout_marginLeft="4dp"
-            android:contentDescription="dialogTitle"
             android:fontFamily="@font/a_lcdnova_allfont_ru"
             android:gravity="center_vertical"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
+            android:text="hello world"
             android:textColor="@color/black"
             android:textSize="@dimen/font_size_large"
             tools:text="hello" />

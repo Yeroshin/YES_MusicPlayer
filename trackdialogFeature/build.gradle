@@ -48,9 +48,7 @@ android {
         viewBinding = true
     }
     namespace 'com.yes.trackdialogfeature'
-    /* dataBinding {
-         enabled = true
-     }*/
+
 }
 
 dependencies {
