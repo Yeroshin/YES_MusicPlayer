@@ -57,5 +57,6 @@
     <string name="folder">folder</string>
     <string name="genres">genres</string>
     <string name="categories">categories</string>
+    <string name="UnknownException">Unknown Exception</string>
 
 </resources>

@@ -3,6 +3,8 @@ package com.yes.trackdialogfeature.presentation.ui
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
@@ -11,19 +13,21 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yes.core.presentation.IBaseViewModel
 import com.yes.coreui.BaseDialog
+import com.yes.trackdialogfeature.R
 import com.yes.trackdialogfeature.api.Dependency
 import com.yes.trackdialogfeature.databinding.TrackDialogBinding
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import kotlinx.coroutines.launch
-import com.yes.trackdialogfeature.R
+
+
 
 
 class TrackDialog(
     dependency: Dependency
 ) : BaseDialog() {
     private val binder by lazy {
-         binding as TrackDialogBinding
+        binding as TrackDialogBinding
     }
     override val layout: Int = R.layout.track_dialog
     private val trackDialogDependency = dependency as TrackDialogDependency
@@ -46,7 +50,7 @@ class TrackDialog(
 
     /*  @Inject
       lateinit var adapter: TrackDialogAdapter*/
-  //  override var layout: Int = R.layout.track_dialog
+    //  override var layout: Int = R.layout.track_dialog
     /* override fun onAttach(context: Context) {
          super.onAttach(context)
         /* DaggerTrackDialogComponent.builder()
@@ -77,8 +81,8 @@ class TrackDialog(
         setupRecyclerView()
         viewModel.setEvent(TrackDialogContract.Event.OnItemClicked(0, ""))
         val myTextView = R.id.recyclerViewContainer
-        val y= com.yes.coreui.R.id.dialogTitle
-        val t=10
+        val y = com.yes.coreui.R.id.dialogTitle
+        val t = 10
     }
 
     private fun setupRecyclerView() {
@@ -99,17 +103,7 @@ class TrackDialog(
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect {
-                    when (it.trackDialogState) {
-                        is TrackDialogContract.TrackDialogState.Success -> {
-                            dataLoaded(it.trackDialogState.title, it.trackDialogState.menu.items)
-                        }
-                        is TrackDialogContract.TrackDialogState.Loading -> {
-                            showLoading()
-                        }
-                        is TrackDialogContract.TrackDialogState.Idle -> {
-
-                        }
-                    }
+                    renderUiState(it)
                 }
             }
         }
@@ -118,7 +112,7 @@ class TrackDialog(
                 viewModel.effect.collect {
                     when (it) {
                         is TrackDialogContract.Effect.UnknownException -> {
-                            showToast("Unknown Exception")
+                            showError(com.yes.coreui.R.string.UnknownException )
                         }
                     }
                 }
@@ -126,18 +120,42 @@ class TrackDialog(
 
         }
     }
+    fun renderUiState(state:TrackDialogContract.State){
+        when (state.trackDialogState) {
+            is TrackDialogContract.TrackDialogState.Success -> {
+                dataLoaded(
+                    state.trackDialogState.title,
+                    state.trackDialogState.menu.items
+                )
+            }
+            is TrackDialogContract.TrackDialogState.Loading -> {
+                showLoading()
+            }
+            is TrackDialogContract.TrackDialogState.Idle -> {
+                idleView()
+            }
+        }
+    }
+    private fun idleView() {
+        binder.recyclerViewContainer.dialogTitle.text = ""
+        binder.recyclerViewContainer.progressBar.visibility = GONE
+        binder.recyclerViewContainer.disableView.visibility = GONE
+    }
 
     private fun showLoading() {
-        TODO("Not yet implemented")
+        binder.recyclerViewContainer.progressBar.visibility = VISIBLE
+        binder.recyclerViewContainer.disableView.visibility = VISIBLE
     }
 
     private fun dataLoaded(title: String, items: List<MenuUi.MediaItem>) {
 
-        //binder.recyclerViewContainer.dialog_title.text = title
+        binder.recyclerViewContainer.dialogTitle.text = title
         adapter.setItems(items)
+        binder.recyclerViewContainer.progressBar.visibility = GONE
+        binder.recyclerViewContainer.disableView.visibility = GONE
     }
 
-    private fun showToast(message: String) {
+    private fun showError(message: Int) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 

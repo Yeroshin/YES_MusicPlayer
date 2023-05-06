@@ -56,5 +56,6 @@
     <string name="genres">жанры</string>
     <string name="categories">категории</string>
 
+    <string name="UnknownException">неизвестная ошибка</string>
 
 </resources>

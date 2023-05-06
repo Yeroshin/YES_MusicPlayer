@@ -15,10 +15,12 @@ import com.yes.trackdialogfeature.presentation.mapper.MenuUiDomainMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
- class TrackDialogViewModel(
+class TrackDialogViewModel(
     private val getChildMenuUseCase: GetChildMenuUseCase,
     private val menuUiDomainMapper: MenuUiDomainMapper
-) : BaseViewModel<TrackDialogContract.Event, TrackDialogContract.State, TrackDialogContract.Effect>() {
+) : BaseViewModel<TrackDialogContract.Event,
+        TrackDialogContract.State,
+        TrackDialogContract.Effect>() {
     override fun createInitialState(): TrackDialogContract.State {
         return TrackDialogContract.State(
             TrackDialogContract.TrackDialogState.Idle
@@ -60,7 +62,7 @@ import kotlinx.coroutines.launch
                 }
                 is DomainResult.Error -> {
                     when (result.exception) {
-                        is  DomainResult.UnknownException-> {
+                        is DomainResult.UnknownException -> {
                             setState {
                                 copy(
                                     trackDialogState = TrackDialogContract.TrackDialogState.Idle
@@ -95,7 +97,8 @@ import kotlinx.coroutines.launch
             ) as T
         }
     }
-    fun test():Int{
+
+    fun test(): Int {
         Log.i(ContentValues.TAG, "////test: ////")
         return 527
     }

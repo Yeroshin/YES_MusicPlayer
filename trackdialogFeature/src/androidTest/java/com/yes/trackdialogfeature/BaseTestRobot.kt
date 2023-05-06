@@ -1,19 +1,26 @@
 package com.yes.trackdialogfeature
 
 
-import org.hamcrest.CoreMatchers.allOf
-import org.hamcrest.CoreMatchers.anything
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import org.hamcrest.Matchers.not
 
 open class BaseTestRobot {
-   /* fun clickListItem(listRes: Int, position: Int) {
-        onData(anything())
-            .inAdapterView(allOf(withId(listRes)))
-            .atPosition(position).perform(ViewActions.click())
-    }
+    fun view(resId: Int): ViewInteraction = onView(withId(resId))
+    fun matchText(viewInteraction: ViewInteraction, text: String): ViewInteraction = viewInteraction
+        .check(matches(withText(text)))
 
-    fun sleep() = apply {
-        Thread.sleep(500)
-    }*/
+    // fun matchText(resId: Int, text: String): ViewInteraction = matchText(textView(resId), text)
+    fun hasNoText(viewInteraction: ViewInteraction): ViewInteraction = viewInteraction
+        .check(matches(withText("")))
 
+    fun isDisplayed(viewInteraction: ViewInteraction): ViewInteraction = viewInteraction
+        .check(matches(ViewMatchers.isDisplayed()))
+    fun isNotDisplayed(viewInteraction: ViewInteraction): ViewInteraction = viewInteraction
+        .check(matches(not(ViewMatchers.isDisplayed())))
 
 }
