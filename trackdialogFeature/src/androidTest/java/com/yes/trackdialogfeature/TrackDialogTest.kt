@@ -1,86 +1,44 @@
 package com.yes.trackdialogfeature
 
 
+import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.testing.FragmentScenario
-import androidx.fragment.app.testing.FragmentScenario.Companion.launch
 import androidx.fragment.app.testing.launchFragment
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
+import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.yes.core.presentation.IBaseViewModel
-import com.yes.core.presentation.UiEffect
-import com.yes.trackdialogfeature.databinding.TrackDialogBinding
+
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
+import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 import com.yes.trackdialogfeature.presentation.ui.TrackDialogAdapter
-import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
-import io.mockk.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.runTest
-import org.hamcrest.Matchers.not
+
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.junit.Before
 import org.junit.Test
 
-@OptIn(
-    FlowPreview::class,
-    ExperimentalCoroutinesApi::class
-)
+
 class TrackDialogTest {
-
-
-    //   private val viewModel:TrackDialogViewModel = mockk(relaxed = true)
-    // private val viewModel = spyk()
-
-    // private val menuUiDomainMapper: MenuUiDomainMapper = mockk()
-    /*   val viewModel = spyk(TrackDialogViewModel(any)) {
-           every {
-               test()
-              /* setEvent(
-                   any()
-                  // TrackDialogContract.Event.OnItemClicked(0, "")
-               )*/
-           } returns 10
-       }*/
-
-
-    /*  val vm = object : IBaseViewModel<TrackDialogContract.Event,
-              TrackDialogContract.State,
-              TrackDialogContract.Effect> {
-          override val uiState: StateFlow<TrackDialogContract.State>
-              get() = TODO("Not yet implemented")
-          override val effect: Flow<TrackDialogContract.Effect>
-              get() = TODO("Not yet implemented")
-
-          override fun setEvent(event: TrackDialogContract.Event) {
-              TODO("Not yet implemented")
-          }
-
-
-      }*/
-
-    /* private val viewModel: IBaseViewModel<TrackDialogContract.Event,
-             TrackDialogContract.State,
-             TrackDialogContract.Effect> = mockk(relaxed = true)*/
     class TestViewModel(
 
     ) : IBaseViewModel<TrackDialogContract.Event, TrackDialogContract.State, TrackDialogContract.Effect> {
 
         override val effect: Flow<TrackDialogContract.Effect> = flow {}
-        private val events = MutableSharedFlow<Int>(0)
-
         private val _uiState: MutableStateFlow<TrackDialogContract.State> = MutableStateFlow(
             TrackDialogContract.State(
                 TrackDialogContract.TrackDialogState.Idle
             )
         )
-
-        //  override val uiState: StateFlow<TrackDialogContract.State>
         override val uiState: StateFlow<TrackDialogContract.State> =
             _uiState.flatMapConcat { state ->
                 flow { emit(state) }
@@ -92,13 +50,6 @@ class TrackDialogTest {
                 )
             )
 
-        /*  override val uiState: StateFlow<TrackDialogContract.State> by lazy {
-              events.flatMapConcat { state ->
-                  flow { emit(state) }
-                      .onStart { emit(state ) }
-                      .onCompletion { emit(state ) }
-              }.stateIn(CoroutineScope(UnconfinedTestDispatcher()), SharingStarted.Lazily, 0)
-          }*/
         fun pushEvent(state: TrackDialogContract.State) =
             CoroutineScope(UnconfinedTestDispatcher()).launch {
                 _uiState.emit(state)
@@ -109,10 +60,10 @@ class TrackDialogTest {
         }
     }
 
-    val viewMOdel = TestViewModel()
-    private val adapter: TrackDialogAdapter = mockk(relaxed = true)
+    val viewModel = TestViewModel()
+    private val adapter: TrackDialogAdapter = TrackDialogAdapter()
     private val dependency = TrackDialog.TrackDialogDependency(
-        viewMOdel,
+        viewModel,
         adapter
     )
     private val trackDialogFactory = MockFragmentFactoryImpl(
@@ -122,54 +73,26 @@ class TrackDialogTest {
 
     @Before
     fun setUp() {
-        MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
-        // Create DetailViewModel before every test
-        /*  every {
-              viewModel.uiState
-          } answers {
-              MutableStateFlow(
-                  TrackDialogContract.State(
-                      TrackDialogContract.TrackDialogState.Idle
-                  )
-              ).asStateFlow()
-          }*/
+        //  MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
+
         scenario = launchFragment(
             factory = trackDialogFactory
         )
+
     }
 
     @Test
-    fun onInitShowsTrackDialogStateIdle() = runTest {
-
-        /* every {
-             viewModel.setEvent(any())
-         } returns Unit*/
-        /*  every {
-              viewModel.uiState
-          } answers { MutableStateFlow(TrackDialogContract.State(TrackDialogContract.TrackDialogState.Idle)).asStateFlow() }
-         */
-        /*  coEvery {
-              viewModel.uiState
-          } returns TrackDialogContract.State(
-              TrackDialogContract.TrackDialogState.Idle
-          )*/
-
+    fun onInitShowsTrackDialogStateIdle() {
         scenario.onFragment { fragment ->
             assert(fragment.requireDialog().isShowing)
+
         }
-        /*  onView(withId(com.yes.coreui.R.id.dialogTitle))
-              .check(matches(withText("")))
-          onView(withId(com.yes.coreui.R.id.progressBar))
-              .check(matches(not(isDisplayed())))
-          onView(withId(com.yes.coreui.R.id.disableView))
-              .check(matches(not(isDisplayed())))*/
-        //////////////////////////////
         trackDialog {
             matchTitleHasNoText()
             matchProgressBarIsNotDisplayed()
             matchDisableViewIsNotDisplayed()
         }
-        viewMOdel.pushEvent(
+        viewModel.pushEvent(
             TrackDialogContract.State(
                 TrackDialogContract.TrackDialogState.Loading
             )
@@ -177,29 +100,133 @@ class TrackDialogTest {
         trackDialog {
             matchProgressBarDisplayed()
         }
-        /*  vm.uiState.value =TrackDialogContract.State(
-              TrackDialogContract.TrackDialogState.Idle
-          )*/
-        //////////////////////////////
-        // justRun { viewModel.setEvent(any()) }
-        /* every {
-             viewModel.test(1) } returns 10*/
-        /*  val v=viewModel.test(1)
-          assert(viewModel.test(1) == 10)*/
-        /* every {
-             viewModel.setEvent(TrackDialogContract.Event.OnItemClicked(0, ""))
-         } returns Unit*/
-
-
-        /* val scenario = launchFragment<TrackDialog>()
-           scenario.moveToState(Lifecycle.State.STARTED)
-           scenario.onFragment { fragment ->
-               assert(fragment.requireDialog().isShowing)
-           }*/
     }
 
     @Test
-    fun loadDataSuccess() {
-
+    fun loading() {
+        scenario.onFragment { fragment ->
+            viewModel.pushEvent(
+                TrackDialogContract.State(
+                    TrackDialogContract.TrackDialogState.Loading
+                )
+            )
+        }
+        trackDialog {
+            matchTitleHasNoText()
+            matchProgressBarDisplayed()
+            matchDisableViewDisplayed()
+        }
     }
+
+    @Test
+    fun dataSuccess() {
+        scenario.onFragment { fragment ->
+            viewModel.pushEvent(
+                TrackDialogContract.State(
+                    TrackDialogContract.TrackDialogState.Loading
+                )
+            )
+        }
+        val expected = "Categories"
+        val onClick: (TrackDialogContract.Event) -> Unit = {}
+        viewModel.pushEvent(
+            TrackDialogContract.State(
+                TrackDialogContract.TrackDialogState.Success(
+                    MenuUi(
+                        expected,
+                        listOf(
+                            MenuUi.MediaItem(
+                                1,
+                                "Artist",
+                                1,
+                                onClick
+                            ),
+                            MenuUi.MediaItem(
+                                2,
+                                "Album",
+                                1,
+                                onClick
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        trackDialog {
+            matchTitleText(expected)
+            matchProgressBarIsNotDisplayed()
+            matchDisableViewIsNotDisplayed()
+            matchTrackDialogItemAtPosition(
+                0,
+                MenuUi.MediaItem(
+                    1,
+                    "Artist",
+                    1,
+                    onClick
+                )
+            )
+        }
+
+        //////////////////////worked
+    /*    onView(withId(com.yes.coreui.R.id.recyclerView)).perform(
+            scrollToPosition<TrackDialogAdapter.TrackHolder>(
+                0
+            )
+        )
+
+        onView(withText("Artist")).check(matches(isDisplayed()))
+        //onView(withText("Description")).check(matches(isDisplayed()))
+        //////////////////////////////
+
+        onView(withId(com.yes.coreui.R.id.recyclerView)) // Replace 'recycler_view' with the ID of your RecyclerView
+            .check(matches(atPosition(0, R.id.item_title, "Album")))
+*/
+        //////////////////////////////
+    }
+
+    private fun atPosition(position: Int, targetViewId: Int, expectedText: String): Matcher<View> {
+        return object : BoundedMatcher<View, RecyclerView>(RecyclerView::class.java) {
+            override fun describeTo(description: Description) {
+                //description.appendText("has item at position $position: ")
+
+            }
+
+            override fun matchesSafely(recyclerView: RecyclerView): Boolean {
+                val viewHolder = recyclerView.findViewHolderForAdapterPosition(position)
+                val targetView = viewHolder?.itemView?.findViewById<TextView>(targetViewId)
+
+                return targetView?.text == expectedText
+            }
+        }
+    }
+    /*
+    private fun atPosition(position: Int, itemMatcher: Matcher<View>, expectedText: String?): Matcher<View> {
+        checkNotNull(itemMatcher)
+        return object : BoundedMatcher<View, RecyclerView>(RecyclerView::class.java) {
+            override fun describeTo(description: Description) {
+                description.appendText("has item at position $position: ")
+                itemMatcher.describeTo(description)
+            }
+
+            override fun matchesSafely(view: RecyclerView): Boolean {
+                val viewHolder = view.findViewHolderForAdapterPosition(position)
+                if (viewHolder == null) {
+                    // has no item on such position
+                    return false
+                }
+                val itemView = viewHolder.itemView
+                var matchResult = itemMatcher.matches(itemView)
+
+                if (expectedText != null) {
+                    val textView = itemView.findViewById<TextView>(R.id.item_title)
+                    val actualText = textView.text.toString()
+                    matchResult = matchResult && actualText == expectedText
+                }
+
+                return matchResult
+            }
+        }
+    }
+*/
+
 }

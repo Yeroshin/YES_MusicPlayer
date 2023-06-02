@@ -1,5 +1,7 @@
 package com.yes.trackdialogfeature
 
+import com.yes.trackdialogfeature.presentation.model.MenuUi
+
 fun trackDialog(func: TrackDialogRobot.() -> Unit) = TrackDialogRobot().apply { func() }
 class TrackDialogRobot: BaseTestRobot() {
     fun matchTitleText(title: String) = matchText(view(com.yes.coreui.R.id.dialogTitle), title)
@@ -8,7 +10,6 @@ class TrackDialogRobot: BaseTestRobot() {
     fun matchProgressBarIsNotDisplayed() =isNotDisplayed(view(com.yes.coreui.R.id.progressBar))
     fun matchDisableViewDisplayed() =isDisplayed(view(com.yes.coreui.R.id.disableView))
     fun matchDisableViewIsNotDisplayed() =isNotDisplayed(view(com.yes.coreui.R.id.disableView))
-    fun matchAdapterItemsSet() {
-
-    }
+    fun matchTrackDialogItemAtPosition(position:Int,item: MenuUi.MediaItem)
+    =matchRecyclerViewItemDescendantTextAtPosition(view(com.yes.coreui.R.id.recyclerView),position,R.id.item_title,item.name)
 }
