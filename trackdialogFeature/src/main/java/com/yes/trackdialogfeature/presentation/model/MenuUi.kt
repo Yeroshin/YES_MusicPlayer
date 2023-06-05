@@ -11,9 +11,8 @@ data class MenuUi(
     data class MediaItem(
         val id:Int,
         val name:String,
-        val iconType:Int=1,
+        val iconType:Int,
+        val param:TrackDialogContract.Event,
         val onClick: ((TrackDialogContract.Event) -> Unit)
-
     )
-
 }

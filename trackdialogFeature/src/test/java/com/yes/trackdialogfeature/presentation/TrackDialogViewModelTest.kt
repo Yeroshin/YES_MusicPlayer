@@ -1,7 +1,6 @@
 package com.yes.trackdialogfeature.presentation
 
 import app.cash.turbine.test
-import com.yes.trackdialogfeature.data.dataSource.MenuDataStoreFixtures
 import com.yes.trackdialogfeature.data.repository.RepositoryFixtures
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCase
@@ -13,7 +12,6 @@ import com.yes.trackdialogfeature.utils.CoroutineRule
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import org.junit.Test
 
@@ -45,7 +43,7 @@ class TrackDialogViewModelTest {
     fun `loads root menu success`() = runTest {
         val expected = TrackDialogContract.State(
             TrackDialogContract.TrackDialogState.Success(
-                PresentationFixtures.getUiModel()
+                PresentationFixtures.getParentUiModel()
             )
         )
         // Given
@@ -54,7 +52,7 @@ class TrackDialogViewModelTest {
         } returns DomainResult.Success(RepositoryFixtures.getCategoriesMenu())
         every {
             menuUiDomainMapper.map(any(), any())
-        } returns PresentationFixtures.getUiModel()
+        } returns PresentationFixtures.getParentUiModel()
         cut.uiState.test {
             // When
             cut.setEvent(TrackDialogContract.Event.OnItemClicked(0, ""))

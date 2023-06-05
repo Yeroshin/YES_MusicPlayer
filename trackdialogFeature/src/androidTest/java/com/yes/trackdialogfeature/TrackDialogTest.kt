@@ -6,15 +6,10 @@ import android.widget.TextView
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragment
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.matcher.BoundedMatcher
-import androidx.test.espresso.matcher.ViewMatchers.*
 import com.yes.core.presentation.IBaseViewModel
 
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
-import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 import com.yes.trackdialogfeature.presentation.ui.TrackDialogAdapter
 import kotlinx.coroutines.CoroutineScope
@@ -127,60 +122,39 @@ class TrackDialogTest {
                 )
             )
         }
-        val expected = "Categories"
-        val onClick: (TrackDialogContract.Event) -> Unit = {}
+        val number = 200
+        val item = UiFixturesGenerator.generateParentMenuUi(number)
         viewModel.pushEvent(
             TrackDialogContract.State(
                 TrackDialogContract.TrackDialogState.Success(
-                    MenuUi(
-                        expected,
-                        listOf(
-                            MenuUi.MediaItem(
-                                1,
-                                "Artist",
-                                1,
-                                onClick
-                            ),
-                            MenuUi.MediaItem(
-                                2,
-                                "Album",
-                                1,
-                                onClick
-                            )
-                        )
-                    )
+                    item
                 )
             )
         )
         trackDialog {
-            matchTitleText(expected)
+            matchTitleText(item.title)
             matchProgressBarIsNotDisplayed()
             matchDisableViewIsNotDisplayed()
             matchTrackDialogItemAtPosition(
-                0,
-                MenuUi.MediaItem(
-                    1,
-                    "Artist",
-                    1,
-                    onClick
-                )
+                number - 1,
+                item.items[number - 1]
             )
         }
 
         //////////////////////worked
-    /*    onView(withId(com.yes.coreui.R.id.recyclerView)).perform(
-            scrollToPosition<TrackDialogAdapter.TrackHolder>(
-                0
+        /*    onView(withId(com.yes.coreui.R.id.recyclerView)).perform(
+                scrollToPosition<TrackDialogAdapter.TrackHolder>(
+                    0
+                )
             )
-        )
 
-        onView(withText("Artist")).check(matches(isDisplayed()))
-        //onView(withText("Description")).check(matches(isDisplayed()))
-        //////////////////////////////
+            onView(withText("Artist")).check(matches(isDisplayed()))
+            //onView(withText("Description")).check(matches(isDisplayed()))
+            //////////////////////////////
 
-        onView(withId(com.yes.coreui.R.id.recyclerView)) // Replace 'recycler_view' with the ID of your RecyclerView
-            .check(matches(atPosition(0, R.id.item_title, "Album")))
-*/
+            onView(withId(com.yes.coreui.R.id.recyclerView)) // Replace 'recycler_view' with the ID of your RecyclerView
+                .check(matches(atPosition(0, R.id.item_title, "Album")))
+    */
         //////////////////////////////
     }
 

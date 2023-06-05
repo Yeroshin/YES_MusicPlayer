@@ -66,6 +66,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
     implementation 'androidx.test.espresso:espresso-contrib:3.5.1'
+    implementation project(path: ':shared-test')
     //Dagger/////////////////////
     def dagger_version = '2.45'
     implementation 'com.google.dagger:dagger:2.45'

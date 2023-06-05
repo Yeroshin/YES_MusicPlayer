@@ -7,9 +7,9 @@ import com.yes.trackdialogfeature.presentation.model.MenuUi
 class MenuUiDomainMapper {
     fun map(
         menu: Menu,
-        onClick:((TrackDialogContract.Event) -> Unit)
+        onClick: ((TrackDialogContract.Event) -> Unit)
     ): MenuUi {
-        val map= mapOf(
+        val map = mapOf(
             1 to 1
         )
         return MenuUi(
@@ -18,12 +18,15 @@ class MenuUiDomainMapper {
                 MenuUi.MediaItem(
                     it.id,
                     it.name,
-                    map.getOrElse(it.id){1},
+                    map.getOrElse(it.id) { 1 },
+                    TrackDialogContract.Event.OnItemClicked(
+                        it.id,
+                        it.name,
+                    ),
                     onClick
                 )
             }
         )
-
     }
 
 }

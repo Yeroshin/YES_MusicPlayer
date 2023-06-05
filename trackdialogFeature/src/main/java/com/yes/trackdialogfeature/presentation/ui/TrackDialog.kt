@@ -80,9 +80,9 @@ class TrackDialog(
         observeViewModel()
         setupRecyclerView()
         viewModel.setEvent(TrackDialogContract.Event.OnItemClicked(0, ""))
-        val myTextView = R.id.recyclerViewContainer
+      /*  val myTextView = R.id.recyclerViewContainer
         val y = com.yes.coreui.R.id.dialogTitle
-        val t = 10
+        val t = 10*/
     }
 
     private fun setupRecyclerView() {

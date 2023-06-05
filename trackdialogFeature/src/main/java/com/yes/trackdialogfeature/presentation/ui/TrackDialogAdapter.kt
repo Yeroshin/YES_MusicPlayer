@@ -27,7 +27,7 @@ class TrackDialogAdapter :
              "Media.TITLE"->iconType=2
              else->1
          }*/
-        holder.bind(trackList[position], trackList[position].iconType)
+        holder.bind(position,trackList[position], trackList[position].iconType)
     }
 
     override fun getItemCount(): Int {
@@ -47,6 +47,7 @@ class TrackDialogAdapter :
     inner class TrackHolder(private val binding: ItemMediaBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
+            position:Int,
             item: MenuUi.MediaItem,
             iconType: Int
         ) {
@@ -56,12 +57,13 @@ class TrackDialogAdapter :
             binding.itemTitle.text = item.name
             binding.icon.setImageLevel(iconType)
             binding.root.setOnClickListener {
-                trackList[adapterPosition].onClick(
+                trackList[position].onClick(trackList[position].param)
+              /*  trackList[position].onClick(
                     TrackDialogContract.Event.OnItemClicked(
                         item.id,
                         item.name
                     )
-                )
+                )*/
             }
         }
     }

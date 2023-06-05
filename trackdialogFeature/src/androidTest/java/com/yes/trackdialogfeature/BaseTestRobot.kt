@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.matcher.BoundedMatcher
 
 import androidx.test.espresso.matcher.ViewMatchers
@@ -31,10 +32,11 @@ open class BaseTestRobot {
     fun isNotDisplayed(viewInteraction: ViewInteraction): ViewInteraction = viewInteraction
         .check(matches(not(ViewMatchers.isDisplayed())))
 
-    fun matchRecyclerViewItemDescendantTextAtPosition(viewInteraction: ViewInteraction, position:Int,viewId:Int,text:String): ViewInteraction = viewInteraction
+    fun  matchRecyclerViewItemDescendantTextAtPosition(viewInteraction: ViewInteraction,position:Int,viewId:Int,text:String): ViewInteraction = viewInteraction
+        .perform(scrollToPosition<RecyclerView.ViewHolder>(position))
         .check(matches(atPosition(position, ViewMatchers.hasDescendant(withId(viewId)), text)))
 
-    fun atPosition(
+    private fun atPosition(
         position: Int,
         itemMatcher: Matcher<View>,
         expectedText: String?
@@ -46,11 +48,7 @@ open class BaseTestRobot {
             }
 
             override fun matchesSafely(view: RecyclerView): Boolean {
-                val viewHolder = view.findViewHolderForAdapterPosition(position)
-                if (viewHolder == null) {
-                    // has no item on such position
-                    return false
-                }
+                val viewHolder = view.findViewHolderForAdapterPosition(position) ?: return false
                 val itemView = viewHolder.itemView
                 var matchResult = itemMatcher.matches(itemView)
 

@@ -12,8 +12,10 @@ import com.yes.trackdialogfeature.domain.entity.MenuException
 import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCase
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.mapper.MenuUiDomainMapper
+import com.yes.trackdialogfeature.presentation.model.MenuUi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 class TrackDialogViewModel(
     private val getChildMenuUseCase: GetChildMenuUseCase,
@@ -21,6 +23,7 @@ class TrackDialogViewModel(
 ) : BaseViewModel<TrackDialogContract.Event,
         TrackDialogContract.State,
         TrackDialogContract.Effect>() {
+    private val menuStack = LinkedList<MenuUi>()
     override fun createInitialState(): TrackDialogContract.State {
         return TrackDialogContract.State(
             TrackDialogContract.TrackDialogState.Idle
@@ -32,8 +35,14 @@ class TrackDialogViewModel(
             is TrackDialogContract.Event.OnItemClicked -> {
                 getChildMenu(event.id, event.name)
             }
-
+            is TrackDialogContract.Event.OnItemBackClicked -> {
+                getParentMenu()
+            }
         }
+    }
+
+    private fun getParentMenu() {
+
     }
 
     private fun getChildMenu(id: Int, name: String) {
@@ -51,13 +60,30 @@ class TrackDialogViewModel(
             )
             when (result) {
                 is DomainResult.Success -> setState {
-                    TrackDialogContract.State(
-                        TrackDialogContract.TrackDialogState.Success(
-                            menuUiDomainMapper.map(
-                                result.data,
-                                ::setEvent
-                            )
-                        )
+                    val menuUi = menuUiDomainMapper.map(
+                        result.data,
+                        ::setEvent
+                    )
+                    if(!menuStack.isEmpty()){
+                        menuStack?.let {
+                            menuUi.items
+                                .toMutableList()
+                                .add(
+                                    MenuUi.MediaItem(
+                                        0,
+                                        "..",
+                                        0,
+                                        TrackDialogContract.Event.OnItemBackClicked,
+                                        ::setEvent
+                                    )
+                                )
+                            menuStack.add(menuUi)
+                        }
+                    }
+
+
+                    copy(
+                        trackDialogState = TrackDialogContract.TrackDialogState.Success(menuUi)
                     )
                 }
                 is DomainResult.Error -> {
