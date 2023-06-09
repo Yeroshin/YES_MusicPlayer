@@ -10,10 +10,12 @@ import com.yes.trackdialogfeature.data.repository.MenuRepositoryImpl
 import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCase
 import com.yes.trackdialogfeature.presentation.ui.TrackDialogAdapter
 import com.yes.trackdialogfeature.presentation.mapper.MenuUiDomainMapper
+import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.Dispatchers
+import java.util.ArrayDeque
 
 @Module
 class TrackDialogModule(val context: Activity) {
@@ -61,11 +63,17 @@ class TrackDialogModule(val context: Activity) {
         return MenuUiDomainMapper()
     }
     @Provides
+    fun provideMenuStack(): ArrayDeque<MenuUi> {
+        return ArrayDeque()
+    }
+
+    @Provides
     fun provideViewModelFactory(
         getChildMenuUseCase: GetChildMenuUseCase,
-        menuUiDomainMapper:MenuUiDomainMapper
+        menuUiDomainMapper:MenuUiDomainMapper,
+        menuStack: ArrayDeque<MenuUi>
     ): TrackDialogViewModel.Factory {
-        return TrackDialogViewModel.Factory(getChildMenuUseCase,menuUiDomainMapper)
+        return TrackDialogViewModel.Factory(getChildMenuUseCase,menuUiDomainMapper,menuStack)
     }
     @Provides
     fun provideTrackDialogAdapter(): TrackDialogAdapter {

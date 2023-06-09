@@ -1,6 +1,5 @@
-package com.yes.trackdialogfeature
+package com.example.shared_test
 
-import com.example.shared_test.SharedFixtureGenerator
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 
@@ -15,11 +14,11 @@ object UiFixturesGenerator {
         for (i in 0 until count) {
             val mediaItem = MenuUi.MediaItem(
                 i,
-                artists[i].name,
+                artists[i],
                 Random.nextInt(1, 4),
                 TrackDialogContract.Event.OnItemClicked(
                     i,
-                    "artists",
+                    artists[0],
                 ),
                 onClick
             )
@@ -29,5 +28,22 @@ object UiFixturesGenerator {
             "Categories",
             items
         )
+    }
+
+    fun generateChildUiModel(menu: MenuUi): MenuUi {
+        val childMenu = menu.copy()
+        childMenu.items.toMutableList().add(
+            0, MenuUi.MediaItem(
+                0,
+                "",
+                Random.nextInt(1, 4),
+                TrackDialogContract.Event.OnItemClicked(
+                    0,
+                    "",
+                ),
+                onClick
+            )
+        )
+        return childMenu
     }
 }

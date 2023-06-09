@@ -1,11 +1,30 @@
 package com.yes.trackdialogfeature.data.repository
 
+import com.example.shared_test.SharedFixtureGenerator
+import com.example.shared_test.UiFixturesGenerator
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.entity.MenuException
+import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
+import com.yes.trackdialogfeature.presentation.model.MenuUi
+import kotlin.random.Random
 
 object RepositoryFixtures {
-
+    fun generateMenuDomain(count:Int):Menu{
+        val titles = SharedFixtureGenerator.generateArtists(count)
+        val items = mutableListOf<Menu.Item>()
+        for (i in 1 until count) {
+            val mediaItem = Menu.Item(
+                titles[i],
+                Random.nextInt(1, 4)
+            )
+            items.add(mediaItem)
+        }
+        return Menu(
+            titles[0],
+            items
+        )
+    }
     fun getCategoriesMenu(): Menu {
         return Menu(
                 "categories",

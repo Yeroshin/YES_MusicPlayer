@@ -1,7 +1,6 @@
 package com.yes.trackdialogfeature.presentation.vm
 
-import android.content.ContentValues
-import android.util.Log
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -19,11 +18,12 @@ import java.util.*
 
 class TrackDialogViewModel(
     private val getChildMenuUseCase: GetChildMenuUseCase,
-    private val menuUiDomainMapper: MenuUiDomainMapper
+    private val menuUiDomainMapper: MenuUiDomainMapper,
+    private val menuStack: ArrayDeque<MenuUi>
 ) : BaseViewModel<TrackDialogContract.Event,
         TrackDialogContract.State,
         TrackDialogContract.Effect>() {
-    private val menuStack = LinkedList<MenuUi>()
+
     override fun createInitialState(): TrackDialogContract.State {
         return TrackDialogContract.State(
             TrackDialogContract.TrackDialogState.Idle
@@ -42,7 +42,15 @@ class TrackDialogViewModel(
     }
 
     private fun getParentMenu() {
-
+        viewModelScope.launch(Dispatchers.Main) {
+            setState {
+                copy(
+                    trackDialogState = TrackDialogContract.TrackDialogState.Success(
+                        menuStack.removeLast()
+                    )
+                )
+            }
+        }
     }
 
     private fun getChildMenu(id: Int, name: String) {
@@ -64,23 +72,27 @@ class TrackDialogViewModel(
                         result.data,
                         ::setEvent
                     )
-                    if(!menuStack.isEmpty()){
-                        menuStack?.let {
-                            menuUi.items
-                                .toMutableList()
-                                .add(
-                                    MenuUi.MediaItem(
-                                        0,
-                                        "..",
-                                        0,
-                                        TrackDialogContract.Event.OnItemBackClicked,
-                                        ::setEvent
-                                    )
+                    if (!menuStack.isEmpty()) {
+                        menuUi.items
+                            .toMutableList()
+                            .add(
+                                MenuUi.MediaItem(
+                                    0,
+                                    "..",
+                                    0,
+                                    TrackDialogContract.Event.OnItemBackClicked,
+                                    ::setEvent
                                 )
-                            menuStack.add(menuUi)
-                        }
+                            )
                     }
-
+                    if (!menuStack.offer(menuUi)) {
+                        setEffect {
+                            TrackDialogContract.Effect.UnknownException
+                        }
+                        return@setState copy(
+                            trackDialogState = TrackDialogContract.TrackDialogState.Idle
+                        )
+                    }
 
                     copy(
                         trackDialogState = TrackDialogContract.TrackDialogState.Success(menuUi)
@@ -114,21 +126,21 @@ class TrackDialogViewModel(
 
     class Factory(
         private val getChildMenuUseCase: GetChildMenuUseCase,
-        private val menuUiDomainMapper: MenuUiDomainMapper
+        private val menuUiDomainMapper: MenuUiDomainMapper,
+        private val menuStack: ArrayDeque<MenuUi>
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            @Suppress("UNCHECKED_CAST")
             return TrackDialogViewModel(
                 getChildMenuUseCase,
-                menuUiDomainMapper
+                menuUiDomainMapper,
+                menuStack
             ) as T
         }
     }
-
-    fun test(): Int {
-        Log.i(ContentValues.TAG, "////test: ////")
-        return 527
-    }
 }
+
+
 
 
 

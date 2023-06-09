@@ -137,7 +137,7 @@ class TrackDialog(
         }
     }
     private fun idleView() {
-        binder.recyclerViewContainer.dialogTitle.text = ""
+       // binder.recyclerViewContainer.dialogTitle.text = ""
         binder.recyclerViewContainer.progressBar.visibility = GONE
         binder.recyclerViewContainer.disableView.visibility = GONE
     }
@@ -156,6 +156,8 @@ class TrackDialog(
     }
 
     private fun showError(message: Int) {
+        binder.recyclerViewContainer.progressBar.visibility = GONE
+        binder.recyclerViewContainer.disableView.visibility = GONE
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 

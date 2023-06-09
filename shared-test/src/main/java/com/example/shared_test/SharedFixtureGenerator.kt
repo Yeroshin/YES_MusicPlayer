@@ -13,16 +13,22 @@ object SharedFixtureGenerator {
         "Fountain", "Jungle", "Spectrum", "Harmony", "Mirage"
     )
 
-     fun generateArtists(count:Int): List<MediaItem> {
-        val mediaItems = mutableListOf<MediaItem>()
+     fun generateArtists(count:Int): List<String> {
+        val mediaItems = mutableListOf<String>()
         for (i in 1..count) {
             val name =adjectives[Random.nextInt(adjectives.size)]+" "+nouns[Random.nextInt(nouns.size)]
-            val mediaItem = MediaItem(name)
+            val mediaItem = name
             mediaItems.add(mediaItem)
         }
         return mediaItems
     }
-    data class MediaItem(
-        val name:String,
-    )
+    fun getCategories(count:Int): List<String> {
+        val mediaItems = mutableListOf<String>()
+        for (i in 1..count) {
+            val name =adjectives[Random.nextInt(adjectives.size)]+" "+nouns[Random.nextInt(nouns.size)]
+            val mediaItem = name
+            mediaItems.add(mediaItem)
+        }
+        return mediaItems
+    }
 }

@@ -46,27 +46,7 @@ object  PresentationFixtures {
             )
         )
     }
-    fun generateChildUiModel(count:Int): MenuUi {
-        val artists = SharedFixtureGenerator.generateArtists(count)
-        val items = mutableListOf<MenuUi.MediaItem>()
-        for (i in 0 until count) {
-            val mediaItem = MenuUi.MediaItem(
-                i,
-                artists[i].name,
-                Random.nextInt(1, 4),
-                TrackDialogContract.Event.OnItemClicked(
-                    i,
-                    "artists",
-                ),
-                onClick
-            )
-            items.add(mediaItem)
-        }
-        return MenuUi(
-            "artists",
-            items
-        )
-    }
+
 
     fun getDomainModel():Menu{
         return Menu(
