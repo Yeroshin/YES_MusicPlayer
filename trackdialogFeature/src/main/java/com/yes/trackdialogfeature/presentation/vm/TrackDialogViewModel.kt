@@ -8,7 +8,7 @@ import com.yes.core.presentation.BaseViewModel
 
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.MenuException
-import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCase
+import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCaseOLD
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.mapper.MenuUiDomainMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class TrackDialogViewModel(
-    private val getChildMenuUseCase: GetChildMenuUseCase,
+    private val getChildMenuUseCaseOLD: GetChildMenuUseCaseOLD,
     private val menuUiDomainMapper: MenuUiDomainMapper,
     private val menuStack: ArrayDeque<MenuUi>
 ) : BaseViewModel<TrackDialogContract.Event,
@@ -38,7 +38,13 @@ class TrackDialogViewModel(
             is TrackDialogContract.Event.OnItemBackClicked -> {
                 getParentMenu()
             }
+            is TrackDialogContract.Event.OnItemOkClicked -> {
+
+            }
         }
+    }
+    private fun saveItems(){
+
     }
 
     private fun getParentMenu() {
@@ -60,8 +66,8 @@ class TrackDialogViewModel(
                     trackDialogState = TrackDialogContract.TrackDialogState.Loading
                 )
             }
-            val result = getChildMenuUseCase(
-                GetChildMenuUseCase.Params(
+            val result = getChildMenuUseCaseOLD(
+                GetChildMenuUseCaseOLD.Params(
                     id,
                     name
                 )
@@ -125,14 +131,14 @@ class TrackDialogViewModel(
     }
 
     class Factory(
-        private val getChildMenuUseCase: GetChildMenuUseCase,
+        private val getChildMenuUseCaseOLD: GetChildMenuUseCaseOLD,
         private val menuUiDomainMapper: MenuUiDomainMapper,
         private val menuStack: ArrayDeque<MenuUi>
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return TrackDialogViewModel(
-                getChildMenuUseCase,
+                getChildMenuUseCaseOLD,
                 menuUiDomainMapper,
                 menuStack
             ) as T

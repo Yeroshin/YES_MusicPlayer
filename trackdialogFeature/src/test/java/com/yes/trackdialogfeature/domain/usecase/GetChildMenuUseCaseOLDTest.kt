@@ -3,7 +3,6 @@ package com.yes.trackdialogfeature.domain.usecase
 
 import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.entity.DomainResult
-import com.yes.trackdialogfeature.domain.entity.MenuException
 import com.yes.trackdialogfeature.domain.repository.MenuRepository
 import com.yes.trackdialogfeature.utils.CoroutineRule
 import io.mockk.*
@@ -15,7 +14,7 @@ import org.junit.Test
 
 
 @ExperimentalCoroutinesApi
-class GetChildMenuUseCaseTest {
+class GetChildMenuUseCaseOLDTest {
     private val menuRepository: MenuRepository = mockk(relaxed = true)
 
     ///////////////
@@ -23,7 +22,7 @@ class GetChildMenuUseCaseTest {
      private val mediaRepository: AudioDataStore = mockk()*/
     //private lateinit var getChildMenuUseCase : GetChildMenuUseCase
     private val testDispatcher: TestDispatcher = StandardTestDispatcher()
-    private val cut = GetChildMenuUseCase(
+    private val cut = GetChildMenuUseCaseOLD(
         testDispatcher,
         menuRepository
     )
@@ -49,7 +48,7 @@ class GetChildMenuUseCaseTest {
         } returns expected
         // When
         val actual = cut(
-            GetChildMenuUseCase.Params(0, "")
+            GetChildMenuUseCaseOLD.Params(0, "")
         )
         // Assert
         verify(exactly = 1) { menuRepository.getMenu() }
@@ -65,7 +64,7 @@ class GetChildMenuUseCaseTest {
         every { menuRepository.getMenu() } throws Exception()
 
         // When
-        val actual = cut(GetChildMenuUseCase.Params(0, ""))
+        val actual = cut(GetChildMenuUseCaseOLD.Params(0, ""))
 
         // Assert
         assert(expected==actual)
@@ -83,7 +82,7 @@ class GetChildMenuUseCaseTest {
         } returns expected
         // When
         val actual = cut(
-            GetChildMenuUseCase.Params(2, "albums")
+            GetChildMenuUseCaseOLD.Params(2, "albums")
         )
         // Assert
         assert(expected==actual)

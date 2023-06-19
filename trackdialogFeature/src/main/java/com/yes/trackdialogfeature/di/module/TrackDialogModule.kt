@@ -6,8 +6,8 @@ import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdialogfeature.data.mapper.MediaMapper
 import com.yes.trackdialogfeature.data.mapper.MediaQueryMapper
-import com.yes.trackdialogfeature.data.repository.MenuRepositoryImpl
-import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCase
+import com.yes.trackdialogfeature.data.repository.MenuRepositoryImplOLD
+import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCaseOLD
 import com.yes.trackdialogfeature.presentation.ui.TrackDialogAdapter
 import com.yes.trackdialogfeature.presentation.mapper.MenuUiDomainMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
@@ -33,8 +33,8 @@ class TrackDialogModule(val context: Activity) {
     fun providesMenuRepository(
         menuDataStore: MenuDataStore,
         audioDataStore: AudioDataStore
-    ): MenuRepositoryImpl {
-        return MenuRepositoryImpl(menuDataStore,audioDataStore)
+    ): MenuRepositoryImplOLD {
+        return MenuRepositoryImplOLD(menuDataStore,audioDataStore)
     }
 
     @Provides
@@ -54,9 +54,9 @@ class TrackDialogModule(val context: Activity) {
     }
     @Provides
     fun provideGetChildMenu(
-        menuRepository: MenuRepositoryImpl
-    ): GetChildMenuUseCase {
-        return GetChildMenuUseCase(Dispatchers.IO,menuRepository)
+        menuRepository: MenuRepositoryImplOLD
+    ): GetChildMenuUseCaseOLD {
+        return GetChildMenuUseCaseOLD(Dispatchers.IO,menuRepository)
     }
     @Provides
     fun provideUIMapper(): MenuUiDomainMapper {
@@ -69,11 +69,11 @@ class TrackDialogModule(val context: Activity) {
 
     @Provides
     fun provideViewModelFactory(
-        getChildMenuUseCase: GetChildMenuUseCase,
+        getChildMenuUseCaseOLD: GetChildMenuUseCaseOLD,
         menuUiDomainMapper:MenuUiDomainMapper,
         menuStack: ArrayDeque<MenuUi>
     ): TrackDialogViewModel.Factory {
-        return TrackDialogViewModel.Factory(getChildMenuUseCase,menuUiDomainMapper,menuStack)
+        return TrackDialogViewModel.Factory(getChildMenuUseCaseOLD,menuUiDomainMapper,menuStack)
     }
     @Provides
     fun provideTrackDialogAdapter(): TrackDialogAdapter {

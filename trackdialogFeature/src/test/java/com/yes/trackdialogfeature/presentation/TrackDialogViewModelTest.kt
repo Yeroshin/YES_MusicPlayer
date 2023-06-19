@@ -4,17 +4,15 @@ import app.cash.turbine.test
 import com.example.shared_test.UiFixturesGenerator
 import com.yes.trackdialogfeature.data.repository.RepositoryFixtures
 import com.yes.trackdialogfeature.domain.entity.DomainResult
-import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCase
+import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCaseOLD
+import com.yes.trackdialogfeature.domain.usecase.SaveTrackToPlaylistUseCase
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.mapper.MenuUiDomainMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import com.yes.trackdialogfeature.utils.CoroutineRule
-import io.mockk.MockKAnnotations
-import io.mockk.coEvery
-import io.mockk.every
-import io.mockk.mockk
+import io.mockk.*
 import org.junit.Test
 
 import kotlinx.coroutines.test.runTest
@@ -28,7 +26,7 @@ class TrackDialogViewModelTest {
     val mainCoroutineRule = CoroutineRule()
 
     // @MockK
-    private var getChildMenuUseCase: GetChildMenuUseCase = mockk()
+    private var getChildMenuUseCaseOLD: GetChildMenuUseCaseOLD = mockk()
     private val menuUiDomainMapper: MenuUiDomainMapper = mockk()
     private lateinit var cut: TrackDialogViewModel
     private val menuStack: ArrayDeque<MenuUi> = mockk()
@@ -38,7 +36,7 @@ class TrackDialogViewModelTest {
         MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
         // Create DetailViewModel before every test
         cut = TrackDialogViewModel(
-            getChildMenuUseCase,
+            getChildMenuUseCaseOLD,
             menuUiDomainMapper,
             menuStack
         )
@@ -55,7 +53,7 @@ class TrackDialogViewModelTest {
         )
         // Given
         coEvery {
-            getChildMenuUseCase(GetChildMenuUseCase.Params(0, ""))
+            getChildMenuUseCaseOLD(GetChildMenuUseCaseOLD.Params(0, ""))
         } returns DomainResult.Success(domainMenu)
         every {
             menuUiDomainMapper.map(any(), any())
@@ -66,9 +64,10 @@ class TrackDialogViewModelTest {
         every {
             menuStack.offer(any())
         } returns true
+        cut.setEvent(TrackDialogContract.Event.OnItemClicked(0, ""))
         cut.uiState.test {
             // When
-            cut.setEvent(TrackDialogContract.Event.OnItemClicked(0, ""))
+
             // Expect Resource.Idle from initial state
             assert(
                 awaitItem() == TrackDialogContract.State(
@@ -81,6 +80,14 @@ class TrackDialogViewModelTest {
                     TrackDialogContract.TrackDialogState.Loading
                 )
             )
+            coVerify(exactly = 1) {
+                getChildMenuUseCaseOLD(
+                    GetChildMenuUseCaseOLD.Params(
+                        0,
+                        ""
+                    )
+                )
+            }
             // Expect Resource.Success
             assert(
                 awaitItem() == expected
@@ -101,7 +108,7 @@ class TrackDialogViewModelTest {
         )
         // Given
         coEvery {
-            getChildMenuUseCase(GetChildMenuUseCase.Params(0, ""))
+            getChildMenuUseCaseOLD(GetChildMenuUseCaseOLD.Params(0, ""))
         } returns DomainResult.Success(RepositoryFixtures.generateMenuDomain(5))
         every {
             menuUiDomainMapper.map(any(), any())
@@ -134,6 +141,7 @@ class TrackDialogViewModelTest {
             cancelAndIgnoreRemainingEvents()
         }
     }
+
     @Test
     fun `loads parent menu success`() = runTest {
         val parentMenu = UiFixturesGenerator.generateParentMenuUi(5)
@@ -145,7 +153,7 @@ class TrackDialogViewModelTest {
         )
         // Given
         coEvery {
-            getChildMenuUseCase(GetChildMenuUseCase.Params(0, ""))
+            getChildMenuUseCaseOLD(GetChildMenuUseCaseOLD.Params(0, ""))
         } returns DomainResult.Success(RepositoryFixtures.generateMenuDomain(5))
         every {
             menuStack.removeLast()
@@ -169,17 +177,18 @@ class TrackDialogViewModelTest {
             cancelAndIgnoreRemainingEvents()
         }
     }
+
     @Test
     fun `loads menu memory error`() = runTest {
-        val domainMenu=RepositoryFixtures.generateMenuDomain(5)
+        val domainMenu = RepositoryFixtures.generateMenuDomain(5)
         val menu = UiFixturesGenerator.generateParentMenuUi(5)
         val expectedState = TrackDialogContract.State(
             TrackDialogContract.TrackDialogState.Idle
         )
-        val expectedEffect=TrackDialogContract.Effect.UnknownException
+        val expectedEffect = TrackDialogContract.Effect.UnknownException
         // Given
         coEvery {
-            getChildMenuUseCase(GetChildMenuUseCase.Params(0, ""))
+            getChildMenuUseCaseOLD(GetChildMenuUseCaseOLD.Params(0, ""))
         } returns DomainResult.Success(domainMenu)
         every {
             menuUiDomainMapper.map(any(), any())
@@ -220,12 +229,13 @@ class TrackDialogViewModelTest {
             cancelAndIgnoreRemainingEvents()
         }
     }
+
     @Test
     fun `loads root menu unknown error`() = runTest {
         val expected = TrackDialogContract.Effect.UnknownException
         // Given
         coEvery {
-            getChildMenuUseCase(GetChildMenuUseCase.Params(0, ""))
+            getChildMenuUseCaseOLD(GetChildMenuUseCaseOLD.Params(0, ""))
         } returns DomainResult.Error(RepositoryFixtures.getUnknownError())
         /* every {
              menuUiDomainMapper.map(any(),any())
@@ -260,6 +270,7 @@ class TrackDialogViewModelTest {
         }
 
     }
+
     @Test
     fun `loads root menu empty error`() = runTest {
         val expected = TrackDialogContract.State(
@@ -267,7 +278,7 @@ class TrackDialogViewModelTest {
         )
         // Given
         coEvery {
-            getChildMenuUseCase(GetChildMenuUseCase.Params(0, ""))
+            getChildMenuUseCaseOLD(GetChildMenuUseCaseOLD.Params(0, ""))
         } returns DomainResult.Error(RepositoryFixtures.getError())
         /* every {
              menuUiDomainMapper.map(any(),any())
@@ -296,6 +307,19 @@ class TrackDialogViewModelTest {
         }
 
 
+    }
+
+    @Test
+    fun `saves tracks to playlist`() = runTest {
+        cut.setEvent(TrackDialogContract.Event.OnItemOkClicked)
+       /* coVerify(exactly = 1) {
+             saveTracksToPlaylistUseCase(
+                 SaveTrackToPlaylistUseCase.Params(
+                    1,
+                    ""
+                )
+            )
+        }*/
     }
 
 

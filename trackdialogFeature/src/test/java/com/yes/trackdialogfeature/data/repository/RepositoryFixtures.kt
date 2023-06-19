@@ -107,7 +107,7 @@ object RepositoryFixtures {
             )
         )
     }
-
+    
     fun getAlbumsMenu(): Menu {
         /*val item1 = MenuDataStoreEntity(
             "album",

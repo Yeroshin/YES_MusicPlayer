@@ -64,7 +64,7 @@ class TrackDialog(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         //_binding = TrackDialogBinding.inflate(inflater)
         binding = TrackDialogBinding.inflate(inflater)
         super.onCreateView(inflater, container, savedInstanceState)
@@ -120,7 +120,7 @@ class TrackDialog(
 
         }
     }
-    fun renderUiState(state:TrackDialogContract.State){
+    private fun renderUiState(state:TrackDialogContract.State){
         when (state.trackDialogState) {
             is TrackDialogContract.TrackDialogState.Success -> {
                 dataLoaded(

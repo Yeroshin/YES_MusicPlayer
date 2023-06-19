@@ -1,10 +1,11 @@
 package com.yes.trackdialogfeature.data.dataSource
 
 import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
+import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntityOld
 
 object MenuDataStoreFixtures {
-    fun getRoot(): MenuDataStoreEntity {
-        return MenuDataStoreEntity(
+    fun getRoot(): MenuDataStoreEntityOld {
+        return MenuDataStoreEntityOld(
             0,
             "categories",
             null,
@@ -13,21 +14,21 @@ object MenuDataStoreFixtures {
     }
 
 
-    fun getCategoriesChildren(): Array<MenuDataStoreEntity> {
+    fun getCategoriesChildren(): Array<MenuDataStoreEntityOld> {
         return arrayOf(
-            MenuDataStoreEntity(
+            MenuDataStoreEntityOld(
                 1,
                 "artists",
                 null,
                 0
             ),
-            MenuDataStoreEntity(
+            MenuDataStoreEntityOld(
                 2,
                 "albums",
                 null,
                 0
             ),
-            MenuDataStoreEntity(
+            MenuDataStoreEntityOld(
                 3,
                 "tracks",
                 null,
@@ -36,9 +37,9 @@ object MenuDataStoreFixtures {
         )
     }
 
-    fun getAlbumsChildren(): Array<MenuDataStoreEntity> {
+    fun getAlbumsChildren(): Array<MenuDataStoreEntityOld> {
         return arrayOf(
-            MenuDataStoreEntity(
+            MenuDataStoreEntityOld(
                 5,
                 null,
                 "album",
@@ -46,9 +47,10 @@ object MenuDataStoreFixtures {
             )
         )
     }
-    fun getAlbumChildren(): Array<MenuDataStoreEntity> {
+
+    fun getAlbumChildren(): Array<MenuDataStoreEntityOld> {
         return arrayOf(
-            MenuDataStoreEntity(
+            MenuDataStoreEntityOld(
                 8,
                 null,
                 "track",
@@ -57,23 +59,62 @@ object MenuDataStoreFixtures {
         )
     }
 
-    fun getAlbums(): MenuDataStoreEntity {
-        return MenuDataStoreEntity(
+    fun getAlbumsOld(): MenuDataStoreEntityOld {
+        return MenuDataStoreEntityOld(
             2,
             "albums",
             null,
             0
         )
     }
-    fun getAlbum(): MenuDataStoreEntity {
-        return MenuDataStoreEntity(
+
+    fun getAlbums(): MenuDataStoreEntityOld {
+        return MenuDataStoreEntityOld(
+            2,
+            "albums",
+            null,
+            2
+        )
+    }
+
+    fun getAlbum(): MenuDataStoreEntityOld {
+        return MenuDataStoreEntityOld(
             5,
             null,
             "album",
             2
         )
     }
-    fun getExeption(){
+
+    fun getExeption() {
 
     }
+
+    fun getRootItems(): List<MenuDataStoreEntity> {
+        return listOf(
+            MenuDataStoreEntity(
+                1,
+                "artists",
+                null
+            ),
+            MenuDataStoreEntity(
+                2,
+                "albums",
+                null
+            ),
+            MenuDataStoreEntity(
+                3,
+                "tracks",
+                null
+            ),
+        )
+    }
+    fun getItem():MenuDataStoreEntity{
+        return MenuDataStoreEntity(
+            1,
+            "artists",
+            null
+        )
+    }
+
 }

@@ -1,133 +1,77 @@
 package com.yes.trackdialogfeature.data.repository
 
-import com.yes.trackdialogfeature.data.dataSource.AudioDataStoreFixtures
 import com.yes.trackdialogfeature.data.dataSource.MenuDataStoreFixtures
+import com.yes.trackdialogfeature.data.dataSource.MenuRepositoryFixtures
 import com.yes.trackdialogfeature.data.mapper.MenuMapper
-import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
-import com.yes.trackdialogfeature.data.repository.entity.DataException
-import com.yes.trackdialogfeature.domain.entity.DomainResult
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-
-
-
 import org.junit.Test
 
 
-class MenuRepositoryImplTest {
-    // private val menuDataStore: MenuDataStore = mockk(relaxed = true)
-    private val menuDataStore: MenuDataStore = mockk(relaxed = true)
-    private val audioDataStore: AudioDataStore = mockk(relaxed = true)
-
-    private val cut = MenuRepositoryImpl(
-        menuDataStore,
-        audioDataStore,
-
-    )
+internal class MenuRepositoryImplTest {
+    private val menuMapper: MenuMapper = mockk()
+    private val menuDataSource: MenuDataStore = mockk()
+    private val cut = MenuRepositoryImpl(menuMapper, menuDataSource)
 
     @Test
-    fun `1 getMenu children handles api success and returns root MenuApiModel`() {
-        // Given
-        val expected = DomainResult.Success(RepositoryFixtures.getCategoriesMenu())
-        // every { menuDataStore.getRoot() } returns DataSourceFixtures.findRoot()
+    fun `when getChildMenu param null returns root menu`() {
+        // arrange
+        val expected = MenuRepositoryFixtures.getRootMenu()
+        val menuDataStoreEntity = MenuDataStoreFixtures.getItem()
+        val param = null
         every {
-            menuDataStore.tmp()
-        }returns 55
-        val v=menuDataStore.tmp()
-
+            menuDataSource.getItem(0)
+        } returns menuDataStoreEntity
         every {
-            menuDataStore.getRoot()
-        } returns MenuDataStoreFixtures.getRoot()
-        every {
-            menuDataStore.getChildren(0)
-        } returns MenuDataStoreFixtures.getCategoriesChildren()
-        // When
-        val actual = cut.getMenu()
+            menuMapper.map(menuDataStoreEntity)
+        } returns expected
+        // act
+        val actual = cut.getChildMenu(param)
         // Assert
-        verify { menuDataStore.getRoot() }
-        assert(expected == actual)
-       /* assertInstanceOf(DomainResult.Success::class.java, actual)
-        assert(expected  == (actual as DomainResult.Success).data)*/
+        verify(exactly = 1) { menuDataSource.getItem(0) }
+        verify(exactly = 1) { menuMapper.map(menuDataStoreEntity) }
+        assert(actual == expected)
     }
 
     @Test
-    fun `2 get albums children returns all albums`() {
-        // Given
-        val expected = DomainResult.Success(RepositoryFixtures.getAlbumsMenu())
+    fun `when getChildMenu with specified param returns correct menu`() {
+        // arrange
+        val expected = MenuRepositoryFixtures.getRootMenu()
+        val menuDataStoreEntity = MenuDataStoreFixtures.getItem()
+        val param = 0
         every {
-            menuDataStore.getChildren(2)
-        } returns MenuDataStoreFixtures.getAlbumsChildren()
+            menuDataSource.getItem(param)
+        } returns menuDataStoreEntity
         every {
-            menuDataStore.getItem(2)
-        } returns MenuDataStoreFixtures.getAlbums()
-        every {
-            audioDataStore.getMediaItems(
-                arrayOf("album"),
-                null,
-                emptyArray()
-            )
-        } returns AudioDataStoreFixtures.getAlbums()
-
-        // When
-        val actual = cut.getMenu(2, "albums")
+            menuMapper.map(menuDataStoreEntity)
+        } returns expected
+        // act
+        val actual = cut.getChildMenu(param)
         // Assert
-        verify { menuDataStore.getChildren(any()) }
-        verify (exactly = 1){ menuDataStore.getItem(any()) }
-        verify { audioDataStore.getMediaItems(any(), any(), any()) }
-        assert(expected == actual)
-       /* assertInstanceOf(DomainResult.Success::class.java,actual)
-        assert((expected as DomainResult.Success).data == (actual as DomainResult.Success).data)*/
-
+        verify(exactly = 1) { menuDataSource.getItem(param) }
+        verify(exactly = 1) { menuMapper.map(menuDataStoreEntity) }
+        assert(actual == expected)
     }
 
     @Test
-    fun `3 get album children returns album tracks`() {
-        // Given
-        val expected = DomainResult.Success(RepositoryFixtures.getAlbumTracksMenu())
+    fun `when getRootItems returns root items`() {
+        // arrange
+        val expected = MenuRepositoryFixtures.getRootItems()
+        val menuDataStoreEntity = MenuDataStoreFixtures.getRootItems()
+        val param = 0
         every {
-            menuDataStore.getChildren(5)
-        } returns MenuDataStoreFixtures.getAlbumChildren()
+            menuDataSource.getItemsWithParentId(null)
+        } returns menuDataStoreEntity
         every {
-            menuDataStore.getItem(5)
-        } returns MenuDataStoreFixtures.getAlbum()
-        every {
-            audioDataStore.getMediaItems(
-                arrayOf("track"),
-                "album",
-                arrayOf("Brothers in Arms")
-            )
-        } returns AudioDataStoreFixtures.getTracks()
-
-        // When
-        val actual = cut.getMenu(5, "Brothers in Arms")
+            menuMapper.mapToItem(any())
+        } answers { expected.iterator().next() }
+        // act
+        val actual = cut.getRootItems()
         // Assert
-        verify { menuDataStore.getChildren(any()) }
-        verify { menuDataStore.getItem(any()) }
-        verify { audioDataStore.getMediaItems(any(), any(), any()) }
-        assert(expected == actual)
-      /*  assertInstanceOf(DomainResult.Success::class.java,actual)
-        assert((expected as DomainResult.Success).data == (actual as DomainResult.Success).data)*/
+        verify(exactly = 1) { menuDataSource.getItem(param) }
+        verify(exactly = 3) { menuMapper.map(any()) }
+        assert(actual == expected)
     }
-    @Test
-    fun `4 get track children returns DomainResultError`() {
-        // Given
-        val expected = DomainResult.Error(RepositoryFixtures.getError())
-        every {
-            menuDataStore.getChildren(8)
-        } throws DataException
-
-        // When
-        val actual = cut.getMenu(8, "Money for Nothing")
-        // Assert
-        verify { menuDataStore.getChildren(any()) }
-        verify (exactly = 0){ menuDataStore.getItem(any()) }
-        verify (exactly = 0){ audioDataStore.getMediaItems(any(), any(), any()) }
-        assert(expected == actual)
-      /*  assertInstanceOf(DomainResult.Error::class.java,actual)
-        assert((expected as DomainResult.Error).exception == (actual as DomainResult.Error).exception)*/
-    }
-
-
 }

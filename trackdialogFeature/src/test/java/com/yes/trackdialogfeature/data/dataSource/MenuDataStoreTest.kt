@@ -2,8 +2,6 @@ package com.yes.trackdialogfeature.data.dataSource
 
 
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
-import com.yes.trackdialogfeature.data.repository.entity.DataException
-import junit.framework.TestCase.fail
 import org.junit.Test
 
 internal class MenuDataStoreTest {
@@ -51,7 +49,7 @@ internal class MenuDataStoreTest {
 
     ////////////////////////////
     ////////////////////////////
-    @Test
+  /*  @Test
     fun `getRoot returns root MenuApiModel`() {
 
         // arrange
@@ -61,9 +59,9 @@ internal class MenuDataStoreTest {
         // Assert
         assert(actual == expected)
 
-    }
+    }*/
 
-    @Test
+  /*  @Test
     fun `getChildren returns children MenuApiModels`() {
 
         // arrange
@@ -73,8 +71,8 @@ internal class MenuDataStoreTest {
         // Assert
         assert(actual.contentEquals(expected))
 
-    }
-    @Test
+    }*/
+   /* @Test
     fun `getChildren returns exception`()  {
 
         try {
@@ -85,17 +83,28 @@ internal class MenuDataStoreTest {
         }
 
 
-    }
+    }*/
     @Test
-    fun `getItem with id 3 returns correct Item`(){
+    fun `returns correct Item with specified id`(){
         // arrange
-        val expected = MenuDataStoreFixtures.getAlbums()
+        val expected = MenuDataStoreFixtures.getItem()
         // act
         val actual = cut.getItem(
-            3
+            expected.id
         )
         // Assert
         assert(actual==expected)
     }
+
+    @Test
+    fun `returns root items`(){
+        val expected = MenuDataStoreFixtures.getRootItems()
+        // act
+        val actual = cut.getItemsWithParentId(0)
+        // Assert
+        assert(actual==expected)
+    }
+
+
 
 }

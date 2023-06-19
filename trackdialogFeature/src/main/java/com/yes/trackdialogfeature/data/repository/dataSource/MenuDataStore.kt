@@ -1,10 +1,9 @@
 package com.yes.trackdialogfeature.data.repository.dataSource
 
 
-import android.content.ContentValues
-import android.util.Log
 import com.yes.trackdialogfeature.data.repository.entity.DataException
 import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
+import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntityOld
 
 class MenuDataStore {
 
@@ -57,18 +56,7 @@ class MenuDataStore {
     fun getName():String {
         return  appContext.resources.getString(com.yes.coreui.R.string.categories)
     }*/
-    private val menuGraph = mapOf(
-        "categories" to null,
-        /////////////////////////
-        "artists" to "categories",
-        "artistTracks" to "artists",
-        ////////////////////////////
-        "albums" to "categories",
-        "albumTracks" to "album",
-        ////////////////////////////
-        /* "genres" to "categories",
-         "genreTracks" to "genres"*/
-    )
+
     /* val data = mapOf(
          "categories" to null,
          "artists" to MediaStore.Audio.Media.ARTIST,
@@ -171,7 +159,20 @@ class MenuDataStore {
           return c
       }*/
 
-    private val menuTree = arrayOf(
+
+    private val menuGraph = mapOf(
+        "categories" to null,
+        /////////////////////////
+        "artists" to "categories",
+        "artistTracks" to "artists",
+        ////////////////////////////
+        "albums" to "categories",
+        "albumTracks" to "album",
+        ////////////////////////////
+        /* "genres" to "categories",
+         "genreTracks" to "genres"*/
+    )
+    private val menuTree = listOf(
         mapOf(
             "id" to 0,
             "name" to "categories",
@@ -228,43 +229,35 @@ class MenuDataStore {
         )
 
 
-
     )
 
-    fun getRoot(): MenuDataStoreEntity {
-        var index=0
-        for (ind in menuTree.indices) {
-            if (menuTree[ind]["parent"] == null) {
-                index=ind
-            }
-        }
-        return MenuDataStoreEntity(
-            menuTree[index]["id"] as Int,
-            menuTree[index]["name"] as String?,
-            menuTree[index]["type"] as String?,
-            menuTree[index]["parent"] as Int?
-        )}
-    fun getItem(id:Int): MenuDataStoreEntity{
-        var index=0
-        for (ind in menuTree.indices) {
-            if (menuTree[ind]["id"] == id) {
-                index=ind
-            }
-        }
-        return MenuDataStoreEntity(
-            menuTree[index]["id"] as Int,
-            menuTree[index]["name"] as String?,
-            menuTree[index]["type"] as String?,
-            menuTree[index]["parent"] as Int?
+
+    fun getItemOld(id: Int): MenuDataStoreEntityOld {
+        /* var index=0
+         for (ind in menuTree.indices) {
+             if (menuTree[ind]["id"] == id) {
+                 index=ind
+             }
+         }*/
+        val foundItem = menuTree.find {
+            it["id"] == id
+        }!!
+
+
+        return MenuDataStoreEntityOld(
+            foundItem["id"] as Int,
+            foundItem["name"] as String?,
+            foundItem["type"] as String?,
+            foundItem["parent"] as Int?
         )
     }
 
-    fun getChildren(id: Int): Array<MenuDataStoreEntity> {
-        val children = ArrayList<MenuDataStoreEntity>()
+    fun getChildren(id: Int): Array<MenuDataStoreEntityOld> {
+        val children = ArrayList<MenuDataStoreEntityOld>()
         for (item in menuTree) {
             if (item["parent"] == id) {
                 children.add(
-                    MenuDataStoreEntity(
+                    MenuDataStoreEntityOld(
                         item["id"] as Int,
                         item["name"] as String?,
                         item["type"] as String?,
@@ -273,15 +266,55 @@ class MenuDataStore {
                 )
             }
         }
-        if (children.isEmpty()){
+        if (children.isEmpty()) {
             throw DataException
         }
-        return children.toArray() as Array<MenuDataStoreEntity>
+        return children.toArray() as Array<MenuDataStoreEntityOld>
     }
 
-    fun tmp():Int{
-        Log.i(ContentValues.TAG, "test: ")
-        return 1
+    fun getRootOld(): MenuDataStoreEntityOld {
+        var index = 0
+        for (ind in menuTree.indices) {
+            if (menuTree[ind]["parent"] == null) {
+                index = ind
+            }
+        }
+
+        return MenuDataStoreEntityOld(
+            menuTree[index]["id"] as Int,
+            menuTree[index]["name"] as String?,
+            menuTree[index]["type"] as String?,
+            menuTree[index]["parent"] as Int?
+        )
     }
 
+    fun getItemsWithParentId(value:Int?): List<MenuDataStoreEntity> {
+        val items = menuTree.filter {
+            it["parent"] == value
+        }.map {
+            MenuDataStoreEntity(
+                it["id"] as Int,
+                it["name"] as String?,
+                it["type"] as String?,
+            )
+        }
+
+        return items
+    }
+
+    fun getItem(id: Int): MenuDataStoreEntity {
+
+        val foundItem = menuTree.find {
+            it["id"] == id
+        }!!//?:throw  IllegalArgumentException("Элемент $elem не найден в списке!")
+
+        @Suppress("UNCHECKED_CAST")
+        return MenuDataStoreEntity(
+            foundItem["id"] as Int,
+            foundItem["name"] as String?,
+            foundItem["type"] as String?
+        )
+    }
 }
+
+

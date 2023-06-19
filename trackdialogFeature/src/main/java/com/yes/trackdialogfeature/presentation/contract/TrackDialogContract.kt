@@ -9,6 +9,7 @@ class TrackDialogContract {
     sealed class Event : UiEvent {
         data class OnItemClicked(val id:Int,val name :String) : Event()
         object OnItemBackClicked : Event()
+        object OnItemOkClicked : Event()
     }
 
     data class State(

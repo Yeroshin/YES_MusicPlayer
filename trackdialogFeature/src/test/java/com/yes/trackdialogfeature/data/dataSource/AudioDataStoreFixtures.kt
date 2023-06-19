@@ -1,7 +1,5 @@
 package com.yes.trackdialogfeature.data.dataSource
 
-import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
-
 object AudioDataStoreFixtures {
 
     fun getArtists():Array<String>{
