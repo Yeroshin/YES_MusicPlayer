@@ -27,6 +27,7 @@ android {
      }*/
     testOptions {
         animationsDisabled = true
+
     }
     buildTypes {
         release {
@@ -75,7 +76,10 @@ dependencies {
     //  kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0" //ImportantSHIT!!!
 
     //test
-    testImplementation 'junit:junit:4.13.2'
+    //testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
