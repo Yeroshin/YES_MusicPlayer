@@ -1,5 +1,6 @@
 package com.yes.trackdialogfeature.domain.usecase
 
+import com.yes.trackdialogfeature.domain.IMediaRepository
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.repository.IMenuRepository
@@ -9,10 +10,15 @@ import kotlinx.coroutines.CoroutineDispatcher
 
 class GetMenuUseCase(
     dispatcher: CoroutineDispatcher,
-    private val menuRepository: IMenuRepository
+    private val menuRepository: IMenuRepository,
+    private val mediaRepository:IMediaRepository
 ) : UseCase<Params,Menu>(dispatcher) {
     override fun run(params: Params): DomainResult<Menu> {
-        return menuRepository.getRootMenu()
+        return if(params.id == 0){
+            menuRepository.getRootMenu()
+        }else{
+            menuRepository.getChildMenu(params.id)
+        }
     }
     data class Params(
         val id: Int,
