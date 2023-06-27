@@ -2,7 +2,7 @@ package com.yes.trackdialogfeature.data.dataSource
 
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
-object MenuRepositoryFixtures {
+object MenuRepositoryFixturesOLD {
     fun getRootMenu(): Menu {
         return Menu(
             "categories",

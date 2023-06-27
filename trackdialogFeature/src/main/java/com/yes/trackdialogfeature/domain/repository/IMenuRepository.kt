@@ -7,6 +7,6 @@ import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase.Params
 
 interface IMenuRepository {
     fun getRootMenu():DomainResult<Menu>
-    fun getChildMenu(id:Int):DomainResult<Menu>
+    fun getChildMenu(id:Int,name:String):DomainResult<Menu>
     fun getParentMenu():DomainResult<Menu>
 }

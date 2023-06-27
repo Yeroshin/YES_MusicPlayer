@@ -1,77 +1,85 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package com.yes.trackdialogfeature.data.repository
 
+import com.yes.core.Fixture
+import com.yes.trackdialogfeature.data.dataSource.AudioDataStoreFixtures
 import com.yes.trackdialogfeature.data.dataSource.MenuDataStoreFixtures
-import com.yes.trackdialogfeature.data.dataSource.MenuRepositoryFixtures
 import com.yes.trackdialogfeature.data.mapper.MenuMapper
+import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
-import io.mockk.every
+import com.yes.trackdialogfeature.data.repository.entity.AudioDataStoreEntity
+import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
+import com.yes.trackdialogfeature.domain.entity.Menu
 import io.mockk.mockk
 import io.mockk.verify
+import org.junit.Assert.*
+
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 
-
-internal class MenuRepositoryImplTest {
+@RunWith(Parameterized::class)
+class MenuRepositoryImplTest(
+    private val getChildMenuFixture: Fixture<Menu>,
+    private val getItemsWithParentIdFixture: Fixture<MenuDataStoreEntity>,
+    private val getMediaItemsFixture: Fixture<List<AudioDataStoreEntity>>
+) {
     private val menuMapper: MenuMapper = mockk()
-    private val menuDataSource: MenuDataStore = mockk()
-    private val cut = MenuRepositoryImpl(menuMapper, menuDataSource)
+    private val menuDataStore: MenuDataStore = mockk()
+    private val audioDataStore: AudioDataStore = mockk()
+    private val cut = MenuRepositoryImpl(
+        menuMapper,
+        menuDataStore,
+        audioDataStore
+    )
+
 
     @Test
-    fun `when getChildMenu param null returns root menu`() {
-        // arrange
-        val expected = MenuRepositoryFixtures.getRootMenu()
-        val menuDataStoreEntity = MenuDataStoreFixtures.getItem()
-        val param = null
-        every {
-            menuDataSource.getItem(0)
-        } returns menuDataStoreEntity
-        every {
-            menuMapper.map(menuDataStoreEntity)
-        } returns expected
-        // act
-        val actual = cut.getChildMenu(param)
-        // Assert
-        verify(exactly = 1) { menuDataSource.getItem(0) }
-        verify(exactly = 1) { menuMapper.map(menuDataStoreEntity) }
-        assert(actual == expected)
+    fun getRootItems() {
     }
 
     @Test
-    fun `when getChildMenu with specified param returns correct menu`() {
-        // arrange
-        val expected = MenuRepositoryFixtures.getRootMenu()
-        val menuDataStoreEntity = MenuDataStoreFixtures.getItem()
-        val param = 0
-        every {
-            menuDataSource.getItem(param)
-        } returns menuDataStoreEntity
-        every {
-            menuMapper.map(menuDataStoreEntity)
-        } returns expected
-        // act
-        val actual = cut.getChildMenu(param)
+    fun getChildMenu() {
+        val expected = getChildMenuFixture.result
+        val actual = cut.getChildMenu(
+            getChildMenuFixture.params["id"] as Int,
+            getChildMenuFixture.params["name"] as String
+        )
         // Assert
-        verify(exactly = 1) { menuDataSource.getItem(param) }
-        verify(exactly = 1) { menuMapper.map(menuDataStoreEntity) }
+        verify(exactly = 1) {
+            menuDataStore.getItemsWithParentId(
+                getItemsWithParentIdFixture.params["id"] as Int
+            )
+        }
+        verify(exactly = 1) { menuMapper.map(getItemsWithParentIdFixture.result) }
+        verify(exactly = 1) {
+            audioDataStore.getMediaItems(
+                getMediaItemsFixture.params["projection"] as Array<String>,
+                getMediaItemsFixture.params["selection"] as String?,
+                getMediaItemsFixture.params["selectionArgs"] as Array<String>?
+            )
+        }
         assert(actual == expected)
     }
 
-    @Test
-    fun `when getRootItems returns root items`() {
-        // arrange
-        val expected = MenuRepositoryFixtures.getRootItems()
-        val menuDataStoreEntity = MenuDataStoreFixtures.getRootItems()
-        val param = 0
-        every {
-            menuDataSource.getItemsWithParentId(null)
-        } returns menuDataStoreEntity
-        every {
-            menuMapper.mapToItem(any())
-        } answers { expected.iterator().next() }
-        // act
-        val actual = cut.getRootItems()
-        // Assert
-        verify(exactly = 1) { menuDataSource.getItem(param) }
-        verify(exactly = 3) { menuMapper.map(any()) }
-        assert(actual == expected)
+    companion object {
+        @JvmStatic
+        @Parameterized.Parameters
+        fun data(): List<Array<Any?>> {
+            return listOf(
+                arrayOf(
+                    RepositoryFixtures.getArtistsMenuDomain(),
+                    MenuDataStoreFixtures.getArtistsMenuDataStore(),
+                    AudioDataStoreFixtures.getArtists()
+                ),
+            )
+        }
     }
+
 }
+
+
+
+
+

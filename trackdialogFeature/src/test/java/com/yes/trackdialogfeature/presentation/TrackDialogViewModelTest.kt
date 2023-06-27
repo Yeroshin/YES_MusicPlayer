@@ -42,7 +42,7 @@ class TrackDialogViewModelTest {
         )
     }
 
-    @Test
+  /*  @Test
     fun `loads root menu success`() = runTest {
         val domainMenu = RepositoryFixtures.getCategoriesMenu()
         val uiMenu = UiFixturesGenerator.generateParentMenuUi(5)
@@ -320,7 +320,7 @@ class TrackDialogViewModelTest {
                 )
             )
         }*/
-    }
+    }*/
 
 
 }

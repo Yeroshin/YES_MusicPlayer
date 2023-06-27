@@ -87,7 +87,7 @@ internal class MenuDataStoreTest {
     @Test
     fun `returns correct Item with specified id`(){
         // arrange
-        val expected = MenuDataStoreFixtures.getItem()
+        val expected = MenuDataStoreFixturesOLD.getItem()
         // act
         val actual = cut.getItem(
             expected.id
@@ -98,7 +98,7 @@ internal class MenuDataStoreTest {
 
     @Test
     fun `returns root items`(){
-        val expected = MenuDataStoreFixtures.getRootItems()
+        val expected = MenuDataStoreFixturesOLD.getRootItems()
         // act
         val actual = cut.getItemsWithParentId(0)
         // Assert

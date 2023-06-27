@@ -77,7 +77,7 @@ class MenuRepositoryImplOLD(
                     .forEach { audioItem ->
                         items.add(
                             Menu.Item(
-                                audioItem,
+                                audioItem.name,
                                 item.id
                             )
                         )

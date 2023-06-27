@@ -11,13 +11,12 @@ import kotlinx.coroutines.CoroutineDispatcher
 class GetMenuUseCase(
     dispatcher: CoroutineDispatcher,
     private val menuRepository: IMenuRepository,
-    private val mediaRepository:IMediaRepository
 ) : UseCase<Params,Menu>(dispatcher) {
     override fun run(params: Params): DomainResult<Menu> {
         return if(params.id == 0){
             menuRepository.getRootMenu()
         }else{
-            menuRepository.getChildMenu(params.id)
+            menuRepository.getChildMenu(params.id,params.name)
         }
     }
     data class Params(

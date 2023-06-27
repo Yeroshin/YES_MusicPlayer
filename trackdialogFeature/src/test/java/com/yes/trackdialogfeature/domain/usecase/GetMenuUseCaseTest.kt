@@ -15,6 +15,7 @@ import org.junit.runners.Parameterized
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase.Params
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
@@ -22,18 +23,16 @@ import org.junit.runner.RunWith
 
 @RunWith(Parameterized::class)
 internal class GetMenuUseCaseTest(
-    private val params: Params,
-    private val resultMenuRepository: Menu,
-    private val resultMediaRepository: Item,
-    private val expected: DomainResult<Menu>
+    private val params: ParamsFactory.Param,
+    private val rootMenuParam: MenuFactory.Param,
+    private val childMenuParam: MenuFactory.Param,
+    private val expectedParam: MenuFactory.Param
 ) {
     private val testDispatcher: TestDispatcher = StandardTestDispatcher()
     private val menuRepository: IMenuRepository = mockk(relaxed = true)
-    private val mediaRepository: IMediaRepository = mockk(relaxed = true)
     private val cut = GetMenuUseCase(
         testDispatcher,
-        menuRepository,
-        mediaRepository
+        menuRepository
     )
 
     @get:Rule
@@ -41,135 +40,78 @@ internal class GetMenuUseCaseTest(
 
     @Test
     fun `run`() = runTest {
+        val rootMenu = MenuFactory.create(rootMenuParam)
+        val childMenu = MenuFactory.create(childMenuParam)
+        val param = ParamsFactory.create(params)
+        val expected=DomainResult.Success(MenuFactory.create(expectedParam))
         every {
             menuRepository.getRootMenu()
-        } returns DomainResult.Success(resultMenuRepository)
+        } returns DomainResult.Success(rootMenu)
         every {
-            menuRepository.getChildMenu(params.id)
-        } returns DomainResult.Success(resultMenuRepository)
-        every {
-            mediaRepository.getMedia()
-        } returns DomainResult.Success(resultMediaRepository)
+            menuRepository.getChildMenu(params.id, params.name)
+        } returns DomainResult.Success(childMenu)
         val actual = cut(
-            params
+            param
         )
         // Assert
         assert(expected == actual)
     }
 
-    /* companion object MenuProvider {
-         @JvmStatic
-         fun testData() = listOf(
-             Arguments.of(
-                 Params(0, ""),
-                 Menu(
-                     "Categories",
-                     listOf(
-                         Menu.Item(
-                             "artists",
-                             1
-                         ),
-                         Menu.Item(
-                             "albums",
-                             2
-                         ),
-                         Menu.Item(
-                             "tracks",
-                             3
-                         )
-                     )
-                 )
-             )
-
-         )
-     }*/
 
     companion object {
         @JvmStatic
         @Parameterized.Parameters
         fun data(): List<Array<Any?>> {
-            val menuItems=SharedFixtureGenerator.generateArtists(3)
-                .map {
-                    MenuItemFactory.create(it, 4)
-                }
             return listOf(
                 arrayOf(
-                    Params(0, ""),
-                    Menu(
-                        "Categories",
-                        listOf(
-                            Menu.Item(
-                                "artists",
-                                1
-                            ),
-                            Menu.Item(
-                                "albums",
-                                2
-                            ),
-                            Menu.Item(
-                                "tracks",
-                                3
-                            )
-                        )
-                    ),
-                    menuItems,
-                    DomainResult.Success(
-                        Menu(
-                            "Categories",
-                            listOf(
-                                Menu.Item(
-                                    "artists",
-                                    1
-                                ),
-                                Menu.Item(
-                                    "albums",
-                                    2
-                                ),
-                                Menu.Item(
-                                    "tracks",
-                                    3
-                                )
-                            )
-                        )
-                    )
+                    ParamsFactory.Param(0, ""),
+                    MenuFactory.Param("Categories", listOf()),
+                    MenuFactory.Param("Artist", listOf()),
+                    MenuFactory.Param("Categories", listOf())
                 ),
                 arrayOf(
-                    Params(1, "artists"),
-                    Menu(
-                        "artist",
-                        listOf()
-                    ),
-                    menuItems,
-                    DomainResult.Success(
-                        Menu(
-                            "artist",
-                            menuItems
-                        )
-                    )
+                    ParamsFactory.Param(1, "Artists"),
+                    MenuFactory.Param("Categories", listOf()),
+                    MenuFactory.Param("Artists", listOf()),
+                    MenuFactory.Param("Artists", listOf())
                 )
             )
         }
-        // return testData.map { ParamsFactory.create(it.id, it.name) }
     }
 
-    data class TestDatum(val id: Int, val name: String)
-    object ParamsFactory {
-        fun create(id: Int, name: String): Params {
-            return Params(id, name)
+
+        object ParamsFactory {
+            fun create(param: Param): Params {
+                return Params(param.id, param.name)
+            }
+
+            data class Param(
+                val id: Int,
+                val name: String
+            )
         }
-    }
 
-    object MenuFactory {
-        fun create(name: String, children: List<Menu.Item>): Menu {
-            return Menu(name, children)
+        object MenuFactory {
+            fun create(param: Param): Menu {
+                return Menu(param.name, param.children)
+            }
+
+            data class Param(
+                val name: String,
+                val children: List<Menu.Item>
+            )
         }
-    }
 
-    object MenuItemFactory {
-        fun create(name: String, id: Int): Item {
-            return Item(name, id)
+        object MenuItemFactory {
+            fun create(param: Param): Item {
+                return Item(param.name, param.id)
+            }
+
+            data class Param(
+                val name: String,
+                val id: Int
+            )
         }
+
+
     }
-
-
-}

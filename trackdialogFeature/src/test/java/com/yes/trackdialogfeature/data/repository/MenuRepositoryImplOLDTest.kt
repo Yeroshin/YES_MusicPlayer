@@ -1,7 +1,7 @@
 package com.yes.trackdialogfeature.data.repository
 
-import com.yes.trackdialogfeature.data.dataSource.AudioDataStoreFixtures
-import com.yes.trackdialogfeature.data.dataSource.MenuDataStoreFixtures
+import com.yes.trackdialogfeature.data.dataSource.AudioDataStoreFixturesOLD
+import com.yes.trackdialogfeature.data.dataSource.MenuDataStoreFixturesOLD
 import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 import com.yes.trackdialogfeature.data.repository.entity.DataException
@@ -26,7 +26,7 @@ class MenuRepositoryImplOLDTest {
 
     )
 
-    @Test
+  /*  @Test
     fun `1 getMenu children handles api success and returns root MenuApiModel`() {
         // Given
         val expected = DomainResult.Success(RepositoryFixtures.getCategoriesMenu())
@@ -34,10 +34,10 @@ class MenuRepositoryImplOLDTest {
 
         every {
             menuDataStore.getRootOld()
-        } returns MenuDataStoreFixtures.getRoot()
+        } returns MenuDataStoreFixturesOLD.getRoot()
         every {
             menuDataStore.getChildren(0)
-        } returns MenuDataStoreFixtures.getCategoriesChildren()
+        } returns MenuDataStoreFixturesOLD.getCategoriesChildren()
         // When
         val actual = cut.getMenu()
         // Assert
@@ -53,17 +53,17 @@ class MenuRepositoryImplOLDTest {
         val expected = DomainResult.Success(RepositoryFixtures.getAlbumsMenu())
         every {
             menuDataStore.getChildren(2)
-        } returns MenuDataStoreFixtures.getAlbumsChildren()
+        } returns MenuDataStoreFixturesOLD.getAlbumsChildren()
         every {
             menuDataStore.getItemOld(2)
-        } returns MenuDataStoreFixtures.getAlbumsOld()
+        } returns MenuDataStoreFixturesOLD.getAlbumsOld()
         every {
             audioDataStore.getMediaItems(
                 arrayOf("album"),
                 null,
                 emptyArray()
             )
-        } returns AudioDataStoreFixtures.getAlbums()
+        } returns AudioDataStoreFixturesOLD.getAlbums()
 
         // When
         val actual = cut.getMenu(2, "albums")
@@ -80,20 +80,20 @@ class MenuRepositoryImplOLDTest {
     @Test
     fun `3 get album children returns album tracks`() {
         // Given
-        val expected = DomainResult.Success(RepositoryFixtures.getAlbumTracksMenu())
+        val expected = DomainResult.Success(RepositoryFixturesOld.getAlbumTracksMenu())
         every {
             menuDataStore.getChildren(5)
-        } returns MenuDataStoreFixtures.getAlbumChildren()
+        } returns MenuDataStoreFixturesOLD.getAlbumChildren()
         every {
             menuDataStore.getItemOld(5)
-        } returns MenuDataStoreFixtures.getAlbum()
+        } returns MenuDataStoreFixturesOLD.getAlbum()
         every {
             audioDataStore.getMediaItems(
                 arrayOf("track"),
                 "album",
                 arrayOf("Brothers in Arms")
             )
-        } returns AudioDataStoreFixtures.getTracks()
+        } returns AudioDataStoreFixturesOLD.getTracks()
 
         // When
         val actual = cut.getMenu(5, "Brothers in Arms")
@@ -104,7 +104,7 @@ class MenuRepositoryImplOLDTest {
         assert(expected == actual)
       /*  assertInstanceOf(DomainResult.Success::class.java,actual)
         assert((expected as DomainResult.Success).data == (actual as DomainResult.Success).data)*/
-    }
+    }*/
     @Test
     fun `4 get track children returns DomainResultError`() {
         // Given

@@ -5,6 +5,7 @@ import android.os.Build
 import android.provider.MediaStore
 import android.provider.UserDictionary
 import com.yes.trackdialogfeature.data.IMediaDataStore
+import com.yes.trackdialogfeature.data.repository.entity.AudioDataStoreEntity
 
 
 class AudioDataStore(private val appContext: Context) : IMediaDataStore {
@@ -100,7 +101,7 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
         projection: Array<String>,
         selection: String?,
         selectionArgs: Array<String>?,
-    ): Array<String> {
+    ): List<AudioDataStoreEntity> {
 
         /*  val mediaQue = MediaQueryEntity(
               Array(1){MediaStore.Audio.Media.TITLE},
@@ -170,6 +171,6 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
                 audioList.add(cursor.getString(column))
             }
         }
-        return audioList.toTypedArray()
+        return audioList.map { AudioDataStoreEntity(it) }
     }
 }

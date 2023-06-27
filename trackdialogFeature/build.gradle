@@ -12,7 +12,10 @@ android {
              useJUnitPlatform()
          }
      }*/
+    packagingOptions {
+        exclude 'MenuRepositoryImplOLDTest.kt'
 
+    }
     defaultConfig {
         minSdk 21
         targetSdk 33
