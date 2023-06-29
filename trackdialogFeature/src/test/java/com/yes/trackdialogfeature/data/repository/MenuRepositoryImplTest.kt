@@ -2,6 +2,7 @@
 
 package com.yes.trackdialogfeature.data.repository
 
+
 import com.yes.core.Fixture
 import com.yes.trackdialogfeature.data.dataSource.AudioDataStoreFixtures
 import com.yes.trackdialogfeature.data.dataSource.MenuDataStoreFixtures
@@ -10,7 +11,10 @@ import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 import com.yes.trackdialogfeature.data.repository.entity.AudioDataStoreEntity
 import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
+import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
+import com.yes.trackdialogfeature.domain.entity.Menu.Item
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Assert.*
@@ -21,9 +25,12 @@ import org.junit.runners.Parameterized
 
 @RunWith(Parameterized::class)
 class MenuRepositoryImplTest(
-    private val getChildMenuFixture: Fixture<Menu>,
-    private val getItemsWithParentIdFixture: Fixture<MenuDataStoreEntity>,
-    private val getMediaItemsFixture: Fixture<List<AudioDataStoreEntity>>
+    private val parentMenuDataStoreFixture: Fixture<MenuDataStoreEntity>,
+    private val menuDataStoreFixture: Fixture<List<MenuDataStoreEntity>>,
+    private val listAudioDataStoreFixture: Fixture<List<AudioDataStoreEntity>>,
+    private val menuDomainFixture: Fixture<Menu>,
+    private val menuItemDomainFixture: Fixture<List<Item>>,
+    private val resultMenuDomainFixture: Fixture<Menu>,
 ) {
     private val menuMapper: MenuMapper = mockk()
     private val menuDataStore: MenuDataStore = mockk()
@@ -41,25 +48,54 @@ class MenuRepositoryImplTest(
 
     @Test
     fun getChildMenu() {
-        val expected = getChildMenuFixture.result
+        val expected = DomainResult.Success(resultMenuDomainFixture.result)
+        every {
+            menuDataStore.getItem(parentMenuDataStoreFixture.params["id"] as Int)
+        } returns parentMenuDataStoreFixture.result
+        every {
+            menuDataStore.getItemsWithParentId(
+                menuDataStoreFixture.params["id"] as Int
+            )
+        } returns menuDataStoreFixture.result
+        every {
+            audioDataStore.getMediaItems(
+                listAudioDataStoreFixture.params["projection"] as Array<String>,
+                listAudioDataStoreFixture.params["selection"] as String?,
+                listAudioDataStoreFixture.params["selectionArgs"] as Array<String>
+            )
+        } returns listAudioDataStoreFixture.result
+        every {
+            menuMapper.mapToItem(any<AudioDataStoreEntity>())
+        } returnsMany menuItemDomainFixture.result
+        every {
+            menuMapper.map(any())
+        } returns menuDomainFixture.result
+        //Act
         val actual = cut.getChildMenu(
-            getChildMenuFixture.params["id"] as Int,
-            getChildMenuFixture.params["name"] as String
+            resultMenuDomainFixture.params["id"] as Int,
+            resultMenuDomainFixture.params["name"] as String
         )
         // Assert
         verify(exactly = 1) {
+            menuDataStore.getItem(parentMenuDataStoreFixture.params["id"] as Int)
+        }
+        verify(exactly = 1) {
             menuDataStore.getItemsWithParentId(
-                getItemsWithParentIdFixture.params["id"] as Int
+                menuDataStoreFixture.params["id"] as Int
             )
         }
-        verify(exactly = 1) { menuMapper.map(getItemsWithParentIdFixture.result) }
         verify(exactly = 1) {
             audioDataStore.getMediaItems(
-                getMediaItemsFixture.params["projection"] as Array<String>,
-                getMediaItemsFixture.params["selection"] as String?,
-                getMediaItemsFixture.params["selectionArgs"] as Array<String>?
+                listAudioDataStoreFixture.params["projection"] as Array<String>,
+                listAudioDataStoreFixture.params["selection"] as String?,
+                listAudioDataStoreFixture.params["selectionArgs"] as Array<String>
             )
         }
+        verify(exactly = 5) {
+            menuMapper.mapToItem(any<AudioDataStoreEntity>())
+        }
+        verify(exactly = 1) { menuMapper.map(menuDataStoreFixture.result.last()) }
+
         assert(actual == expected)
     }
 
@@ -68,10 +104,21 @@ class MenuRepositoryImplTest(
         @Parameterized.Parameters
         fun data(): List<Array<Any?>> {
             return listOf(
-                arrayOf(
+              /*  arrayOf(
+                    MenuDataStoreFixtures.getRootMenuDataStore(),
+                    MenuDataStoreFixtures.getArtistMenuDataStore(),
+                    AudioDataStoreFixtures.getArtistsListAudioDataStore(),
+                    RepositoryFixtures.getPrimaryArtistsMenuDomain(),
+                    RepositoryFixtures.getArtistsMenuItemDomain(),
                     RepositoryFixtures.getArtistsMenuDomain(),
-                    MenuDataStoreFixtures.getArtistsMenuDataStore(),
-                    AudioDataStoreFixtures.getArtists()
+                ),*/
+                arrayOf(
+                    MenuDataStoreFixtures.getArtistMenuDataStore(),
+                    MenuDataStoreFixtures.getTracksMenuDataStore(),
+                    AudioDataStoreFixtures.getTracksListAudioDataStore(),
+                    RepositoryFixtures.getPrimaryTracksMenuDomain(),
+                    RepositoryFixtures.getTracksMenuItemDomain(),
+                    RepositoryFixtures.getTracksMenuDomain()
                 ),
             )
         }

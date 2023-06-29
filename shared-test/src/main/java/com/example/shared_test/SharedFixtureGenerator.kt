@@ -38,6 +38,6 @@ object SharedFixtureGenerator {
             val mediaItem = name
             mediaItems.add(mediaItem)
         }
-        return mediaItems
+        return mediaItems.toList()
     }
 }

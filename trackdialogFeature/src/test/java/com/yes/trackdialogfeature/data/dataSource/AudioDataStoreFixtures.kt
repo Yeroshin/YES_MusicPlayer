@@ -2,7 +2,6 @@ package com.yes.trackdialogfeature.data.dataSource
 
 import com.example.shared_test.SharedFixtureGenerator
 import com.yes.core.Fixture
-import com.yes.trackdialogfeature.data.repository.RepositoryFixtures
 import com.yes.trackdialogfeature.data.repository.entity.AudioDataStoreEntity
 
 object AudioDataStoreFixtures {
@@ -12,23 +11,23 @@ object AudioDataStoreFixtures {
     private val tracks =
         SharedFixtureGenerator.generateMediaItemNames(count).map { AudioDataStoreEntity(it) }
 
-    fun getArtists(): Fixture<List<AudioDataStoreEntity>> {
+    fun getArtistsListAudioDataStore(): Fixture<List<AudioDataStoreEntity>> {
         return Fixture(
             mapOf(
-                "projection" to "artists",
+                "projection" to arrayOf("artist"),
                 "selection" to null,
-                "selectionArgs" to null
+                "selectionArgs" to emptyArray()
             ),
             artists
         )
     }
 
-    fun getTracks():Fixture< List<AudioDataStoreEntity>> {
+    fun getTracksListAudioDataStore():Fixture< List<AudioDataStoreEntity>> {
         return Fixture(
             mapOf(
-                "projection" to "track",
+                "projection" to arrayOf("track"),
                 "selection" to "artists",
-                "selectionArgs" to artists[0].name
+                "selectionArgs" to arrayOf(artists[0].name)
             ),
             tracks
         )

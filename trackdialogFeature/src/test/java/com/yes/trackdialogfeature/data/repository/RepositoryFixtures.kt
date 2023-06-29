@@ -4,6 +4,7 @@ import com.yes.core.Fixture
 import com.yes.trackdialogfeature.data.dataSource.AudioDataStoreFixtures
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
+import com.yes.trackdialogfeature.domain.entity.Menu.Item
 import com.yes.trackdialogfeature.domain.entity.MenuException
 
 object RepositoryFixtures {
@@ -177,21 +178,23 @@ object RepositoryFixtures {
     }
 
     private const val count = 5
-    private val artists = AudioDataStoreFixtures.getArtists().result.map { Menu.Item(it.name, 4) }
-    private val tracks = AudioDataStoreFixtures.getTracks().result.map { Menu.Item(it.name, 7) }
+    private val artists =
+        AudioDataStoreFixtures.getArtistsListAudioDataStore().result.map { Menu.Item(it.name, 4) }
+    private val tracks =
+        AudioDataStoreFixtures.getTracksListAudioDataStore().result.map { Menu.Item(it.name, 7) }
     val dataResult = listOf(
         Menu(
             "categories",
             listOf(
-                Menu.Item(
+                Item(
                     "artists",
                     1
                 ),
-                Menu.Item(
+                Item(
                     "albums",
                     2
                 ),
-                Menu.Item(
+                Item(
                     "tracks",
                     3
                 )
@@ -199,11 +202,11 @@ object RepositoryFixtures {
         ),
         Menu(
             "artists",
-            artists
+            listOf()
         ),
         Menu(
             artists[0].name,
-            tracks
+            listOf()
         ),
 
         )
@@ -212,12 +215,9 @@ object RepositoryFixtures {
 
     }
 
-    fun getRootDomainMenu() {
 
-    }
-
-    fun getArtistsMenuDomain(): Fixture<Menu> {
-        val menu = dataResult.find { it.name == "artists" }
+    fun getPrimaryArtistsMenuDomain(): Fixture<Menu> {
+        val menu = dataResult.find { it.name == "artists" }?.copy()
         return Fixture(
             mapOf(
                 "id" to 0,
@@ -227,7 +227,28 @@ object RepositoryFixtures {
         )
     }
 
-    fun getArtistTracks(): Fixture<Menu> {
+    fun getArtistsMenuDomain(): Fixture<Menu> {
+        val menu = dataResult.find { it.name == "artists" }?.copy()
+        menu!!.children.toMutableList().addAll(artists)
+        return Fixture(
+            mapOf(
+                "id" to 0,
+                "name" to ""
+            ),
+            menu
+        )
+    }
+
+    fun getArtistsMenuItemDomain(): Fixture<List<Item>> {
+
+        return Fixture(
+            mapOf(
+
+            ),
+            artists
+        )
+    }
+    fun getPrimaryTracksMenuDomain(): Fixture<Menu> {
         val menu = dataResult.find { it.name == artists[0].name }
         return Fixture(
             mapOf(
@@ -235,6 +256,25 @@ object RepositoryFixtures {
                 "name" to artists[0].name
             ),
             menu!!
+        )
+    }
+    fun getTracksMenuItemDomain():  Fixture<List<Item>> {
+        return Fixture(
+            mapOf(
+
+            ),
+            tracks
+        )
+    }
+    fun getTracksMenuDomain(): Fixture<Menu> {
+        val menu = dataResult.find { it.name == artists[0].name }
+        menu!!.children.toMutableList().addAll(tracks)
+        return Fixture(
+            mapOf(
+                "id" to 4,
+                "name" to artists[0].name
+            ),
+            menu
         )
     }
 
