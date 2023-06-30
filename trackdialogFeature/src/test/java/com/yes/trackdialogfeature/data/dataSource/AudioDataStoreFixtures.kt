@@ -26,7 +26,7 @@ object AudioDataStoreFixtures {
         return Fixture(
             mapOf(
                 "projection" to arrayOf("track"),
-                "selection" to "artists",
+                "selection" to "artist",
                 "selectionArgs" to arrayOf(artists[0].name)
             ),
             tracks

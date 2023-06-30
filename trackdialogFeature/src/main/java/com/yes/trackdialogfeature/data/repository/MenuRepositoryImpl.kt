@@ -39,7 +39,7 @@ class MenuRepositoryImpl(
         return DomainResult.Success(menu)
     }
 
-    override fun getRootItems(): DomainResult<List<Menu.Item>> {
+    override fun getRootMenu(): DomainResult<Menu> {
         TODO("Not yet implemented")
     }
 

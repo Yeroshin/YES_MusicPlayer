@@ -5,5 +5,5 @@ import com.yes.trackdialogfeature.domain.entity.Menu
 
 interface IMenuRepository {
     fun getChildMenu(id:Int,name:String): DomainResult<Menu>
-    fun getRootItems():DomainResult<List<Menu.Item>>
+    fun getRootMenu():DomainResult<Menu>
 }

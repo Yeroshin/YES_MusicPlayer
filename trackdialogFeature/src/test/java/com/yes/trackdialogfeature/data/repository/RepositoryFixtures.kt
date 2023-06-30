@@ -232,8 +232,8 @@ object RepositoryFixtures {
         menu!!.children.toMutableList().addAll(artists)
         return Fixture(
             mapOf(
-                "id" to 0,
-                "name" to ""
+                "id" to 1,
+                "name" to "artists"
             ),
             menu
         )

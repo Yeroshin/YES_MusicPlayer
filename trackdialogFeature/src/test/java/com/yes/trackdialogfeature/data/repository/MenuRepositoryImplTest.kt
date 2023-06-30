@@ -25,7 +25,7 @@ import org.junit.runners.Parameterized
 
 @RunWith(Parameterized::class)
 class MenuRepositoryImplTest(
-    private val parentMenuDataStoreFixture: Fixture<MenuDataStoreEntity>,
+    private val currentMenuDataStoreFixture: Fixture<MenuDataStoreEntity>,
     private val menuDataStoreFixture: Fixture<List<MenuDataStoreEntity>>,
     private val listAudioDataStoreFixture: Fixture<List<AudioDataStoreEntity>>,
     private val menuDomainFixture: Fixture<Menu>,
@@ -50,8 +50,8 @@ class MenuRepositoryImplTest(
     fun getChildMenu() {
         val expected = DomainResult.Success(resultMenuDomainFixture.result)
         every {
-            menuDataStore.getItem(parentMenuDataStoreFixture.params["id"] as Int)
-        } returns parentMenuDataStoreFixture.result
+            menuDataStore.getItem(currentMenuDataStoreFixture.params["id"] as Int)
+        } returns currentMenuDataStoreFixture.result
         every {
             menuDataStore.getItemsWithParentId(
                 menuDataStoreFixture.params["id"] as Int
@@ -77,7 +77,7 @@ class MenuRepositoryImplTest(
         )
         // Assert
         verify(exactly = 1) {
-            menuDataStore.getItem(parentMenuDataStoreFixture.params["id"] as Int)
+            menuDataStore.getItem(currentMenuDataStoreFixture.params["id"] as Int)
         }
         verify(exactly = 1) {
             menuDataStore.getItemsWithParentId(
@@ -104,14 +104,14 @@ class MenuRepositoryImplTest(
         @Parameterized.Parameters
         fun data(): List<Array<Any?>> {
             return listOf(
-              /*  arrayOf(
-                    MenuDataStoreFixtures.getRootMenuDataStore(),
-                    MenuDataStoreFixtures.getArtistMenuDataStore(),
+                arrayOf(
+                    MenuDataStoreFixtures.getArtistsMenuDataStore(),
+                    MenuDataStoreFixtures.getArtistListMenuDataStore(),
                     AudioDataStoreFixtures.getArtistsListAudioDataStore(),
                     RepositoryFixtures.getPrimaryArtistsMenuDomain(),
                     RepositoryFixtures.getArtistsMenuItemDomain(),
                     RepositoryFixtures.getArtistsMenuDomain(),
-                ),*/
+                ),
                 arrayOf(
                     MenuDataStoreFixtures.getArtistMenuDataStore(),
                     MenuDataStoreFixtures.getTracksMenuDataStore(),
