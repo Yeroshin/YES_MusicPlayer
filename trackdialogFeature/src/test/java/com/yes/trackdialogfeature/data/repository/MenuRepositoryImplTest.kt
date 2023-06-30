@@ -20,17 +20,19 @@ import io.mockk.verify
 import org.junit.Assert.*
 
 import org.junit.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
-@RunWith(Parameterized::class)
+//@RunWith(Parameterized::class)
 class MenuRepositoryImplTest(
-    private val currentMenuDataStoreFixture: Fixture<MenuDataStoreEntity>,
-    private val menuDataStoreFixture: Fixture<List<MenuDataStoreEntity>>,
-    private val listAudioDataStoreFixture: Fixture<List<AudioDataStoreEntity>>,
-    private val menuDomainFixture: Fixture<Menu>,
-    private val menuItemDomainFixture: Fixture<List<Item>>,
-    private val resultMenuDomainFixture: Fixture<Menu>,
+    /*  private val currentMenuDataStoreFixture: Fixture<MenuDataStoreEntity>,
+      private val menuDataStoreFixture: Fixture<List<MenuDataStoreEntity>>,
+      private val listAudioDataStoreFixture: Fixture<List<AudioDataStoreEntity>>,
+      private val menuDomainFixture: Fixture<Menu>,
+      private val menuItemDomainFixture: Fixture<List<Item>>,
+      private val resultMenuDomainFixture: Fixture<Menu>,*/
 ) {
     private val menuMapper: MenuMapper = mockk()
     private val menuDataStore: MenuDataStore = mockk()
@@ -42,12 +44,23 @@ class MenuRepositoryImplTest(
     )
 
 
-    @Test
-    fun getRootItems() {
+    @ParameterizedTest
+    @MethodSource("getRootItemsData")
+    fun getRootItems(a:Int,b:Int) {
+        val i=a+b
+        assert(i == 3)
     }
 
-    @Test
-    fun getChildMenu() {
+    @ParameterizedTest
+    @MethodSource("getChildMenuData")
+    fun getChildMenu(
+        currentMenuDataStoreFixture: Fixture<MenuDataStoreEntity>,
+        menuDataStoreFixture: Fixture<List<MenuDataStoreEntity>>,
+        listAudioDataStoreFixture: Fixture<List<AudioDataStoreEntity>>,
+        menuDomainFixture: Fixture<Menu>,
+        menuItemDomainFixture: Fixture<List<Item>>,
+        resultMenuDomainFixture: Fixture<Menu>,
+    ) {
         val expected = DomainResult.Success(resultMenuDomainFixture.result)
         every {
             menuDataStore.getItem(currentMenuDataStoreFixture.params["id"] as Int)
@@ -101,8 +114,14 @@ class MenuRepositoryImplTest(
 
     companion object {
         @JvmStatic
-        @Parameterized.Parameters
-        fun data(): List<Array<Any?>> {
+        fun getRootItemsData():List<Array<Any?>>{
+            return listOf(
+                arrayOf(1,2)
+            )
+        }
+        @JvmStatic
+        // @Parameterized.Parameters
+        fun getChildMenuData(): List<Array<Any?>> {
             return listOf(
                 arrayOf(
                     MenuDataStoreFixtures.getArtistsMenuDataStore(),

@@ -28,10 +28,15 @@ android {
          exclude("META-INF/LICENSE.md")
 
      }*/
+
+
     testOptions {
         animationsDisabled = true
-
+        unitTests.all {
+            useJUnitPlatform()
+        }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -79,7 +84,8 @@ dependencies {
     //  kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0" //ImportantSHIT!!!
 
     //test
-    testImplementation 'junit:junit:4.13.2'
+    // testImplementation 'junit:junit:4.13.2'
+    testImplementation "org.junit.jupiter:junit-jupiter:5.9.3"
     //testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
     //testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
 
@@ -102,7 +108,7 @@ dependencies {
     // testImplementation "io.mockk:mockk-agent:${mockkVersion}"
     //noinspection GradleDependency
     androidTestImplementation "io.mockk:mockk-android:${mockkVersion}"
-   // androidTestImplementation "io.mockk:mockk-agent:${mockkVersion}"
+    // androidTestImplementation "io.mockk:mockk-agent:${mockkVersion}"
     ////////////////////////
     //turbine
     testImplementation 'app.cash.turbine:turbine:0.12.1'
