@@ -1,21 +1,13 @@
 package com.yes.trackdialogfeature.presentation
 
-import app.cash.turbine.test
-import com.example.shared_test.UiFixturesGenerator
-import com.yes.trackdialogfeature.data.repository.RepositoryFixtures
-import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCaseOLD
-import com.yes.trackdialogfeature.domain.usecase.SaveTrackToPlaylistUseCase
-import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.mapper.MenuUiDomainMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import com.yes.trackdialogfeature.utils.CoroutineRule
 import io.mockk.*
-import org.junit.Test
 
-import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import java.util.*

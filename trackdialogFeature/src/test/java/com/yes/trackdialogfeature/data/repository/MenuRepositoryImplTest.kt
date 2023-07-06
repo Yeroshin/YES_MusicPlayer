@@ -19,11 +19,9 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Assert.*
 
-import org.junit.Test
+//import org.junit.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
 
 //@RunWith(Parameterized::class)
 class MenuRepositoryImplTest(
@@ -43,12 +41,53 @@ class MenuRepositoryImplTest(
         audioDataStore
     )
 
-
+    @ParameterizedTest
+    @MethodSource("saveToPlayListData")
+    fun saveToPlayList(
+        menuDomainFixture: Fixture<Item>
+    ){
+        val expected=DomainResult.Success(true)
+        val actual=cut.saveToPlayList(menuDomainFixture.result)
+        assert(actual == expected)
+    }
     @ParameterizedTest
     @MethodSource("getRootItemsData")
-    fun getRootItems(a:Int,b:Int) {
-        val i=a+b
-        assert(i == 3)
+    fun getRootItems(
+        menuDataStoreFixture: Fixture<MenuDataStoreEntity>,
+        menuDomainFixture: Fixture<Menu>,
+        menuListDataStoreFixture: Fixture<List<MenuDataStoreEntity>>,
+        menuListDomainFixture: Fixture<List<Item>>,
+        resultMenuDomainFixture: Fixture<Menu>
+    ) {
+        val expected = DomainResult.Success(resultMenuDomainFixture.result)
+        every {
+            menuDataStore.getItem(menuDataStoreFixture.params["id"] as Int)
+        } returns menuDataStoreFixture.result
+        every {
+            menuMapper.map(menuDataStoreFixture.result)
+        } returns menuDomainFixture.result
+        every {
+            menuDataStore.getItemsWithParentId(menuListDataStoreFixture.params["id"] as Int)
+        } returns menuListDataStoreFixture.result
+        every {
+            menuMapper.mapToItem(any<MenuDataStoreEntity>())
+        } returnsMany menuListDomainFixture.result
+        //Act
+        val actual = cut.getRootMenu()
+        // Assert
+        verify(exactly = 1) {
+            menuDataStore.getItem(menuDataStoreFixture.params["id"] as Int)
+        }
+        verify(exactly = 1) {
+            menuMapper.map(menuDataStoreFixture.result)
+        }
+        verify(exactly = 1) {
+            menuDataStore.getItemsWithParentId(menuListDataStoreFixture.params["id"] as Int)
+        }
+        verify(exactly = 3) {
+            menuMapper.mapToItem(any<MenuDataStoreEntity>())
+        }
+        assert(actual == expected)
     }
 
     @ParameterizedTest
@@ -114,11 +153,25 @@ class MenuRepositoryImplTest(
 
     companion object {
         @JvmStatic
-        fun getRootItemsData():List<Array<Any?>>{
+        fun saveToPlayListData(): List<Array<Any?>>{
             return listOf(
-                arrayOf(1,2)
+                arrayOf()
             )
         }
+        @JvmStatic
+        fun getRootItemsData(): List<Array<Any?>> {
+            return listOf(
+                arrayOf(
+                    MenuDataStoreFixtures.getCategoriesMenu(),
+                    RepositoryFixtures.getCategoriesMenu(),
+                    MenuDataStoreFixtures.getCategoriesItemsMenu(),
+                    RepositoryFixtures.getCategoriesItems(),
+                    RepositoryFixtures.getCategoriesMenu(),
+
+                )
+            )
+        }
+
         @JvmStatic
         // @Parameterized.Parameters
         fun getChildMenuData(): List<Array<Any?>> {

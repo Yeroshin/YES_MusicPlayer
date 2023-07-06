@@ -182,23 +182,24 @@ object RepositoryFixtures {
         AudioDataStoreFixtures.getArtistsListAudioDataStore().result.map { Menu.Item(it.name, 4) }
     private val tracks =
         AudioDataStoreFixtures.getTracksListAudioDataStore().result.map { Menu.Item(it.name, 7) }
+    private val items =listOf(
+        Item(
+            "artists",
+            1
+        ),
+        Item(
+            "albums",
+            2
+        ),
+        Item(
+            "tracks",
+            3
+        )
+    )
     val dataResult = listOf(
         Menu(
             "categories",
-            listOf(
-                Item(
-                    "artists",
-                    1
-                ),
-                Item(
-                    "albums",
-                    2
-                ),
-                Item(
-                    "tracks",
-                    3
-                )
-            )
+            listOf()
         ),
         Menu(
             "artists",
@@ -210,9 +211,36 @@ object RepositoryFixtures {
         ),
 
         )
-
-    fun getRootDomainMenuParam() {
-
+    fun getPrimaryCategoriesMenu(): Fixture<Menu> {
+        val menu = dataResult.find { it.name == "categories" }?.copy()
+        return Fixture(
+            mapOf(
+                "id" to 0,
+                "name" to ""
+            ),
+            menu!!
+        )
+    }
+    fun getCategoriesMenu(): Fixture<Menu> {
+        val menu = dataResult.find { it.name == "categories" }?.copy()
+        menu!!.children.toMutableList().addAll(items)
+        return Fixture(
+            mapOf(
+                "id" to 0,
+                "name" to ""
+            ),
+            menu
+        )
+    }
+    fun getCategoriesItems():Fixture<List<Item>>{
+       // val menu = dataResult.find { it.name == "categories" }?.copy()
+        return Fixture(
+            mapOf(
+                "id" to 0,
+                "name" to ""
+            ),
+            items
+        )
     }
 
 

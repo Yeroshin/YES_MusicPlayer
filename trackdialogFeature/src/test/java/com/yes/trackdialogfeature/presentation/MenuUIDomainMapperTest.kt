@@ -1,7 +1,7 @@
 package com.yes.trackdialogfeature.presentation
 
 import com.yes.trackdialogfeature.presentation.mapper.MenuUiDomainMapper
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class MenuUIDomainMapperTest {
 

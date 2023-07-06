@@ -15,7 +15,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import org.hamcrest.Description
 import org.hamcrest.Matcher
-import org.hamcrest.Matchers.not
+import org.hamcrest.CoreMatchers.not
+
 
 open class BaseTestRobot {
     fun view(resId: Int): ViewInteraction = onView(withId(resId))

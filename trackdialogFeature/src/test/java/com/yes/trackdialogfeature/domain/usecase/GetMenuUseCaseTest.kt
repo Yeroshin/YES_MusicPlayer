@@ -15,10 +15,9 @@ import org.junit.runners.Parameterized
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase.Params
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 
 @RunWith(Parameterized::class)

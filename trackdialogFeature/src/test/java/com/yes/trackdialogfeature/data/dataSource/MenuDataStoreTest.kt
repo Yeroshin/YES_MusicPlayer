@@ -2,7 +2,7 @@ package com.yes.trackdialogfeature.data.dataSource
 
 
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 internal class MenuDataStoreTest {
     private val cut = MenuDataStore()

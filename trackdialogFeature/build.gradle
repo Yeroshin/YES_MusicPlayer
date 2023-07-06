@@ -14,8 +14,10 @@ android {
      }*/
     packagingOptions {
         exclude 'MenuRepositoryImplOLDTest.kt'
-
+        exclude 'META-INF/LICENSE-notice.md'
+        exclude 'META-INF/LICENSE.md'
     }
+
     defaultConfig {
         minSdk 21
         targetSdk 33
@@ -63,8 +65,19 @@ android {
 dependencies {
     implementation project(path: ':core')
     implementation project(path: ':coreUI')
+
     testImplementation project(path: ':shared-test')
-    // androidTestImplementation project(path: ':core')
+    androidTestImplementation project(path: ':shared-test')
+    //room
+    def room_version = "2.5.2"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    // To use Kotlin annotation processing tool (kapt)
+   /* kapt "androidx.room:room-compiler:$room_version"*//
+
+    //////////////
+
 
     //androidTestImplementation 'androidx.multidex:multidex:2.0.1'
     // androidTestImplementation project(path: ':app')
@@ -75,7 +88,8 @@ dependencies {
     //viewModel
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
-    implementation 'androidx.test.espresso:espresso-contrib:3.5.1'
+
+
 
     //Dagger/////////////////////
     def dagger_version = '2.45'
@@ -83,14 +97,24 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.45'
     //  kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0" //ImportantSHIT!!!
 
-    //test
-    // testImplementation 'junit:junit:4.13.2'
-    testImplementation "org.junit.jupiter:junit-jupiter:5.9.3"
-    //testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
-    //testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
-
+    //testJunit4
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'junit:junit:4.13.2'
+    ///////////
+    androidTestImplementation 'androidx.room:room-testing:2.5.2'
+    //testJunit5
+    /*testImplementation "org.junit.jupiter:junit-jupiter:5.9.3"
+    androidTestImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'*/
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter:5.9.3'
+    //junit5 seems to not worked on android
+   /* androidTestImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
+    androidTestRuntimeOnly 'org.junit.jupiter:junit-jupiter:5.9.3'*/
+
+    ////////////
+    //testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
 
     //DO NOT TOUCH - GOOGLE BUG HERE!!!
     debugImplementation("androidx.fragment:fragment-testing-manifest:1.6.0-alpha04")
@@ -118,8 +142,12 @@ dependencies {
     androidTestImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
     //Espresso
     androidTestImplementation('androidx.test.espresso:espresso-core:3.5.1')
+    androidTestImplementation ('androidx.test.espresso:espresso-contrib:3.5.1')
     androidTestImplementation('androidx.test:runner:1.5.2')
     androidTestImplementation('androidx.test:rules:1.5.0')
+    androidTestImplementation ('org.hamcrest:hamcrest-library:2.2')
+
+
 
     /* def fragment_version = "1.5.6"
      debugImplementation "androidx.fragment:fragment-testing:$fragment_version"*/

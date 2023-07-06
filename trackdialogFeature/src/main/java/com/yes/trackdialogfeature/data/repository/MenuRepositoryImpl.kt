@@ -6,6 +6,7 @@ import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 import com.yes.trackdialogfeature.domain.IMenuRepository
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
+import com.yes.trackdialogfeature.domain.entity.Menu.Item
 
 class MenuRepositoryImpl(
     private val menuMapper: MenuMapper,
@@ -40,7 +41,15 @@ class MenuRepositoryImpl(
     }
 
     override fun getRootMenu(): DomainResult<Menu> {
-        TODO("Not yet implemented")
+        val menu =menuMapper.map(menuDataStore.getItem(0))
+        val items = menuDataStore.getItemsWithParentId(0)
+            .map { menuMapper.mapToItem(it) }
+        menu.children.toMutableList().addAll(items)
+        return DomainResult.Success(menu)
+    }
+
+    override fun saveToPlayList(menu: Item): DomainResult<Boolean> {
+        return DomainResult.Success(true)
     }
 
 

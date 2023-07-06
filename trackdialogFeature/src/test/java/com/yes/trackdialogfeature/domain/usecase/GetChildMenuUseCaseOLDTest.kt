@@ -9,8 +9,8 @@ import io.mockk.*
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
-import org.junit.Rule
-import org.junit.Test
+
+import org.junit.jupiter.api.Test
 
 
 @ExperimentalCoroutinesApi
@@ -27,7 +27,7 @@ class GetChildMenuUseCaseOLDTest {
         menuRepository
     )
 
-    @get:Rule
+
     val coroutineRule = CoroutineRule(testDispatcher)
 
     /*  @Before

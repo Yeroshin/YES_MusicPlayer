@@ -37,7 +37,24 @@ object MenuDataStoreFixtures {
         ),
     )
 
-
+fun getCategoriesMenu():Fixture<MenuDataStoreEntity>{
+    val menu= data.find { it.id==0 }
+    return Fixture(
+        mapOf(
+            "id" to 0
+        ),
+        menu!!
+    )
+}
+    fun getCategoriesItemsMenu():Fixture<List<MenuDataStoreEntity>>{
+        val items= data.filter { it.id in listOf(1,2,3) }
+        return Fixture(
+            mapOf(
+                "id" to 0
+            ),
+            items
+        )
+    }
     fun getArtistsMenuDataStore(): Fixture<MenuDataStoreEntity> {
         val menu= data.find { it.id==1 }
         return Fixture(

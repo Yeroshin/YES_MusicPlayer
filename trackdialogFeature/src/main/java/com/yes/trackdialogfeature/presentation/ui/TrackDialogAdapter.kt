@@ -10,7 +10,7 @@ import com.yes.trackdialogfeature.presentation.model.MenuUi
 
 class TrackDialogAdapter :
     RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>() {
-   // private lateinit var viewModel: TrackDialogViewModel
+    // private lateinit var viewModel: TrackDialogViewModel
     private var trackList = listOf<MenuUi.MediaItem>()
 
 
@@ -27,16 +27,16 @@ class TrackDialogAdapter :
              "Media.TITLE"->iconType=2
              else->1
          }*/
-        holder.bind(position,trackList[position], trackList[position].iconType)
+        holder.bind(position, trackList[position], trackList[position].iconType)
     }
 
     override fun getItemCount(): Int {
         return trackList.size
     }
 
-   /* fun setViewModel(vm: TrackDialogViewModel) {
-        this.viewModel = vm
-    }*/
+    /* fun setViewModel(vm: TrackDialogViewModel) {
+         this.viewModel = vm
+     }*/
 
     fun setItems(items: List<MenuUi.MediaItem>) {
 
@@ -44,10 +44,14 @@ class TrackDialogAdapter :
         notifyDataSetChanged()
     }
 
+    fun onCheckboxClicked(position: Int) {
+
+    }
+
     inner class TrackHolder(private val binding: ItemMediaBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            position:Int,
+            position: Int,
             item: MenuUi.MediaItem,
             iconType: Int
         ) {
@@ -58,12 +62,12 @@ class TrackDialogAdapter :
             binding.icon.setImageLevel(iconType)
             binding.root.setOnClickListener {
                 trackList[position].onClick(trackList[position].param)
-              /*  trackList[position].onClick(
-                    TrackDialogContract.Event.OnItemClicked(
-                        item.id,
-                        item.name
-                    )
-                )*/
+                /*  trackList[position].onClick(
+                      TrackDialogContract.Event.OnItemClicked(
+                          item.id,
+                          item.name
+                      )
+                  )*/
             }
         }
     }
