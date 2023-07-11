@@ -3,12 +3,11 @@ package com.yes.trackdialogfeature.data.repository.dataSource
 import android.content.Context
 import android.os.Build
 import android.provider.MediaStore
-import android.provider.UserDictionary
 import com.yes.trackdialogfeature.data.IMediaDataStore
-import com.yes.trackdialogfeature.data.repository.entity.AudioDataStoreEntity
+import com.yes.trackdialogfeature.data.repository.entity.MediaDataStoreEntity
 
 
-class AudioDataStore(private val appContext: Context) : IMediaDataStore {
+class MediaDataStore(private val appContext: Context) : IMediaDataStore {
     /*fun getMedia(
          projection: String?,
          selection: String?,
@@ -101,7 +100,7 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
         projection: Array<String>,
         selection: String?,
         selectionArgs: Array<String>?,
-    ): List<AudioDataStoreEntity> {
+    ): List<MediaDataStoreEntity> {
 
         /*  val mediaQue = MediaQueryEntity(
               Array(1){MediaStore.Audio.Media.TITLE},
@@ -144,17 +143,17 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
         // MediaStore.Audio.Media.TITLE,
         /////////////////////////
         val projectio = arrayOf(
-           // MediaStore.Audio.Genres.NAME,
-           // MediaStore.Audio.Media.
-           // MediaStore.Audio.Media.GENRE,
+            // MediaStore.Audio.Genres.NAME,
+            // MediaStore.Audio.Media.
+            // MediaStore.Audio.Media.GENRE,
             MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.TITLE,
         )
-       val selectio = null
+        val selectio = null
         val selectionArg = emptyArray<String>();
 
-      /*  val selectio = null
-        val selectionArg =null*/
+        /*  val selectio = null
+          val selectionArg =null*/
         ///////////////////////
         val query = appContext.contentResolver.query(
             collection,
@@ -171,6 +170,73 @@ class AudioDataStore(private val appContext: Context) : IMediaDataStore {
                 audioList.add(cursor.getString(column))
             }
         }
-        return audioList.map { AudioDataStoreEntity(it) }
+        return audioList.map {
+            MediaDataStoreEntity(
+                it,
+                "",
+                "",
+                0,
+                "",
+                0
+            )
+        }
+    }
+
+    fun getAudioItems(
+        selection: String?,
+        selectionArgs: Array<String>?,
+    ): List<MediaDataStoreEntity> {
+        val audioList = arrayListOf<MediaDataStoreEntity>()
+        val collection =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                MediaStore.Audio.Media.getContentUri(
+                    MediaStore.VOLUME_EXTERNAL
+                )
+            } else {
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+            }
+
+        // Display videos in alphabetical order based on their display name.
+        val sortOrder = "${MediaStore.Audio.Media.DISPLAY_NAME} ASC"
+        /////////////////////////
+        val projection = arrayOf(
+            MediaStore.Audio.Media.TITLE,
+            MediaStore.Audio.Media.ARTIST,
+            MediaStore.Audio.Media.ALBUM,
+            MediaStore.Audio.Media.DURATION,
+            MediaStore.Audio.Media.DATA,
+            MediaStore.Audio.Media.SIZE
+        )
+        val select = selection?.let { "$it = ?" } ?: "${MediaStore.Audio.Media.SIZE} = %"
+        ///////////////////////
+        val query = appContext.contentResolver.query(
+            collection,
+            projection,
+            select,
+            selectionArgs,
+            sortOrder
+        )
+        query?.use { cursor ->
+            // Cache column indices.
+            val titleColumnIndex = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)
+            val artistColumnIndex = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)
+            val albumColumnIndex = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)
+            val durationColumnIndex = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)
+            val dataColumnIndex = cursor.getColumnIndex(MediaStore.Audio.Media.DATA)
+            val sizeColumnIndex = cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)
+            while (cursor.moveToNext()) {
+                audioList.add(
+                    MediaDataStoreEntity(
+                        cursor.getString(titleColumnIndex),
+                        cursor.getString(artistColumnIndex),
+                        cursor.getString(albumColumnIndex),
+                        cursor.getLong(durationColumnIndex),
+                        cursor.getString(dataColumnIndex),
+                        cursor.getLong(sizeColumnIndex),
+                    )
+                )
+            }
+        }
+        return audioList
     }
 }

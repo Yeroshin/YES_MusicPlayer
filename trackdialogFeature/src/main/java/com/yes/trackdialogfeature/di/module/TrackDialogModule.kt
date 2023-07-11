@@ -3,7 +3,7 @@ package com.yes.trackdialogfeature.di.module
 import android.app.Activity
 //import com.yes.trackdialogfeature.data.repository.MediaDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
-import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
+import com.yes.trackdialogfeature.data.repository.dataSource.MediaDataStore
 import com.yes.trackdialogfeature.data.mapper.MediaMapper
 import com.yes.trackdialogfeature.data.mapper.MediaQueryMapper
 import com.yes.trackdialogfeature.data.repository.MenuRepositoryImplOLD
@@ -32,9 +32,9 @@ class TrackDialogModule(val context: Activity) {
     @Provides
     fun providesMenuRepository(
         menuDataStore: MenuDataStore,
-        audioDataStore: AudioDataStore
+        mediaDataStore: MediaDataStore
     ): MenuRepositoryImplOLD {
-        return MenuRepositoryImplOLD(menuDataStore,audioDataStore)
+        return MenuRepositoryImplOLD(menuDataStore,mediaDataStore)
     }
 
     @Provides
@@ -49,8 +49,8 @@ class TrackDialogModule(val context: Activity) {
 
     ///////////////////////////
     @Provides
-    fun providesMediaDataStore(): AudioDataStore {
-        return AudioDataStore(context)
+    fun providesMediaDataStore(): MediaDataStore {
+        return MediaDataStore(context)
     }
     @Provides
     fun provideGetChildMenu(

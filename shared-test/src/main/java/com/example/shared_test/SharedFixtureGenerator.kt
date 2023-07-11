@@ -22,7 +22,7 @@ object SharedFixtureGenerator {
         }
         return mediaItems
     }
-    fun getCategories(count:Int): List<String> {
+    /*fun getCategories(count:Int): List<String> {
         val mediaItems = mutableListOf<String>()
         for (i in 1..count) {
             val name =adjectives[Random.nextInt(adjectives.size)]+" "+nouns[Random.nextInt(nouns.size)]
@@ -30,7 +30,7 @@ object SharedFixtureGenerator {
             mediaItems.add(mediaItem)
         }
         return mediaItems
-    }
+    }*/
     fun generateMediaItemNames(count:Int): List<String> {
         val mediaItems = mutableListOf<String>()
         for (i in 1..count) {

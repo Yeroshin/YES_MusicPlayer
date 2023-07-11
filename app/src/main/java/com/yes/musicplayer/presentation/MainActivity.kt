@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -17,6 +18,7 @@ import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.DaggerMainActivityComponent
 
 import com.yes.musicplayer.di.module.MainActivityModule
+import com.yes.trackdialogfeature.data.repository.dataSource.MediaDataStore
 import javax.inject.Inject
 
 
@@ -39,9 +41,12 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        checkPermissions()
-
-
+       // checkPermissions()
+        ////////////////////
+        val tmp= MediaDataStore(applicationContext)
+       // tmp.getAudioItems(null,null)
+        tmp.getAudioItems(MediaStore.Audio.Media.ARTIST,arrayOf("Gesaffelstein"))
+////////////////////
     }
 
     fun checkPermissions() {

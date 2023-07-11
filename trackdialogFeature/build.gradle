@@ -2,21 +2,25 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-
+//id "com.google.devtools.ksp"
 }
+/*plugins {
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.kotlinAndroid)
 
+}*/
 android {
     compileSdk 33
-    /* testOptions {
+    packagingOptions {
+        resources {
+            excludes += ['MenuRepositoryImplOLDTest.kt', 'META-INF/LICENSE-notice.md', 'META-INF/LICENSE.md']
+        }
+    }
+/* testOptions {
          unitTests.all {
              useJUnitPlatform()
          }
      }*/
-    packagingOptions {
-        exclude 'MenuRepositoryImplOLDTest.kt'
-        exclude 'META-INF/LICENSE-notice.md'
-        exclude 'META-INF/LICENSE.md'
-    }
 
     defaultConfig {
         minSdk 21
@@ -46,11 +50,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '17'
         /* freeCompilerArgs += [
                   "-Xjvm-default=all",
           ]*/
@@ -102,7 +106,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'junit:junit:4.13.2'
     ///////////
-    androidTestImplementation 'androidx.room:room-testing:2.5.2'
+    androidTestImplementation libs.androidx.room.testing
     //testJunit5
     /*testImplementation "org.junit.jupiter:junit-jupiter:5.9.3"
     androidTestImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'*/
@@ -155,6 +159,6 @@ dependencies {
     //tmp
     // debugImplementation "androidx.test:monitor:1.6.1"
 //Shit for mockk to run on api<p
-    implementation 'com.github.tmurakami:dexopener:2.0.5'
+  //  implementation 'com.github.tmurakami:dexopener:2.0.5'
 
 }

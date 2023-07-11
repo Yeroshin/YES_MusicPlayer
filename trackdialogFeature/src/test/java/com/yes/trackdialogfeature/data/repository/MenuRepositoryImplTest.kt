@@ -4,13 +4,17 @@ package com.yes.trackdialogfeature.data.repository
 
 
 import com.yes.core.Fixture
-import com.yes.trackdialogfeature.data.dataSource.AudioDataStoreFixtures
+import com.yes.trackdialogfeature.data.dataSource.MediaDataStoreFixtures
 import com.yes.trackdialogfeature.data.dataSource.MenuDataStoreFixtures
-import com.yes.trackdialogfeature.data.mapper.MenuMapper
-import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
+import com.yes.trackdialogfeature.data.dataSource.PlayListDataBaseFixtures
+import com.yes.trackdialogfeature.data.mapper.MenuRepositoryMapper
+import com.yes.trackdialogfeature.data.repository.dataSource.MediaDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
-import com.yes.trackdialogfeature.data.repository.entity.AudioDataStoreEntity
+import com.yes.trackdialogfeature.data.repository.entity.MediaDataStoreEntity
 import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
+import com.yes.trackdialogfeature.data.repository.entity.PlayListDao
+import com.yes.trackdialogfeature.data.repository.entity.TrackEntity
+import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
@@ -24,35 +28,71 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 
 //@RunWith(Parameterized::class)
-class MenuRepositoryImplTest(
-    /*  private val currentMenuDataStoreFixture: Fixture<MenuDataStoreEntity>,
-      private val menuDataStoreFixture: Fixture<List<MenuDataStoreEntity>>,
-      private val listAudioDataStoreFixture: Fixture<List<AudioDataStoreEntity>>,
-      private val menuDomainFixture: Fixture<Menu>,
-      private val menuItemDomainFixture: Fixture<List<Item>>,
-      private val resultMenuDomainFixture: Fixture<Menu>,*/
-) {
-    private val menuMapper: MenuMapper = mockk()
+class MenuRepositoryImplTest {
+    private val menuRepositoryMapper: MenuRepositoryMapper = mockk()
     private val menuDataStore: MenuDataStore = mockk()
-    private val audioDataStore: AudioDataStore = mockk()
+    private val mediaDataStore: MediaDataStore = mockk()
+    private val playListDao:PlayListDao=mockk()
     private val cut = MenuRepositoryImpl(
-        menuMapper,
+        menuRepositoryMapper,
         menuDataStore,
-        audioDataStore
+        mediaDataStore,
+        playListDao
     )
 
     @ParameterizedTest
     @MethodSource("saveToPlayListData")
     fun saveToPlayList(
-        menuDomainFixture: Fixture<Item>
-    ){
+        menuItemListFixture:Fixture<List<Item>>,
+        menuDataStoreFixture: Fixture<List<MenuDataStoreEntity>>,
+        mediaDataStoreFixture:Fixture<List<MediaDataStoreEntity>>,
+        playListDataBaseFixtures:Fixture<List<TrackEntity>>
+        ){
+
         val expected=DomainResult.Success(true)
-        val actual=cut.saveToPlayList(menuDomainFixture.result)
+        val count = MediaDataStoreFixtures.getCount()
+
+        every {
+            menuDataStore.getItem(any())
+        } returnsMany  menuDataStoreFixture.result
+        every {
+            mediaDataStore.getAudioItems(
+                any(),
+                any()
+            )
+        } returns mediaDataStoreFixture.result
+        every {
+            menuRepositoryMapper.mapToTrackEntity(
+                any()
+            )
+        } returnsMany playListDataBaseFixtures.result
+        val actual=cut.saveToPlayList(
+            menuItemListFixture.params["Id"] as String,
+            menuItemListFixture.params["items"] as List<Item>,
+        )
+
+        verify(exactly = count) {
+            menuDataStore.getItem(any())
+        }
+        verify(exactly = count) {
+            mediaDataStore.getAudioItems(
+                any(),
+                any()
+            )
+        }
+        verify(exactly = count) {
+            menuRepositoryMapper.mapToTrackEntity(
+                any()
+            )
+        }
+        verify(exactly = 1){
+            playListDao.saveTracks(any())
+        }
         assert(actual == expected)
     }
     @ParameterizedTest
     @MethodSource("getRootItemsData")
-    fun getRootItems(
+    fun getRootMenu(
         menuDataStoreFixture: Fixture<MenuDataStoreEntity>,
         menuDomainFixture: Fixture<Menu>,
         menuListDataStoreFixture: Fixture<List<MenuDataStoreEntity>>,
@@ -64,13 +104,13 @@ class MenuRepositoryImplTest(
             menuDataStore.getItem(menuDataStoreFixture.params["id"] as Int)
         } returns menuDataStoreFixture.result
         every {
-            menuMapper.map(menuDataStoreFixture.result)
+            menuRepositoryMapper.map(menuDataStoreFixture.result)
         } returns menuDomainFixture.result
         every {
             menuDataStore.getItemsWithParentId(menuListDataStoreFixture.params["id"] as Int)
         } returns menuListDataStoreFixture.result
         every {
-            menuMapper.mapToItem(any<MenuDataStoreEntity>())
+            menuRepositoryMapper.mapToItem(any<MenuDataStoreEntity>())
         } returnsMany menuListDomainFixture.result
         //Act
         val actual = cut.getRootMenu()
@@ -79,13 +119,13 @@ class MenuRepositoryImplTest(
             menuDataStore.getItem(menuDataStoreFixture.params["id"] as Int)
         }
         verify(exactly = 1) {
-            menuMapper.map(menuDataStoreFixture.result)
+            menuRepositoryMapper.map(menuDataStoreFixture.result)
         }
         verify(exactly = 1) {
             menuDataStore.getItemsWithParentId(menuListDataStoreFixture.params["id"] as Int)
         }
         verify(exactly = 3) {
-            menuMapper.mapToItem(any<MenuDataStoreEntity>())
+            menuRepositoryMapper.mapToItem(any<MenuDataStoreEntity>())
         }
         assert(actual == expected)
     }
@@ -95,7 +135,7 @@ class MenuRepositoryImplTest(
     fun getChildMenu(
         currentMenuDataStoreFixture: Fixture<MenuDataStoreEntity>,
         menuDataStoreFixture: Fixture<List<MenuDataStoreEntity>>,
-        listAudioDataStoreFixture: Fixture<List<AudioDataStoreEntity>>,
+        listAudioDataStoreFixture: Fixture<List<MediaDataStoreEntity>>,
         menuDomainFixture: Fixture<Menu>,
         menuItemDomainFixture: Fixture<List<Item>>,
         resultMenuDomainFixture: Fixture<Menu>,
@@ -110,17 +150,17 @@ class MenuRepositoryImplTest(
             )
         } returns menuDataStoreFixture.result
         every {
-            audioDataStore.getMediaItems(
+            mediaDataStore.getMediaItems(
                 listAudioDataStoreFixture.params["projection"] as Array<String>,
                 listAudioDataStoreFixture.params["selection"] as String?,
                 listAudioDataStoreFixture.params["selectionArgs"] as Array<String>
             )
         } returns listAudioDataStoreFixture.result
         every {
-            menuMapper.mapToItem(any<AudioDataStoreEntity>())
+            menuRepositoryMapper.mapToItem(any<MediaDataStoreEntity>())
         } returnsMany menuItemDomainFixture.result
         every {
-            menuMapper.map(any())
+            menuRepositoryMapper.map(any())
         } returns menuDomainFixture.result
         //Act
         val actual = cut.getChildMenu(
@@ -137,16 +177,16 @@ class MenuRepositoryImplTest(
             )
         }
         verify(exactly = 1) {
-            audioDataStore.getMediaItems(
+            mediaDataStore.getMediaItems(
                 listAudioDataStoreFixture.params["projection"] as Array<String>,
                 listAudioDataStoreFixture.params["selection"] as String?,
                 listAudioDataStoreFixture.params["selectionArgs"] as Array<String>
             )
         }
         verify(exactly = 5) {
-            menuMapper.mapToItem(any<AudioDataStoreEntity>())
+            menuRepositoryMapper.mapToItem(any<MediaDataStoreEntity>())
         }
-        verify(exactly = 1) { menuMapper.map(menuDataStoreFixture.result.last()) }
+        verify(exactly = 1) { menuRepositoryMapper.map(menuDataStoreFixture.result.last()) }
 
         assert(actual == expected)
     }
@@ -155,19 +195,76 @@ class MenuRepositoryImplTest(
         @JvmStatic
         fun saveToPlayListData(): List<Array<Any?>>{
             return listOf(
-                arrayOf()
+                arrayOf(
+                    Fixture(
+                        mapOf(
+
+                        ),
+                        DomainFixtures.getArtistsMenuItemsList()
+                    ),
+                    Fixture(
+                        mapOf(
+
+                        ),
+                        List(
+                            MediaDataStoreFixtures.getCount()
+                        ){
+                            MenuDataStoreFixtures.getArtistMenu()
+                        }
+                    ),
+                    Fixture(
+                        mapOf(
+
+                        ),
+                        MediaDataStoreFixtures.getTracksList()
+                    ),
+                    Fixture(
+                        mapOf(
+
+                        ),
+                        PlayListDataBaseFixtures.getTracks()
+                    )
+
+                ),
+
             )
         }
         @JvmStatic
         fun getRootItemsData(): List<Array<Any?>> {
             return listOf(
                 arrayOf(
-                    MenuDataStoreFixtures.getCategoriesMenu(),
-                    RepositoryFixtures.getCategoriesMenu(),
-                    MenuDataStoreFixtures.getCategoriesItemsMenu(),
-                    RepositoryFixtures.getCategoriesItems(),
-                    RepositoryFixtures.getCategoriesMenu(),
+                    Fixture(
+                        mapOf(
+                            "id" to 0
+                        ),
+                        MenuDataStoreFixtures.getCategoriesMenu()
+                    ),
+                    Fixture(
+                        mapOf(
+                            "id" to 0,
+                            "name" to ""
+                        ),
+                        DomainFixtures.getCategoriesMenu()
+                    ),
+                    Fixture(
+                        mapOf(
+                            "id" to 0
+                        ),
+                        MenuDataStoreFixtures.getCategoriesItemsMenu()
+                    ),
+                    Fixture(
+                        mapOf(
+                            "id" to 0,
+                            "name" to ""
+                        ),
+                        DomainFixtures.getCategoriesItemsList()
+                    ),
+                    Fixture(
+                        mapOf(
 
+                        ),
+                        DomainFixtures.getCategoriesMenu()
+                    )
                 )
             )
         }
@@ -177,20 +274,89 @@ class MenuRepositoryImplTest(
         fun getChildMenuData(): List<Array<Any?>> {
             return listOf(
                 arrayOf(
-                    MenuDataStoreFixtures.getArtistsMenuDataStore(),
-                    MenuDataStoreFixtures.getArtistListMenuDataStore(),
-                    AudioDataStoreFixtures.getArtistsListAudioDataStore(),
-                    RepositoryFixtures.getPrimaryArtistsMenuDomain(),
-                    RepositoryFixtures.getArtistsMenuItemDomain(),
-                    RepositoryFixtures.getArtistsMenuDomain(),
+                    Fixture(
+                        mapOf(
+                            "id" to 1
+                        ),
+                        MenuDataStoreFixtures.getArtistsMenu()
+                    ),
+                    Fixture(
+                        mapOf(
+                            "id" to 1
+                        ),
+                        MenuDataStoreFixtures.getArtistListMenu()
+                    ),
+                    Fixture(
+                        mapOf(
+                            "projection" to arrayOf("artist"),
+                            "selection" to null,
+                            "selectionArgs" to emptyArray()
+                        ),
+                        MediaDataStoreFixtures.getArtistsListMedia()
+                    ),
+                    Fixture(
+                        mapOf(
+                            "id" to 0,
+                            "name" to ""
+                        ),
+                        DomainFixtures.getPrimaryArtistsMenu()
+                    ),
+                    Fixture(
+                        mapOf(
+
+                        ),
+                        DomainFixtures.getArtistsMenuItemsList()
+                    ),
+                    Fixture(
+                        mapOf(
+                            "id" to 1,
+                            "name" to "artists"
+                        ),
+                        DomainFixtures.getArtistsMenu()
+                    ),
                 ),
                 arrayOf(
-                    MenuDataStoreFixtures.getArtistMenuDataStore(),
-                    MenuDataStoreFixtures.getTracksMenuDataStore(),
-                    AudioDataStoreFixtures.getTracksListAudioDataStore(),
-                    RepositoryFixtures.getPrimaryTracksMenuDomain(),
-                    RepositoryFixtures.getTracksMenuItemDomain(),
-                    RepositoryFixtures.getTracksMenuDomain()
+                    Fixture(
+                        mapOf(
+                            "id" to 4
+                        ),
+                        MenuDataStoreFixtures.getArtistMenu()
+                    ),
+                    Fixture(
+                        mapOf(
+                            "id" to 4
+                        ),
+                        MenuDataStoreFixtures.getTracksMenu()
+                    ),
+                    Fixture(
+                        mapOf(
+                            "projection" to arrayOf("track"),
+                            "selection" to "artist",
+                            "selectionArgs" to arrayOf(MediaDataStoreFixtures.getArtistsListMedia()[0].title)
+                        ),
+                        MediaDataStoreFixtures.getTracksListMedia()
+                    ),
+                    Fixture(
+                        mapOf(
+                            "id" to 4,
+                            "name" to DomainFixtures.artists[0].name
+                        ),
+                        DomainFixtures.getPrimaryTracksMenu()
+                    ),
+                    Fixture(
+                        mapOf(
+
+                        ),
+                        DomainFixtures.getTracksMenuItemsList()
+                    ),
+                    Fixture(
+                        mapOf(
+                            "id" to 4,
+                            "name" to DomainFixtures.artists[0].name
+                        ),
+                        DomainFixtures.getTracksMenu()
+                    )
+
                 ),
             )
         }

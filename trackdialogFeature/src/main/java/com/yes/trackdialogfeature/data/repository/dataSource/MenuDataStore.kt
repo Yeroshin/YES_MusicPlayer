@@ -288,7 +288,7 @@ class MenuDataStore {
         )
     }
 
-    fun getItemsWithParentId(value:Int?): List<MenuDataStoreEntity> {
+    fun getItemsWithParentId(value:Int): List<MenuDataStoreEntity> {
         val items = menuTree.filter {
             it["parent"] == value
         }.map {

@@ -1,7 +1,7 @@
 package com.yes.trackdialogfeature.domain.usecase
 
 
-import com.yes.trackdialogfeature.domain.DomainFixtures
+import com.yes.trackdialogfeature.domain.DomainFixturesOLD
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.repository.MenuRepository
 import com.yes.trackdialogfeature.utils.CoroutineRule
@@ -42,7 +42,7 @@ class GetChildMenuUseCaseOLDTest {
     @Test
     fun `getMenu with 0 param returns DomainResultSuccess `() = runTest {
         // Given
-        val expected = DomainFixtures.getCategoriesMenu()
+        val expected = DomainFixturesOLD.getCategoriesMenu()
         every {
             menuRepository.getMenu()
         } returns expected
@@ -76,7 +76,7 @@ class GetChildMenuUseCaseOLDTest {
     @Test
     fun `getMenu with valid not 0 id param returns DomainResultSuccess `() = runTest {
         // Given
-        val expected =DomainFixtures.getAlbumsMenu()
+        val expected =DomainFixturesOLD.getAlbumsMenu()
         every {
             menuRepository.getMenu(2, "albums")
         } returns expected

@@ -1,10 +1,9 @@
 package com.yes.trackdialogfeature.data.repository
 
-import com.yes.trackdialogfeature.data.dataSource.AudioDataStoreFixturesOLD
-import com.yes.trackdialogfeature.data.dataSource.MenuDataStoreFixturesOLD
-import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
+import com.yes.trackdialogfeature.data.repository.dataSource.MediaDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 import com.yes.trackdialogfeature.data.repository.entity.DataException
+import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import io.mockk.every
 import io.mockk.mockk
@@ -18,11 +17,11 @@ import org.junit.jupiter.api.Test
 class MenuRepositoryImplOLDTest {
     // private val menuDataStore: MenuDataStore = mockk(relaxed = true)
     private val menuDataStore: MenuDataStore = mockk(relaxed = true)
-    private val audioDataStore: AudioDataStore = mockk(relaxed = true)
+    private val mediaDataStore: MediaDataStore = mockk(relaxed = true)
 
     private val cut = MenuRepositoryImplOLD(
         menuDataStore,
-        audioDataStore,
+        mediaDataStore,
 
     )
 
@@ -108,7 +107,7 @@ class MenuRepositoryImplOLDTest {
     @Test
     fun `4 get track children returns DomainResultError`() {
         // Given
-        val expected = DomainResult.Error(RepositoryFixtures.getError())
+        val expected = DomainResult.Error(DomainFixtures.getError())
         every {
             menuDataStore.getChildren(8)
         } throws DataException
@@ -118,7 +117,7 @@ class MenuRepositoryImplOLDTest {
         // Assert
         verify { menuDataStore.getChildren(any()) }
         verify (exactly = 0){ menuDataStore.getItemOld(any()) }
-        verify (exactly = 0){ audioDataStore.getMediaItems(any(), any(), any()) }
+        verify (exactly = 0){ mediaDataStore.getMediaItems(any(), any(), any()) }
         assert(expected == actual)
       /*  assertInstanceOf(DomainResult.Error::class.java,actual)
         assert((expected as DomainResult.Error).exception == (actual as DomainResult.Error).exception)*/

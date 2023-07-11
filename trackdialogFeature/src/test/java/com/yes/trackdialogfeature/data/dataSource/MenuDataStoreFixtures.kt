@@ -1,6 +1,5 @@
 package com.yes.trackdialogfeature.data.dataSource
 
-import com.yes.core.Fixture
 import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
 
 object MenuDataStoreFixtures {
@@ -37,59 +36,25 @@ object MenuDataStoreFixtures {
         ),
     )
 
-fun getCategoriesMenu():Fixture<MenuDataStoreEntity>{
+fun getCategoriesMenu():MenuDataStoreEntity{
     val menu= data.find { it.id==0 }
-    return Fixture(
-        mapOf(
-            "id" to 0
-        ),
-        menu!!
-    )
+    return menu!!
 }
-    fun getCategoriesItemsMenu():Fixture<List<MenuDataStoreEntity>>{
-        val items= data.filter { it.id in listOf(1,2,3) }
-        return Fixture(
-            mapOf(
-                "id" to 0
-            ),
-            items
-        )
+    fun getCategoriesItemsMenu(): List<MenuDataStoreEntity> {
+        return data.filter { it.id in listOf(1, 2, 3) }
     }
-    fun getArtistsMenuDataStore(): Fixture<MenuDataStoreEntity> {
+    fun getArtistsMenu(): MenuDataStoreEntity {
         val menu= data.find { it.id==1 }
-        return Fixture(
-            mapOf(
-                "id" to 1
-            ),
-            menu!!
-        )
+        return menu!!
     }
-    fun getArtistMenuDataStore(): Fixture<MenuDataStoreEntity> {
-        val menu= data.find { it.id==4 }
-        return Fixture(
-            mapOf(
-                "id" to 4
-            ),
-            menu!!
-        )
+    fun getArtistMenu(): MenuDataStoreEntity {
+        return data.find { it.id==4 }!!
     }
-    fun getArtistListMenuDataStore(): Fixture<List<MenuDataStoreEntity>> {
-        val menu= data.filter { it.id==4 }
-        return Fixture(
-            mapOf(
-                "id" to 1
-            ),
-            menu
-        )
+    fun getArtistListMenu(): List<MenuDataStoreEntity> {
+        return data.filter { it.id == 4 }
     }
 
-    fun getTracksMenuDataStore(): Fixture<List<MenuDataStoreEntity>> {
-        val menu= data.filter { it.id==6 }
-        return Fixture(
-            mapOf(
-                "id" to 4
-            ),
-            menu
-        )
+    fun getTracksMenu(): List<MenuDataStoreEntity> {
+        return data.filter { it.id == 6 }
     }
 }

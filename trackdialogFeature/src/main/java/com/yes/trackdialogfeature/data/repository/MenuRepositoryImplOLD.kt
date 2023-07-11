@@ -1,6 +1,6 @@
 package com.yes.trackdialogfeature.data.repository
 
-import com.yes.trackdialogfeature.data.repository.dataSource.AudioDataStore
+import com.yes.trackdialogfeature.data.repository.dataSource.MediaDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 import com.yes.trackdialogfeature.data.repository.entity.DataException
 import com.yes.trackdialogfeature.domain.entity.DomainResult
@@ -11,7 +11,7 @@ import com.yes.trackdialogfeature.domain.repository.MenuRepository.Params
 
 class MenuRepositoryImplOLD(
     private val menuDataStore: MenuDataStore,
-    private val audioDataStore: AudioDataStore
+    private val mediaDataStore: MediaDataStore
 ):MenuRepository {
 /*
     fun getMenu(): MenuApiModel {
@@ -69,7 +69,7 @@ class MenuRepositoryImplOLD(
                 } ?: run {
                     emptyArray()
                 }
-                audioDataStore.getMediaItems(
+                mediaDataStore.getMediaItems(
                     arrayOf(item.type),
                     selection,
                     arg
@@ -77,7 +77,7 @@ class MenuRepositoryImplOLD(
                     .forEach { audioItem ->
                         items.add(
                             Menu.Item(
-                                audioItem.name,
+                                audioItem.title,
                                 item.id
                             )
                         )
