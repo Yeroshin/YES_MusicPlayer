@@ -10,7 +10,7 @@ class TrackDialogRobot : BaseTestRobot() {
     fun matchProgressBarIsNotDisplayed() = isNotDisplayed(view(com.yes.coreui.R.id.progressBar))
     fun matchDisableViewDisplayed() = isDisplayed(view(com.yes.coreui.R.id.disableView))
     fun matchDisableViewIsNotDisplayed() = isNotDisplayed(view(com.yes.coreui.R.id.disableView))
-    fun matchTrackDialogItemAtPosition(position: Int, item: MenuUi.MediaItem) =
+    fun matchTrackDialogItemAtPosition(position: Int, item: MenuUi.ItemUi) =
         matchRecyclerViewItemDescendantTextAtPosition(
             view(com.yes.coreui.R.id.recyclerView),
             position,

@@ -1,17 +1,16 @@
 package com.yes.trackdialogfeature.di.module
 
 import android.app.Activity
-import com.yes.trackdialogfeature.MyTmp
 //import com.yes.trackdialogfeature.data.repository.MediaDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MediaDataStore
 import com.yes.trackdialogfeature.data.mapper.MediaMapper
 import com.yes.trackdialogfeature.data.mapper.MediaQueryMapper
 import com.yes.trackdialogfeature.data.repository.MenuRepositoryImplOLD
-import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCaseOLD
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
+import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase
 import com.yes.trackdialogfeature.presentation.ui.TrackDialogAdapter
-import com.yes.trackdialogfeature.presentation.mapper.MenuUiDomainMapper
+import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import dagger.Module
@@ -54,15 +53,10 @@ class TrackDialogModule(val context: Activity) {
     fun providesMediaDataStore(): MediaDataStore {
         return MediaDataStore(context)
     }
+
     @Provides
-    fun provideGetChildMenu(
-        menuRepository: MenuRepositoryImplOLD
-    ): GetChildMenuUseCaseOLD {
-        return GetChildMenuUseCaseOLD(Dispatchers.IO,menuRepository)
-    }
-    @Provides
-    fun provideUIMapper(): MenuUiDomainMapper {
-        return MenuUiDomainMapper()
+    fun provideUIMapper(): UiMapper {
+        return UiMapper()
     }
     @Provides
     fun provideMenuStack(): ArrayDeque<MenuUi> {
@@ -72,11 +66,16 @@ class TrackDialogModule(val context: Activity) {
     @Provides
     fun provideViewModelFactory(
         getMenuUseCase: GetMenuUseCase,
-        menuUiDomainMapper:MenuUiDomainMapper,
+        saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase,
+        uiMapper:UiMapper,
         menuStack: ArrayDeque<MenuUi>,
-        tmp:MyTmp
     ): TrackDialogViewModel.Factory {
-        return TrackDialogViewModel.Factory(getMenuUseCase,menuUiDomainMapper,menuStack,tmp)
+        return TrackDialogViewModel.Factory(
+            getMenuUseCase,
+            saveTracksToPlaylistUseCase,
+            uiMapper,
+            menuStack
+        )
     }
     @Provides
     fun provideTrackDialogAdapter(): TrackDialogAdapter {

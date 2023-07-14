@@ -10,19 +10,20 @@ object UiFixturesGenerator {
     fun generateParentMenuUi(count: Int): MenuUi {
 
         val artists = SharedFixtureGenerator.generateArtists(count)
-        val items = mutableListOf<MenuUi.MediaItem>()
+        val items = mutableListOf<MenuUi.ItemUi>()
         for (i in 0 until count) {
-            val mediaItem = MenuUi.MediaItem(
+            val itemUi = MenuUi.ItemUi(
                 i,
                 artists[i],
                 Random.nextInt(1, 4),
+                false,
                 TrackDialogContract.Event.OnItemClicked(
                     i,
                     artists[0],
                 ),
                 onClick
             )
-            items.add(mediaItem)
+            items.add(itemUi)
         }
         return MenuUi(
             "Categories",
@@ -33,10 +34,11 @@ object UiFixturesGenerator {
     fun generateChildUiModel(menu: MenuUi): MenuUi {
         val childMenu = menu.copy()
         childMenu.items.toMutableList().add(
-            0, MenuUi.MediaItem(
+            0, MenuUi.ItemUi(
                 0,
                 "",
                 Random.nextInt(1, 4),
+                false,
                 TrackDialogContract.Event.OnItemClicked(
                     0,
                     "",

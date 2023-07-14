@@ -4,7 +4,7 @@ import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 
-class MenuUiDomainMapper {
+class UiMapper {
     fun map(
         menu: Menu,
         onClick: ((TrackDialogContract.Event) -> Unit)
@@ -15,10 +15,11 @@ class MenuUiDomainMapper {
         return MenuUi(
             menu.name,
             menu.children.map {
-                MenuUi.MediaItem(
+                MenuUi.ItemUi(
                     it.id,
                     it.name,
                     map.getOrElse(it.id) { 1 },
+                    it.selected,
                     TrackDialogContract.Event.OnItemClicked(
                         it.id,
                         it.name,
@@ -26,6 +27,13 @@ class MenuUiDomainMapper {
                     onClick
                 )
             }
+        )
+    }
+    fun map(item:MenuUi.ItemUi):Menu.Item{
+        return Menu.Item(
+            item.name,
+            item.id,
+            item.selected?:false
         )
     }
 

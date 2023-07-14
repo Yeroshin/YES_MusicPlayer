@@ -4,14 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yes.trackdialogfeature.databinding.ItemMediaBinding
-import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
-import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 
 class TrackDialogAdapter :
     RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>() {
     // private lateinit var viewModel: TrackDialogViewModel
-    private var trackList = listOf<MenuUi.MediaItem>()
+    private var trackList = listOf<MenuUi.ItemUi>()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackHolder {
@@ -38,10 +36,14 @@ class TrackDialogAdapter :
          this.viewModel = vm
      }*/
 
-    fun setItems(items: List<MenuUi.MediaItem>) {
+    fun setItems(items: List<MenuUi.ItemUi>) {
 
         trackList = items
         notifyDataSetChanged()
+    }
+
+    fun getItems(): List<MenuUi.ItemUi> {
+        return trackList
     }
 
     fun onCheckboxClicked(position: Int) {
@@ -52,7 +54,7 @@ class TrackDialogAdapter :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             position: Int,
-            item: MenuUi.MediaItem,
+            item: MenuUi.ItemUi,
             iconType: Int
         ) {
 

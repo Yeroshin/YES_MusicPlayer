@@ -1,17 +1,17 @@
 package com.yes.trackdialogfeature.presentation.model
 
-import com.yes.core.presentation.UiEvent
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 
 
 data class MenuUi(
     val title: String,
-    val items: List<MediaItem>
+    val items: List<ItemUi>
 ) {
-    data class MediaItem(
+    data class ItemUi(
         val id:Int,
         val name:String,
         val iconType:Int,
+        val selected:Boolean?,
         val param:TrackDialogContract.Event,
         val onClick: ((TrackDialogContract.Event) -> Unit)
     )

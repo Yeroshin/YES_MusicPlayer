@@ -1,21 +1,16 @@
 package com.yes.trackdialogfeature.presentation
 
-import android.util.Log
 import app.cash.turbine.test
-import com.example.shared_test.UiFixturesGenerator
 import com.yes.core.Fixture
-import com.yes.trackdialogfeature.MyTmp
 import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.entity.DomainResult
-import com.yes.trackdialogfeature.domain.entity.DomainResultFactory
 import com.yes.trackdialogfeature.domain.entity.Menu
-import com.yes.trackdialogfeature.domain.entity.Tempr
-import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCaseOLD
+
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
-import com.yes.trackdialogfeature.domain.usecase.UseCase
+import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase
 
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
-import com.yes.trackdialogfeature.presentation.mapper.MenuUiDomainMapper
+import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
@@ -29,7 +24,6 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
@@ -43,14 +37,13 @@ class TrackDialogViewModelTest {
     //junit5
 
     private val getMenuUseCase: GetMenuUseCase = mockk()
-    private val menuUiDomainMapper: MenuUiDomainMapper = mockk()
+    private val saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase = mockk()
+    private val uiMapper: UiMapper = mockk()
     private val menuStack: ArrayDeque<MenuUi> = mockk()
     private lateinit var cut: TrackDialogViewModel
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val testDispatcher: TestDispatcher = StandardTestDispatcher()
-
-    val tmp: MyTmp = spyk()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
@@ -61,9 +54,9 @@ class TrackDialogViewModelTest {
         // Create DetailViewModel before every test
         cut = TrackDialogViewModel(
             getMenuUseCase,
-            menuUiDomainMapper,
+            saveTracksToPlaylistUseCase,
+            uiMapper,
             menuStack,
-            tmp
         )
     }
 
@@ -94,15 +87,6 @@ class TrackDialogViewModelTest {
         }
     }
 
-
-    @Test
-    fun tmp() {
-        every {
-            tmp.mytest()
-        } returns Tempr(Menu("default", listOf()))
-        cut.tmp()
-    }
-
     @ParameterizedTest
     @MethodSource("getChildMenuData")
     fun getChildMenu(
@@ -112,16 +96,15 @@ class TrackDialogViewModelTest {
         isEmptyFixture: Fixture<Boolean>,
         offerFixture: Fixture<Boolean>,
         stateFixture: Fixture<TrackDialogContract.State>
+        // stateFixture: Fixture<MenuUi>
     ) = runTest {
-    if(TrackDialogContract.TrackDialogState.Idle==TrackDialogContract.TrackDialogState.Idle){
-        val i=0
-    }
+
         val menu = DomainFixtures.getCategoriesMenu()
         coEvery {
             getMenuUseCase(any())
         } returns DomainResult.Success(menu)
         coEvery {
-            menuUiDomainMapper.map(any(), any())
+            uiMapper.map(any(), any())
         } returns menuUiFixture.result
         coEvery {
             menuStack.isEmpty()
@@ -148,15 +131,85 @@ class TrackDialogViewModelTest {
                     TrackDialogContract.TrackDialogState.Loading
                 )
             )
-           /* assert(
+            assert(
                 awaitItem() == stateFixture.result
-            )*/
+            )
 
-             cancelAndIgnoreRemainingEvents()
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
+    @ParameterizedTest
+    @MethodSource("saveItemsData")
+    fun saveItems(
+        itemsUiFixture: Fixture<List<MenuUi.ItemUi>>,
+        itemsDomainFixture: Fixture<List<Menu.Item>>
+    ) = runTest {
+        every {
+            uiMapper.map(any())
+        } returnsMany itemsDomainFixture.result
+        coEvery {
+            saveTracksToPlaylistUseCase(any())
+        } returns DomainResult.Success(true)
+        cut.setEvent(
+            TrackDialogContract.Event.OnItemOkClicked(
+                itemsUiFixture.result
+            )
+        )
+
+        cut.uiState.test {
+            assert(
+                awaitItem() == TrackDialogContract.State(
+                    TrackDialogContract.TrackDialogState.Idle
+                )
+            )
+            assert(
+                awaitItem() == TrackDialogContract.State(
+                    TrackDialogContract.TrackDialogState.Dismiss
+                )
+            )
+            coVerify(exactly = 1) {
+                saveTracksToPlaylistUseCase(
+                    SaveTracksToPlaylistUseCase.Params(
+                        itemsDomainFixture.result
+                    )
+                )
+            }
+            cancelAndIgnoreRemainingEvents()
+        }
+
+
+    }
+
     companion object {
+        @JvmStatic
+        fun saveItemsData(): List<Array<Any?>> {
+            return listOf(
+                arrayOf(
+                    Fixture(
+                        mapOf(),
+                        PresentationFixtures.getCategoriesMenu().items.mapIndexed { index, item ->
+                            if (index == 1) {
+                                item.copy(selected = true)
+                            } else {
+                                item
+                            }
+                        }
+                    ),
+                    Fixture(
+                        mapOf(),
+                        DomainFixtures.getCategoriesItemsList().mapIndexed { index, item ->
+                            if (index == 1) {
+                                item.copy(selected = true)
+                            } else {
+                                item
+                            }
+                        }
+                    ),
+                )
+            )
+        }
+
         @JvmStatic
         fun getChildMenuData(): List<Array<Any?>> {
             return listOf(
@@ -174,7 +227,7 @@ class TrackDialogViewModelTest {
                     ),
                     Fixture(
                         mapOf(),
-                        UiFixturesGenerator.generateParentMenuUi(5)
+                        PresentationFixtures.getCategoriesMenu()
                     ),
                     Fixture(
                         mapOf(),
@@ -186,7 +239,11 @@ class TrackDialogViewModelTest {
                     ),
                     Fixture(
                         mapOf(),
-                        TrackDialogContract.TrackDialogState.Success(PresentationFixtures.getCategoriesMenu())
+                        TrackDialogContract.State(
+                            TrackDialogContract.TrackDialogState.Success(
+                                PresentationFixtures.getCategoriesMenu()
+                            )
+                        )
                     ),
                 ),
 

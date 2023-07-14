@@ -1,16 +1,17 @@
 package com.yes.trackdialogfeature.presentation
 
-import com.yes.trackdialogfeature.presentation.mapper.MenuUiDomainMapper
+import com.yes.trackdialogfeature.domain.DomainFixtures
+import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import org.junit.jupiter.api.Test
 
 class MenuUIDomainMapperTest {
 
-    private val cut=MenuUiDomainMapper()
+    private val cut=UiMapper()
     @Test
     fun `mapper maps DomainModel to UiModel`(){
 
         // arrange
-        val domainModel = PresentationFixtures.getDomainModel()
+        val domainModel = DomainFixtures.getArtistsMenu()
         val onClick=PresentationFixtures.onClick
         val expected=PresentationFixtures.getCategoriesMenu()
 

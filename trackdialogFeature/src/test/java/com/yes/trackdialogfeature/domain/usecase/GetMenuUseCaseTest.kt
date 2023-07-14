@@ -103,7 +103,7 @@ internal class GetMenuUseCaseTest(
 
         object MenuItemFactory {
             fun create(param: Param): Item {
-                return Item(param.name, param.id)
+                return Item(param.name, param.id,false)
             }
 
             data class Param(

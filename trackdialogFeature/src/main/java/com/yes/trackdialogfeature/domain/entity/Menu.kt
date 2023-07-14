@@ -7,7 +7,6 @@ data class Menu(
     data class Item(
         val name: String,
         val id: Int,
-        ) {
-        var selected: Boolean = false
-    }
+        val selected:Boolean
+        )
 }

@@ -179,21 +179,36 @@ object DomainFixtures {
 
     private const val count = 5
     val artists =
-        MediaDataStoreFixtures.getArtistsListMedia().map { Menu.Item(it.title, 4) }
+        MediaDataStoreFixtures.getArtistsListMedia().map {
+            Item(
+                it.title,
+                4,
+                false
+            )
+        }
     private val tracks =
-        MediaDataStoreFixtures.getTracksListMedia().map { Menu.Item(it.title, 7) }
+        MediaDataStoreFixtures.getTracksListMedia().map {
+            Item(
+                it.title,
+                7,
+                false
+            )
+        }
     private val primaryItems =listOf(
         Item(
             "artists",
-            1
+            1,
+            false
         ),
         Item(
             "albums",
-            2
+            2,
+            false
         ),
         Item(
             "tracks",
-            3
+            3,
+            false
         )
     )
     private val dataResult = listOf(
@@ -237,6 +252,9 @@ object DomainFixtures {
     }
     fun getArtistsMenuItemsList(): List<Item> {
         return artists
+    }
+    fun getSecondArtistMenuItem():Item{
+        return artists[1]
     }
 
     fun getArtistsMenu(): Menu {

@@ -21,8 +21,6 @@ import com.yes.trackdialogfeature.presentation.model.MenuUi
 import kotlinx.coroutines.launch
 
 
-
-
 class TrackDialog(
     dependency: Dependency
 ) : BaseDialog() {
@@ -80,9 +78,9 @@ class TrackDialog(
         observeViewModel()
         setupRecyclerView()
         viewModel.setEvent(TrackDialogContract.Event.OnItemClicked(0, ""))
-      /*  val myTextView = R.id.recyclerViewContainer
-        val y = com.yes.coreui.R.id.dialogTitle
-        val t = 10*/
+        /*  val myTextView = R.id.recyclerViewContainer
+          val y = com.yes.coreui.R.id.dialogTitle
+          val t = 10*/
     }
 
     private fun setupRecyclerView() {
@@ -93,9 +91,16 @@ class TrackDialog(
         binder.recyclerViewContainer.recyclerView.adapter = adapter
         binder.buttons.cancelBtn.setOnClickListener {
             dismiss()
+            viewModel.setEvent(TrackDialogContract.Event.OnItemCancelClicked)
         }
         binder.buttons.okBtn.setOnClickListener {
             dismiss()
+            viewModel.setEvent(
+                TrackDialogContract.Event.OnItemOkClicked(
+                    adapter.getItems()
+                )
+            )
+
         }
     }
 
@@ -112,7 +117,7 @@ class TrackDialog(
                 viewModel.effect.collect {
                     when (it) {
                         is TrackDialogContract.Effect.UnknownException -> {
-                            showError(com.yes.coreui.R.string.UnknownException )
+                            showError(com.yes.coreui.R.string.UnknownException)
                         }
                     }
                 }
@@ -120,7 +125,8 @@ class TrackDialog(
 
         }
     }
-    private fun renderUiState(state:TrackDialogContract.State){
+
+    private fun renderUiState(state: TrackDialogContract.State) {
         when (state.trackDialogState) {
             is TrackDialogContract.TrackDialogState.Success -> {
                 dataLoaded(
@@ -128,16 +134,23 @@ class TrackDialog(
                     state.trackDialogState.menu.items
                 )
             }
+
             is TrackDialogContract.TrackDialogState.Loading -> {
                 showLoading()
             }
+
             is TrackDialogContract.TrackDialogState.Idle -> {
                 idleView()
             }
+
+            is TrackDialogContract.TrackDialogState.Dismiss -> {
+                dismiss()
+            }
         }
     }
+
     private fun idleView() {
-       // binder.recyclerViewContainer.dialogTitle.text = ""
+        // binder.recyclerViewContainer.dialogTitle.text = ""
         binder.recyclerViewContainer.progressBar.visibility = GONE
         binder.recyclerViewContainer.disableView.visibility = GONE
     }
@@ -147,7 +160,7 @@ class TrackDialog(
         binder.recyclerViewContainer.disableView.visibility = VISIBLE
     }
 
-    private fun dataLoaded(title: String, items: List<MenuUi.MediaItem>) {
+    private fun dataLoaded(title: String, items: List<MenuUi.ItemUi>) {
 
         binder.recyclerViewContainer.dialogTitle.text = title
         adapter.setItems(items)

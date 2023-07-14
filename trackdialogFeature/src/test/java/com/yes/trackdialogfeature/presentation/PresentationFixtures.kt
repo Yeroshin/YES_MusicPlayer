@@ -1,6 +1,5 @@
 package com.yes.trackdialogfeature.presentation
 
-import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 
@@ -11,56 +10,38 @@ object  PresentationFixtures {
         return MenuUi(
             "categories",
             listOf(
-                MenuUi.MediaItem(
+                MenuUi.ItemUi(
                     1,
                     "artists",
                     1,
+                    false,
                     TrackDialogContract.Event.OnItemClicked(
                         1,
                         "artists",
                     ),
                     onClick
                 ),
-                MenuUi.MediaItem(
+                MenuUi.ItemUi(
                     2,
                     "albums",
                 1,
+                    false,
                     TrackDialogContract.Event.OnItemClicked(
                         1,
                         "albums",
                     ),
                     onClick
                 ),
-                MenuUi.MediaItem(
+                MenuUi.ItemUi(
                     3,
                     "tracks",
                     1,
+                    false,
                     TrackDialogContract.Event.OnItemClicked(
                         1,
                         "tracks",
                     ),
                     onClick
-                )
-            )
-        )
-    }
-
-
-    fun getDomainModel():Menu{
-        return Menu(
-            "categories",
-            listOf(
-                Menu.Item(
-                    "artists",
-                    1
-                ),
-                Menu.Item(
-                    "albums",
-                    2,
-                ),
-                Menu.Item(
-                    "tracks",
-                    3,
                 )
             )
         )

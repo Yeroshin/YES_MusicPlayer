@@ -39,7 +39,8 @@ class MenuRepositoryImplOLD(
             .map {
                 Menu.Item(
                     it.name!!,
-                    it.id
+                    it.id,
+                    false
                 )
             }
         return DomainResult.Success(
@@ -78,7 +79,8 @@ class MenuRepositoryImplOLD(
                         items.add(
                             Menu.Item(
                                 audioItem.title,
-                                item.id
+                                item.id,
+                                false
                             )
                         )
                     }

@@ -9,7 +9,8 @@ class TrackDialogContract {
     sealed class Event : UiEvent {
         data class OnItemClicked(val id:Int,val name :String) : Event()
         object OnItemBackClicked : Event()
-        object OnItemOkClicked : Event()
+        object OnItemCancelClicked : Event()
+        data class OnItemOkClicked(val items:List<MenuUi.ItemUi>) : Event()
     }
 
     data class State(
@@ -20,6 +21,7 @@ class TrackDialogContract {
 
     sealed class TrackDialogState {
         object Idle : TrackDialogState()
+        object Dismiss:TrackDialogState()
         object Loading : TrackDialogState()
         data class Success(val menu: MenuUi) : TrackDialogState() {
             val title: String = menu.title
