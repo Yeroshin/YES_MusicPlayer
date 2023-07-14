@@ -62,10 +62,10 @@ class MenuRepositoryImpl(
              }
          }*/
         playListDao.saveTracks(
-            items.flatMap { raw ->
+            items.flatMap { item ->
                 mediaDataStore.getAudioItems(
-                    menuDataStore.getItem(raw.id).type,
-                    arrayOf(raw.name)
+                    menuDataStore.getItem(item.id).type,
+                    arrayOf(item.name)
                 ).map {
                     menuRepositoryMapper.mapToTrackEntity(
                         it

@@ -1,14 +1,12 @@
 package com.yes.trackdialogfeature.presentation
 
-import com.example.shared_test.SharedFixtureGenerator
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.model.MenuUi
-import kotlin.random.Random
 
 object  PresentationFixtures {
     val onClick: (TrackDialogContract.Event) -> Unit ={}
-    fun getParentUiModel(): MenuUi {
+    fun getCategoriesMenu(): MenuUi {
 
         return MenuUi(
             "categories",

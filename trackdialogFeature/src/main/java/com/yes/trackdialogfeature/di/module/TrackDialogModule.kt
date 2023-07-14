@@ -1,6 +1,7 @@
 package com.yes.trackdialogfeature.di.module
 
 import android.app.Activity
+import com.yes.trackdialogfeature.MyTmp
 //import com.yes.trackdialogfeature.data.repository.MediaDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MediaDataStore
@@ -8,6 +9,7 @@ import com.yes.trackdialogfeature.data.mapper.MediaMapper
 import com.yes.trackdialogfeature.data.mapper.MediaQueryMapper
 import com.yes.trackdialogfeature.data.repository.MenuRepositoryImplOLD
 import com.yes.trackdialogfeature.domain.usecase.GetChildMenuUseCaseOLD
+import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
 import com.yes.trackdialogfeature.presentation.ui.TrackDialogAdapter
 import com.yes.trackdialogfeature.presentation.mapper.MenuUiDomainMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
@@ -69,11 +71,12 @@ class TrackDialogModule(val context: Activity) {
 
     @Provides
     fun provideViewModelFactory(
-        getChildMenuUseCaseOLD: GetChildMenuUseCaseOLD,
+        getMenuUseCase: GetMenuUseCase,
         menuUiDomainMapper:MenuUiDomainMapper,
-        menuStack: ArrayDeque<MenuUi>
+        menuStack: ArrayDeque<MenuUi>,
+        tmp:MyTmp
     ): TrackDialogViewModel.Factory {
-        return TrackDialogViewModel.Factory(getChildMenuUseCaseOLD,menuUiDomainMapper,menuStack)
+        return TrackDialogViewModel.Factory(getMenuUseCase,menuUiDomainMapper,menuStack,tmp)
     }
     @Provides
     fun provideTrackDialogAdapter(): TrackDialogAdapter {

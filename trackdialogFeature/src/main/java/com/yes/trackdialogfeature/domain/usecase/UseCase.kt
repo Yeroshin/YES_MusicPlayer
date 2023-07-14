@@ -9,14 +9,15 @@ abstract class UseCase<REQUEST, MODEL>(
 ) {
 
     suspend operator fun invoke(params: REQUEST): DomainResult<MODEL> {
-        return withContext(dispatcher) {
+       /* return withContext(dispatcher) {
             try {
                 run(params)
             }catch (exception: Exception){
                 DomainResult.Error(DomainResult.UnknownException)
             }
 
-        }
+        }*/
+        return run(params)
     }
 
     abstract fun run(params: REQUEST): DomainResult<MODEL>

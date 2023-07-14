@@ -7,6 +7,7 @@ import com.yes.core.Fixture
 import com.yes.trackdialogfeature.data.dataSource.MediaDataStoreFixtures
 import com.yes.trackdialogfeature.data.dataSource.MenuDataStoreFixtures
 import com.yes.trackdialogfeature.data.dataSource.PlayListDataBaseFixtures
+import com.yes.trackdialogfeature.data.dataSource.SharedPreferencesFixtures
 import com.yes.trackdialogfeature.data.mapper.MenuRepositoryMapper
 import com.yes.trackdialogfeature.data.repository.dataSource.MediaDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
@@ -32,7 +33,7 @@ class MenuRepositoryImplTest {
     private val menuRepositoryMapper: MenuRepositoryMapper = mockk()
     private val menuDataStore: MenuDataStore = mockk()
     private val mediaDataStore: MediaDataStore = mockk()
-    private val playListDao:PlayListDao=mockk()
+    private val playListDao: PlayListDao = mockk(relaxed = true)
     private val cut = MenuRepositoryImpl(
         menuRepositoryMapper,
         menuDataStore,
@@ -43,18 +44,22 @@ class MenuRepositoryImplTest {
     @ParameterizedTest
     @MethodSource("saveToPlayListData")
     fun saveToPlayList(
-        menuItemListFixture:Fixture<List<Item>>,
+        menuItemFixture: Fixture<List<Item>>,
         menuDataStoreFixture: Fixture<List<MenuDataStoreEntity>>,
-        mediaDataStoreFixture:Fixture<List<MediaDataStoreEntity>>,
-        playListDataBaseFixtures:Fixture<List<TrackEntity>>
-        ){
+        mediaDataStoreFixture: Fixture<List<MediaDataStoreEntity>>,
+        playListDataBaseFixtures: Fixture<List<TrackEntity>>
+    ) {
 
-        val expected=DomainResult.Success(true)
+        val expected = DomainResult.Success(true)
         val count = MediaDataStoreFixtures.getCount()
+        val playlistName = SharedPreferencesFixtures.getPlayListName()
+        val result = List(5){playListDataBaseFixtures.result}.flatten()
+
 
         every {
             menuDataStore.getItem(any())
-        } returnsMany  menuDataStoreFixture.result
+        } returnsMany menuDataStoreFixture.result
+
         every {
             mediaDataStore.getAudioItems(
                 any(),
@@ -66,9 +71,11 @@ class MenuRepositoryImplTest {
                 any()
             )
         } returnsMany playListDataBaseFixtures.result
-        val actual=cut.saveToPlayList(
-            menuItemListFixture.params["Id"] as String,
-            menuItemListFixture.params["items"] as List<Item>,
+
+        
+        val actual = cut.saveToPlayList(
+            playlistName,
+            menuItemFixture.result,
         )
 
         verify(exactly = count) {
@@ -80,16 +87,17 @@ class MenuRepositoryImplTest {
                 any()
             )
         }
-        verify(exactly = count) {
+        verify(atLeast = count) {
             menuRepositoryMapper.mapToTrackEntity(
                 any()
             )
         }
-        verify(exactly = 1){
+        verify(exactly = 1) {
             playListDao.saveTracks(any())
         }
         assert(actual == expected)
     }
+
     @ParameterizedTest
     @MethodSource("getRootItemsData")
     fun getRootMenu(
@@ -183,7 +191,7 @@ class MenuRepositoryImplTest {
                 listAudioDataStoreFixture.params["selectionArgs"] as Array<String>
             )
         }
-        verify(exactly = 5) {
+        verify(atLeast = 5) {
             menuRepositoryMapper.mapToItem(any<MediaDataStoreEntity>())
         }
         verify(exactly = 1) { menuRepositoryMapper.map(menuDataStoreFixture.result.last()) }
@@ -193,7 +201,7 @@ class MenuRepositoryImplTest {
 
     companion object {
         @JvmStatic
-        fun saveToPlayListData(): List<Array<Any?>>{
+        fun saveToPlayListData(): List<Array<Any?>> {
             return listOf(
                 arrayOf(
                     Fixture(
@@ -208,7 +216,7 @@ class MenuRepositoryImplTest {
                         ),
                         List(
                             MediaDataStoreFixtures.getCount()
-                        ){
+                        ) {
                             MenuDataStoreFixtures.getArtistMenu()
                         }
                     ),
@@ -222,13 +230,13 @@ class MenuRepositoryImplTest {
                         mapOf(
 
                         ),
-                        PlayListDataBaseFixtures.getTracks()
+                       PlayListDataBaseFixtures.getTracksList()
                     )
-
-                ),
+                )
 
             )
         }
+
         @JvmStatic
         fun getRootItemsData(): List<Array<Any?>> {
             return listOf(

@@ -4,7 +4,7 @@ import com.yes.trackdialogfeature.data.repository.entity.TrackEntity
 
 object PlayListDataBaseFixtures {
     private val tracks =
-        MediaDataStoreFixtures.getTracksListMedia().map {
+        MediaDataStoreFixtures.getTracksList().map {
             TrackEntity(
                 null,
                 SharedPreferencesFixtures.getPlayListName(),
@@ -18,7 +18,7 @@ object PlayListDataBaseFixtures {
         }
 
 
-        fun getTracks():List<TrackEntity>{
+        fun getTracksList():List<TrackEntity>{
         return tracks
     }
 }

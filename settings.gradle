@@ -1,17 +1,18 @@
 pluginManagement {
     repositories {
+        maven { url 'https://jitpack.io' }
         google()
         mavenCentral()
         gradlePluginPortal()
     }
 }
-dependencyResolutionManagement {
+/*dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
     }
-}
+}*/
 rootProject.name = "Musicplayer"
 include ':app'
 include ':playerFeature'

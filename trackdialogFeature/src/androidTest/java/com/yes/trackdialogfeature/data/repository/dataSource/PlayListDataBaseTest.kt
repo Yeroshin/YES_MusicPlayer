@@ -42,14 +42,6 @@ class PlayListDataBaseTest {
             0,
             0
         )
-        /* val track = TrackEntity(
-             null,
-             "1",
-             "Dire Straits",
-             "Money for Nothing",
-             "uri",
-              1000
-         )*/
         userDao.savePlaylist(playlist)
         val retrievedPlaylist = userDao.getPlaylist(playlist.name).copy(id = null)
         assertEquals(playlist, retrievedPlaylist)
@@ -71,7 +63,9 @@ class PlayListDataBaseTest {
                 "Dire Straits",
                 "Money for Nothing",
                 "uri",
-                1000
+                654256,
+                "Brothers in Arms",
+                843567
             ),
         )
         userDao.saveTracks(tracks)

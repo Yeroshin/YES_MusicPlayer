@@ -1,5 +1,7 @@
 package com.yes.trackdialogfeature
 
+import com.yes.trackdialogfeature.domain.entity.DomainResultFactory
+import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -28,12 +30,12 @@ class MyTmpTest {
 
         val tmp = mockk<MyTmp> {
             every {
-                mytest() } returns 10
+                mytest() } returns DomainResultFactory.createSuccess(Menu("default", listOf()))
         }
       /*  every {
             tmp.mytest() } returns 10*/
         val c=tmp.mytest()
-        assert(tmp.mytest() == 10)
+        assert(tmp.mytest() == DomainResultFactory.createSuccess(Menu("default", listOf())))
       /*  every {
             viewModel.test(1) } returns 10
         val v=viewModel.test(1)*/
