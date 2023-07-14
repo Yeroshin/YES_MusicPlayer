@@ -27,14 +27,15 @@ class TrackDialogViewModel(
     private val getChildMenuUseCase: UseCase<GetMenuUseCase.Params, Menu>,
     private val menuUiDomainMapper: MenuUiDomainMapper,
     private val menuStack: ArrayDeque<MenuUi>,
-    val tmp:MyTmp
+    val tmp: MyTmp
 ) : BaseViewModel<TrackDialogContract.Event,
         State,
         Effect>() {
-fun tmp(){
-    val tmp=tmp.mytest()
-    val a=1
-}
+    fun tmp() {
+        val tmp = tmp.mytest()
+        val a = 1
+    }
+
     override fun createInitialState(): State {
         return State(
             TrackDialogContract.TrackDialogState.Idle
@@ -74,7 +75,7 @@ fun tmp(){
     }
 
     private fun getChildMenu(id: Int, name: String) {
-        val tmp=tmp.mytest()
+        val tmp = tmp.mytest()
         viewModelScope.launch(Dispatchers.Main) {
             setState {
                 copy(
@@ -118,6 +119,7 @@ fun tmp(){
                     copy(
                         trackDialogState = TrackDialogContract.TrackDialogState.Success(menuUi)
                     )
+
                 }
 
                 is DomainResult.Error -> {
@@ -153,7 +155,7 @@ fun tmp(){
         private val getMenuUseCase: GetMenuUseCase,
         private val menuUiDomainMapper: MenuUiDomainMapper,
         private val menuStack: ArrayDeque<MenuUi>,
-        private val  tmp:MyTmp
+        private val tmp: MyTmp
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")

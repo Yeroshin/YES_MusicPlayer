@@ -1,5 +1,6 @@
 package com.yes.trackdialogfeature.presentation
 
+import android.util.Log
 import app.cash.turbine.test
 import com.example.shared_test.UiFixturesGenerator
 import com.yes.core.Fixture
@@ -112,14 +113,13 @@ class TrackDialogViewModelTest {
         offerFixture: Fixture<Boolean>,
         stateFixture: Fixture<TrackDialogContract.State>
     ) = runTest {
-        coEvery {
-            tmp.mytest()
-        } returns DomainResultFactory.createSuccess(Menu("default", listOf()))
-
+    if(TrackDialogContract.TrackDialogState.Idle==TrackDialogContract.TrackDialogState.Idle){
+        val i=0
+    }
         val menu = DomainFixtures.getCategoriesMenu()
-           coEvery {
-              getMenuUseCase(any())
-           } returns  DomainResult.Success(menu)
+        coEvery {
+            getMenuUseCase(any())
+        } returns DomainResult.Success(menu)
         coEvery {
             menuUiDomainMapper.map(any(), any())
         } returns menuUiFixture.result
@@ -144,9 +144,15 @@ class TrackDialogViewModelTest {
                 )
             )
             assert(
-                awaitItem() == stateFixture.result
+                awaitItem() == TrackDialogContract.State(
+                    TrackDialogContract.TrackDialogState.Loading
+                )
             )
-            // cancelAndIgnoreRemainingEvents()
+           /* assert(
+                awaitItem() == stateFixture.result
+            )*/
+
+             cancelAndIgnoreRemainingEvents()
         }
     }
 

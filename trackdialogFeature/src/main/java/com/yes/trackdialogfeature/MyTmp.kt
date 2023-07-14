@@ -7,6 +7,6 @@ import com.yes.trackdialogfeature.domain.entity.Menu
 open class MyTmp {
     fun mytest(): DomainResult<Menu>{
         //return DomainResult.Success(Menu("", listOf()))
-        return DomainResultFactory.createSuccess(Menu("default", listOf()))
+        return DomainResultFactory.createSuccess(Menu("", listOf()))
     }
 }
