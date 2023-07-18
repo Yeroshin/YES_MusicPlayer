@@ -31,8 +31,9 @@ class UiMapper {
     }
     fun map(item:MenuUi.ItemUi):Menu.Item{
         return Menu.Item(
-            item.name,
             item.id,
+            item.name,
+            "",
             item.selected?:false
         )
     }

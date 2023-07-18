@@ -8,7 +8,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 class SaveTracksToPlaylistUseCase(
     dispatcher: CoroutineDispatcher
 ): UseCase<Params, Boolean>(dispatcher) {
-    override fun run(params: Params): DomainResult<Boolean> {
+    override fun run(params: Params?): DomainResult<Boolean> {
         TODO("Not yet implemented")
     }
     data class Params(val items:List<Item>)

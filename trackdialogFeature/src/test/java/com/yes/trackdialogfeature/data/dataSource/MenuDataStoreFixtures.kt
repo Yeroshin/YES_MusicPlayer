@@ -3,7 +3,7 @@ package com.yes.trackdialogfeature.data.dataSource
 import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
 
 object MenuDataStoreFixtures {
-    val data = listOf(
+    private val data = listOf(
         MenuDataStoreEntity(
             0,
             "categories",
@@ -36,25 +36,24 @@ object MenuDataStoreFixtures {
         ),
     )
 
-fun getCategoriesMenu():MenuDataStoreEntity{
-    val menu= data.find { it.id==0 }
-    return menu!!
-}
-    fun getCategoriesItemsMenu(): List<MenuDataStoreEntity> {
-        return data.filter { it.id in listOf(1, 2, 3) }
-    }
-    fun getArtistsMenu(): MenuDataStoreEntity {
-        val menu= data.find { it.id==1 }
+    fun getCategoriesMenu(): MenuDataStoreEntity {
+        val menu = data.find { it.id == 0 }
         return menu!!
     }
-    fun getArtistMenu(): MenuDataStoreEntity {
-        return data.find { it.id==4 }!!
-    }
-    fun getArtistListMenu(): List<MenuDataStoreEntity> {
-        return data.filter { it.id == 4 }
+
+    fun getCategoriesMenuItems(): List<MenuDataStoreEntity> {
+        return data.filter { it.id in listOf(1, 2, 3) }
     }
 
-    fun getTracksMenu(): List<MenuDataStoreEntity> {
-        return data.filter { it.id == 6 }
+    fun getArtistsMenu(): MenuDataStoreEntity {
+        return data.find { it.id == 1 }!!
+    }
+
+    fun getArtistMenu(): MenuDataStoreEntity {
+        return data.find { it.id == 4 }!!
+    }
+
+    fun getTrackMenu(): MenuDataStoreEntity {
+        return data.find { it.id == 6 }!!
     }
 }

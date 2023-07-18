@@ -23,7 +23,6 @@ object MediaDataStoreFixtures {
         SharedFixtureGenerator.generateMediaItemNames(count).map {
             MediaDataStoreEntity(
                 it,
-                //  0,
                 "",
                 "",
                 0,
@@ -35,7 +34,6 @@ object MediaDataStoreFixtures {
         SharedFixtureGenerator.generateMediaItemNames(count).map {
             MediaDataStoreEntity(
                 it,
-                //  0,
                 "",
                 "",
                 0,

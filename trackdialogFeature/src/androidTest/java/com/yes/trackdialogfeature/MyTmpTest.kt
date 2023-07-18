@@ -1,12 +1,8 @@
 package com.yes.trackdialogfeature
 
-import com.yes.trackdialogfeature.domain.entity.DomainResultFactory
 import com.yes.trackdialogfeature.domain.entity.Menu
-import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
-import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.mockk
-import org.junit.Before
 import org.junit.Test
 
 class MyTmpTest {

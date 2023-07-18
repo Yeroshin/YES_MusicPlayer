@@ -68,7 +68,7 @@ class TrackDialogViewModelTest {
     ) = runTest {
         coEvery {
             menuStack.removeLast()
-        } returns menuUiFixture.result
+        } returns menuUiFixture.data
         // When
         cut.setEvent(TrackDialogContract.Event.OnItemBackClicked)
 
@@ -80,7 +80,7 @@ class TrackDialogViewModelTest {
             )
             assert(
                 awaitItem() == TrackDialogContract.State(
-                    TrackDialogContract.TrackDialogState.Success(menuUiFixture.result)
+                    TrackDialogContract.TrackDialogState.Success(menuUiFixture.data)
                 )
             )
             // cancelAndIgnoreRemainingEvents()
@@ -105,18 +105,18 @@ class TrackDialogViewModelTest {
         } returns DomainResult.Success(menu)
         coEvery {
             uiMapper.map(any(), any())
-        } returns menuUiFixture.result
+        } returns menuUiFixture.data
         coEvery {
             menuStack.isEmpty()
-        } returns isEmptyFixture.result
+        } returns isEmptyFixture.data
         coEvery {
             menuStack.offer(any())
-        } returns offerFixture.result
+        } returns offerFixture.data
         // When
         cut.setEvent(
             TrackDialogContract.Event.OnItemClicked(
-                inputFixture.params["id"] as Int,
-                inputFixture.params["name"] as String,
+                0,
+                "",
             )
         )
 
@@ -132,7 +132,7 @@ class TrackDialogViewModelTest {
                 )
             )
             assert(
-                awaitItem() == stateFixture.result
+                awaitItem() == stateFixture.data
             )
 
             cancelAndIgnoreRemainingEvents()
@@ -147,13 +147,13 @@ class TrackDialogViewModelTest {
     ) = runTest {
         every {
             uiMapper.map(any())
-        } returnsMany itemsDomainFixture.result
+        } returnsMany itemsDomainFixture.data
         coEvery {
             saveTracksToPlaylistUseCase(any())
         } returns DomainResult.Success(true)
         cut.setEvent(
             TrackDialogContract.Event.OnItemOkClicked(
-                itemsUiFixture.result
+                itemsUiFixture.data
             )
         )
 
@@ -171,7 +171,7 @@ class TrackDialogViewModelTest {
             coVerify(exactly = 1) {
                 saveTracksToPlaylistUseCase(
                     SaveTracksToPlaylistUseCase.Params(
-                        itemsDomainFixture.result
+                        itemsDomainFixture.data
                     )
                 )
             }
@@ -187,7 +187,6 @@ class TrackDialogViewModelTest {
             return listOf(
                 arrayOf(
                     Fixture(
-                        mapOf(),
                         PresentationFixtures.getCategoriesMenu().items.mapIndexed { index, item ->
                             if (index == 1) {
                                 item.copy(selected = true)
@@ -197,8 +196,7 @@ class TrackDialogViewModelTest {
                         }
                     ),
                     Fixture(
-                        mapOf(),
-                        DomainFixtures.getCategoriesItemsList().mapIndexed { index, item ->
+                        DomainFixtures.getCategoryItems().mapIndexed { index, item ->
                             if (index == 1) {
                                 item.copy(selected = true)
                             } else {
@@ -215,30 +213,24 @@ class TrackDialogViewModelTest {
             return listOf(
                 arrayOf(
                     Fixture(
-                        mapOf(
-                            "id" to 0,
-                            "name" to ""
-                        ),
+
                         Unit
                     ),
                     Fixture(
-                        mapOf(),
+
                         DomainFixtures.getCategoriesMenu()
                     ),
                     Fixture(
-                        mapOf(),
+
                         PresentationFixtures.getCategoriesMenu()
                     ),
                     Fixture(
-                        mapOf(),
                         true
                     ),
                     Fixture(
-                        mapOf(),
                         true
                     ),
                     Fixture(
-                        mapOf(),
                         TrackDialogContract.State(
                             TrackDialogContract.TrackDialogState.Success(
                                 PresentationFixtures.getCategoriesMenu()
@@ -255,293 +247,11 @@ class TrackDialogViewModelTest {
             return listOf(
                 arrayOf(
                     Fixture(
-                        mapOf(),
                         PresentationFixtures.getCategoriesMenu()
                     )
                 )
             )
         }
     }
-
-    /*  @Test
-      fun `loads root menu success`() = runTest {
-          val domainMenu = RepositoryFixtures.getCategoriesMenu()
-          val uiMenu = UiFixturesGenerator.generateParentMenuUi(5)
-          val expected = TrackDialogContract.State(
-              TrackDialogContract.TrackDialogState.Success(
-                  uiMenu
-              )
-          )
-          // Given
-          coEvery {
-              getChildMenuUseCaseOLD(GetChildMenuUseCaseOLD.Params(0, ""))
-          } returns DomainResult.Success(domainMenu)
-          every {
-              menuUiDomainMapper.map(any(), any())
-          } returns uiMenu
-          every {
-              menuStack.isEmpty()
-          } returns true
-          every {
-              menuStack.offer(any())
-          } returns true
-          cut.setEvent(TrackDialogContract.Event.OnItemClicked(0, ""))
-          cut.uiState.test {
-              // When
-
-              // Expect Resource.Idle from initial state
-              assert(
-                  awaitItem() == TrackDialogContract.State(
-                      TrackDialogContract.TrackDialogState.Idle
-                  )
-              )
-              // Expect Resource.Loading
-              assert(
-                  awaitItem() == TrackDialogContract.State(
-                      TrackDialogContract.TrackDialogState.Loading
-                  )
-              )
-              coVerify(exactly = 1) {
-                  getChildMenuUseCaseOLD(
-                      GetChildMenuUseCaseOLD.Params(
-                          0,
-                          ""
-                      )
-                  )
-              }
-              // Expect Resource.Success
-              assert(
-                  awaitItem() == expected
-              )
-              cancelAndIgnoreRemainingEvents()
-          }
-
-      }
-
-      @Test
-      fun `loads child menu success`() = runTest {
-          val parentMenu = UiFixturesGenerator.generateParentMenuUi(5)
-          val childMenu = UiFixturesGenerator.generateChildUiModel(parentMenu)
-          val expected = TrackDialogContract.State(
-              TrackDialogContract.TrackDialogState.Success(
-                  parentMenu
-              )
-          )
-          // Given
-          coEvery {
-              getChildMenuUseCaseOLD(GetChildMenuUseCaseOLD.Params(0, ""))
-          } returns DomainResult.Success(RepositoryFixtures.generateMenuDomain(5))
-          every {
-              menuUiDomainMapper.map(any(), any())
-          } returns childMenu
-          every {
-              menuStack.isEmpty()
-          } returns false
-          every {
-              menuStack.offer(any())
-          } returns true
-          cut.uiState.test {
-              // When
-              cut.setEvent(TrackDialogContract.Event.OnItemClicked(0, ""))
-              // Expect Resource.Idle from initial state
-              assert(
-                  awaitItem() == TrackDialogContract.State(
-                      TrackDialogContract.TrackDialogState.Idle
-                  )
-              )
-              // Expect Resource.Loading
-              assert(
-                  awaitItem() == TrackDialogContract.State(
-                      TrackDialogContract.TrackDialogState.Loading
-                  )
-              )
-              // Expect Resource.Success
-              assert(
-                  awaitItem() == expected
-              )
-              cancelAndIgnoreRemainingEvents()
-          }
-      }
-
-      @Test
-      fun `loads parent menu success`() = runTest {
-          val parentMenu = UiFixturesGenerator.generateParentMenuUi(5)
-
-          val expected = TrackDialogContract.State(
-              TrackDialogContract.TrackDialogState.Success(
-                  parentMenu
-              )
-          )
-          // Given
-          coEvery {
-              getChildMenuUseCaseOLD(GetChildMenuUseCaseOLD.Params(0, ""))
-          } returns DomainResult.Success(RepositoryFixtures.generateMenuDomain(5))
-          every {
-              menuStack.removeLast()
-          } returns parentMenu
-
-          cut.setEvent(TrackDialogContract.Event.OnItemBackClicked)
-          cut.uiState.test {
-              // When
-
-              // Expect Resource.Idle from initial state
-              assert(
-                  awaitItem() == TrackDialogContract.State(
-                      TrackDialogContract.TrackDialogState.Idle
-                  )
-              )
-
-              // Expect Resource.Success
-              assert(
-                  awaitItem() == expected
-              )
-              cancelAndIgnoreRemainingEvents()
-          }
-      }
-
-      @Test
-      fun `loads menu memory error`() = runTest {
-          val domainMenu = RepositoryFixtures.generateMenuDomain(5)
-          val menu = UiFixturesGenerator.generateParentMenuUi(5)
-          val expectedState = TrackDialogContract.State(
-              TrackDialogContract.TrackDialogState.Idle
-          )
-          val expectedEffect = TrackDialogContract.Effect.UnknownException
-          // Given
-          coEvery {
-              getChildMenuUseCaseOLD(GetChildMenuUseCaseOLD.Params(0, ""))
-          } returns DomainResult.Success(domainMenu)
-          every {
-              menuUiDomainMapper.map(any(), any())
-          } returns menu
-          every {
-              menuStack.isEmpty()
-          } returns true
-          every {
-              menuStack.offer(any())
-          } returns false
-          // When
-          cut.setEvent(TrackDialogContract.Event.OnItemClicked(0, ""))
-          cut.uiState.test {
-
-
-              // Expect Resource.Idle from initial state
-              assert(
-                  awaitItem() == TrackDialogContract.State(
-                      TrackDialogContract.TrackDialogState.Idle
-                  )
-              )
-              // Expect Resource.Loading
-              assert(
-                  awaitItem() == TrackDialogContract.State(
-                      TrackDialogContract.TrackDialogState.Loading
-                  )
-              )
-              // Expect Resource.Success
-              assert(
-                  awaitItem() == expectedState
-              )
-              cancelAndIgnoreRemainingEvents()
-          }
-          cut.effect.test {
-              assert(
-                  awaitItem() == expectedEffect
-              )
-              cancelAndIgnoreRemainingEvents()
-          }
-      }
-
-      @Test
-      fun `loads root menu unknown error`() = runTest {
-          val expected = TrackDialogContract.Effect.UnknownException
-          // Given
-          coEvery {
-              getChildMenuUseCaseOLD(GetChildMenuUseCaseOLD.Params(0, ""))
-          } returns DomainResult.Error(RepositoryFixtures.getUnknownError())
-          /* every {
-               menuUiDomainMapper.map(any(),any())
-           } returns PresentationFixtures.getUiModel()*/
-          cut.uiState.test {
-              // When
-              cut.setEvent(TrackDialogContract.Event.OnItemClicked(0, ""))
-              // Expect Resource.Idle from initial state
-              assert(
-                  awaitItem() == TrackDialogContract.State(
-                      TrackDialogContract.TrackDialogState.Idle
-                  )
-              )
-              // Expect Resource.Loading
-              assert(
-                  awaitItem() == TrackDialogContract.State(
-                      TrackDialogContract.TrackDialogState.Loading
-                  )
-              )
-              assert(
-                  awaitItem() == TrackDialogContract.State(
-                      TrackDialogContract.TrackDialogState.Idle
-                  )
-              )
-              cancelAndIgnoreRemainingEvents()
-          }
-          cut.effect.test {
-              assert(
-                  awaitItem() == expected
-              )
-              cancelAndIgnoreRemainingEvents()
-          }
-
-      }
-
-      @Test
-      fun `loads root menu empty error`() = runTest {
-          val expected = TrackDialogContract.State(
-              TrackDialogContract.TrackDialogState.Idle
-          )
-          // Given
-          coEvery {
-              getChildMenuUseCaseOLD(GetChildMenuUseCaseOLD.Params(0, ""))
-          } returns DomainResult.Error(RepositoryFixtures.getError())
-          /* every {
-               menuUiDomainMapper.map(any(),any())
-           } returns PresentationFixtures.getUiModel()*/
-          cut.uiState.test {
-              // When
-              cut.setEvent(TrackDialogContract.Event.OnItemClicked(0, ""))
-              // Expect Resource.Idle from initial state
-              assert(
-                  awaitItem() == TrackDialogContract.State(
-                      TrackDialogContract.TrackDialogState.Idle
-                  )
-              )
-              // Expect Resource.Loading
-              assert(
-                  awaitItem() == TrackDialogContract.State(
-                      TrackDialogContract.TrackDialogState.Loading
-                  )
-              )
-              assert(
-                  awaitItem() == TrackDialogContract.State(
-                      TrackDialogContract.TrackDialogState.Idle
-                  )
-              )
-              cancelAndIgnoreRemainingEvents()
-          }
-
-
-      }
-
-      @Test
-      fun `saves tracks to playlist`() = runTest {
-          cut.setEvent(TrackDialogContract.Event.OnItemOkClicked)
-         /* coVerify(exactly = 1) {
-               saveTracksToPlaylistUseCase(
-                   SaveTrackToPlaylistUseCase.Params(
-                      1,
-                      ""
-                  )
-              )
-          }*/
-      }*/
-
 
 }

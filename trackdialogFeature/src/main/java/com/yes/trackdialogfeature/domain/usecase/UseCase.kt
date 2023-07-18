@@ -8,7 +8,7 @@ abstract class UseCase<REQUEST, MODEL>(
     private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(params: REQUEST): DomainResult<MODEL> {
+    suspend operator fun invoke(params: REQUEST?): DomainResult<MODEL> {
         return withContext(dispatcher) {
             try {
                 run(params)
@@ -18,6 +18,6 @@ abstract class UseCase<REQUEST, MODEL>(
         }
     }
 
-    abstract fun run(params: REQUEST): DomainResult<MODEL>
+    abstract fun run(params: REQUEST?): DomainResult<MODEL>
 
 }

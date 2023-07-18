@@ -2,11 +2,12 @@ package com.yes.trackdialogfeature.domain.entity
 
 data class Menu(
     val name: String,
-    val children: List<Item>
 ) {
+    val children: List<Item> = listOf()
     data class Item(
-        val name: String,
         val id: Int,
+        val name: String,
+        val type:String?,
         val selected:Boolean
         )
 }

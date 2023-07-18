@@ -7,9 +7,9 @@ import kotlin.random.Random
 
 object UiFixturesGenerator {
     private val onClick: (TrackDialogContract.Event) -> Unit = {}
-    fun generateParentMenuUi(count: Int): MenuUi {
+    fun generateArtistsMenuUi(count: Int): MenuUi {
 
-        val artists = SharedFixtureGenerator.generateArtists(count)
+        val artists = SharedFixtureGenerator.generateArtistsNames(count)
         val items = mutableListOf<MenuUi.ItemUi>()
         for (i in 0 until count) {
             val itemUi = MenuUi.ItemUi(
@@ -26,7 +26,7 @@ object UiFixturesGenerator {
             items.add(itemUi)
         }
         return MenuUi(
-            "Categories",
+            "artists",
             items
         )
     }

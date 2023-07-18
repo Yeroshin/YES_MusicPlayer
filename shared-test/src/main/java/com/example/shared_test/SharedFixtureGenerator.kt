@@ -12,8 +12,14 @@ object SharedFixtureGenerator {
         "Sunset", "Galaxy", "Rainbow", "Oasis", "Horizon",
         "Fountain", "Jungle", "Spectrum", "Harmony", "Mirage"
     )
+    private const val artistsCount=2
+    private const val albumsCount= artistsCount*2
+    private const val tracksCount= albumsCount*2
+    private val artistsNames= generateMediaItemNames(artistsCount)
+    private val albumsNames=generateMediaItemNames(albumsCount)
+    private val tracksNames= generateMediaItemNames(tracksCount)
 
-     fun generateArtists(count:Int): List<String> {
+     fun generateArtistsNames(count:Int): List<String> {
         val mediaItems = mutableListOf<String>()
         for (i in 1..count) {
             val name =adjectives[Random.nextInt(adjectives.size)]+" "+nouns[Random.nextInt(nouns.size)]
@@ -35,8 +41,7 @@ object SharedFixtureGenerator {
         val mediaItems = mutableListOf<String>()
         for (i in 1..count) {
             val name =adjectives[Random.nextInt(adjectives.size)]+" "+nouns[Random.nextInt(nouns.size)]
-            val mediaItem = name
-            mediaItems.add(mediaItem)
+            mediaItems.add(name)
         }
         return mediaItems.toList()
     }

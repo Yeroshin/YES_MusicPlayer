@@ -125,7 +125,7 @@ class TrackDialogTest {
             )
         }
         val number = 200
-        val item = UiFixturesGenerator.generateParentMenuUi(number)
+        val item = UiFixturesGenerator.generateArtistsMenuUi(number)
         viewModel.pushEvent(
             TrackDialogContract.State(
                 TrackDialogContract.TrackDialogState.Success(

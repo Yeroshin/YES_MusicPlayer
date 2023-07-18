@@ -11,7 +11,7 @@ data class MenuUi(
         val id:Int,
         val name:String,
         val iconType:Int,
-        val selected:Boolean?,
+        var selected:Boolean?,
         val param:TrackDialogContract.Event,
         val onClick: ((TrackDialogContract.Event) -> Unit)
     )

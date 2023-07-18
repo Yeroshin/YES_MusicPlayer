@@ -1,6 +1,8 @@
 package com.yes.trackdialogfeature.domain.usecase
 
 import com.example.shared_test.SharedFixtureGenerator
+import com.yes.trackdialogfeature.data.repository.MediaRepositoryImpl
+import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.IMediaRepository
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
@@ -13,44 +15,64 @@ import kotlinx.coroutines.test.TestDispatcher
 
 import org.junit.runners.Parameterized
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase.Params
+import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Rule
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import org.junit.runner.RunWith
 
-@RunWith(Parameterized::class)
-internal class GetMenuUseCaseTest(
-    private val params: ParamsFactory.Param,
-    private val rootMenuParam: MenuFactory.Param,
-    private val childMenuParam: MenuFactory.Param,
-    private val expectedParam: MenuFactory.Param
-) {
+
+internal class GetMenuUseCaseTest {
     private val testDispatcher: TestDispatcher = StandardTestDispatcher()
-    private val menuRepository: IMenuRepository = mockk(relaxed = true)
-    private val cut = GetMenuUseCase(
-        testDispatcher,
-        menuRepository
-    )
+    private val menuRepository: IMenuRepository = mockk()
+    private val mediaRepositoryImpl:MediaRepositoryImpl= mockk()
+    private lateinit var cut: GetMenuUseCase
 
-    @get:Rule
-    val coroutineRule = CoroutineRule(testDispatcher)
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @BeforeEach
+    fun setUp() = runTest {
+        // @MockK
+        Dispatchers.setMain(testDispatcher)
+        MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
+        cut = GetMenuUseCase(
+            testDispatcher,
+            menuRepository,
+            mediaRepositoryImpl
+        )
+    }
 
-    @Test
-    fun `run`() = runTest {
-        val rootMenu = MenuFactory.create(rootMenuParam)
-        val childMenu = MenuFactory.create(childMenuParam)
-        val param = ParamsFactory.create(params)
-        val expected=DomainResult.Success(MenuFactory.create(expectedParam))
-        every {
-            menuRepository.getRootMenu()
-        } returns DomainResult.Success(rootMenu)
-        every {
-            menuRepository.getChildMenu(params.id, params.name)
-        } returns DomainResult.Success(childMenu)
+    @ParameterizedTest
+    @MethodSource("runData")
+    fun `run`(
+        input: Params?,
+        expected: DomainResult<Menu>,
+        menu: Menu?
+    ) = runTest {
+
+        input
+            ?.let {
+                coEvery {
+                    menuRepository.getChildMenu(input.id, input.name)
+                } returns menu
+            }
+            ?: run {
+                coEvery {
+                    menuRepository.getRootMenu()
+                } returns menu
+            }
+
         val actual = cut(
-            param
+            input
         )
         // Assert
         assert(expected == actual)
@@ -59,58 +81,34 @@ internal class GetMenuUseCaseTest(
 
     companion object {
         @JvmStatic
-        @Parameterized.Parameters
-        fun data(): List<Array<Any?>> {
+        fun runData(): List<Array<Any?>> {
             return listOf(
                 arrayOf(
-                    ParamsFactory.Param(0, ""),
-                    MenuFactory.Param("Categories", listOf()),
-                    MenuFactory.Param("Artist", listOf()),
-                    MenuFactory.Param("Categories", listOf())
+                    null,
+                    DomainResult.Error(DomainResult.UnknownException),
+                    null
                 ),
                 arrayOf(
-                    ParamsFactory.Param(1, "Artists"),
-                    MenuFactory.Param("Categories", listOf()),
-                    MenuFactory.Param("Artists", listOf()),
-                    MenuFactory.Param("Artists", listOf())
-                )
+                    Params(
+                        DomainFixtures.getArtistsItem().id,
+                        DomainFixtures.getArtistsItem().name
+                    ),
+                    DomainResult.Error(DomainResult.UnknownException),
+                    null
+                ),
+                arrayOf(
+                    Params(
+                        DomainFixtures.getArtistsItem().id,
+                        DomainFixtures.getArtistsItem().name
+                    ),
+                    DomainResult.Success(
+                        DomainFixtures.getArtistsMenu()
+                    ),
+                   DomainFixtures.getArtistItem()
+                ),
             )
         }
     }
 
 
-        object ParamsFactory {
-            fun create(param: Param): Params {
-                return Params(param.id, param.name)
-            }
-
-            data class Param(
-                val id: Int,
-                val name: String
-            )
-        }
-
-        object MenuFactory {
-            fun create(param: Param): Menu {
-                return Menu(param.name, param.children)
-            }
-
-            data class Param(
-                val name: String,
-                val children: List<Menu.Item>
-            )
-        }
-
-        object MenuItemFactory {
-            fun create(param: Param): Item {
-                return Item(param.name, param.id,false)
-            }
-
-            data class Param(
-                val name: String,
-                val id: Int
-            )
-        }
-
-
-    }
+}
