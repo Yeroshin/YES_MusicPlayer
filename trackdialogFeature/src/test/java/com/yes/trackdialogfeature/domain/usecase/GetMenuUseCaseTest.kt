@@ -1,41 +1,32 @@
 package com.yes.trackdialogfeature.domain.usecase
 
-import com.example.shared_test.SharedFixtureGenerator
 import com.yes.trackdialogfeature.data.repository.MediaRepositoryImpl
+import com.yes.trackdialogfeature.data.repository.MenuRepositoryImpl
 import com.yes.trackdialogfeature.domain.DomainFixtures
-import com.yes.trackdialogfeature.domain.IMediaRepository
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
-import com.yes.trackdialogfeature.domain.repository.IMenuRepository
-import com.yes.trackdialogfeature.utils.CoroutineRule
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
 
 
-import org.junit.runners.Parameterized
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase.Params
-import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.Rule
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
-import org.junit.runner.RunWith
 
 
 internal class GetMenuUseCaseTest {
     private val testDispatcher: TestDispatcher = StandardTestDispatcher()
-    private val menuRepository: IMenuRepository = mockk()
-    private val mediaRepositoryImpl:MediaRepositoryImpl= mockk()
+    private val menuRepository: MenuRepositoryImpl = mockk()
+    private val mediaRepositoryImpl: MediaRepositoryImpl = mockk()
     private lateinit var cut: GetMenuUseCase
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -56,14 +47,27 @@ internal class GetMenuUseCaseTest {
     fun `run`(
         input: Params?,
         expected: DomainResult<Menu>,
-        menu: Menu?
+        menu: Menu?,
+        item: Item?,
+        items: List<Item>?
     ) = runTest {
 
         input
             ?.let {
                 coEvery {
-                    menuRepository.getChildMenu(input.id, input.name)
+                    menuRepository.getChildMenu(input.id)
                 } returns menu
+                menu?.let {
+                    coEvery {
+                        menuRepository.getChildItem(input.id)
+                    } returns item
+                    item?.let {
+                        coEvery {
+                            mediaRepositoryImpl.getMenuItems(item.id, item.type, input.name)
+                        } returns items!!
+                    }
+                }
+
             }
             ?: run {
                 coEvery {
@@ -85,7 +89,16 @@ internal class GetMenuUseCaseTest {
             return listOf(
                 arrayOf(
                     null,
-                    DomainResult.Error(DomainResult.UnknownException),
+                    DomainResult.Error(DomainFixtures.getUnknownError()),
+                    null,
+                    null,
+                    null
+                ),
+                arrayOf(
+                    null,
+                    DomainResult.Success(DomainFixtures.getCategoriesMenu()),
+                    DomainFixtures.getCategoriesMenu(),
+                    null,
                     null
                 ),
                 arrayOf(
@@ -93,7 +106,9 @@ internal class GetMenuUseCaseTest {
                         DomainFixtures.getArtistsItem().id,
                         DomainFixtures.getArtistsItem().name
                     ),
-                    DomainResult.Error(DomainResult.UnknownException),
+                    DomainResult.Error(DomainFixtures.getUnknownError()),
+                    DomainFixtures.getPrimaryArtistsMenu(),
+                    null,
                     null
                 ),
                 arrayOf(
@@ -104,7 +119,33 @@ internal class GetMenuUseCaseTest {
                     DomainResult.Success(
                         DomainFixtures.getArtistsMenu()
                     ),
-                   DomainFixtures.getArtistItem()
+                    DomainFixtures.getPrimaryArtistMenu(),
+                    DomainFixtures.getPrimaryArtistItem(),
+                    DomainFixtures.getArtistItems()
+                ),
+                arrayOf(
+                    Params(
+                        DomainFixtures.getSecondArtistItem().id,
+                        DomainFixtures.getSecondArtistItem().name
+                    ),
+                    DomainResult.Success(
+                        DomainFixtures.getTracksMenu()
+                    ),
+                    DomainFixtures.getPrimaryTracksMenu(),
+                    DomainFixtures.getPrimaryTracksItem(),
+                    DomainFixtures.getTracksItems()
+                ),
+                arrayOf(
+                    Params(
+                        DomainFixtures.getSecondTrackItem().id,
+                        DomainFixtures.getSecondTrackItem().name
+                    ),
+                    DomainResult.Error(
+                        DomainFixtures.getEmptyError()
+                    ),
+                    null,
+                    null,
+                    null
                 ),
             )
         }

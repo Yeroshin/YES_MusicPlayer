@@ -4,6 +4,7 @@ import com.yes.trackdialogfeature.data.repository.MediaRepositoryImpl
 import com.yes.trackdialogfeature.data.repository.MenuRepositoryImpl
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
+import com.yes.trackdialogfeature.domain.entity.MenuException
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase.Params
 import kotlinx.coroutines.CoroutineDispatcher
 
@@ -13,36 +14,24 @@ class GetMenuUseCase(
     private val mediaRepository: MediaRepositoryImpl
 ) : UseCase<Params, Menu>(dispatcher) {
     override fun run(params: Params?): DomainResult<Menu> {
-        return params
-            ?.let {
-                menuRepository.getChildMenu(params.id)
-                    ?.let {
-                        val childItem=menuRepository.getChildItem(params.id)
-                        it.children.toMutableList().addAll(
-                            mediaRepository.getMenuItems(
-                                childItem
-                                    ?.id
-                                    ?: ,
-                                childItem.type
-                            )
-                        )
-                        DomainResult.Success(it)
-                    }
-                    ?:run{
-                        return DomainResult.Error(DomainResult.UnknownException)
-                    }
-            }
-            ?: run {
-                menuRepository.getRootMenu()
-                    ?.let {
-                        return DomainResult.Success(it)
-                    }
-                    ?:run{
-                        return DomainResult.Error(DomainResult.UnknownException)
-                    }
+        val childMenu = params?.let {
+            menuRepository.getChildMenu(it.id)?: return DomainResult.Error(MenuException.Empty)
+        }
+            ?: return menuRepository.getRootMenu()
+                ?.let {
+                    DomainResult.Success(it)
+                }
+                ?: DomainResult.Error(DomainResult.UnknownException)
 
-
-            }
+        val childItem = menuRepository.getChildItem(params.id)
+            ?: return DomainResult.Error(DomainResult.UnknownException)
+        val childItems = mediaRepository.getMenuItems(
+            childItem.id,
+            childItem.type,
+            params.name
+        )
+        val menu = childMenu.copy(name = params.name, children = childItems)
+        return DomainResult.Success(menu)
     }
 
     data class Params(

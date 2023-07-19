@@ -8,10 +8,8 @@ class MenuRepositoryMapper {
 
     fun mapToMenu(menuDataStoreEntity: MenuDataStoreEntity): Menu? {
         return Menu(
-            menuDataStoreEntity.name
-                ?: run {
-                    return null
-                }
+            menuDataStoreEntity.name ?: "",
+            listOf()
         )
     }
 

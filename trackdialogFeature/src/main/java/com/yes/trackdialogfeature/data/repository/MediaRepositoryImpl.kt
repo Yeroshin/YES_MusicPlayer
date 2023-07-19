@@ -13,18 +13,15 @@ class MediaRepositoryImpl(
     fun getMenuItems(id: Int, type: String?, name: String): List<Item> {
 
         return mediaDataStore.getMediaItems(
-            type
-                ?.let { arrayOf(it) }
+            type?.let { arrayOf(it) }
                 ?: arrayOf(),
             type,
-            type
-                ?.let {
-                    arrayOf(name)
-                }
-                ?: run {
-                    emptyArray()
-                },
-        ).mapNotNull {
+            type?.let {
+                arrayOf(name)
+            } ?: run {
+                emptyArray()
+            },
+        ).map {
             mediaRepositoryMapper.map(id, type, it)
         }
     }

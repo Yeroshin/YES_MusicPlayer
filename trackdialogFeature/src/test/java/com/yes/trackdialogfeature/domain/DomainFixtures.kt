@@ -7,9 +7,10 @@ import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
 import com.yes.trackdialogfeature.domain.entity.MenuException
+import kotlinx.coroutines.NonCancellable.children
 
 object DomainFixtures {
-    fun getError(): MenuException {
+    fun getEmptyError(): MenuException {
         return MenuException.Empty
     }
 
@@ -18,6 +19,7 @@ object DomainFixtures {
     }
 
     private const val count = 5
+    private const val selectedItem=1
     private val artists =
         MediaDataStoreFixtures.getArtistsListMedia().map {
             Item(
@@ -36,7 +38,7 @@ object DomainFixtures {
                 false
             )
         }
-    private val categoryItems =listOf(
+    private val categoryItems = listOf(
         Item(
             1,
             "artists",
@@ -58,15 +60,17 @@ object DomainFixtures {
     )
     private val dataResult = listOf(
         Menu(
-            "categories"
+            "categories",
+            listOf()
         ),
         Menu(
-            "artists"
+            "artists",
+            listOf()
         ),
         Menu(
-            artists[0].name
+            artists[selectedItem].name,
+            listOf()
         ),
-
         )
 
     fun getCategoriesMenu(): Menu {
@@ -75,14 +79,16 @@ object DomainFixtures {
         return menu
 
     }
-    fun getCategoryItems():List<Item>{
+
+    fun getCategoryItems(): List<Item> {
         return categoryItems
     }
-    fun getArtistsItem():Item{
+
+    fun getArtistsItem(): Item {
         return categoryItems[0]
     }
-    fun getArtistItem():Item{
-        val menuRepositoryMapper=MenuRepositoryMapper()
+    private val menuRepositoryMapper = MenuRepositoryMapper()
+    fun getPrimaryArtistItem(): Item {
         return menuRepositoryMapper.mapToItem(
             MenuDataStoreFixtures.getArtistMenu()
         )
@@ -92,31 +98,46 @@ object DomainFixtures {
     fun getPrimaryArtistsMenu(): Menu {
         return dataResult.find { it.name == "artists" }!!.copy()
     }
-    fun getArtistsMenuItemsList(): List<Item> {
+
+    fun getPrimaryArtistMenu(): Menu {
+        return menuRepositoryMapper.mapToMenu(
+            MenuDataStoreFixtures.getArtistMenu()
+        )!!
+    }
+
+    fun getArtistItems(): List<Item> {
         return artists
     }
-    fun getSecondArtistMenuItem():Item{
+    fun getSecondArtistItem():Item{
         return artists[1]
     }
 
     fun getArtistsMenu(): Menu {
-        val menu = dataResult.find { it.name == "artists" }!!.copy()
-        menu.children.toMutableList().addAll(artists)
-        return menu
+        return  dataResult.find { it.name == "artists" }!!.copy(children = artists)
+    }
+    fun getTracksMenu():Menu{
+        return  dataResult.find { it.name == artists[selectedItem].name }!!.copy(children = tracks)
     }
 
-
-    fun getPrimaryTracksMenu(): Menu {
-        return dataResult.find { it.name == artists[0].name }!!
+    fun getPrimaryTracksMenu():Menu{
+        return menuRepositoryMapper.mapToMenu(
+            MenuDataStoreFixtures.getTrackMenu()
+        )!!
     }
-    fun getTracksMenuItemsList(): List<Item> {
+    fun getPrimaryTracksItem():Item{
+        return menuRepositoryMapper.mapToItem(
+            MenuDataStoreFixtures.getTrackMenu()
+        )
+    }
+    fun getTracksItems():List<Item>{
         return tracks
     }
-    fun getTracksMenu(): Menu {
-        val menu = dataResult.find { it.name == artists[0].name }!!
-        menu.children.toMutableList().addAll(tracks)
-        return menu
+    fun getSecondTrackItem():Item{
+        return tracks[selectedItem]
     }
+
+
+
 
 
 }

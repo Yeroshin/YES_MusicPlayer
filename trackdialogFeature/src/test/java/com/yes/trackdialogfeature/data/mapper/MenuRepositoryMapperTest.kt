@@ -76,6 +76,7 @@ internal class MenuRepositoryMapperTest {
                     Fixture(
                         Menu(
                             "categories",
+                            listOf()
                         )
                     )
                 ),
