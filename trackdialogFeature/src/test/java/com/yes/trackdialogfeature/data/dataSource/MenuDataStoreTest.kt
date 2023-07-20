@@ -21,7 +21,7 @@ internal class MenuDataStoreTest {
 
     @Test
     fun `returns root items`(){
-        val expected = MenuDataStoreFixtures.getCategoriesMenuItems()
+        val expected = MenuDataStoreFixtures.getCategoryItems()
         // act
         val actual = cut.getItemsWithParentId(0)
         // Assert

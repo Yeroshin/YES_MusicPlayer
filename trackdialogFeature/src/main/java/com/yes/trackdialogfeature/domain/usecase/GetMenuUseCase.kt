@@ -14,24 +14,26 @@ class GetMenuUseCase(
     private val mediaRepository: MediaRepositoryImpl
 ) : UseCase<Params, Menu>(dispatcher) {
     override fun run(params: Params?): DomainResult<Menu> {
-        val childMenu = params?.let {
-            menuRepository.getChildMenu(it.id)?: return DomainResult.Error(MenuException.Empty)
-        }
+        val childPrimaryMenu = params
+            ?.let {
+                menuRepository.getChildMenu(it.id) ?: return DomainResult.Error(MenuException.Empty)
+            }
             ?: return menuRepository.getRootMenu()
-                ?.let {
-                    DomainResult.Success(it)
-                }
+                ?.let { DomainResult.Success(it) }
                 ?: DomainResult.Error(DomainResult.UnknownException)
-
-        val childItem = menuRepository.getChildItem(params.id)
+        val childPrimaryItem = menuRepository.getChildItem(params.id)
             ?: return DomainResult.Error(DomainResult.UnknownException)
         val childItems = mediaRepository.getMenuItems(
-            childItem.id,
-            childItem.type,
+            childPrimaryItem.id,
+            childPrimaryItem.type,
             params.name
         )
-        val menu = childMenu.copy(name = params.name, children = childItems)
-        return DomainResult.Success(menu)
+        return DomainResult.Success(
+            childPrimaryMenu.copy(
+                name = params.name,
+                children = childItems
+            )
+        )
     }
 
     data class Params(

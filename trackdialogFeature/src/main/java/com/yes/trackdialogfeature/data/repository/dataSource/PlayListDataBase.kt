@@ -2,7 +2,7 @@ package com.yes.trackdialogfeature.data.repository.dataSource
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.yes.trackdialogfeature.data.repository.entity.PlayListDao
+import com.yes.trackdialogfeature.data.repository.PlayListDao
 import com.yes.trackdialogfeature.data.repository.entity.PlayListEntity
 import com.yes.trackdialogfeature.data.repository.entity.TrackEntity
 

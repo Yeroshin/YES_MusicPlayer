@@ -6,7 +6,7 @@ import com.yes.trackdialogfeature.domain.entity.Menu.Item
 
 class MenuRepositoryMapper {
 
-    fun mapToMenu(menuDataStoreEntity: MenuDataStoreEntity): Menu? {
+    fun mapToMenu(menuDataStoreEntity: MenuDataStoreEntity): Menu {
         return Menu(
             menuDataStoreEntity.name ?: "",
             listOf()

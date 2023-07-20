@@ -72,7 +72,11 @@ object DomainFixtures {
             listOf()
         ),
         )
+    fun getPrimaryCategoriesMenu(): Menu {
+        val menu = dataResult.find { it.name == "categories" }
+        return menu!!
 
+    }
     fun getCategoriesMenu(): Menu {
         val menu = dataResult.find { it.name == "categories" }?.copy()
         menu!!.children.toMutableList().addAll(categoryItems)
@@ -93,8 +97,6 @@ object DomainFixtures {
             MenuDataStoreFixtures.getArtistMenu()
         )
     }
-
-
     fun getPrimaryArtistsMenu(): Menu {
         return dataResult.find { it.name == "artists" }!!.copy()
     }
@@ -135,9 +137,4 @@ object DomainFixtures {
     fun getSecondTrackItem():Item{
         return tracks[selectedItem]
     }
-
-
-
-
-
 }

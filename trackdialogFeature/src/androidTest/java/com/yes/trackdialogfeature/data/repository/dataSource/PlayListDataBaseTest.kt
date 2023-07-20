@@ -4,7 +4,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
-import com.yes.trackdialogfeature.data.repository.entity.PlayListDao
+import com.yes.trackdialogfeature.data.repository.PlayListDao
 import com.yes.trackdialogfeature.data.repository.entity.PlayListEntity
 import com.yes.trackdialogfeature.data.repository.entity.TrackEntity
 import junit.framework.TestCase.assertEquals

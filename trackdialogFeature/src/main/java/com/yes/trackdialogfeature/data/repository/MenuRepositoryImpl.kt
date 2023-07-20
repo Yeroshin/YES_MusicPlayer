@@ -14,28 +14,32 @@ class MenuRepositoryImpl(
         val rootMenuId = menuDataStore.getRootMenuId()
         val menuEntity = menuDataStore.getItem(rootMenuId)
         val items = menuDataStore.getItemsWithParentId(rootMenuId)
-            .mapNotNull {
+            .map {
                 menuRepositoryMapper.mapToItem(it)
             }
         return menuEntity
             ?.let { it ->
-                menuRepositoryMapper.mapToMenu(it)
-                    ?.let { menu ->
-                        menu.children.toMutableList().addAll(items)
-                        return menu
-                    }
-                    ?: run { return null }
+                val menu = menuRepositoryMapper.mapToMenu(it)
+                menu.children.toMutableList().addAll(items)
+                return menu
             }
     }
+
     override fun getChildMenu(id: Int): Menu? {
-        return menuRepositoryMapper.mapToMenu(
-            menuDataStore.getItemsWithParentId(id).last()
-        )
+        menuDataStore.getItemsWithParentId(id).lastOrNull()
+            ?.let {
+                return menuRepositoryMapper.mapToMenu(
+                    it
+                )
+            } ?: return null
     }
+
     fun getChildItem(id: Int): Item? {
-        val childId=menuDataStore.getItemsWithParentId(id).last().id
+        val childId = menuDataStore.getItemsWithParentId(id).lastOrNull()
+            ?.id
+            ?:return null
         return menuRepositoryMapper.mapToItem(
-            menuDataStore.getItemsWithParentId(childId).last()
+            menuDataStore.getItemsWithParentId(childId).lastOrNull()?:return null
         )
 
 
