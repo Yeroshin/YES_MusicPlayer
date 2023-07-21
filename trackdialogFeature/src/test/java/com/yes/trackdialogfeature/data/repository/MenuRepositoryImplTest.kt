@@ -3,7 +3,6 @@ package com.yes.trackdialogfeature.data.repository
 import com.yes.trackdialogfeature.data.dataSource.MenuDataStoreFixtures
 import com.yes.trackdialogfeature.data.mapper.MenuRepositoryMapper
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
-import com.yes.trackdialogfeature.data.repository.entity.MediaDataStoreEntity
 import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
 import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
@@ -11,7 +10,6 @@ import com.yes.trackdialogfeature.domain.entity.Menu
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.jupiter.api.BeforeEach
 
@@ -24,7 +22,7 @@ class MenuRepositoryImplTest {
     private lateinit var cut: MenuRepositoryImpl
 
     @BeforeEach
-    fun setUp() = runTest {
+    fun setUp()  {
         // @MockK
         MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
         cut = MenuRepositoryImpl(
@@ -158,7 +156,7 @@ class MenuRepositoryImplTest {
                     null,
                     MenuDataStoreFixtures.getArtistMenuId(),
                     listOf(
-                        listOf<MenuDataStoreEntity>(),
+                        listOf(),
                         listOf( MenuDataStoreFixtures.getTrackMenu())
                     ),
                     DomainFixtures.getTracksItems().last()
@@ -168,7 +166,7 @@ class MenuRepositoryImplTest {
                     MenuDataStoreFixtures.getArtistMenuId(),
                     listOf(
                         listOf( MenuDataStoreFixtures.getArtistMenu()),
-                        listOf<MenuDataStoreEntity>(),
+                        listOf(),
                     ),
                     DomainFixtures.getTracksItems().last()
                 ),

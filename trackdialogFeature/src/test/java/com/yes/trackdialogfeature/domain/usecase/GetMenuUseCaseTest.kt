@@ -24,6 +24,7 @@ import org.junit.jupiter.params.provider.MethodSource
 
 
 internal class GetMenuUseCaseTest {
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val testDispatcher: TestDispatcher = StandardTestDispatcher()
     private val menuRepository: MenuRepositoryImpl = mockk()
     private val mediaRepositoryImpl: MediaRepositoryImpl = mockk()
@@ -42,41 +43,52 @@ internal class GetMenuUseCaseTest {
         )
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @ParameterizedTest
     @MethodSource("runData")
-    fun `run`(
-        input: Params?,
+    fun run(
+        params: Params?,
         expected: DomainResult<Menu>,
-        menu: Menu?,
-        item: Item?,
-        items: List<Item>?
+        rootMenu: Menu?,
+        currentItem: Item?,
+        childPrimaryItem: Item?,
+        childItems: List<Item>?
     ) = runTest {
-
-        input
-            ?.let {
+        params?.let {
+            currentItem?.let {
                 coEvery {
-                    menuRepository.getChildMenu(input.id)
-                } returns menu
-                menu?.let {
-                    coEvery {
-                        menuRepository.getChildItem(input.id)
-                    } returns item
-                    item?.let {
-                        coEvery {
-                            mediaRepositoryImpl.getMenuItems(item.id, item.type, input.name)
-                        } returns items!!
+                    menuRepository.getItem(params.id)
+                } returns currentItem
+            }
+            coEvery {
+                menuRepository.getChildItem(params.id)
+            } returns childPrimaryItem
+            childItems?.let {
+                childPrimaryItem?.let {
+                    childPrimaryItem.type?.let { childPrimaryItemType ->
+                        currentItem?.let {
+                            coEvery {
+                                mediaRepositoryImpl.getMenuItems(
+                                    childPrimaryItem.id,
+                                    childPrimaryItemType,
+                                    currentItem.type,
+                                    params.name
+                                )
+                            } returns childItems
+                        }
                     }
                 }
+            }
 
-            }
-            ?: run {
-                coEvery {
-                    menuRepository.getRootMenu()
-                } returns menu
-            }
+        } ?: run {
+            coEvery {
+                menuRepository.getRootMenu()
+            } returns rootMenu
+        }
+
 
         val actual = cut(
-            input
+            params
         )
         // Assert
         assert(expected == actual)
@@ -87,54 +99,59 @@ internal class GetMenuUseCaseTest {
         @JvmStatic
         fun runData(): List<Array<Any?>> {
             return listOf(
-                arrayOf(
-                    null,
-                    DomainResult.Error(DomainFixtures.getUnknownError()),
-                    null,
-                    null,
-                    null
-                ),
-                arrayOf(
-                    null,
-                    DomainResult.Success(DomainFixtures.getCategoriesMenu()),
-                    DomainFixtures.getCategoriesMenu(),
-                    null,
-                    null
-                ),
-                arrayOf(
-                    Params(
-                        DomainFixtures.getArtistsItem().id,
-                        DomainFixtures.getArtistsItem().name
-                    ),
-                    DomainResult.Error(DomainFixtures.getUnknownError()),
-                    DomainFixtures.getPrimaryArtistsMenu(),
-                    null,
-                    null
-                ),
-                arrayOf(
-                    Params(
-                        DomainFixtures.getArtistsItem().id,
-                        DomainFixtures.getArtistsItem().name
-                    ),
-                    DomainResult.Success(
-                        DomainFixtures.getArtistsMenu()
-                    ),
-                    DomainFixtures.getPrimaryArtistMenu(),
-                    DomainFixtures.getPrimaryArtistItem(),
-                    DomainFixtures.getArtistItems()
-                ),
-                arrayOf(
-                    Params(
-                        DomainFixtures.getSecondArtistItem().id,
-                        DomainFixtures.getSecondArtistItem().name
-                    ),
-                    DomainResult.Success(
-                        DomainFixtures.getTracksMenu()
-                    ),
-                    DomainFixtures.getPrimaryTracksMenu(),
-                    DomainFixtures.getPrimaryTracksItem(),
-                    DomainFixtures.getTracksItems()
-                ),
+                 arrayOf(
+                     null,
+                     DomainResult.Error(DomainFixtures.getUnknownError()),
+                     null,
+                     null,
+                     null,
+                     null
+                 ),
+                 arrayOf(
+                     null,
+                     DomainResult.Success(DomainFixtures.getCategoriesMenu()),
+                     DomainFixtures.getCategoriesMenu(),
+                     null,
+                     null,
+                     null
+                 ),
+                 arrayOf(
+                     Params(
+                         DomainFixtures.getArtistsItem().id,
+                         DomainFixtures.getArtistsItem().name
+                     ),
+                     DomainResult.Error(DomainFixtures.getUnknownError()),
+                     null,
+                     DomainFixtures.getPrimaryArtistsItem(),
+                     DomainFixtures.getPrimaryAlbumsItem(),
+                     null
+                 ),
+                  arrayOf(
+                      Params(
+                          DomainFixtures.getArtistsItem().id,
+                          DomainFixtures.getArtistsItem().name
+                      ),
+                      DomainResult.Success(
+                          DomainFixtures.getArtistMenu()
+                      ),
+                      null,
+                      DomainFixtures.getPrimaryArtistsItem(),
+                      DomainFixtures.getPrimaryArtistItem(),
+                      DomainFixtures.getArtistItems(),
+                  ),
+                  arrayOf(
+                      Params(
+                          DomainFixtures.getSecondArtistItem().id,
+                          DomainFixtures.getSecondArtistItem().name
+                      ),
+                      DomainResult.Success(
+                          DomainFixtures.getTracksMenu()
+                      ),
+                      null,
+                      DomainFixtures.getSecondArtistItem(),
+                      DomainFixtures.getPrimaryTracksItem(),
+                      DomainFixtures.getTracksItems()
+                  ),
                 arrayOf(
                     Params(
                         DomainFixtures.getSecondTrackItem().id,
@@ -144,6 +161,7 @@ internal class GetMenuUseCaseTest {
                         DomainFixtures.getEmptyError()
                     ),
                     null,
+                    DomainFixtures.getPrimaryTracksItem(),
                     null,
                     null
                 ),

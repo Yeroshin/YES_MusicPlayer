@@ -91,6 +91,7 @@ object DomainFixtures {
     fun getArtistsItem(): Item {
         return categoryItems[0]
     }
+
     private val menuRepositoryMapper = MenuRepositoryMapper()
     fun getPrimaryArtistItem(): Item {
         return menuRepositoryMapper.mapToItem(
@@ -98,13 +99,20 @@ object DomainFixtures {
         )
     }
     fun getPrimaryArtistsMenu(): Menu {
-        return dataResult.find { it.name == "artists" }!!.copy()
+        return dataResult.find { it.name == "artists" }!!
+    }
+    fun getPrimaryArtistsItem(): Item {
+        return categoryItems.find { it.name == "artists" }!!
     }
 
     fun getPrimaryArtistMenu(): Menu {
         return menuRepositoryMapper.mapToMenu(
             MenuDataStoreFixtures.getArtistMenu()
-        )!!
+        )
+    }
+    fun getArtistMenu():Menu{
+         return dataResult.find { it.name == "artists" }
+             ?.copy(children = artists)!!
     }
 
     fun getArtistItems(): List<Item> {
@@ -113,10 +121,19 @@ object DomainFixtures {
     fun getSecondArtistItem():Item{
         return artists[1]
     }
+    fun getSecondArtistMenu():Menu{
+        return Menu(
+            artists[selectedItem].name,
+            tracks
+        )
+    }
 
     fun getArtistsMenu(): Menu {
         return  dataResult.find { it.name == "artists" }!!.copy(children = artists)
     }
+fun getPrimaryAlbumsItem():Item{
+    return categoryItems.find { it.name == "albums" }!!
+}
     fun getTracksMenu():Menu{
         return  dataResult.find { it.name == artists[selectedItem].name }!!.copy(children = tracks)
     }
@@ -124,13 +141,14 @@ object DomainFixtures {
     fun getPrimaryTracksMenu():Menu{
         return menuRepositoryMapper.mapToMenu(
             MenuDataStoreFixtures.getTrackMenu()
-        )!!
+        )
     }
     fun getPrimaryTracksItem():Item{
         return menuRepositoryMapper.mapToItem(
             MenuDataStoreFixtures.getTrackMenu()
         )
     }
+
     fun getTracksItems():List<Item>{
         return tracks
     }
