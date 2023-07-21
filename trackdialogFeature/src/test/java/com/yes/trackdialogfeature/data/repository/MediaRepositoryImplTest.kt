@@ -37,7 +37,7 @@ class MediaRepositoryImplTest {
         inputParam: Map<String, Any?>,
         param: Map<String, Any?>,
         mediaItemsEntity: List<MediaDataStoreEntity>,
-        mediaItemsDomain: List<List<Item>>
+        mediaItemsDomain: List<Item>
     ) {
         every {
             mediaDataStore.getMediaItems(
@@ -45,7 +45,14 @@ class MediaRepositoryImplTest {
                 param["selection"] as String?,
                 param["selectionArgs"] as  Array<String>?
             )
-        }
+        }returns mediaItemsEntity
+        every {
+            mediaRepositoryMapper.map(
+                inputParam["id"] as Int,
+                inputParam["type"] as String,
+                any()
+            )
+        }returnsMany mediaItemsDomain
         val actual = cut.getMenuItems(
             inputParam["id"] as Int,
             inputParam["type"] as String,
@@ -71,9 +78,24 @@ class MediaRepositoryImplTest {
                         "selection" to null,
                         "selectionArgs" to emptyArray<String>()
                     ),
-                    MediaDataStoreFixtures.getArtistsListMedia(),
+                    MediaDataStoreFixtures.getArtists(),
                     DomainFixtures.getArtistItems()
-                )
+                ),
+                arrayOf(
+                    listOf<MediaDataStoreEntity>(),
+                    mapOf(
+                        "id" to 4,
+                        "type" to "artist",
+                        "name" to "artists"
+                    ),
+                    mapOf(
+                        "projection" to arrayOf("artist"),
+                        "selection" to null,
+                        "selectionArgs" to emptyArray<String>()
+                    ),
+                    listOf<MediaDataStoreEntity>(),
+                    DomainFixtures.getArtistItems()
+                ),
             )
         }
     }

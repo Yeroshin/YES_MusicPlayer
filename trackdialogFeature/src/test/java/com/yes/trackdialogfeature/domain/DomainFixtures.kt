@@ -7,7 +7,6 @@ import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
 import com.yes.trackdialogfeature.domain.entity.MenuException
-import kotlinx.coroutines.NonCancellable.children
 
 object DomainFixtures {
     fun getEmptyError(): MenuException {
@@ -19,9 +18,9 @@ object DomainFixtures {
     }
 
     private const val count = 5
-    private const val selectedItem=1
+    private const val selectedItem = 1
     private val artists =
-        MediaDataStoreFixtures.getArtistsListMedia().map {
+        MediaDataStoreFixtures.getArtists().map {
             Item(
                 4,
                 it.title,
@@ -71,12 +70,14 @@ object DomainFixtures {
             artists[selectedItem].name,
             listOf()
         ),
-        )
+    )
+
     fun getPrimaryCategoriesMenu(): Menu {
         val menu = dataResult.find { it.name == "categories" }
         return menu!!
 
     }
+
     fun getCategoriesMenu(): Menu {
         val menu = dataResult.find { it.name == "categories" }?.copy()
         menu!!.children.toMutableList().addAll(categoryItems)
@@ -98,9 +99,11 @@ object DomainFixtures {
             MenuDataStoreFixtures.getArtistMenu()
         )
     }
+
     fun getPrimaryArtistsMenu(): Menu {
         return dataResult.find { it.name == "artists" }!!
     }
+
     fun getPrimaryArtistsItem(): Item {
         return categoryItems.find { it.name == "artists" }!!
     }
@@ -110,18 +113,21 @@ object DomainFixtures {
             MenuDataStoreFixtures.getArtistMenu()
         )
     }
-    fun getArtistMenu():Menu{
-         return dataResult.find { it.name == "artists" }
-             ?.copy(children = artists)!!
+
+    fun getArtistMenu(): Menu {
+        return dataResult.find { it.name == "artists" }
+            ?.copy(children = artists)!!
     }
 
     fun getArtistItems(): List<Item> {
         return artists
     }
-    fun getSecondArtistItem():Item{
+
+    fun getSecondArtistItem(): Item {
         return artists[1]
     }
-    fun getSecondArtistMenu():Menu{
+
+    fun getSecondArtistMenu(): Menu {
         return Menu(
             artists[selectedItem].name,
             tracks
@@ -129,30 +135,34 @@ object DomainFixtures {
     }
 
     fun getArtistsMenu(): Menu {
-        return  dataResult.find { it.name == "artists" }!!.copy(children = artists)
-    }
-fun getPrimaryAlbumsItem():Item{
-    return categoryItems.find { it.name == "albums" }!!
-}
-    fun getTracksMenu():Menu{
-        return  dataResult.find { it.name == artists[selectedItem].name }!!.copy(children = tracks)
+        return dataResult.find { it.name == "artists" }!!.copy(children = artists)
     }
 
-    fun getPrimaryTracksMenu():Menu{
+    fun getPrimaryAlbumsItem(): Item {
+        return categoryItems.find { it.name == "albums" }!!
+    }
+
+    fun getTracksMenu(): Menu {
+        return dataResult.find { it.name == artists[selectedItem].name }!!.copy(children = tracks)
+    }
+
+    fun getPrimaryTracksMenu(): Menu {
         return menuRepositoryMapper.mapToMenu(
             MenuDataStoreFixtures.getTrackMenu()
         )
     }
-    fun getPrimaryTracksItem():Item{
+
+    fun getPrimaryTracksItem(): Item {
         return menuRepositoryMapper.mapToItem(
             MenuDataStoreFixtures.getTrackMenu()
         )
     }
 
-    fun getTracksItems():List<Item>{
+    fun getTracksItems(): List<Item> {
         return tracks
     }
-    fun getSecondTrackItem():Item{
+
+    fun getSecondTrackItem(): Item {
         return tracks[selectedItem]
     }
 }

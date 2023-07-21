@@ -17,12 +17,10 @@ class MediaRepositoryImpl(
 
         return mediaDataStore.getMediaItems(
             arrayOf(type),
-            type,
+            selectionType,
             selectionType?.let {
                 arrayOf(selectionName)
-            } ?: run {
-                emptyArray()
-            },
+            } ?: emptyArray(),
         ).map {
             mediaRepositoryMapper.map(id, type, it)
         }

@@ -3,6 +3,7 @@ package com.example.shared_test
 import kotlin.random.Random
 
 object SharedFixtureGenerator {
+    private const val selectedItem=1
     private val adjectives = listOf(
         "Electric", "Neon", "Cosmic", "Mystic", "Psychedelic",
         "Radiant", "Vibrant", "Whimsical", "Dreamy", "Surreal"
@@ -23,8 +24,7 @@ object SharedFixtureGenerator {
         val mediaItems = mutableListOf<String>()
         for (i in 1..count) {
             val name =adjectives[Random.nextInt(adjectives.size)]+" "+nouns[Random.nextInt(nouns.size)]
-            val mediaItem = name
-            mediaItems.add(mediaItem)
+            mediaItems.add(name)
         }
         return mediaItems
     }
@@ -44,5 +44,8 @@ object SharedFixtureGenerator {
             mediaItems.add(name)
         }
         return mediaItems.toList()
+    }
+    fun getSelectedItem():Int{
+        return selectedItem
     }
 }

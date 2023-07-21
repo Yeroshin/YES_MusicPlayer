@@ -1,7 +1,6 @@
 package com.yes.trackdialogfeature.data.dataSource
 
 import com.example.shared_test.SharedFixtureGenerator
-import com.yes.core.Fixture
 import com.yes.trackdialogfeature.data.repository.entity.MediaDataStoreEntity
 import kotlin.random.Random
 
@@ -46,7 +45,7 @@ object MediaDataStoreFixtures {
         return count
     }
 
-    fun getArtistsListMedia(): List<MediaDataStoreEntity> {
+    fun getArtists(): List<MediaDataStoreEntity> {
         return artists
     }
 
