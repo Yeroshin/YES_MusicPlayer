@@ -1,16 +1,29 @@
 package com.yes.trackdialogfeature.data.mapper
 
+
 import com.yes.trackdialogfeature.data.repository.entity.MediaDataStoreEntity
-import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
+import com.yes.trackdialogfeature.domain.entity.Track
 
 class MediaRepositoryMapper {
-    fun map(id: Int, type: String?, entity: MediaDataStoreEntity): Item {
+    fun map(entity: MediaDataStoreEntity): Item {
         return Item(
-            id,
+            -1,
             entity.title,
-            type,
+            null,
             false
+        )
+    }
+    fun mapToTrack(entity: MediaDataStoreEntity): Track {
+        return Track(
+            null,
+            "",
+            entity.artist,
+            entity.title,
+            entity.data,
+            entity.duration,
+            entity.album,
+            entity.size
         )
     }
 }

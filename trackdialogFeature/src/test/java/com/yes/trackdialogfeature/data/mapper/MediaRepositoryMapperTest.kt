@@ -1,10 +1,10 @@
 package com.yes.trackdialogfeature.data.mapper
 
-import com.yes.core.Fixture
 import com.yes.trackdialogfeature.data.dataSource.MediaDataStoreFixtures
-import com.yes.trackdialogfeature.data.dataSource.MenuDataStoreFixtures
 import com.yes.trackdialogfeature.data.repository.entity.MediaDataStoreEntity
+import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
+import com.yes.trackdialogfeature.domain.entity.Track
 import org.junit.Assert.*
 
 import org.junit.jupiter.params.ParameterizedTest
@@ -16,36 +16,48 @@ class MediaRepositoryMapperTest {
     @ParameterizedTest
     @MethodSource("mapToItemData")
     fun map(
-        dataStoreEntityFixture: Fixture<Map<String, Any>>,
-        expectedDomainFixture: Fixture<Item>
+        dataStoreEntity: MediaDataStoreEntity,
+        expectedDomain: Item
     ) {
         val actual = cut.map(
-            dataStoreEntityFixture.data["id"] as Int,
-            dataStoreEntityFixture.data["type"] as String?,
-            dataStoreEntityFixture.data["entity"] as MediaDataStoreEntity
+            dataStoreEntity
         )
-        assert(actual == expectedDomainFixture.data)
+        assert(actual == expectedDomain)
+    }
+
+    @ParameterizedTest
+    @MethodSource("mapToTrackData")
+    fun mapToTrack(
+        dataStoreEntity: MediaDataStoreEntity,
+        expectedDomain: Track
+    ) {
+        val actual = cut.mapToTrack(
+            dataStoreEntity
+        )
+        assert(actual == expectedDomain)
     }
 
     companion object {
         @JvmStatic
+        fun mapToTrackData(): List<Array<Any?>> {
+            return listOf(
+                arrayOf(
+                    MediaDataStoreFixtures.getTracksAudio()[0],
+                    DomainFixtures.getTracksAudio()[0]
+                )
+            )
+        }
+
+        @JvmStatic
         fun mapToItemData(): List<Array<Any?>> {
             return listOf(
                 arrayOf(
-                    Fixture(
-                        mapOf(
-                            "id" to MenuDataStoreFixtures.getArtistsMenu().id,
-                            "type" to MenuDataStoreFixtures.getArtistsMenu().type,
-                            "entity" to MediaDataStoreFixtures.getArtists()[0]
-                        )
-                    ),
-                    Fixture(
-                        Item(
-                            MenuDataStoreFixtures.getArtistsMenu().id,
-                            MediaDataStoreFixtures.getArtists()[0].title,
-                            MenuDataStoreFixtures.getArtistsMenu().type,
-                            false
-                        )
+                    MediaDataStoreFixtures.getArtists()[0],
+                    Item(
+                        -1,
+                        MediaDataStoreFixtures.getArtists()[0].title,
+                        null,
+                        false
                     )
                 ),
             )

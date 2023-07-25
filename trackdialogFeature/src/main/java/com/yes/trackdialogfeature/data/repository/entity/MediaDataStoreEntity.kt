@@ -5,6 +5,6 @@ data class MediaDataStoreEntity(
     val artist:String,
     val album:String,
     val duration:Long,
-    val data:String,
+    val data:String,//path to
     val size:Long,
 )

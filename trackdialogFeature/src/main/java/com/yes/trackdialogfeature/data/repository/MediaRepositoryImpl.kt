@@ -3,6 +3,7 @@ package com.yes.trackdialogfeature.data.repository
 import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
 import com.yes.trackdialogfeature.data.repository.dataSource.MediaDataStore
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
+import com.yes.trackdialogfeature.domain.entity.Track
 
 class MediaRepositoryImpl(
     private val mediaDataStore: MediaDataStore,
@@ -22,7 +23,22 @@ class MediaRepositoryImpl(
                 arrayOf(selectionName)
             } ?: emptyArray(),
         ).map {
-            mediaRepositoryMapper.map(id, type, it)
+            mediaRepositoryMapper.map(it).copy(id = id, type = type)
+        }
+    }
+
+    fun getAudioItems(
+        selectionType: String?,
+        selectionName: String
+    ): List<Track> {
+
+        return mediaDataStore.getAudioItems(
+            selectionType,
+            selectionType?.let {
+                arrayOf(selectionName)
+            } ?: emptyArray(),
+        ).map {
+            mediaRepositoryMapper.mapToTrack(it)
         }
     }
 }

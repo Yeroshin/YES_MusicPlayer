@@ -2,7 +2,7 @@ package com.yes.trackdialogfeature.data.repository
 
 import com.yes.trackdialogfeature.data.mapper.MenuRepositoryMapper
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
-import com.yes.trackdialogfeature.domain.IMenuRepository
+import com.yes.trackdialogfeature.domain.repository.IMenuRepository
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
 

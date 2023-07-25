@@ -1,5 +1,6 @@
 package com.yes.trackdialogfeature.domain
 
+import com.example.shared_test.SharedFixtureGenerator
 import com.yes.trackdialogfeature.data.dataSource.MediaDataStoreFixtures
 import com.yes.trackdialogfeature.data.dataSource.MenuDataStoreFixtures
 import com.yes.trackdialogfeature.data.mapper.MenuRepositoryMapper
@@ -7,6 +8,7 @@ import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
 import com.yes.trackdialogfeature.domain.entity.MenuException
+import com.yes.trackdialogfeature.domain.entity.Track
 
 object DomainFixtures {
     fun getEmptyError(): MenuException {
@@ -18,7 +20,7 @@ object DomainFixtures {
     }
 
     private const val count = 5
-    private const val selectedItem = 1
+    private val selectedItem = SharedFixtureGenerator.getSelectedItem()
     private val artists =
         MediaDataStoreFixtures.getArtists().map {
             Item(
@@ -29,7 +31,7 @@ object DomainFixtures {
             )
         }
     private val tracks =
-        MediaDataStoreFixtures.getTracksListMedia().map {
+        MediaDataStoreFixtures.getTracksMedia().map {
             Item(
                 7,
                 it.title,
@@ -37,6 +39,21 @@ object DomainFixtures {
                 false
             )
         }
+    private val tracksAudio = MediaDataStoreFixtures.getTracksAudio().map {
+        Track(
+            null,
+            "",
+            it.artist,
+            it.title,
+            it.data,
+            it.duration,
+            it.album,
+            it.size,
+        )
+    }
+    fun getTracksAudio():List<Track>{
+        return tracksAudio
+    }
     private val categoryItems = listOf(
         Item(
             1,
@@ -123,15 +140,25 @@ object DomainFixtures {
         return artists
     }
 
+    fun getArtistItemsWithSelectedItem(): List<Item> {
+        val selectedArtist = artists.mapIndexed { index, item ->
+            if (index == selectedItem) {
+                item.copy(selected = true)
+            } else {
+                item
+            }
+        }
+        return selectedArtist
+    }
+
     fun getSecondArtistItem(): Item {
         return artists[1]
     }
 
-    fun getSecondArtistMenu(): Menu {
-        return Menu(
-            artists[selectedItem].name,
-            tracks
-        )
+    fun getSelectedTracksItems(): List<Item> {
+        val selectedArtists = tracks.toMutableList()
+        selectedArtists[selectedItem] = selectedArtists[selectedItem].copy(selected = true)
+        return tracks
     }
 
     fun getArtistsMenu(): Menu {
@@ -162,7 +189,16 @@ object DomainFixtures {
         return tracks
     }
 
-    fun getSecondTrackItem(): Item {
+    fun getSelectedTrackItem(): Item {
         return tracks[selectedItem]
     }
+    fun getSelectedArtistItem():Item{
+        return artists[selectedItem]
+    }
+    fun getTracksFromSelectedArtist():List<Track>{
+        return tracksAudio.filter {
+            it.artist== artists[selectedItem].name
+        }
+    }
+
 }

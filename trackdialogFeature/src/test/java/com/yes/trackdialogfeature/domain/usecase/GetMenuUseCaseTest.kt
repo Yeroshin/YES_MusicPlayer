@@ -154,8 +154,8 @@ internal class GetMenuUseCaseTest {
                   ),
                 arrayOf(
                     Params(
-                        DomainFixtures.getSecondTrackItem().id,
-                        DomainFixtures.getSecondTrackItem().name
+                        DomainFixtures.getSelectedTrackItem().id,
+                        DomainFixtures.getSelectedTrackItem().name
                     ),
                     DomainResult.Error(
                         DomainFixtures.getEmptyError()

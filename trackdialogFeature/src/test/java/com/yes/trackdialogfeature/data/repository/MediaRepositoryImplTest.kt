@@ -6,6 +6,7 @@ import com.yes.trackdialogfeature.data.repository.dataSource.MediaDataStore
 import com.yes.trackdialogfeature.data.repository.entity.MediaDataStoreEntity
 import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
+import com.yes.trackdialogfeature.domain.entity.Track
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.mockk
@@ -28,10 +29,36 @@ class MediaRepositoryImplTest {
             mediaRepositoryMapper
         )
     }
-
     @Suppress("UNCHECKED_CAST")
     @ParameterizedTest
-    @MethodSource("getRootMenuData")
+    @MethodSource("getAudioItemsData")
+    fun getAudioItems(
+        expected: List<Item>,
+        inputParam: Map<String, Any?>,
+        param: Map<String, Any?>,
+        mediaItemsEntity: List<MediaDataStoreEntity>,
+        mediaItemsDomain: List<Track>
+    ){
+        every {
+            mediaDataStore.getAudioItems(
+                param["selection"] as String?,
+                param["selectionArgs"] as  Array<String>?
+            )
+        }returns mediaItemsEntity
+        every {
+            mediaRepositoryMapper.mapToTrack(
+                any()
+            )
+        }returnsMany mediaItemsDomain
+        val actual = cut.getAudioItems(
+            inputParam["selectionType"] as String?,
+            inputParam["selectionName"] as String
+        )
+        assert(expected == actual)
+    }
+    @Suppress("UNCHECKED_CAST")
+    @ParameterizedTest
+    @MethodSource("getMenuItemsData")
     fun getMenuItems(
         expected: List<Item>,
         inputParam: Map<String, Any?>,
@@ -48,8 +75,6 @@ class MediaRepositoryImplTest {
         }returns mediaItemsEntity
         every {
             mediaRepositoryMapper.map(
-                inputParam["id"] as Int,
-                inputParam["type"] as String,
                 any()
             )
         }returnsMany mediaItemsDomain
@@ -64,7 +89,38 @@ class MediaRepositoryImplTest {
 
     companion object {
         @JvmStatic
-        fun getRootMenuData(): List<Array<Any?>> {
+        fun getAudioItemsData(): List<Array<Any?>> {
+            return listOf(
+                arrayOf(
+                    DomainFixtures.getTracksFromSelectedArtist(),
+                    mapOf(
+                        "selectionType" to "artist",
+                        "selectionName" to DomainFixtures.getSelectedArtistItem().name
+                    ),
+                    mapOf(
+                        "selection" to "artist",
+                        "selectionArgs" to arrayOf(DomainFixtures.getSelectedArtistItem().name)
+                    ),
+                    MediaDataStoreFixtures.getTracksFromSelectedArtist(),
+                    DomainFixtures.getTracksFromSelectedArtist()
+                ),
+                arrayOf(
+                    DomainFixtures.getTracksFromSelectedArtist(),
+                    mapOf(
+                        "selectionType" to null,
+                        "selectionName" to DomainFixtures.getSelectedArtistItem().name
+                    ),
+                    mapOf(
+                        "selection" to null,
+                        "selectionArgs" to emptyArray<String>()
+                    ),
+                    MediaDataStoreFixtures.getTracksFromSelectedArtist(),
+                    DomainFixtures.getTracksFromSelectedArtist()
+                )
+            )
+        }
+        @JvmStatic
+        fun getMenuItemsData(): List<Array<Any?>> {
             return listOf(
                 arrayOf(
                     DomainFixtures.getArtistItems(),

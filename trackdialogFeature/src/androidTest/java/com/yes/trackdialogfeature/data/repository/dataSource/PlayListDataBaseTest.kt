@@ -4,9 +4,9 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
-import com.yes.trackdialogfeature.data.repository.PlayListDao
+import com.yes.trackdialogfeature.domain.repository.IPlayListDao
 import com.yes.trackdialogfeature.data.repository.entity.PlayListEntity
-import com.yes.trackdialogfeature.data.repository.entity.TrackEntity
+import com.yes.trackdialogfeature.domain.entity.Track
 import junit.framework.TestCase.assertEquals
 
 import org.junit.After
@@ -17,7 +17,7 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class PlayListDataBaseTest {
-    private lateinit var userDao: PlayListDao
+    private lateinit var userDao: IPlayListDao
     private lateinit var db: PlayListDataBase
 
     @Before
@@ -57,7 +57,7 @@ class PlayListDataBaseTest {
             0
         )
         val tracks = listOf(
-            TrackEntity(
+            Track(
                 null,
                 playlist.name,
                 "Dire Straits",

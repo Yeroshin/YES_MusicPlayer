@@ -14,6 +14,9 @@ object SharedFixtureGenerator {
         "Fountain", "Jungle", "Spectrum", "Harmony", "Mirage"
     )
     private const val artistsCount=2
+    fun getArtistsCount():Int{
+        return artistsCount
+    }
     private const val albumsCount= artistsCount*2
     private const val tracksCount= albumsCount*2
     private val artistsNames= generateMediaItemNames(artistsCount)
@@ -48,4 +51,5 @@ object SharedFixtureGenerator {
     fun getSelectedItem():Int{
         return selectedItem
     }
+
 }

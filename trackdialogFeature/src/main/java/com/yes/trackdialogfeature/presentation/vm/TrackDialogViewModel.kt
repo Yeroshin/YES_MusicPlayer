@@ -116,7 +116,7 @@ class TrackDialogViewModel(
                             .toMutableList()
                             .add(
                                 ItemUi(
-                                    0,
+                                    -1,
                                     "..",
                                     0,
                                     null,
@@ -127,7 +127,7 @@ class TrackDialogViewModel(
                     }
                     if (!menuStack.offer(menuUi)) {
                         setEffect {
-                            TrackDialogContract.Effect.UnknownException
+                            Effect.UnknownException
                         }
                         return@setState copy(
                             trackDialogState = TrackDialogContract.TrackDialogState.Idle

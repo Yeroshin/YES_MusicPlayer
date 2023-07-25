@@ -150,7 +150,7 @@ class TrackDialogViewModelTest {
         } returnsMany itemsDomainFixture.data
         coEvery {
             saveTracksToPlaylistUseCase(any())
-        } returns DomainResult.Success(true)
+        } returns DomainResult.Success(listOf())
         cut.setEvent(
             TrackDialogContract.Event.OnItemOkClicked(
                 itemsUiFixture.data

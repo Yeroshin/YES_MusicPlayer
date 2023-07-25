@@ -1,9 +1,9 @@
-package com.yes.trackdialogfeature.data.repository.entity
+package com.yes.trackdialogfeature.domain.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 @Entity(tableName = "tracks")
-data class TrackEntity(
+data class Track(
     @PrimaryKey(autoGenerate = true)
     val id: Long?,
     val playlistName: String,
