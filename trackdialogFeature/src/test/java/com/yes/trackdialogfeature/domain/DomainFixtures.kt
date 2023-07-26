@@ -156,9 +156,9 @@ object DomainFixtures {
     }
 
     fun getSelectedTracksItems(): List<Item> {
-        val selectedArtists = tracks.toMutableList()
+        val selectedArtists = artists.toMutableList()
         selectedArtists[selectedItem] = selectedArtists[selectedItem].copy(selected = true)
-        return tracks
+        return selectedArtists
     }
 
     fun getArtistsMenu(): Menu {

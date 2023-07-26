@@ -1,13 +1,15 @@
 package com.yes.trackdialogfeature.data.dataSource
 
 import com.example.shared_test.SharedFixtureGenerator
+import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
 import com.yes.trackdialogfeature.data.repository.entity.MediaDataStoreEntity
 import com.yes.trackdialogfeature.domain.DomainFixtures
+import com.yes.trackdialogfeature.domain.entity.Track
 import kotlin.random.Random
 
 object MediaDataStoreFixtures {
     private const val count = 5
-    private val selectedItem=SharedFixtureGenerator.getSelectedItem()
+    private val selectedItem = SharedFixtureGenerator.getSelectedItem()
     private val albums =
         SharedFixtureGenerator.generateMediaItemNames(count).map {
             MediaDataStoreEntity(
@@ -51,16 +53,18 @@ object MediaDataStoreFixtures {
     fun getArtists(): List<MediaDataStoreEntity> {
         return artists
     }
-    fun getTracksFromSelectedArtist():List<MediaDataStoreEntity>{
+
+    fun getTracksFromSelectedArtist(): List<MediaDataStoreEntity> {
         return tracksAudio.filter {
-            it.artist==artists[selectedItem].title
+            it.artist == artists[selectedItem].title
         }
     }
 
     fun getTracksMedia(): List<MediaDataStoreEntity> {
         return tracks
     }
-    private val tracksAudio=tracks.mapIndexed { index, element ->
+
+    private val tracksAudio = tracks.mapIndexed { index, element ->
         element.copy(
             element.title,
             artists[index].title,
@@ -70,10 +74,17 @@ object MediaDataStoreFixtures {
             Random.nextLong(4000000, 8000000)
         )
     }
+
     fun getTracksAudio(): List<MediaDataStoreEntity> {
         return tracksAudio
     }
-    fun getSelectedTracksAudio():List<MediaDataStoreEntity>{
-        return listOf( tracksAudio[selectedItem])
+
+    val mediaRepositoryMapper = MediaRepositoryMapper()
+    fun getSelectedTracksAudio(): List<Track> {
+        return listOf(
+            mediaRepositoryMapper.mapToTrack(
+                tracksAudio[selectedItem]
+            )
+        )
     }
 }

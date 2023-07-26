@@ -17,7 +17,7 @@ interface IPlayListDao {
     fun updatePlaylist(playlist: PlayListEntity)
 
     @Insert
-    fun saveTracks(tracks:List<Track>)
+    fun saveTracks(tracks:List<Track>):List<Long>
     @Query("SELECT * FROM tracks WHERE playlistName =:playlistName")
     fun getTracks(playlistName:String): List<Track>
 }

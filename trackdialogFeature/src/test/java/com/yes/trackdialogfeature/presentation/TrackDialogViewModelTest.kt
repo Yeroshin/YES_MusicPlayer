@@ -31,10 +31,6 @@ import java.util.*
 
 @ExtendWith(MockKExtension::class)
 class TrackDialogViewModelTest {
-    //junit4
-    /* @get:Rule
-     val mainCoroutineRule = CoroutineRule()*/
-    //junit5
 
     private val getMenuUseCase: GetMenuUseCase = mockk()
     private val saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase = mockk()
@@ -150,7 +146,7 @@ class TrackDialogViewModelTest {
         } returnsMany itemsDomainFixture.data
         coEvery {
             saveTracksToPlaylistUseCase(any())
-        } returns DomainResult.Success(listOf())
+        } returns DomainResult.Success(true)
         cut.setEvent(
             TrackDialogContract.Event.OnItemOkClicked(
                 itemsUiFixture.data

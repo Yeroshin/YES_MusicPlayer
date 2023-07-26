@@ -2,6 +2,7 @@ package com.yes.trackdialogfeature.domain.usecase
 
 import com.yes.trackdialogfeature.data.dataSource.MediaDataStoreFixtures
 import com.yes.trackdialogfeature.data.dataSource.PlayListDAOFixtures
+import com.yes.trackdialogfeature.data.dataSource.SharedPreferencesFixtures
 import com.yes.trackdialogfeature.data.repository.MediaRepositoryImpl
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase.Params
 import com.yes.trackdialogfeature.domain.repository.IPlayListDao
@@ -11,7 +12,9 @@ import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.repository.ISettingsRepository
 import io.mockk.MockKAnnotations
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -22,6 +25,7 @@ import org.junit.Assert.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
+
 @OptIn(ExperimentalCoroutinesApi::class)
 class SaveTracksToPlaylistUseCaseTest {
 
@@ -29,7 +33,7 @@ class SaveTracksToPlaylistUseCaseTest {
     private lateinit var cut: SaveTracksToPlaylistUseCase
     private val mediaRepositoryImpl: MediaRepositoryImpl = mockk()
     private val playListRepository: IPlayListDao = mockk()
-    private val settingsRepository:ISettingsRepository= mockk()
+    private val settingsRepository: ISettingsRepository = mockk()
 
     @BeforeEach
     fun setUp() = runTest {
@@ -47,14 +51,32 @@ class SaveTracksToPlaylistUseCaseTest {
     @MethodSource("runData")
     fun run(
         params: Params?,
-        expected:DomainResult<List<Long>>,
-        media:List<MediaDataStoreEntity>,
-        audio:List<Track>
-    ) = runTest{
+        expected: DomainResult<List<Long>>,
+        audio: List<Track>,
+        savedAudio: List<Track>
+    ) = runTest {
+        every {
+            settingsRepository.getCurrentPlayListName()
+        } returns SharedPreferencesFixtures.getPlayListName()
+
+        params?.let {
+            every {
+                mediaRepositoryImpl.getAudioItems(
+                    params.items[1].type,
+                    params.items[1].name
+                )
+            } returns audio
+        }
+        every {
+            playListRepository.saveTracks(savedAudio)
+        } returns listOf(1)
         val actual = cut(
             params
         )
         assert(expected == actual)
+        verify(exactly = 1) {
+            playListRepository.saveTracks(savedAudio)
+        }
     }
 
     companion object {
@@ -62,10 +84,14 @@ class SaveTracksToPlaylistUseCaseTest {
         fun runData(): List<Array<Any?>> {
             return listOf(
                 arrayOf(
-                    DomainFixtures.getSelectedTracksItems(),
-                    PlayListDAOFixtures.getSelectedTracks(),
+                    Params(DomainFixtures.getSelectedTracksItems()),
+                    DomainResult.Success(true),
                     MediaDataStoreFixtures.getSelectedTracksAudio(),
-                    PlayListDAOFixtures.getSelectedTracks()
+                    MediaDataStoreFixtures.getSelectedTracksAudio().map {
+                        it.copy(
+                            playlistName = SharedPreferencesFixtures.getPlayListName()
+                        )
+                    },
                 )
             )
         }
