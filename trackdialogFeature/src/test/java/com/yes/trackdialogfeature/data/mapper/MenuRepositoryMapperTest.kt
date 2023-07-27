@@ -1,6 +1,6 @@
 package com.yes.trackdialogfeature.data.mapper
 
-import com.yes.core.Fixture
+
 import com.yes.trackdialogfeature.data.dataSource.MenuDataStoreFixtures
 import com.yes.trackdialogfeature.data.repository.entity.MenuDataStoreEntity
 import com.yes.trackdialogfeature.domain.entity.Menu
@@ -15,22 +15,22 @@ internal class MenuRepositoryMapperTest {
     @ParameterizedTest
     @MethodSource("mapToMenuData")
     fun mapToMenu(
-        dataStoreEntityFixture: Fixture<MenuDataStoreEntity>,
-        expectedDomainFixture: Fixture<Menu>
+        dataStoreEntityFixture: MenuDataStoreEntity,
+        expectedDomainFixture: Menu
     ) {
-        val actual = cut.mapToMenu(dataStoreEntityFixture.data)
-        assert(actual == expectedDomainFixture.data)
+        val actual = cut.mapToMenu(dataStoreEntityFixture)
+        assert(actual == expectedDomainFixture)
     }
 
     @ParameterizedTest
     @MethodSource("mapToItemData")
     fun mapToItem(
-        dataStoreEntityFixture: Fixture<MenuDataStoreEntity>,
-        expectedDomainFixture: Fixture<Item>
+        dataStoreEntityFixture: MenuDataStoreEntity,
+        expectedDomainFixture: Item
     ) {
 
-        val actual = cut.mapToItem(dataStoreEntityFixture.data)
-        assert(actual == expectedDomainFixture.data)
+        val actual = cut.mapToItem(dataStoreEntityFixture)
+        assert(actual == expectedDomainFixture)
     }
 
     companion object {
@@ -38,29 +38,21 @@ internal class MenuRepositoryMapperTest {
         fun mapToItemData(): List<Array<Any?>> {
             return listOf(
                 arrayOf(
-                    Fixture(
-                        MenuDataStoreFixtures.getArtistsMenu()
-                    ),
-                    Fixture(
-                        Item(
-                            1,
-                            "artists",
-                            null,
-                            false
-                        )
+                    MenuDataStoreFixtures.getArtistsMenu(),
+                    Item(
+                        1,
+                        "artists",
+                        null,
+                        false
                     ),
                 ),
                 arrayOf(
-                    Fixture(
-                        MenuDataStoreFixtures.getArtistMenu()
-                    ),
-                    Fixture(
-                        Item(
-                            4,
-                            "",
-                            "artist",
-                            false
-                        )
+                    MenuDataStoreFixtures.getArtistMenu(),
+                    Item(
+                        4,
+                        "",
+                        "artist",
+                        false
                     ),
                 ),
             )
@@ -70,22 +62,10 @@ internal class MenuRepositoryMapperTest {
         fun mapToMenuData(): List<Array<Any?>> {
             return listOf(
                 arrayOf(
-                    Fixture(
-                        MenuDataStoreFixtures.getCategoriesMenu()
-                    ),
-                    Fixture(
-                        Menu(
-                            "categories",
-                            listOf()
-                        )
-                    )
-                ),
-                arrayOf(
-                    Fixture(
-                        MenuDataStoreFixtures.getArtistMenu()
-                    ),
-                    Fixture(
-                        null
+                    MenuDataStoreFixtures.getCategoriesMenu(),
+                    Menu(
+                        "categories",
+                        listOf()
                     )
                 ),
             )

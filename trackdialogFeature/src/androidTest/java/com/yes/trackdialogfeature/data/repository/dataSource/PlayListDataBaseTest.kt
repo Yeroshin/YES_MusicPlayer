@@ -69,7 +69,7 @@ class PlayListDataBaseTest {
             ),
         )
         userDao.saveTracks(tracks)
-        val retrievedPlaylist = userDao.getTracks(playlist.name).map { it.copy(id = null) }
-        assertEquals(playlist, retrievedPlaylist)
+        val retrievedTracks = userDao.getTracks(playlist.name).map { it.copy(id = null) }
+        assertEquals(playlist, retrievedTracks)
     }
 }

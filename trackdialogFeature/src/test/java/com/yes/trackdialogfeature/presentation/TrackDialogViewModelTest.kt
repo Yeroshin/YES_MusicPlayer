@@ -1,7 +1,6 @@
 package com.yes.trackdialogfeature.presentation
 
 import app.cash.turbine.test
-import com.yes.core.Fixture
 import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu

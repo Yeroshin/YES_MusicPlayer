@@ -6,7 +6,7 @@ import org.junit.After
 import org.junit.Before
 
 class MediaDataStoreTest {
-    var context: Context = InstrumentationRegistry.getInstrumentation().targetContext
+    private var context: Context = InstrumentationRegistry.getInstrumentation().targetContext
     private val cut=MediaDataStore(context)
     @Before
     fun setUp() {

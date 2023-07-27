@@ -49,6 +49,7 @@ class TrackDialogViewModel(
 
             is TrackDialogContract.Event.OnButtonOkClicked -> {
                 saveItems(event.items)
+                dismiss()
             }
 
             is TrackDialogContract.Event.OnButtonCancelClicked -> {
