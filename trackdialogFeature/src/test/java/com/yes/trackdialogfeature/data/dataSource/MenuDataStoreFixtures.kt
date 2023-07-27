@@ -37,24 +37,24 @@ object MenuDataStoreFixtures {
     )
 
     fun getCategoriesMenu(): MenuDataStoreEntity {
-        val menu = data.find { it.id == 0 }
+        val menu = data.find { it.menuId == 0 }
         return menu!!
     }
 
     fun getCategoryItems(): List<MenuDataStoreEntity> {
-        return data.filter { it.id in listOf(1, 2, 3) }
+        return data.filter { it.menuId in listOf(1, 2, 3) }
     }
 
     fun getArtistsMenu(): MenuDataStoreEntity {
-        return data.find { it.id == 1 }!!
+        return data.find { it.menuId == 1 }!!
     }
 
     fun getArtistMenu(): MenuDataStoreEntity {
-        return data.find { it.id == 4 }!!
+        return data.find { it.menuId == 4 }!!
     }
 
     fun getTrackMenu(): MenuDataStoreEntity {
-        return data.find { it.id == 6 }!!
+        return data.find { it.menuId == 6 }!!
     }
     fun getRootMenuId():Int{
         return 0

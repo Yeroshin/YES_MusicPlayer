@@ -36,7 +36,7 @@ class MenuRepositoryImpl(
 
     fun getChildItem(id: Int): Item? {
         val childId = menuDataStore.getItemsWithParentId(id).lastOrNull()
-            ?.id
+            ?.menuId
             ?:return null
         return menuRepositoryMapper.mapToItem(
             menuDataStore.getItemsWithParentId(childId).lastOrNull()?:return null

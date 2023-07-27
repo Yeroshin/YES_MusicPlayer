@@ -16,12 +16,12 @@ class UiMapper {
             menu.name,
             menu.children.map {
                 MenuUi.ItemUi(
-                    it.id,
+                    it.menuId,
                     it.name,
-                    map.getOrElse(it.id) { 1 },
+                    map.getOrElse(it.menuId) { 1 },
                     it.selected,
                     TrackDialogContract.Event.OnItemClicked(
-                        it.id,
+                        it.menuId,
                         it.name,
                     ),
                     onClick

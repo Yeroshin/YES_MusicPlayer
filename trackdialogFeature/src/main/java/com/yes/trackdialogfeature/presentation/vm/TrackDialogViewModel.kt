@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class TrackDialogViewModel(
-    private val getChildMenuUseCase: UseCase<GetMenuUseCase.Params, Menu>,
+    private val getMenuUseCase: UseCase<GetMenuUseCase.Params, Menu>,
     private val saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase,
     private val uiMapper: UiMapper,
     private val menuStack: ArrayDeque<MenuUi>,
@@ -47,11 +47,11 @@ class TrackDialogViewModel(
                 getParentMenu()
             }
 
-            is TrackDialogContract.Event.OnItemOkClicked -> {
+            is TrackDialogContract.Event.OnButtonOkClicked -> {
                 saveItems(event.items)
             }
 
-            is TrackDialogContract.Event.OnItemCancelClicked -> {
+            is TrackDialogContract.Event.OnButtonCancelClicked -> {
                 dismiss()
             }
         }
@@ -92,18 +92,22 @@ class TrackDialogViewModel(
         }
     }
 
-    private fun getChildMenu(id: Int, name: String) {
+    private fun getChildMenu(id: Int?, name: String) {
         viewModelScope.launch(Dispatchers.Main) {
             setState {
                 copy(
                     trackDialogState = TrackDialogContract.TrackDialogState.Loading
                 )
             }
-            val result = getChildMenuUseCase(
+            val params=id?.let {
                 GetMenuUseCase.Params(
-                    id,
+                    it,
                     name
                 )
+            }
+
+            val result = getMenuUseCase(
+                params
             )
             when (result) {
                 is DomainResult.Success -> setState {
@@ -114,7 +118,7 @@ class TrackDialogViewModel(
                     if (!menuStack.isEmpty()) {
                         menuUi.items
                             .toMutableList()
-                            .add(
+                            .add(0,
                                 ItemUi(
                                     -1,
                                     "..",

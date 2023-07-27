@@ -1,12 +1,10 @@
 package com.yes.trackdialogfeature.domain.usecase
 
 import com.yes.trackdialogfeature.data.dataSource.MediaDataStoreFixtures
-import com.yes.trackdialogfeature.data.dataSource.PlayListDAOFixtures
-import com.yes.trackdialogfeature.data.dataSource.SharedPreferencesFixtures
+import com.yes.trackdialogfeature.data.dataSource.SettingsFixtures
 import com.yes.trackdialogfeature.data.repository.MediaRepositoryImpl
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase.Params
 import com.yes.trackdialogfeature.domain.repository.IPlayListDao
-import com.yes.trackdialogfeature.data.repository.entity.MediaDataStoreEntity
 import com.yes.trackdialogfeature.domain.entity.Track
 import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.entity.DomainResult
@@ -57,7 +55,7 @@ class SaveTracksToPlaylistUseCaseTest {
     ) = runTest {
         every {
             settingsRepository.getCurrentPlayListName()
-        } returns SharedPreferencesFixtures.getPlayListName()
+        } returns SettingsFixtures.getPlayListName()
 
         params?.let {
             every {
@@ -89,7 +87,7 @@ class SaveTracksToPlaylistUseCaseTest {
                     MediaDataStoreFixtures.getSelectedTracksAudio(),
                     MediaDataStoreFixtures.getSelectedTracksAudio().map {
                         it.copy(
-                            playlistName = SharedPreferencesFixtures.getPlayListName()
+                            playlistName = SettingsFixtures.getPlayListName()
                         )
                     },
                 )

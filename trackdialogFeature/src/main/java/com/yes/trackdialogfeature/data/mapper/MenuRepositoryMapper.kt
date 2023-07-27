@@ -15,7 +15,7 @@ class MenuRepositoryMapper {
 
     fun mapToItem(menuDataStoreEntity: MenuDataStoreEntity): Item {
         return Item(
-            menuDataStoreEntity.id,
+            menuDataStoreEntity.menuId,
             menuDataStoreEntity.name ?: "",
             menuDataStoreEntity.type,
             false

@@ -13,7 +13,7 @@ internal class MenuDataStoreTest {
         val expected = MenuDataStoreFixtures.getCategoriesMenu()
         // act
         val actual = cut.getItem(
-            expected.id
+            expected.menuId
         )
         // Assert
         assert(actual==expected)

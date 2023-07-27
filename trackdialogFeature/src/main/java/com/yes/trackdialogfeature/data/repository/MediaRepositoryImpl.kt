@@ -23,7 +23,7 @@ class MediaRepositoryImpl(
                 arrayOf(selectionName)
             } ?: emptyArray(),
         ).map {
-            mediaRepositoryMapper.map(it).copy(id = id, type = type)
+            mediaRepositoryMapper.map(it).copy(menuId = id, type = type)
         }
     }
 

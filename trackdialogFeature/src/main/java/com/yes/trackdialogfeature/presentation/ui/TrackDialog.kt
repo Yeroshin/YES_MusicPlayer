@@ -77,7 +77,9 @@ class TrackDialog(
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
         setupRecyclerView()
-        viewModel.setEvent(TrackDialogContract.Event.OnItemClicked(0, ""))
+        viewModel.setEvent(
+            TrackDialogContract.Event.OnItemClicked()
+        )
         /*  val myTextView = R.id.recyclerViewContainer
           val y = com.yes.coreui.R.id.dialogTitle
           val t = 10*/
@@ -91,12 +93,12 @@ class TrackDialog(
         binder.recyclerViewContainer.recyclerView.adapter = adapter
         binder.buttons.cancelBtn.setOnClickListener {
             dismiss()
-            viewModel.setEvent(TrackDialogContract.Event.OnItemCancelClicked)
+            viewModel.setEvent(TrackDialogContract.Event.OnButtonCancelClicked)
         }
         binder.buttons.okBtn.setOnClickListener {
             dismiss()
             viewModel.setEvent(
-                TrackDialogContract.Event.OnItemOkClicked(
+                TrackDialogContract.Event.OnButtonOkClicked(
                     adapter.getItems()
                 )
             )

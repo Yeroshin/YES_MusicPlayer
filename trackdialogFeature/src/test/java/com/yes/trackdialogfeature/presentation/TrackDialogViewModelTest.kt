@@ -60,11 +60,11 @@ class TrackDialogViewModelTest {
     @ParameterizedTest
     @MethodSource("getParentMenuData")
     fun getParentMenu(
-        menuUiFixture: Fixture<MenuUi>
+        menuUiFixture: MenuUi
     ) = runTest {
         coEvery {
             menuStack.removeLast()
-        } returns menuUiFixture.data
+        } returns menuUiFixture
         // When
         cut.setEvent(TrackDialogContract.Event.OnItemBackClicked)
 
@@ -76,7 +76,7 @@ class TrackDialogViewModelTest {
             )
             assert(
                 awaitItem() == TrackDialogContract.State(
-                    TrackDialogContract.TrackDialogState.Success(menuUiFixture.data)
+                    TrackDialogContract.TrackDialogState.Success(menuUiFixture)
                 )
             )
             // cancelAndIgnoreRemainingEvents()
@@ -86,34 +86,30 @@ class TrackDialogViewModelTest {
     @ParameterizedTest
     @MethodSource("getChildMenuData")
     fun getChildMenu(
-        inputFixture: Fixture<Unit>,
-        menuDomainFixture: Fixture<Menu>,
-        menuUiFixture: Fixture<MenuUi>,
-        isEmptyFixture: Fixture<Boolean>,
-        offerFixture: Fixture<Boolean>,
-        stateFixture: Fixture<TrackDialogContract.State>
-        // stateFixture: Fixture<MenuUi>
+        inputFixture: TrackDialogContract.Event,
+        menuDomainFixture: Menu,
+        menuUiFixture: MenuUi,
+        isEmptyFixture: Boolean,
+        offerFixture: Boolean,
+        stateFixture: TrackDialogContract.State
     ) = runTest {
 
-        val menu = DomainFixtures.getCategoriesMenu()
+
         coEvery {
             getMenuUseCase(any())
-        } returns DomainResult.Success(menu)
+        } returns DomainResult.Success(menuDomainFixture)
         coEvery {
             uiMapper.map(any(), any())
-        } returns menuUiFixture.data
+        } returns menuUiFixture
         coEvery {
             menuStack.isEmpty()
-        } returns isEmptyFixture.data
+        } returns isEmptyFixture
         coEvery {
             menuStack.offer(any())
-        } returns offerFixture.data
+        } returns offerFixture
         // When
         cut.setEvent(
-            TrackDialogContract.Event.OnItemClicked(
-                0,
-                "",
-            )
+            inputFixture
         )
 
         cut.uiState.test {
@@ -128,7 +124,7 @@ class TrackDialogViewModelTest {
                 )
             )
             assert(
-                awaitItem() == stateFixture.data
+                awaitItem() == stateFixture
             )
 
             cancelAndIgnoreRemainingEvents()
@@ -138,18 +134,18 @@ class TrackDialogViewModelTest {
     @ParameterizedTest
     @MethodSource("saveItemsData")
     fun saveItems(
-        itemsUiFixture: Fixture<List<MenuUi.ItemUi>>,
-        itemsDomainFixture: Fixture<List<Menu.Item>>
+        itemsUiFixture: List<MenuUi.ItemUi>,
+        itemsDomainFixture: List<Menu.Item>
     ) = runTest {
         every {
             uiMapper.map(any())
-        } returnsMany itemsDomainFixture.data
+        } returnsMany itemsDomainFixture
         coEvery {
             saveTracksToPlaylistUseCase(any())
         } returns DomainResult.Success(true)
         cut.setEvent(
-            TrackDialogContract.Event.OnItemOkClicked(
-                itemsUiFixture.data
+            TrackDialogContract.Event.OnButtonOkClicked(
+                itemsUiFixture
             )
         )
 
@@ -167,14 +163,12 @@ class TrackDialogViewModelTest {
             coVerify(exactly = 1) {
                 saveTracksToPlaylistUseCase(
                     SaveTracksToPlaylistUseCase.Params(
-                        itemsDomainFixture.data
+                        itemsDomainFixture
                     )
                 )
             }
             cancelAndIgnoreRemainingEvents()
         }
-
-
     }
 
     companion object {
@@ -182,24 +176,20 @@ class TrackDialogViewModelTest {
         fun saveItemsData(): List<Array<Any?>> {
             return listOf(
                 arrayOf(
-                    Fixture(
-                        PresentationFixtures.getCategoriesMenu().items.mapIndexed { index, item ->
-                            if (index == 1) {
-                                item.copy(selected = true)
-                            } else {
-                                item
-                            }
+                    PresentationFixtures.getCategoriesMenu().items.mapIndexed { index, item ->
+                        if (index == 1) {
+                            item.copy(selected = true)
+                        } else {
+                            item
                         }
-                    ),
-                    Fixture(
-                        DomainFixtures.getCategoryItems().mapIndexed { index, item ->
-                            if (index == 1) {
-                                item.copy(selected = true)
-                            } else {
-                                item
-                            }
+                    },
+                    DomainFixtures.getCategoryItems().mapIndexed { index, item ->
+                        if (index == 1) {
+                            item.copy(selected = true)
+                        } else {
+                            item
                         }
-                    ),
+                    },
                 )
             )
         }
@@ -208,43 +198,25 @@ class TrackDialogViewModelTest {
         fun getChildMenuData(): List<Array<Any?>> {
             return listOf(
                 arrayOf(
-                    Fixture(
-
-                        Unit
-                    ),
-                    Fixture(
-
-                        DomainFixtures.getCategoriesMenu()
-                    ),
-                    Fixture(
-
-                        PresentationFixtures.getCategoriesMenu()
-                    ),
-                    Fixture(
-                        true
-                    ),
-                    Fixture(
-                        true
-                    ),
-                    Fixture(
-                        TrackDialogContract.State(
-                            TrackDialogContract.TrackDialogState.Success(
-                                PresentationFixtures.getCategoriesMenu()
-                            )
+                    TrackDialogContract.Event.OnItemClicked(),
+                    DomainFixtures.getCategoriesMenu(),
+                    PresentationFixtures.getCategoriesMenu(),
+                    true,
+                    true,
+                    TrackDialogContract.State(
+                        TrackDialogContract.TrackDialogState.Success(
+                            PresentationFixtures.getCategoriesMenu()
                         )
                     ),
                 ),
-
-                )
+            )
         }
 
         @JvmStatic
         fun getParentMenuData(): List<Array<Any?>> {
             return listOf(
                 arrayOf(
-                    Fixture(
-                        PresentationFixtures.getCategoriesMenu()
-                    )
+                    PresentationFixtures.getCategoriesMenu()
                 )
             )
         }

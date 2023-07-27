@@ -96,10 +96,7 @@ object DomainFixtures {
     }
 
     fun getCategoriesMenu(): Menu {
-        val menu = dataResult.find { it.name == "categories" }?.copy()
-        menu!!.children.toMutableList().addAll(categoryItems)
-        return menu
-
+        return dataResult.find { it.name == "categories" }!!.copy(children = categoryItems)
     }
 
     fun getCategoryItems(): List<Item> {

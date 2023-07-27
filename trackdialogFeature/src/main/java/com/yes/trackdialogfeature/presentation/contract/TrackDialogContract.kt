@@ -7,10 +7,10 @@ import com.yes.trackdialogfeature.presentation.model.MenuUi
 
 class TrackDialogContract {
     sealed class Event : UiEvent {
-        data class OnItemClicked(val id:Int,val name :String) : Event()
+        data class OnItemClicked(val id:Int?=null,val name :String="") : Event()
         object OnItemBackClicked : Event()
-        object OnItemCancelClicked : Event()
-        data class OnItemOkClicked(val items:List<MenuUi.ItemUi>) : Event()
+        object OnButtonCancelClicked : Event()
+        data class OnButtonOkClicked(val items:List<MenuUi.ItemUi>) : Event()
     }
 
     data class State(

@@ -69,7 +69,7 @@ internal class GetMenuUseCaseTest {
                         currentItem?.let {
                             coEvery {
                                 mediaRepositoryImpl.getMenuItems(
-                                    childPrimaryItem.id,
+                                    childPrimaryItem.menuId,
                                     childPrimaryItemType,
                                     currentItem.type,
                                     params.name
@@ -117,7 +117,7 @@ internal class GetMenuUseCaseTest {
                  ),
                  arrayOf(
                      Params(
-                         DomainFixtures.getArtistsItem().id,
+                         DomainFixtures.getArtistsItem().menuId,
                          DomainFixtures.getArtistsItem().name
                      ),
                      DomainResult.Error(DomainFixtures.getUnknownError()),
@@ -128,7 +128,7 @@ internal class GetMenuUseCaseTest {
                  ),
                   arrayOf(
                       Params(
-                          DomainFixtures.getArtistsItem().id,
+                          DomainFixtures.getArtistsItem().menuId,
                           DomainFixtures.getArtistsItem().name
                       ),
                       DomainResult.Success(
@@ -141,7 +141,7 @@ internal class GetMenuUseCaseTest {
                   ),
                   arrayOf(
                       Params(
-                          DomainFixtures.getSecondArtistItem().id,
+                          DomainFixtures.getSecondArtistItem().menuId,
                           DomainFixtures.getSecondArtistItem().name
                       ),
                       DomainResult.Success(
@@ -154,7 +154,7 @@ internal class GetMenuUseCaseTest {
                   ),
                 arrayOf(
                     Params(
-                        DomainFixtures.getSelectedTrackItem().id,
+                        DomainFixtures.getSelectedTrackItem().menuId,
                         DomainFixtures.getSelectedTrackItem().name
                     ),
                     DomainResult.Error(

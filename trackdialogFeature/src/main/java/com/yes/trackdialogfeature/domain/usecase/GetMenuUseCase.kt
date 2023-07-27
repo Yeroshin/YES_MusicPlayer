@@ -19,7 +19,7 @@ class GetMenuUseCase(
             val childPrimaryItem = menuRepository.getChildItem(params.id)
                 ?: return DomainResult.Error(MenuException.Empty)
             val childItems = mediaRepository.getMenuItems(
-                childPrimaryItem.id,
+                childPrimaryItem.menuId,
                 childPrimaryItem.type ?: return DomainResult.Error(DomainResult.UnknownException),
                 currentItem.type,
                 params.name
