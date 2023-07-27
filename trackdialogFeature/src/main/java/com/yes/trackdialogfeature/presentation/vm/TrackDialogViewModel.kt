@@ -65,7 +65,7 @@ class TrackDialogViewModel(
         }
     }
 
-    private fun saveItems(items:List<ItemUi>) {
+    private fun saveItems(items: List<ItemUi>) {
         viewModelScope.launch(Dispatchers.Main) {
             saveTracksToPlaylistUseCase(
                 SaveTracksToPlaylistUseCase.Params(
@@ -84,11 +84,28 @@ class TrackDialogViewModel(
         viewModelScope.launch(Dispatchers.Main) {
             setState {
                 copy(
-                    trackDialogState = TrackDialogContract.TrackDialogState.Success(
-                        menuStack.removeLast()
-                    )
+                    trackDialogState = TrackDialogContract.TrackDialogState.Loading
                 )
             }
+            if (menuStack.isEmpty()) {
+                setState {
+                    copy(
+                        trackDialogState = TrackDialogContract.TrackDialogState.Idle
+                    )
+                }
+                setEffect {
+                    Effect.UnknownException
+                }
+            } else {
+                setState {
+                    copy(
+                        trackDialogState = TrackDialogContract.TrackDialogState.Success(
+                            menuStack.removeLast()
+                        )
+                    )
+                }
+            }
+
         }
     }
 
@@ -99,7 +116,7 @@ class TrackDialogViewModel(
                     trackDialogState = TrackDialogContract.TrackDialogState.Loading
                 )
             }
-            val params=id?.let {
+            val params = id?.let {
                 GetMenuUseCase.Params(
                     it,
                     name
@@ -118,7 +135,8 @@ class TrackDialogViewModel(
                     if (!menuStack.isEmpty()) {
                         menuUi.items
                             .toMutableList()
-                            .add(0,
+                            .add(
+                                0,
                                 ItemUi(
                                     -1,
                                     "..",
@@ -133,15 +151,14 @@ class TrackDialogViewModel(
                         setEffect {
                             Effect.UnknownException
                         }
-                        return@setState copy(
+                        copy(
                             trackDialogState = TrackDialogContract.TrackDialogState.Idle
                         )
+                    } else {
+                        copy(
+                            trackDialogState = TrackDialogContract.TrackDialogState.Success(menuUi)
+                        )
                     }
-
-                    copy(
-                        trackDialogState = TrackDialogContract.TrackDialogState.Success(menuUi)
-                    )
-
                 }
 
                 is DomainResult.Error -> {

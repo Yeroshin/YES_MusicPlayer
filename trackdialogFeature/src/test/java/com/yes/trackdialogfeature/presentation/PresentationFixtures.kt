@@ -2,11 +2,12 @@ package com.yes.trackdialogfeature.presentation
 
 import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
+import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.model.MenuUi.ItemUi
 
-object  PresentationFixtures {
-    val onClick: (TrackDialogContract.Event) -> Unit ={}
+object PresentationFixtures {
+    val onClick: (TrackDialogContract.Event) -> Unit = {}
     fun getCategoriesMenu(): MenuUi {
 
         return MenuUi(
@@ -26,7 +27,7 @@ object  PresentationFixtures {
                 ItemUi(
                     2,
                     "albums",
-                1,
+                    1,
                     false,
                     TrackDialogContract.Event.OnItemClicked(
                         1,
@@ -48,33 +49,28 @@ object  PresentationFixtures {
             )
         )
     }
-    //TODO
-  /*  fun getArtistMenu():MenuUi{
-        val artistMenuDomain=DomainFixtures.getArtistsMenu()
-        val artistMenuItemsUi=artistMenuDomain.children.map {
+
+    val uiMapper = UiMapper()
+    fun getArtistMenu(): MenuUi {
+        return uiMapper.map(
+            DomainFixtures.getArtistsMenu(),
+            onClick
+        )
+    }
+
+    fun getArtistMenuWithBackItem(): MenuUi {
+        val menu = getArtistMenu()
+        menu.items.toMutableList().add(
+            0,
             ItemUi(
-                it.id,
-                it.name,
-0,
-                false,
-                onClick,
-
-
-            )
-        }
-        return MenuUi(
-            "artists",
-            listOf(
-
+                -1,
+                "..",
+                0,
+                null,
+                TrackDialogContract.Event.OnItemBackClicked,
+                onClick
             )
         )
-    }*/
-    fun getArtistMenuWithBackItem():MenuUi{
-        return MenuUi(
-            "artists",
-            listOf(
-
-            )
-        )
+        return menu
     }
 }
