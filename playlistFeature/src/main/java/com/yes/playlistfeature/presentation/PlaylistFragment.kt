@@ -6,14 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
-import com.yes.playlistfeature.R
 import com.yes.playlistfeature.databinding.FragmentPlaylistBinding
-import com.yes.playlistfeature.di.components.DaggerPlayListComponent
-
-import com.yes.playlistfeature.di.module.PlayListModule
-
-import javax.inject.Inject
 
 
 class PlaylistFragment : Fragment() {

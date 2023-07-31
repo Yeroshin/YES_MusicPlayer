@@ -16,8 +16,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.yes.musicplayer.R
 import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.DaggerMainActivityComponent
-
 import com.yes.musicplayer.di.module.MainActivityModule
+
 import com.yes.trackdialogfeature.data.repository.dataSource.MediaDataStore
 import javax.inject.Inject
 

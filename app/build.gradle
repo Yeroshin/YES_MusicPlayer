@@ -1,8 +1,10 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
-   // id "com.google.devtools.ksp"
+   // id 'kotlin-kapt'
+    alias(libs.plugins.kotlinKapt)
+  //  alias(libs.plugins.devtoolsKsp)
+//    id "com.google.devtools.ksp"
 }
 /*plugins {
     alias(libs.plugins.androidApplication)
@@ -89,9 +91,9 @@ dependencies {
     // JetPack
 
     //Dagger/////////////////////
-    def dagger_version = '2.45'
-    implementation "com.google.dagger:dagger:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+
+    implementation libs.dagger
+    kapt libs.dagger.compiler
     //  kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0" //ImportantSHIT!!!
     //tmp
     // debugImplementation "androidx.test:monitor:1.6.1"

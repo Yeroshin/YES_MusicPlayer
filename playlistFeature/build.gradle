@@ -1,8 +1,11 @@
 plugins {
     id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
-
+   // alias(libs.plugins.androidLibrary)
+   // id 'com.android.application'
+   // id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.kotlinAndroid)
+  //  alias(libs.plugins.kotlinKapt)
+   // alias(libs.plugins.devtoolsKsp)
 }
 
 android {
@@ -36,23 +39,26 @@ android {
 }
 
 dependencies {
-    androidTestImplementation 'androidx.multidex:multidex:2.0.1'
+   // androidTestImplementation 'androidx.multidex:multidex:2.0.1'
 
     implementation project(path: ':core')
     implementation project(path: ':coreUI')
     implementation project(path: ':trackdialogFeature')
 
 
-    implementation 'androidx.core:core-ktx:1.9.0'
+   // implementation 'androidx.core:core-ktx:1.9.0'
     //implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
-    //test
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    //Espresso
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation (libs.androidx.espresso.contrib)
     //Dagger/////////////////////
     def dagger_version = '2.45'
     implementation "com.google.dagger:dagger:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
+    ////////////////
+   /* implementation libs.dagger
+    ksp libs.dagger.compiler*/
+    /////////////////////////
     // kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0" //ImportantSHIT!!!
 }

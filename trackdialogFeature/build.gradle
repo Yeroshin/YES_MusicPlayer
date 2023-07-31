@@ -1,10 +1,12 @@
 plugins {
-    //id 'com.android.library'
-    id 'com.android.application'
+    id 'com.android.library'
+   // alias(libs.plugins.androidLibrary)
+   // id 'com.android.application'
   //  alias(libs.plugins.androidLibrary)
-   // id 'org.jetbrains.kotlin.android'
-    alias(libs.plugins.kotlinAndroid)
+    id 'org.jetbrains.kotlin.android'
+  //  alias(libs.plugins.kotlinAndroid)
    // id 'kotlin-kapt'
+   // alias(libs.plugins.kotlinKapt)
     alias(libs.plugins.devtoolsKsp)
    // id 'kotlin-android'
 //id "com.google.devtools.ksp"
@@ -77,12 +79,11 @@ dependencies {
     testImplementation project(path: ':shared-test')
     androidTestImplementation project(path: ':shared-test')
     //room
-    def room_version = "2.5.2"
     implementation libs.androidx.room.runtime
-    ksp "androidx.room:room-compiler:$room_version"
+    annotationProcessor libs.androidx.room.compiler
 
     // To use Kotlin annotation processing tool (kapt)
-   /* kapt "androidx.room:room-compiler:$room_version"*//
+   /* kapt "androidx.room:room-compiler:$room_version"*/
 
     //////////////
 
@@ -102,7 +103,7 @@ dependencies {
     //Dagger/////////////////////
     def dagger_version = '2.45'
     implementation libs.dagger
-    ksp libs.dagger.compiler
+    annotationProcessor libs.dagger.compiler
     //  kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0" //ImportantSHIT!!!
 
     //testJunit4
@@ -150,10 +151,10 @@ dependencies {
     testImplementation libs.kotlinx.coroutines.test
     androidTestImplementation libs.kotlinx.coroutines.test
     //Espresso
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation (libs.androidx.espresso.contrib)
-    androidTestImplementation(libs.androidx.runner)
-    androidTestImplementation(libs.androidx.rules)
+    androidTestImplementation libs.espresso.core
+    androidTestImplementation libs.androidx.espresso.contrib
+    androidTestImplementation libs.androidx.runner
+    androidTestImplementation libs.androidx.rules
   //  androidTestImplementation (libs.hamcrest.library)
 
    // testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
