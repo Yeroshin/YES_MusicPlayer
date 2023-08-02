@@ -7,7 +7,9 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,35 +18,45 @@ import com.yes.coreui.BaseDialog
 import com.yes.trackdialogfeature.R
 import com.yes.trackdialogfeature.api.Dependency
 import com.yes.trackdialogfeature.databinding.TrackDialogBinding
+import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
+import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
+import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
+import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import kotlinx.coroutines.launch
+import java.util.ArrayDeque
 
 
 class TrackDialog(
-    dependency: Dependency
+    dependency: TrackDialogDependency
 ) : BaseDialog() {
     private val binder by lazy {
         binding as TrackDialogBinding
     }
     override val layout: Int = R.layout.track_dialog
-    private val trackDialogDependency = dependency as TrackDialogDependency
+
 //val t=R.layout.
     ///////////////////////////
 
     // private val viewModelFactory: ViewModelProvider.Factory=trackDialogDependency.viewModelFactory
-    private val adapter: TrackDialogAdapter = trackDialogDependency.adapter
+    private val adapter: TrackDialogAdapter = dependency.adapter
 
     ///////////////////////////
     /* @Inject
      lateinit var viewModelFactory: TrackDialogViewModel.Factory*/
-    /*  private val viewModel: TrackDialogViewModel by viewModels {
-          TrackDialogViewModel.Factory(
-              trackDialogDependency.getChildMenuUseCase,
-              trackDialogDependency.menuUiDomainMapper
+     /* private val viewModel: TrackDialogViewModel by viewModels {
+        dependency.factory(
+              dependency.getMenuUseCase,
+              dependency.saveTracksToPlaylistUseCase,
+              dependency.uiMapper,
+              dependency.menuStack,
           )
       }*/
-    private val viewModel = trackDialogDependency.viewModel
+    private val viewModel: TrackDialogViewModel by viewModels {
+        dependency.factory
+    }
+ //   private val viewModel = dependency.viewModel
 
     /*  @Inject
       lateinit var adapter: TrackDialogAdapter*/
@@ -172,9 +184,13 @@ class TrackDialog(
     }
 
     class TrackDialogDependency(
+        val factory: ViewModelProvider.Factory,
+        val adapter: TrackDialogAdapter
+    )
+   /* class TrackDialogDependency(
         val viewModel: IBaseViewModel<TrackDialogContract.Event, TrackDialogContract.State, TrackDialogContract.Effect>,
         val adapter: TrackDialogAdapter
-    ) : Dependency
+    )*/
 
 }
 

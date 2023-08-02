@@ -1,36 +1,61 @@
 package com.yes.trackdialogfeature
 
 
-import android.view.View
-import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragment
-import androidx.recyclerview.widget.RecyclerView
-import androidx.test.espresso.matcher.BoundedMatcher
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.shared_test.UiFixturesGenerator
-
+import com.yes.core.presentation.BaseViewModel
 import com.yes.core.presentation.IBaseViewModel
-
+import com.yes.trackdialogfeature.api.Dependency
+import com.yes.trackdialogfeature.domain.entity.Menu
+import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
+import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase
+import com.yes.trackdialogfeature.domain.usecase.UseCase
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
+import com.yes.trackdialogfeature.presentation.mapper.UiMapper
+import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 import com.yes.trackdialogfeature.presentation.ui.TrackDialogAdapter
+import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
+import io.mockk.MockKAnnotations
+import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.junit.Before
 import org.junit.Test
+import java.util.ArrayDeque
 
 
 class TrackDialogTest {
     class TestViewModel(
-
-    ) : IBaseViewModel<TrackDialogContract.Event, TrackDialogContract.State, TrackDialogContract.Effect> {
+        getMenuUseCase: UseCase<GetMenuUseCase.Params, Menu>,
+        saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase,
+        uiMapper: UiMapper,
+        menuStack: ArrayDeque<MenuUi>,
+        ) : TrackDialogViewModel(
+        getMenuUseCase,
+        saveTracksToPlaylistUseCase,
+        uiMapper,
+        menuStack,
+    ) {
 
         override val effect: Flow<TrackDialogContract.Effect> = flow {}
+        override fun handleEvent(event: TrackDialogContract.Event) {
+            TODO("Not yet implemented")
+        }
+
+        override fun createInitialState(): TrackDialogContract.State {
+            return TrackDialogContract.State(
+                TrackDialogContract.TrackDialogState.Idle
+            )
+        }
+
         private val _uiState: MutableStateFlow<TrackDialogContract.State> = MutableStateFlow(
             TrackDialogContract.State(
                 TrackDialogContract.TrackDialogState.Idle
@@ -57,12 +82,46 @@ class TrackDialogTest {
         }
     }
 
-    val viewModel = TestViewModel()
+    private val viewModel = TestViewModel(
+        mockk< UseCase<GetMenuUseCase.Params, Menu>>(),
+    mockk< SaveTracksToPlaylistUseCase>(),
+    mockk< UiMapper>(),
+    mockk< ArrayDeque<MenuUi>>()
+    )
+
+    class MockViewModelFactory(private val viewModel: TestViewModel) : ViewModelProvider.Factory {
+
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            @Suppress("UNCHECKED_CAST")
+            return viewModel as T
+            /* if (modelClass.isAssignableFrom(TestViewModel::class.java)) {
+                 return viewModel  as T
+             }else{
+                 throw IllegalArgumentException(" lol Unknown ViewModel class")
+             }*/
+
+        }
+    }
+
     private val adapter: TrackDialogAdapter = TrackDialogAdapter()
+    private val factory = MockViewModelFactory(viewModel)
     private val dependency = TrackDialog.TrackDialogDependency(
-        viewModel,
+        factory,
         adapter
     )
+
+    class MockFragmentFactoryImpl(
+        private val dep: TrackDialog.TrackDialogDependency
+    ) : FragmentFactory() {
+
+        override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
+            return when (loadFragmentClass(classLoader, className)) {
+                TrackDialog::class.java -> TrackDialog(dep)
+                else -> super.instantiate(classLoader, className)
+            }
+        }
+    }
+
     private val trackDialogFactory = MockFragmentFactoryImpl(
         dependency
     )
@@ -70,7 +129,7 @@ class TrackDialogTest {
 
     @Before
     fun setUp() {
-        //  MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
+          MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
 
         scenario = launchFragment(
             factory = trackDialogFactory
@@ -82,7 +141,6 @@ class TrackDialogTest {
     fun onInitShowsTrackDialogStateIdle() {
         scenario.onFragment { fragment ->
             assert(fragment.requireDialog().isShowing)
-
         }
         trackDialog {
             matchTitleHasNoText()
@@ -94,6 +152,7 @@ class TrackDialogTest {
                 TrackDialogContract.TrackDialogState.Loading
             )
         )
+
         trackDialog {
             matchProgressBarDisplayed()
         }
@@ -101,7 +160,7 @@ class TrackDialogTest {
 
     @Test
     fun loading() {
-        scenario.onFragment { fragment ->
+        scenario.onFragment {
             viewModel.pushEvent(
                 TrackDialogContract.State(
                     TrackDialogContract.TrackDialogState.Loading
@@ -117,7 +176,7 @@ class TrackDialogTest {
 
     @Test
     fun dataSuccess() {
-        scenario.onFragment { fragment ->
+        scenario.onFragment {
             viewModel.pushEvent(
                 TrackDialogContract.State(
                     TrackDialogContract.TrackDialogState.Loading
@@ -143,6 +202,7 @@ class TrackDialogTest {
             )
         }
 
+
         //////////////////////worked
         /*    onView(withId(com.yes.coreui.R.id.recyclerView)).perform(
                 scrollToPosition<TrackDialogAdapter.TrackHolder>(
@@ -160,21 +220,21 @@ class TrackDialogTest {
         //////////////////////////////
     }
 
-    private fun atPosition(position: Int, targetViewId: Int, expectedText: String): Matcher<View> {
-        return object : BoundedMatcher<View, RecyclerView>(RecyclerView::class.java) {
-            override fun describeTo(description: Description) {
-                //description.appendText("has item at position $position: ")
+    /* private fun atPosition(position: Int, targetViewId: Int, expectedText: String): Matcher<View> {
+         return object : BoundedMatcher<View, RecyclerView>(RecyclerView::class.java) {
+             override fun describeTo(description: Description) {
+                 //description.appendText("has item at position $position: ")
 
-            }
+             }
 
-            override fun matchesSafely(recyclerView: RecyclerView): Boolean {
-                val viewHolder = recyclerView.findViewHolderForAdapterPosition(position)
-                val targetView = viewHolder?.itemView?.findViewById<TextView>(targetViewId)
+             override fun matchesSafely(recyclerView: RecyclerView): Boolean {
+                 val viewHolder = recyclerView.findViewHolderForAdapterPosition(position)
+                 val targetView = viewHolder?.itemView?.findViewById<TextView>(targetViewId)
 
-                return targetView?.text == expectedText
-            }
-        }
-    }
+                 return targetView?.text == expectedText
+             }
+         }
+     }*/
     /*
     private fun atPosition(position: Int, itemMatcher: Matcher<View>, expectedText: String?): Matcher<View> {
         checkNotNull(itemMatcher)

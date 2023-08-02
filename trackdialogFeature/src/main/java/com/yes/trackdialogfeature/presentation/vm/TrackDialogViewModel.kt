@@ -22,7 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
-class TrackDialogViewModel(
+open class TrackDialogViewModel(
     private val getMenuUseCase: UseCase<GetMenuUseCase.Params, Menu>,
     private val saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase,
     private val uiMapper: UiMapper,
