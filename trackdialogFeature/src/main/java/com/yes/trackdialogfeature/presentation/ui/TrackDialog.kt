@@ -13,19 +13,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.yes.core.presentation.IBaseViewModel
 import com.yes.coreui.BaseDialog
 import com.yes.trackdialogfeature.R
-import com.yes.trackdialogfeature.api.Dependency
 import com.yes.trackdialogfeature.databinding.TrackDialogBinding
-import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
-import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
-import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import kotlinx.coroutines.launch
-import java.util.ArrayDeque
 
 
 class TrackDialog(
@@ -35,53 +29,18 @@ class TrackDialog(
         binding as TrackDialogBinding
     }
     override val layout: Int = R.layout.track_dialog
-
-//val t=R.layout.
-    ///////////////////////////
-
-    // private val viewModelFactory: ViewModelProvider.Factory=trackDialogDependency.viewModelFactory
-    private val adapter: TrackDialogAdapter = dependency.adapter
-
-    ///////////////////////////
-    /* @Inject
-     lateinit var viewModelFactory: TrackDialogViewModel.Factory*/
-     /* private val viewModel: TrackDialogViewModel by viewModels {
-        dependency.factory(
-              dependency.getMenuUseCase,
-              dependency.saveTracksToPlaylistUseCase,
-              dependency.uiMapper,
-              dependency.menuStack,
-          )
-      }*/
+    private val adapter: TrackDialogAdapter = TrackDialogAdapter()
     private val viewModel: TrackDialogViewModel by viewModels {
         dependency.factory
     }
- //   private val viewModel = dependency.viewModel
-
-    /*  @Inject
-      lateinit var adapter: TrackDialogAdapter*/
-    //  override var layout: Int = R.layout.track_dialog
-    /* override fun onAttach(context: Context) {
-         super.onAttach(context)
-        /* DaggerTrackDialogComponent.builder()
-             .trackDialogModule(TrackDialogModule(getContext() as Activity))
-             .build()
-             .inject(this)*/
-
-     }*/
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        //_binding = TrackDialogBinding.inflate(inflater)
         binding = TrackDialogBinding.inflate(inflater)
         super.onCreateView(inflater, container, savedInstanceState)
-        /////////////////////
-        // viewModel = ViewModelProvider(this, viewModelFactory)[TrackDialogViewModel::class.java]
-        // val a=viewModel.test(1)
-        /////////////////////
         return binding.root
     }
 
@@ -128,6 +87,7 @@ class TrackDialog(
                         is TrackDialogContract.Effect.UnknownException -> {
                             showError(com.yes.coreui.R.string.UnknownException)
                         }
+
                     }
                 }
             }
@@ -185,12 +145,11 @@ class TrackDialog(
 
     class TrackDialogDependency(
         val factory: ViewModelProvider.Factory,
-        val adapter: TrackDialogAdapter
     )
-   /* class TrackDialogDependency(
-        val viewModel: IBaseViewModel<TrackDialogContract.Event, TrackDialogContract.State, TrackDialogContract.Effect>,
-        val adapter: TrackDialogAdapter
-    )*/
+    /* class TrackDialogDependency(
+         val viewModel: IBaseViewModel<TrackDialogContract.Event, TrackDialogContract.State, TrackDialogContract.Effect>,
+         val adapter: TrackDialogAdapter
+     )*/
 
 }
 

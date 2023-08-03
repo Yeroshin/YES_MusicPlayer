@@ -103,11 +103,10 @@ class TrackDialogTest {
         }
     }
 
-    private val adapter: TrackDialogAdapter = TrackDialogAdapter()
+
     private val factory = MockViewModelFactory(viewModel)
     private val dependency = TrackDialog.TrackDialogDependency(
-        factory,
-        adapter
+        factory
     )
 
     class MockFragmentFactoryImpl(

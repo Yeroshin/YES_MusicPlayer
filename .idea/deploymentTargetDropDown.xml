@@ -5,6 +5,15 @@
       <entry key="PlayListDataBaseTest">
         <State />
       </entry>
+      <entry key="TrackDialogTest">
+        <State />
+      </entry>
+      <entry key="onInitShowsTrackDialogStateIdle()">
+        <State />
+      </entry>
+      <entry key="onInitShowsTrackDialogStateIdle() (1)">
+        <State />
+      </entry>
       <entry key="playlistFeature">
         <State />
       </entry>

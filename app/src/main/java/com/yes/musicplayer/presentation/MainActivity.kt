@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 permissionsDenied.add(permissions[i])
                 if (ActivityCompat.shouldShowRequestPermissionRationale(
-                        (this as Activity)!!,
+                        (this as Activity),
                         permissions[i]
                     )
                 ) {
@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
         requestCode: Int,
         permissions: Array<String>, grantResults: IntArray
     ) {
-        super.onRequestPermissionsResult(requestCode, permissions!!, grantResults)
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         var granted = 0
         for (i in grantResults.indices) {
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {

@@ -8,8 +8,8 @@ import com.yes.trackdialogfeature.presentation.model.MenuUi
 class TrackDialogContract {
     sealed class Event : UiEvent {
         data class OnItemClicked(val id:Int?=null,val name :String="") : Event()
-        object OnItemBackClicked : Event()
-        object OnButtonCancelClicked : Event()
+        data object OnItemBackClicked : Event()
+        data object OnButtonCancelClicked : Event()
         data class OnButtonOkClicked(val items:List<MenuUi.ItemUi>) : Event()
     }
 
@@ -20,9 +20,9 @@ class TrackDialogContract {
 
 
     sealed class TrackDialogState {
-        object Idle : TrackDialogState()
-        object Dismiss:TrackDialogState()
-        object Loading : TrackDialogState()
+        data object Idle : TrackDialogState()
+        data object Dismiss:TrackDialogState()
+        data object Loading : TrackDialogState()
         data class Success(val menu: MenuUi) : TrackDialogState() {
             val title: String = menu.title
 
@@ -30,6 +30,6 @@ class TrackDialogContract {
     }
 
     sealed class Effect : UiEffect {
-        object UnknownException : Effect()
+        data object UnknownException : Effect()
     }
 }

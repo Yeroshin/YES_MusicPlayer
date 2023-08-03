@@ -6,7 +6,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
   //  alias(libs.plugins.kotlinAndroid)
    // id 'kotlin-kapt'
-   // alias(libs.plugins.kotlinKapt)
+    alias(libs.plugins.kotlinKapt)
     alias(libs.plugins.devtoolsKsp)
    // id 'kotlin-android'
 //id "com.google.devtools.ksp"
@@ -103,7 +103,9 @@ dependencies {
     //Dagger/////////////////////
     def dagger_version = '2.45'
     implementation libs.dagger
-    annotationProcessor libs.dagger.compiler
+    androidTestImplementation libs.dagger
+    kapt libs.dagger.compiler
+    kaptAndroidTest libs.dagger.compiler
     //  kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0" //ImportantSHIT!!!
 
     //testJunit4
