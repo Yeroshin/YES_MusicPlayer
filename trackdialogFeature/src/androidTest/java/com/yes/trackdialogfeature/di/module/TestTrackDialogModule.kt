@@ -1,11 +1,23 @@
 package com.yes.trackdialogfeature.di.module
 
+import android.app.Activity
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
 import com.yes.trackdialogfeature.TrackDialogTest
+import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
+import com.yes.trackdialogfeature.data.mapper.MenuRepositoryMapper
 import com.yes.trackdialogfeature.data.repository.MediaRepositoryImpl
 import com.yes.trackdialogfeature.data.repository.MenuRepositoryImpl
+import com.yes.trackdialogfeature.data.repository.SettingsRepositoryImpl
+import com.yes.trackdialogfeature.data.repository.dataSource.MediaDataStore
+import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
+import com.yes.trackdialogfeature.data.repository.dataSource.PlayListDataBase
+import com.yes.trackdialogfeature.data.repository.dataSource.SettingsDataStore
 import com.yes.trackdialogfeature.domain.entity.Menu
+import com.yes.trackdialogfeature.domain.repository.IPlayListDao
+import com.yes.trackdialogfeature.domain.repository.ISettingsRepository
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase
 import com.yes.trackdialogfeature.domain.usecase.UseCase
@@ -33,77 +45,112 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import java.util.ArrayDeque
 
 @Module
-class TestTrackDialogModule(private val viewModel: TrackDialogEndToEndTest.TestViewModel) {
-    class MockViewModelFactory(private val viewModel: TrackDialogEndToEndTest.TestViewModel) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            @Suppress("UNCHECKED_CAST")
-            return viewModel as T
-        }
+class TestTrackDialogModule(
+
+) {
+
+
+    @Provides
+    fun providesCoroutineDispatcher(): CoroutineDispatcher {
+        return StandardTestDispatcher()
     }
-  /*  class TestViewModel(
-        getMenuUseCase: UseCase<GetMenuUseCase.Params, Menu>,
+
+    @Provides
+    fun providesMenuRepositoryMapper(): MenuRepositoryMapper {
+        return MenuRepositoryMapper()
+    }
+
+    @Provides
+    fun providesMenuDataStore(): MenuDataStore {
+        return MenuDataStore()
+    }
+
+    @Provides
+    fun providesMenuRepository(
+        menuRepositoryMapper: MenuRepositoryMapper,
+        menuDataStore: MenuDataStore,
+    ): MenuRepositoryImpl {
+        return MenuRepositoryImpl(
+            menuRepositoryMapper,
+            menuDataStore,
+        )
+    }
+
+    @Provides
+    fun providesMediaRepositoryMapper(): MediaRepositoryMapper {
+        return MediaRepositoryMapper()
+    }
+
+    @Provides
+    fun providesMediaRepository(
+        mediaDataStore: MediaDataStore,
+        mediaRepositoryMapper: MediaRepositoryMapper,
+    ): MediaRepositoryImpl {
+        return MediaRepositoryImpl(
+            mediaDataStore,
+            mediaRepositoryMapper,
+        )
+    }
+    @Provides
+    fun providesGetMenuUseCase(
+        dispatcher: CoroutineDispatcher,
+        menuRepository: MenuRepositoryImpl,
+        mediaRepository: MediaRepositoryImpl
+    ): GetMenuUseCase {
+        return GetMenuUseCase(
+            dispatcher,
+            menuRepository,
+            mediaRepository,
+        )
+    }
+
+    @Provides
+    fun providesSettingsRepository(
+        settingsDataStore: SettingsDataStore
+    ): ISettingsRepository{
+        return SettingsRepositoryImpl(
+            settingsDataStore
+        )
+    }
+
+    @Provides
+    fun providesSaveTracksToPlaylistUseCase(
+        dispatcher: CoroutineDispatcher,
+        mediaRepositoryImpl: MediaRepositoryImpl,
+        playListRepository: IPlayListDao,
+        settingsRepository: ISettingsRepository
+    ): SaveTracksToPlaylistUseCase {
+        return SaveTracksToPlaylistUseCase(
+            dispatcher,
+            mediaRepositoryImpl,
+            playListRepository,
+            settingsRepository
+        )
+    }
+    @Provides
+    fun providesUiMapper():UiMapper{
+        return UiMapper()
+    }
+    @Provides
+    fun providesArrayDeque(): ArrayDeque<MenuUi>{
+        return ArrayDeque()
+    }
+
+    @Provides
+    fun providesTrackDialogViewModelFactory(
+        getMenuUseCase: GetMenuUseCase,
         saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase,
         uiMapper: UiMapper,
         menuStack: ArrayDeque<MenuUi>,
-    ) : TrackDialogViewModel(
-        getMenuUseCase,
-        saveTracksToPlaylistUseCase,
-        uiMapper,
-        menuStack,
-    ) {
-
-        override val effect: Flow<TrackDialogContract.Effect> = flow {}
-        override fun handleEvent(event: TrackDialogContract.Event) {
-            TODO("Not yet implemented")
-        }
-
-        override fun createInitialState(): TrackDialogContract.State {
-            return TrackDialogContract.State(
-                TrackDialogContract.TrackDialogState.Idle
-            )
-        }
-
-        private val _uiState: MutableStateFlow<TrackDialogContract.State> = MutableStateFlow(
-            TrackDialogContract.State(
-                TrackDialogContract.TrackDialogState.Idle
-            )
-        )
-        override val uiState: StateFlow<TrackDialogContract.State> =
-            _uiState.flatMapConcat { state ->
-                flow { emit(state) }
-            }.stateIn(
-                CoroutineScope(UnconfinedTestDispatcher()),
-                SharingStarted.Lazily,
-                TrackDialogContract.State(
-                    TrackDialogContract.TrackDialogState.Idle
-                )
-            )
-
-        fun pushEvent(state: TrackDialogContract.State) =
-            CoroutineScope(UnconfinedTestDispatcher()).launch {
-                _uiState.emit(state)
-            }
-
-        override fun setEvent(event: TrackDialogContract.Event) {
-
-        }
-    }*/
-
-
-  /*  @Provides
-    fun providesTestViewModel():TestViewModel{
-        return TestViewModel(
-            mockk< UseCase<GetMenuUseCase.Params, Menu>>(),
-            mockk< SaveTracksToPlaylistUseCase>(),
-            mockk< UiMapper>(),
-            mockk< ArrayDeque<MenuUi>>()
-        )
-    }*/
-    @Provides
-    fun providesTrackDialogViewModelFactory(
-
     ): ViewModelProvider.Factory {
-        return MockViewModelFactory(viewModel)
+        return TrackDialogViewModel.Factory(
+            getMenuUseCase,
+            saveTracksToPlaylistUseCase,
+            uiMapper,
+            menuStack,
+        )
     }
+
+
 
 }

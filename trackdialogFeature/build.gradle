@@ -80,7 +80,8 @@ dependencies {
     androidTestImplementation project(path: ':shared-test')
     //room
     implementation libs.androidx.room.runtime
-    annotationProcessor libs.androidx.room.compiler
+    kapt libs.androidx.room.compiler
+    kaptAndroidTest libs.androidx.room.testing
 
     // To use Kotlin annotation processing tool (kapt)
    /* kapt "androidx.room:room-compiler:$room_version"*/
@@ -113,7 +114,6 @@ dependencies {
     androidTestImplementation libs.androidx.test.ext.junit
     androidTestImplementation libs.junit
     ///////////
-    androidTestImplementation libs.androidx.room.testing
     //testJunit5
     /*testImplementation "org.junit.jupiter:junit-jupiter:5.9.3"
     androidTestImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'*/

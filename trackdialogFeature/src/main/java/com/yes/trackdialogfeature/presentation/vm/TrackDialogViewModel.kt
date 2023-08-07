@@ -21,6 +21,7 @@ import com.yes.trackdialogfeature.presentation.model.MenuUi.ItemUi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
 open class TrackDialogViewModel(
     private val getMenuUseCase: UseCase<GetMenuUseCase.Params, Menu>,

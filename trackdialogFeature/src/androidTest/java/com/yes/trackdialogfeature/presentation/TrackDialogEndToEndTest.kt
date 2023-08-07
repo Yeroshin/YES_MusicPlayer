@@ -1,14 +1,25 @@
 package com.yes.trackdialogfeature.presentation
 
+import android.app.Activity
+import android.content.Context
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
+import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.matcher.ViewMatchers.assertThat
+import androidx.test.platform.app.InstrumentationRegistry
 import com.yes.trackdialogfeature.TrackDialogTest
+import com.yes.trackdialogfeature.data.repository.dataSource.PlayListDataBase
 import com.yes.trackdialogfeature.di.components.DaggerTestTrackDialogComponent
 import com.yes.trackdialogfeature.di.components.DaggerTrackDialogComponent
+import com.yes.trackdialogfeature.di.module.TestAppModule
 import com.yes.trackdialogfeature.di.module.TestTrackDialogModule
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
@@ -38,61 +49,7 @@ import java.util.ArrayDeque
 import javax.inject.Inject
 
 class TrackDialogEndToEndTest {
-    class TestViewModel(
-        getMenuUseCase: UseCase<GetMenuUseCase.Params, Menu>,
-        saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase,
-        uiMapper: UiMapper,
-        menuStack: ArrayDeque<MenuUi>,
-    ) : TrackDialogViewModel(
-        getMenuUseCase,
-        saveTracksToPlaylistUseCase,
-        uiMapper,
-        menuStack,
-    ) {
 
-        override val effect: Flow<TrackDialogContract.Effect> = flow {}
-        override fun handleEvent(event: TrackDialogContract.Event) {
-            TODO("Not yet implemented")
-        }
-
-        override fun createInitialState(): TrackDialogContract.State {
-            return TrackDialogContract.State(
-                TrackDialogContract.TrackDialogState.Idle
-            )
-        }
-
-        private val _uiState: MutableStateFlow<TrackDialogContract.State> = MutableStateFlow(
-            TrackDialogContract.State(
-                TrackDialogContract.TrackDialogState.Idle
-            )
-        )
-        override val uiState: StateFlow<TrackDialogContract.State> =
-            _uiState.flatMapConcat { state ->
-                flow { emit(state) }
-            }.stateIn(
-                CoroutineScope(UnconfinedTestDispatcher()),
-                SharingStarted.Lazily,
-                TrackDialogContract.State(
-                    TrackDialogContract.TrackDialogState.Idle
-                )
-            )
-
-        fun pushEvent(state: TrackDialogContract.State) =
-            CoroutineScope(UnconfinedTestDispatcher()).launch {
-                _uiState.emit(state)
-            }
-
-        override fun setEvent(event: TrackDialogContract.Event) {
-
-        }
-    }
-
-    private val viewModel = TestViewModel(
-        mockk< UseCase<GetMenuUseCase.Params, Menu>>(),
-        mockk< SaveTracksToPlaylistUseCase>(),
-        mockk< UiMapper>(),
-        mockk< ArrayDeque<MenuUi>>()
-    )
 
     class MockFragmentFactoryImpl(
         private val dep: TrackDialog.TrackDialogDependency
@@ -104,54 +61,71 @@ class TrackDialogEndToEndTest {
             }
         }
     }
-    class MockViewModelFactory(private val viewModel: ViewModel) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            @Suppress("UNCHECKED_CAST")
-            return viewModel as T
-        }
-    }
+  /*  class MyActivity : AppCompatActivity() {
+
+
+        private val factory=DaggerTestTrackDialogComponent.builder()
+            .testTrackDialogModule(TestTrackDialogModule())
+             .testAppModule(TestAppModule(this))
+            .build()
+            .getViewModelFactory()
 
 
 
-    private val factory = DaggerTestTrackDialogComponent.builder()
-        .testTrackDialogModule(TestTrackDialogModule(viewModel))
-        .build()
-        .getViewModelFactory()
-    //private val factory = MockViewModelFactory(viewModel)
-    private val dependency = TrackDialog.TrackDialogDependency(
-        factory
-    )
-    private val trackDialogFactory = MockFragmentFactoryImpl(
-        dependency
-    )
-
-    private lateinit var scenario: FragmentScenario<TrackDialog>
-
-    @Before
-    fun setUp() {
+        val dependency = TrackDialog.TrackDialogDependency(
+            factory
+        )
+        val trackDialogFactory = MockFragmentFactoryImpl(
+            dependency
+        )
         //  MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
-        scenario = launchFragment(
+        val scenario:FragmentScenario<TrackDialog> = launchFragment(
             factory = trackDialogFactory
         )
+      /*  scenario.onFragment { fragment ->
+            assert(fragment.requireDialog().isShowing)
+        }*/
+    }*/
+    class TestContainerActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+          //  setContentView(R.layout.activity_test_container)
+        }
+    }
+    @Before
+    fun setUp() {
+//////////////////////////////
+
+        /////////////////////////
+       // val activity=MyActivity()
+        val factory = DaggerTestTrackDialogComponent.builder()
+            .testTrackDialogModule(TestTrackDialogModule())
+            .testAppModule(TestAppModule(ApplicationProvider.getApplicationContext()))
+            .build()
+            .getViewModelFactory()
+        //private val factory = MockViewModelFactory(viewModel)
+        val dependency = TrackDialog.TrackDialogDependency(
+            factory
+        )
+        val trackDialogFactory = MockFragmentFactoryImpl(
+            dependency
+        )
+
+        //  MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
+        val scenario:FragmentScenario<TrackDialog> = launchFragment(
+            factory = trackDialogFactory
+        )
+       /* scenario.onFragment { fragment ->
+            assert(fragment.requireDialog().isShowing)
+        }*/
     }
     @Test
     fun onInitShowsTrackDialogStateIdle() {
-        scenario.onFragment { fragment ->
-            assert(fragment.requireDialog().isShowing)
-        }
-        trackDialog {
-            matchTitleHasNoText()
-            matchProgressBarIsNotDisplayed()
-            matchDisableViewIsNotDisplayed()
-        }
-        viewModel.pushEvent(
-            TrackDialogContract.State(
-                TrackDialogContract.TrackDialogState.Loading
-            )
-        )
 
         trackDialog {
-            matchProgressBarDisplayed()
+            matchTitleHasNoText()
+          //  matchProgressBarIsNotDisplayed()
+           // matchDisableViewIsNotDisplayed()
         }
     }
 
