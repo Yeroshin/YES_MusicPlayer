@@ -1,28 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="deploymentTargetDropDown">
-    <value>
-      <entry key="PlayListDataBaseTest">
-        <State />
-      </entry>
-      <entry key="TrackDialogTest">
-        <State />
-      </entry>
-      <entry key="app">
-        <State />
-      </entry>
-      <entry key="onInitShowsTrackDialogStateIdle()">
-        <State />
-      </entry>
-      <entry key="onInitShowsTrackDialogStateIdle() (1)">
-        <State />
-      </entry>
-      <entry key="playlistFeature">
-        <State />
-      </entry>
-      <entry key="trackdialogFeature">
-        <State />
-      </entry>
-    </value>
+    <targetSelectedWithDropDown>
+      <Target>
+        <type value="QUICK_BOOT_TARGET" />
+        <deviceKey>
+          <Key>
+            <type value="VIRTUAL_DEVICE_PATH" />
+            <value value="E:\ANDROIDavd\.android\avd\Pixel_2_API_24.avd" />
+          </Key>
+        </deviceKey>
+      </Target>
+    </targetSelectedWithDropDown>
+    <timeTargetWasSelectedWithDropDown value="2023-08-12T14:40:33.704348400Z" />
   </component>
 </project>

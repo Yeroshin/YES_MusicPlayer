@@ -3,6 +3,33 @@
   <component name="AndroidTestResultsUserPreferences">
     <option name="androidTestResultsTableState">
       <map>
+        <entry key="-2050202930">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_2_API_24" value="120" />
+                  <entry key="RedmiNote_API_33" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-1961778636">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_2_API_24" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-1880879167">
           <value>
             <AndroidTestResultsTableState>
@@ -87,8 +114,12 @@
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
                 <map>
+                  <entry key="2.7_QVGA_API_31" value="120" />
+                  <entry key="3.2_HVGA_slider_ADP1_API_21" value="120" />
                   <entry key="Duration" value="90" />
+                  <entry key="Pixel_2_API_19" value="120" />
                   <entry key="Pixel_2_API_24" value="120" />
+                  <entry key="RedmiNote_API_33" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>
@@ -199,6 +230,18 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="1290114739">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="1292885302">
           <value>
             <AndroidTestResultsTableState>
@@ -207,6 +250,7 @@
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_2_API_19" value="120" />
                   <entry key="Pixel_2_API_24" value="120" />
+                  <entry key="RedmiNote_API_33" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>

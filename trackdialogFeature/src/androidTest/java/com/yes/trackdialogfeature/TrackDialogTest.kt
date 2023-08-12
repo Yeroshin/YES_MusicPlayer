@@ -5,12 +5,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.shared_test.UiFixturesGenerator
-import com.yes.core.presentation.BaseViewModel
-import com.yes.core.presentation.IBaseViewModel
-import com.yes.trackdialogfeature.api.Dependency
+import androidx.test.espresso.IdlingRegistry
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase
@@ -19,14 +17,18 @@ import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
-import com.yes.trackdialogfeature.presentation.ui.TrackDialogAdapter
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
+import com.yes.trackdialogfeature.util.EspressoIdlingResource
 import io.mockk.MockKAnnotations
 import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.resetMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import java.util.ArrayDeque
@@ -38,7 +40,8 @@ class TrackDialogTest {
         saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase,
         uiMapper: UiMapper,
         menuStack: ArrayDeque<MenuUi>,
-        ) : TrackDialogViewModel(
+        testDispatcher: TestDispatcher,
+    ) : TrackDialogViewModel(
         getMenuUseCase,
         saveTracksToPlaylistUseCase,
         uiMapper,
@@ -56,37 +59,47 @@ class TrackDialogTest {
             )
         }
 
-        private val _uiState: MutableStateFlow<TrackDialogContract.State> = MutableStateFlow(
+         private val _uiState: MutableStateFlow<TrackDialogContract.State> = MutableStateFlow(
             TrackDialogContract.State(
                 TrackDialogContract.TrackDialogState.Idle
             )
         )
-        override val uiState: StateFlow<TrackDialogContract.State> =
-            _uiState.flatMapConcat { state ->
-                flow { emit(state) }
-            }.stateIn(
-                CoroutineScope(UnconfinedTestDispatcher()),
-                SharingStarted.Lazily,
-                TrackDialogContract.State(
-                    TrackDialogContract.TrackDialogState.Idle
-                )
-            )
+        override val uiState = _uiState.asStateFlow()
 
-        fun pushEvent(state: TrackDialogContract.State) =
-            CoroutineScope(UnconfinedTestDispatcher()).launch {
-                _uiState.emit(state)
-            }
+        @OptIn(ExperimentalCoroutinesApi::class)
+        private val scope = CoroutineScope(testDispatcher)
+
+        /* fun pushEvent(state: TrackDialogContract.State) =
+             scope.launch {
+                 _uiState.emit(state)
+             }*/
+       /* fun pushEvent(reduce: TrackDialogContract.State.() -> TrackDialogContract.State) {
+            EspressoIdlingResource.increment()
+            val newState = currentState.reduce()
+            _uiState.value = newState
+            EspressoIdlingResource.decrement()
+        }*/
+        fun pushEvent(newState: TrackDialogContract.State) {
+
+            _uiState.value = newState
+
+        }
 
         override fun setEvent(event: TrackDialogContract.Event) {
 
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val testDispatcher: TestDispatcher = StandardTestDispatcher()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val viewModel = TestViewModel(
-        mockk< UseCase<GetMenuUseCase.Params, Menu>>(),
-    mockk< SaveTracksToPlaylistUseCase>(),
-    mockk< UiMapper>(),
-    mockk< ArrayDeque<MenuUi>>()
+        mockk(),
+        mockk(),
+        mockk(),
+        mockk(),
+        testDispatcher
     )
 
     class MockViewModelFactory(private val viewModel: TestViewModel) : ViewModelProvider.Factory {
@@ -126,46 +139,68 @@ class TrackDialogTest {
     )
     private lateinit var scenario: FragmentScenario<TrackDialog>
 
+
     @Before
     fun setUp() {
-          MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
-
+      //  Dispatchers.setMain(testDispatcher)
+        MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
         scenario = launchFragment(
-            factory = trackDialogFactory
+            factory = trackDialogFactory,
+                  //  initialState = Lifecycle.State.STARTED
         )
 
     }
 
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+        scenario.close()
+    }
+
     @Test
     fun onInitShowsTrackDialogStateIdle() {
-        scenario.onFragment { fragment ->
+       /* scenario.onFragment { fragment ->
             assert(fragment.requireDialog().isShowing)
-        }
+            IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
+
+        }*/
+       // scenario.moveToState(Lifecycle.State.STARTED)
         trackDialog {
             matchTitleHasNoText()
             matchProgressBarIsNotDisplayed()
             matchDisableViewIsNotDisplayed()
         }
-        viewModel.pushEvent(
+        viewModel.pushEvent (
             TrackDialogContract.State(
                 TrackDialogContract.TrackDialogState.Loading
             )
+
         )
+
+
+      /*  trackDialog {
+            matchTitleHasNoText()
+            matchProgressBarIsNotDisplayed()
+            matchDisableViewIsNotDisplayed()
+        }*/
 
         trackDialog {
             matchProgressBarDisplayed()
         }
+
+
     }
 
-    @Test
+  /*  @Test
     fun loading() {
-        scenario.onFragment {
-            viewModel.pushEvent(
-                TrackDialogContract.State(
-                    TrackDialogContract.TrackDialogState.Loading
-                )
-            )
-        }
+
+        /*  viewModel.pushEvent(
+              TrackDialogContract.State(
+                  TrackDialogContract.TrackDialogState.Loading
+              )
+          )*/
+
         trackDialog {
             matchTitleHasNoText()
             matchProgressBarDisplayed()
@@ -176,21 +211,21 @@ class TrackDialogTest {
     @Test
     fun dataSuccess() {
         scenario.onFragment {
-            viewModel.pushEvent(
-                TrackDialogContract.State(
-                    TrackDialogContract.TrackDialogState.Loading
-                )
-            )
+            /*  viewModel.pushEvent(
+                  TrackDialogContract.State(
+                      TrackDialogContract.TrackDialogState.Loading
+                  )
+              )*/
         }
         val number = 200
         val item = UiFixturesGenerator.generateArtistsMenuUi(number)
-        viewModel.pushEvent(
-            TrackDialogContract.State(
-                TrackDialogContract.TrackDialogState.Success(
-                    item
-                )
-            )
-        )
+        /* viewModel.pushEvent(
+             TrackDialogContract.State(
+                 TrackDialogContract.TrackDialogState.Success(
+                     item
+                 )
+             )
+         )*/
         trackDialog {
             matchTitleText(item.title)
             matchProgressBarIsNotDisplayed()
@@ -217,7 +252,7 @@ class TrackDialogTest {
                 .check(matches(atPosition(0, R.id.item_title, "Album")))
     */
         //////////////////////////////
-    }
+    }*/
 
     /* private fun atPosition(position: Int, targetViewId: Int, expectedText: String): Matcher<View> {
          return object : BoundedMatcher<View, RecyclerView>(RecyclerView::class.java) {

@@ -78,7 +78,7 @@ class TrackDialog(
                 viewModel.uiState.collect {
                     renderUiState(it)
                 }
-            }
+           }
         }
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -87,11 +87,9 @@ class TrackDialog(
                         is TrackDialogContract.Effect.UnknownException -> {
                             showError(com.yes.coreui.R.string.UnknownException)
                         }
-
                     }
                 }
             }
-
         }
     }
 

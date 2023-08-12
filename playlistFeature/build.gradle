@@ -51,7 +51,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.8.0'
     //Espresso
     androidTestImplementation(libs.espresso.core)
-    androidTestImplementation (libs.androidx.espresso.contrib)
+//    androidTestImplementation (libs.androidx.espresso.contrib)
     //Dagger/////////////////////
     def dagger_version = '2.45'
     implementation "com.google.dagger:dagger:$dagger_version"

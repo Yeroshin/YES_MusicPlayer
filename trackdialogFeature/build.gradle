@@ -16,14 +16,15 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
 
 }*/
+
 android {
     compileSdk 33
     packagingOptions {
         resources {
-            excludes += ['MenuRepositoryImplOLDTest.kt', 'META-INF/LICENSE-notice.md', 'META-INF/LICENSE.md']
+            excludes += ['MenuRepositoryImplOLDTest.kt', 'META-INF/LICENSE-notice.md', 'META-INF/LICENSE.md','MANIFEST.MF','META-INF/com.google.dagger_dagger.version']
         }
     }
-/* testOptions {
+    /* testOptions {
          unitTests.all {
              useJUnitPlatform()
          }
@@ -69,6 +70,9 @@ android {
         viewBinding = true
     }
     namespace 'com.yes.trackdialogfeature'
+   /* installation {
+        timeOutInMs 30000
+    }*/
 
 }
 
@@ -81,7 +85,7 @@ dependencies {
     //room
     implementation libs.androidx.room.runtime
     kapt libs.androidx.room.compiler
-    kaptAndroidTest libs.androidx.room.testing
+   /// kaptAndroidTest libs.androidx.room.testing
 
     // To use Kotlin annotation processing tool (kapt)
    /* kapt "androidx.room:room-compiler:$room_version"*/
@@ -128,16 +132,19 @@ dependencies {
     //testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
 
     //DO NOT TOUCH - GOOGLE BUG HERE!!!
-    debugImplementation("androidx.fragment:fragment-testing-manifest:1.6.0-alpha04")
-    androidTestImplementation("androidx.fragment:fragment-testing:1.6.0-alpha04")
+   /* debugImplementation("androidx.fragment:fragment-testing-manifest:1.6.0-alpha04")
+    androidTestImplementation("androidx.fragment:fragment-testing:1.6.0-alpha04")*/
+    debugImplementation("androidx.fragment:fragment-testing-manifest:1.6.1")
+    androidTestImplementation("androidx.fragment:fragment-testing:1.6.1")
     ///////////////////////////////////
     //testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
     ///////////////////////////
     // Mock objects
     //DO NOT TOUCH - last version conflicts with espresso!
    // testImplementation libs.mockk
-    def mockkVersion = "1.12.2"
-    testImplementation "io.mockk:mockk:$mockkVersion"
+   /* def mockkVersion = "1.12.2"
+    testImplementation "io.mockk:mockk:$mockkVersion"*/
+    testImplementation libs.mockk
     androidTestImplementation libs.mockk.android
     //shit here!!!!!
     //androidTestImplementation "io.mockk:mockk-android:$mockkVersion"
@@ -148,16 +155,21 @@ dependencies {
     ////////////////////////
     //turbine
     testImplementation libs.turbine
+  //  androidTestImplementation libs.turbine
     // Run Blocking Test
     def coreTestingVersion = "1.1.1"
+    //Coroutines
     testImplementation libs.kotlinx.coroutines.test
     androidTestImplementation libs.kotlinx.coroutines.test
     //Espresso
-    androidTestImplementation libs.espresso.core
+  /*  androidTestImplementation libs.hamcrest
+    androidTestImplementation 'org.hamcrest:hamcrest-library:2.2'*/
     androidTestImplementation libs.androidx.espresso.contrib
+    androidTestImplementation libs.espresso.core
+    implementation libs.espresso.idling.resource
     androidTestImplementation libs.androidx.runner
     androidTestImplementation libs.androidx.rules
-  //  androidTestImplementation (libs.hamcrest.library)
+    //androidTestImplementation (libs.hamcrest.library)
 
    // testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
    // implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
@@ -165,7 +177,7 @@ dependencies {
      debugImplementation "androidx.fragment:fragment-testing:$fragment_version"*/
 
     //tmp
-    // debugImplementation "androidx.test:monitor:1.6.1"
+    debugImplementation "androidx.test:monitor:1.6.0"
 //Shit for mockk to run on api<p
     implementation 'com.github.tmurakami:dexopener:2.0.5'
 

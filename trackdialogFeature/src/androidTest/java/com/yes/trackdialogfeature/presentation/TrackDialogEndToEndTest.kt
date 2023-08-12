@@ -1,52 +1,20 @@
 package com.yes.trackdialogfeature.presentation
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.room.Room
-import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.matcher.ViewMatchers.assertThat
-import androidx.test.platform.app.InstrumentationRegistry
-import com.yes.trackdialogfeature.TrackDialogTest
-import com.yes.trackdialogfeature.data.repository.dataSource.PlayListDataBase
 import com.yes.trackdialogfeature.di.components.DaggerTestTrackDialogComponent
-import com.yes.trackdialogfeature.di.components.DaggerTrackDialogComponent
 import com.yes.trackdialogfeature.di.module.TestAppModule
 import com.yes.trackdialogfeature.di.module.TestTrackDialogModule
-import com.yes.trackdialogfeature.domain.entity.Menu
-import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
-import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase
-import com.yes.trackdialogfeature.domain.usecase.UseCase
-import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
-import com.yes.trackdialogfeature.presentation.mapper.UiMapper
-import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
-import com.yes.trackdialogfeature.presentation.ui.TrackDialogAdapter
-import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import com.yes.trackdialogfeature.trackDialog
-import io.mockk.mockk
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
-import java.util.ArrayDeque
-import javax.inject.Inject
 
 class TrackDialogEndToEndTest {
 
@@ -86,12 +54,13 @@ class TrackDialogEndToEndTest {
             assert(fragment.requireDialog().isShowing)
         }*/
     }*/
-    class TestContainerActivity : AppCompatActivity() {
+   /* class TestContainerActivity : AppCompatActivity() {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
           //  setContentView(R.layout.activity_test_container)
         }
-    }
+    }*/
+    private lateinit var scenario:FragmentScenario<TrackDialog>
     @Before
     fun setUp() {
 //////////////////////////////
@@ -112,7 +81,7 @@ class TrackDialogEndToEndTest {
         )
 
         //  MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
-        val scenario:FragmentScenario<TrackDialog> = launchFragment(
+        scenario = launchFragment(
             factory = trackDialogFactory
         )
        /* scenario.onFragment { fragment ->
@@ -120,13 +89,22 @@ class TrackDialogEndToEndTest {
         }*/
     }
     @Test
-    fun onInitShowsTrackDialogStateIdle() {
-
-        trackDialog {
+    fun onInitShowsTrackDialogStateIdle() = runTest{
+       /* trackDialog {
             matchTitleHasNoText()
-          //  matchProgressBarIsNotDisplayed()
-           // matchDisableViewIsNotDisplayed()
+            //  matchProgressBarIsNotDisplayed()
+            // matchDisableViewIsNotDisplayed()
+        }*/
+
+        scenario.onFragment { fragment ->
+            assert(fragment.requireDialog().isShowing)
+            trackDialog {
+                matchTitleHasNoText()
+                //  matchProgressBarIsNotDisplayed()
+                // matchDisableViewIsNotDisplayed()
+            }
         }
+
     }
 
 }
