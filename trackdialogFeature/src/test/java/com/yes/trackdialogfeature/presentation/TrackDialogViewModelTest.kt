@@ -20,8 +20,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.junit.jupiter.api.AfterEach
 
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -40,11 +42,11 @@ class TrackDialogViewModelTest {
     private lateinit var cut: TrackDialogViewModel
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val testDispatcher: TestDispatcher = StandardTestDispatcher()
+    val testDispatcher = StandardTestDispatcher()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
-    fun setUp() = runTest {
+    fun setUp()  {
         // @MockK
         Dispatchers.setMain(testDispatcher)
         MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
@@ -55,6 +57,11 @@ class TrackDialogViewModelTest {
             uiMapper,
             menuStack,
         )
+    }
+    @AfterEach
+    fun tearDown() {
+        // removing the test dispatcher
+        Dispatchers.resetMain()
     }
 
     @Test

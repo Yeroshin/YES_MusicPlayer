@@ -177,7 +177,7 @@ dependencies {
      debugImplementation "androidx.fragment:fragment-testing:$fragment_version"*/
 
     //tmp
-    debugImplementation "androidx.test:monitor:1.6.0"
+  //  debugImplementation "androidx.test:monitor:1.6.0"
 //Shit for mockk to run on api<p
     implementation 'com.github.tmurakami:dexopener:2.0.5'
 

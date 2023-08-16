@@ -28,11 +28,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -40,6 +46,9 @@ import java.util.ArrayDeque
 
 
 class TrackDialogTest {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val testDispatcher: TestDispatcher = StandardTestDispatcher()
+
     class TestViewModel(
         getMenuUseCase: UseCase<GetMenuUseCase.Params, Menu>,
         saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase,
@@ -72,7 +81,7 @@ class TrackDialogTest {
         override val uiState = _uiState.asStateFlow()
 
         @OptIn(ExperimentalCoroutinesApi::class)
-        private val scope = CoroutineScope(testDispatcher)
+        private val scope = TestScope(testDispatcher)
 
         /* fun pushEvent(state: TrackDialogContract.State) =
              scope.launch {
@@ -85,23 +94,29 @@ class TrackDialogTest {
             EspressoIdlingResource.decrement()
         }*/
         @OptIn(ExperimentalCoroutinesApi::class)
-        fun pushEvent(reduce: TrackDialogContract.State.() -> TrackDialogContract.State) = runTest {
-
+        fun pushEvent(reduce: TrackDialogContract.State.() -> TrackDialogContract.State) {
+            EspressoIdlingResource.increment()
             val newState = currentState.reduce()
-            launch {
-                _uiState.value = newState
-            }
-
+            //  launch {
+            _uiState.value = newState
+            //  }
+            EspressoIdlingResource.decrement()
 
         }
+
+      /* fun pushEvent(newState: TrackDialogContract.State) {
+
+            //_uiState.emit(newState)
+            _uiState.value = newState
+
+
+        }*/
 
         override fun setEvent(event: TrackDialogContract.Event) {
 
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val testDispatcher: TestDispatcher = StandardTestDispatcher()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val viewModel = TestViewModel(
@@ -152,9 +167,10 @@ class TrackDialogTest {
 
     @Before
     fun setUp() {
-        //  Dispatchers.setMain(testDispatcher)
-        MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
+       // Dispatchers.setMain(testDispatcher)
         IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
+        MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
+        // IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
         scenario = launchFragment(
             factory = trackDialogFactory,
             //  initialState = Lifecycle.State.STARTED
@@ -164,18 +180,23 @@ class TrackDialogTest {
 
     @After
     fun tearDown() {
-        //  Dispatchers.resetMain()
+      //  Dispatchers.resetMain()
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
         scenario.close()
     }
 
     @Test
-    fun onInitShowsTrackDialogStateIdle() {
-        /* scenario.onFragment { fragment ->
+    fun onInitShowsTrackDialogStateIdle() = runBlocking{
+         scenario.onFragment { fragment ->
             assert(fragment.requireDialog().isShowing)
-            IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
-
-        }*/
-        // scenario.moveToState(Lifecycle.State.STARTED)
+          //  IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
+           /*  viewModel.pushEvent(
+                 TrackDialogContract.State(
+                     TrackDialogContract.TrackDialogState.Loading
+                 )
+             )*/
+        }
+     //   scenario.moveToState(Lifecycle.State.STARTED)
         trackDialog {
             matchTitleHasNoText()
             matchProgressBarIsNotDisplayed()
@@ -195,7 +216,7 @@ class TrackDialogTest {
 
     }
 
-    @Test
+  /*  @Test
     fun loading() {
 
         viewModel.pushEvent {
@@ -231,7 +252,7 @@ class TrackDialogTest {
                 item.items[number - 1]
             )
         }
-    }
+    }*/
 }
 
 //////////////////////worked

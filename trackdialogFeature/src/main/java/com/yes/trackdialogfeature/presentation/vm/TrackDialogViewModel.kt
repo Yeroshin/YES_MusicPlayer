@@ -18,6 +18,7 @@ import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract.Effe
 import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.model.MenuUi.ItemUi
+import com.yes.trackdialogfeature.util.EspressoIdlingResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -112,12 +113,15 @@ open class TrackDialogViewModel(
     }
 
     private fun getChildMenu(id: Int?, name: String) {
+
+        setState {
+            copy(
+                trackDialogState = TrackDialogContract.TrackDialogState.Loading
+            )
+        }
+       // EspressoIdlingResource.increment()
         viewModelScope.launch(Dispatchers.Main) {
-            setState {
-                copy(
-                    trackDialogState = TrackDialogContract.TrackDialogState.Loading
-                )
-            }
+
             val params = id?.let {
                 GetMenuUseCase.Params(
                     it,
@@ -161,6 +165,7 @@ open class TrackDialogViewModel(
                             trackDialogState = TrackDialogContract.TrackDialogState.Success(menuUi)
                         )
                     }
+
                 }
 
                 is DomainResult.Error -> {
@@ -186,6 +191,7 @@ open class TrackDialogViewModel(
                     }
                 }
             }
+          //  EspressoIdlingResource.decrement()
         }
 
     }

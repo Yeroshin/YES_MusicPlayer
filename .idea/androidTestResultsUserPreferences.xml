@@ -22,6 +22,7 @@
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
                 <map>
+                  <entry key="3.2_HVGA_slider_ADP1_API_21" value="120" />
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_2_API_24" value="120" />
                   <entry key="Tests" value="360" />
@@ -247,6 +248,7 @@
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
                 <map>
+                  <entry key="3.2_HVGA_slider_ADP1_API_21" value="120" />
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_2_API_19" value="120" />
                   <entry key="Pixel_2_API_24" value="120" />

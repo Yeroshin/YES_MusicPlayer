@@ -7,12 +7,15 @@ import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragment
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.IdlingRegistry
 import com.yes.trackdialogfeature.di.components.DaggerTestTrackDialogComponent
 import com.yes.trackdialogfeature.di.module.TestAppModule
 import com.yes.trackdialogfeature.di.module.TestTrackDialogModule
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 import com.yes.trackdialogfeature.trackDialog
+import com.yes.trackdialogfeature.util.EspressoIdlingResource
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
@@ -64,7 +67,7 @@ class TrackDialogEndToEndTest {
     @Before
     fun setUp() {
 //////////////////////////////
-
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
         /////////////////////////
        // val activity=MyActivity()
         val factory = DaggerTestTrackDialogComponent.builder()
@@ -88,22 +91,27 @@ class TrackDialogEndToEndTest {
             assert(fragment.requireDialog().isShowing)
         }*/
     }
+    @After
+    fun tearDown(){
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
+    }
     @Test
-    fun onInitShowsTrackDialogStateIdle() = runTest{
-       /* trackDialog {
-            matchTitleHasNoText()
-            //  matchProgressBarIsNotDisplayed()
-            // matchDisableViewIsNotDisplayed()
-        }*/
+    fun onInitShowsTrackDialogStateIdle(){
 
         scenario.onFragment { fragment ->
             assert(fragment.requireDialog().isShowing)
-            trackDialog {
-                matchTitleHasNoText()
-                //  matchProgressBarIsNotDisplayed()
-                // matchDisableViewIsNotDisplayed()
-            }
+
         }
+        trackDialog {
+            matchTitleHasNoText()
+            matchProgressBarDisplayed()
+            matchDisableViewDisplayed()
+        }
+       /* trackDialog {
+            matchTitleHasNoText()
+            matchProgressBarIsNotDisplayed()
+            matchDisableViewIsNotDisplayed()
+        }*/
 
     }
 
