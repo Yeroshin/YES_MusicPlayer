@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yes.core.presentation.BaseViewModel
 import com.yes.coreui.BaseDialog
 import com.yes.trackdialogfeature.R
 import com.yes.trackdialogfeature.databinding.TrackDialogBinding
@@ -30,7 +31,9 @@ class TrackDialog(
     }
     override val layout: Int = R.layout.track_dialog
     private val adapter: TrackDialogAdapter = TrackDialogAdapter()
-    private val viewModel: TrackDialogViewModel by viewModels {
+    private val viewModel: BaseViewModel<TrackDialogContract.Event,
+            TrackDialogContract.State,
+            TrackDialogContract.Effect> by viewModels {
         dependency.factory
     }
 
@@ -122,7 +125,7 @@ class TrackDialog(
         binder.recyclerViewContainer.disableView.visibility = GONE
     }
 
-    private fun showLoading() {
+     fun showLoading() {
         binder.recyclerViewContainer.progressBar.visibility = VISIBLE
         binder.recyclerViewContainer.disableView.visibility = VISIBLE
     }

@@ -16,7 +16,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
 
 }*/
-
+//com.android.ddmlib.DdmPreferences.setTimeOut(600000)
 android {
     compileSdk 33
     packagingOptions {
@@ -34,8 +34,8 @@ android {
         minSdk 21
         targetSdk 33
         //multiDexEnabled true
-         testInstrumentationRunner "com.yes.trackdialogfeature.DexOpeningTestRunner"
-        //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        // testInstrumentationRunner "com.yes.trackdialogfeature.DexOpeningTestRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     /* packagingOptions {
          exclude("META-INF/LICENSE.md")
@@ -132,10 +132,12 @@ dependencies {
     //testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
 
     //DO NOT TOUCH - GOOGLE BUG HERE!!!
-   /* debugImplementation("androidx.fragment:fragment-testing-manifest:1.6.0-alpha04")
+    /*debugImplementation("androidx.fragment:fragment-testing-manifest:1.6.0-alpha04")
     androidTestImplementation("androidx.fragment:fragment-testing:1.6.0-alpha04")*/
-    debugImplementation("androidx.fragment:fragment-testing-manifest:1.6.1")
-    androidTestImplementation("androidx.fragment:fragment-testing:1.6.1")
+   /* debugImplementation("androidx.fragment:fragment-testing-manifest:1.6.0")
+    androidTestImplementation("androidx.fragment:fragment-testing:1.6.0")*/
+    debugImplementation "androidx.fragment:fragment-testing:1.5.7"
+    implementation "androidx.fragment:fragment-ktx:1.5.7"
     ///////////////////////////////////
     //testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
     ///////////////////////////
@@ -144,8 +146,8 @@ dependencies {
    // testImplementation libs.mockk
    /* def mockkVersion = "1.12.2"
     testImplementation "io.mockk:mockk:$mockkVersion"*/
-    testImplementation libs.mockk
-    androidTestImplementation libs.mockk.android
+   testImplementation libs.mockk
+ // androidTestImplementation libs.mockk.android - conflicts wit espresso!!!!
     //shit here!!!!!
     //androidTestImplementation "io.mockk:mockk-android:$mockkVersion"
     // testImplementation "io.mockk:mockk-android:${mockkVersion}"

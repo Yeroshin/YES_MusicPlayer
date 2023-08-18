@@ -96,7 +96,7 @@ class TrackDialogEndToEndTest {
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
     }
     @Test
-    fun onInitShowsTrackDialogStateIdle(){
+    fun showsTrackDialogStateIdle(){
 
         scenario.onFragment { fragment ->
             assert(fragment.requireDialog().isShowing)

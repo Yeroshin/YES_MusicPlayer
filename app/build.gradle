@@ -59,12 +59,14 @@ dependencies {
     implementation project(path: ':coreUI')
     implementation project(path: ':playerFeature')
     implementation project(path: ':trackdialogFeature')
+    //tmp
+    implementation project(path: ':shared-test')
     //core
    // implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
 
     implementation 'com.google.android.material:material:1.8.0'
-    implementation project(path: ':trackdialogFeature')
+
 
     // implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
