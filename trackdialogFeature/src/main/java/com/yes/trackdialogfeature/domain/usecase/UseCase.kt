@@ -9,7 +9,9 @@ abstract class UseCase<REQUEST, MODEL>(
 ) {
 
     suspend operator fun invoke(params: REQUEST?): DomainResult<MODEL> {
+
         return withContext(dispatcher) {
+            //delay(5000)
             try {
                 run(params)
             }catch (exception: Exception){

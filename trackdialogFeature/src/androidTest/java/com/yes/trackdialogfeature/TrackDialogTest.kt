@@ -225,6 +225,19 @@ class TrackDialogTest {
 
       @Test
       fun dataSuccess() {
+          //////////////////////////////////////
+          viewModel.pushEvent {
+              copy(
+                  TrackDialogContract.TrackDialogState.Loading
+              )
+          }
+
+          trackDialog {
+              matchTitleHasNoText()
+              matchProgressBarDisplayed()
+              matchDisableViewDisplayed()
+          }
+          //////////////////////////////////////
           val number = 200
           val item = UiFixturesGenerator.generateArtistsMenuUi(number)
           viewModel.pushEvent {
@@ -246,65 +259,6 @@ class TrackDialogTest {
       }
 }
 
-//////////////////////worked
-/*    onView(withId(com.yes.coreui.R.id.recyclerView)).perform(
-        scrollToPosition<TrackDialogAdapter.TrackHolder>(
-            0
-        )
-    )
 
-    onView(withText("Artist")).check(matches(isDisplayed()))
-    //onView(withText("Description")).check(matches(isDisplayed()))
-    //////////////////////////////
-
-    onView(withId(com.yes.coreui.R.id.recyclerView)) // Replace 'recycler_view' with the ID of your RecyclerView
-        .check(matches(atPosition(0, R.id.item_title, "Album")))
-*/
-//////////////////////////////
-
-/* private fun atPosition(position: Int, targetViewId: Int, expectedText: String): Matcher<View> {
-     return object : BoundedMatcher<View, RecyclerView>(RecyclerView::class.java) {
-         override fun describeTo(description: Description) {
-             //description.appendText("has item at position $position: ")
-
-         }
-
-         override fun matchesSafely(recyclerView: RecyclerView): Boolean {
-             val viewHolder = recyclerView.findViewHolderForAdapterPosition(position)
-             val targetView = viewHolder?.itemView?.findViewById<TextView>(targetViewId)
-
-             return targetView?.text == expectedText
-         }
-     }
- }*/
-/*
-private fun atPosition(position: Int, itemMatcher: Matcher<View>, expectedText: String?): Matcher<View> {
-    checkNotNull(itemMatcher)
-    return object : BoundedMatcher<View, RecyclerView>(RecyclerView::class.java) {
-        override fun describeTo(description: Description) {
-            description.appendText("has item at position $position: ")
-            itemMatcher.describeTo(description)
-        }
-
-        override fun matchesSafely(view: RecyclerView): Boolean {
-            val viewHolder = view.findViewHolderForAdapterPosition(position)
-            if (viewHolder == null) {
-                // has no item on such position
-                return false
-            }
-            val itemView = viewHolder.itemView
-            var matchResult = itemMatcher.matches(itemView)
-
-            if (expectedText != null) {
-                val textView = itemView.findViewById<TextView>(R.id.item_title)
-                val actualText = textView.text.toString()
-                matchResult = matchResult && actualText == expectedText
-            }
-
-            return matchResult
-        }
-    }
-}
-*/
 
 

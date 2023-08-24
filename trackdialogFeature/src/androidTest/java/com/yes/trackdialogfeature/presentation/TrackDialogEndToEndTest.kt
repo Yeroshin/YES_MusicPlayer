@@ -7,11 +7,16 @@ import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragment
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.yes.trackdialogfeature.di.components.DaggerTestTrackDialogComponent
 import com.yes.trackdialogfeature.di.module.TestAppModule
 import com.yes.trackdialogfeature.di.module.TestTrackDialogModule
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
+import com.yes.trackdialogfeature.presentation.ui.TrackDialogAdapter
 import com.yes.trackdialogfeature.trackDialog
 import com.yes.trackdialogfeature.util.EspressoIdlingResource
 import kotlinx.coroutines.test.runTest
@@ -103,10 +108,23 @@ class TrackDialogEndToEndTest {
 
         }
         trackDialog {
-            matchTitleHasNoText()
+            matchTitleText("categories")
+            matchProgressBarIsNotDisplayed()
+            matchDisableViewIsNotDisplayed()
+
+        }
+        onView(withId(com.yes.coreui.R.id.recyclerView))
+            .perform(RecyclerViewActions.actionOnItemAtPosition<TrackDialogAdapter.TrackHolder>(0, click()));
+        trackDialog {
+            //   matchTitleHasNoText()
             matchProgressBarDisplayed()
             matchDisableViewDisplayed()
         }
+       /* trackDialog {
+            matchTitleHasNoText()
+            matchProgressBarDisplayed()
+            matchDisableViewDisplayed()
+        }*/
        /* trackDialog {
             matchTitleHasNoText()
             matchProgressBarIsNotDisplayed()

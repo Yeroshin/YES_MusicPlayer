@@ -7,6 +7,7 @@ import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.entity.MenuException
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase.Params
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 
 class GetMenuUseCase(
     dispatcher: CoroutineDispatcher,
@@ -14,8 +15,10 @@ class GetMenuUseCase(
     private val mediaRepository: MediaRepositoryImpl
 ) : UseCase<Params, Menu>(dispatcher) {
     override fun run(params: Params?): DomainResult<Menu> {
+       // Thread.sleep(10000)
+
         params?.let {
-            val currentItem = menuRepository.getItem(params.id)
+            val currentItem = menuRepository.getItem(params.id)?: return DomainResult.Error(DomainResult.UnknownException)
             val childPrimaryItem = menuRepository.getChildItem(params.id)
                 ?: return DomainResult.Error(MenuException.Empty)
             val childItems = mediaRepository.getMenuItems(

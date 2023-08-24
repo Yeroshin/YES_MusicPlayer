@@ -119,8 +119,8 @@ open class TrackDialogViewModel(
                 trackDialogState = TrackDialogContract.TrackDialogState.Loading
             )
         }
-       // EspressoIdlingResource.increment()
-        viewModelScope.launch(Dispatchers.Main) {
+
+        viewModelScope.launch(Dispatchers.IO) {
 
             val params = id?.let {
                 GetMenuUseCase.Params(
@@ -128,10 +128,11 @@ open class TrackDialogViewModel(
                     name
                 )
             }
-
+            EspressoIdlingResource.increment()
             val result = getMenuUseCase(
                 params
             )
+
             when (result) {
                 is DomainResult.Success -> setState {
                     val menuUi = uiMapper.map(
@@ -161,6 +162,10 @@ open class TrackDialogViewModel(
                             trackDialogState = TrackDialogContract.TrackDialogState.Idle
                         )
                     } else {
+                      /*  if (!EspressoIdlingResource.countingIdlingResource.isIdleNow) {
+                            EspressoIdlingResource.decrement(); // Set app as idle.
+                        }*/
+                       // EspressoIdlingResource.decrement()
                         copy(
                             trackDialogState = TrackDialogContract.TrackDialogState.Success(menuUi)
                         )
@@ -191,8 +196,9 @@ open class TrackDialogViewModel(
                     }
                 }
             }
-          //  EspressoIdlingResource.decrement()
+           EspressoIdlingResource.decrement()
         }
+        val tmp=0
 
     }
 

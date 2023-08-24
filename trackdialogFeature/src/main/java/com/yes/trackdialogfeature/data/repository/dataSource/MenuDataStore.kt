@@ -83,8 +83,7 @@ class MenuDataStore {
 
         return menuTree.find {
             it["id"] == id
-        }
-            ?.let {
+        }?.let {
                 MenuDataStoreEntity(
                     it["id"] as Int,
                     it["name"] as String?,

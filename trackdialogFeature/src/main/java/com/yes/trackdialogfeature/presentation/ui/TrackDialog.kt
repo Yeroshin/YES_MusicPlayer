@@ -125,7 +125,7 @@ class TrackDialog(
         binder.recyclerViewContainer.disableView.visibility = GONE
     }
 
-     fun showLoading() {
+     private fun showLoading() {
         binder.recyclerViewContainer.progressBar.visibility = VISIBLE
         binder.recyclerViewContainer.disableView.visibility = VISIBLE
     }

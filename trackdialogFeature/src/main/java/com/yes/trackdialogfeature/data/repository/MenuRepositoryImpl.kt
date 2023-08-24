@@ -17,32 +17,29 @@ class MenuRepositoryImpl(
             .map {
                 menuRepositoryMapper.mapToItem(it)
             }
-        return menuEntity
-            ?.let { it ->
+        return menuEntity?.let { it ->
                 val menu = menuRepositoryMapper.mapToMenu(it)
-                menu.children.toMutableList().addAll(items)
-                return menu
+                menu.copy(children = items)
             }
     }
 
     override fun getChildMenu(id: Int): Menu? {
-        menuDataStore.getItemsWithParentId(id).lastOrNull()
-            ?.let {
-                return menuRepositoryMapper.mapToMenu(
-                    it
-                )
-            } ?: return null
+        return menuDataStore.getItemsWithParentId(id).lastOrNull()?.let {
+                menuRepositoryMapper.mapToMenu(it)
+            }
     }
 
     fun getChildItem(id: Int): Item? {
-        val childId = menuDataStore.getItemsWithParentId(id).lastOrNull()
-            ?.menuId
-            ?:return null
-        return menuRepositoryMapper.mapToItem(
-            menuDataStore.getItemsWithParentId(childId).lastOrNull()?:return null
-        )
+        return menuDataStore.getItemsWithParentId(id).lastOrNull()?.let {child->
+            menuDataStore.getItemsWithParentId(child.menuId).lastOrNull()?.let {
+                menuRepositoryMapper.mapToItem(it)
+            }
+        }
     }
-    fun getItem(id:Int):Item{
-        TODO()
+    fun getItem(id:Int):Item?{
+        return menuDataStore.getItem(id)?.let {
+            menuRepositoryMapper.mapToItem(it)
+        }
+
     }
 }

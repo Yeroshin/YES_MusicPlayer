@@ -12,6 +12,7 @@ import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.*
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
@@ -31,6 +32,28 @@ class MenuRepositoryImplTest {
         )
     }
 
+    @ParameterizedTest
+    @MethodSource("getItemData")
+    fun getItem(
+        expected: Item?,
+        inputParam: Int,
+        itemEntity: MenuDataStoreEntity?,
+        item:Item?
+    ) {
+        every {
+            menuDataStore.getItem(inputParam)
+        } returns itemEntity
+        itemEntity?.let {
+            item?.let {
+                every {
+                    menuRepositoryMapper.mapToItem(itemEntity)
+                }returns item
+            }
+        }
+
+        val actual = cut.getItem(inputParam)
+        assert(expected == actual)
+    }
     @ParameterizedTest
     @MethodSource("getRootMenuData")
     fun getRootMenu(
@@ -170,6 +193,24 @@ class MenuRepositoryImplTest {
                     ),
                     DomainFixtures.getTracksItems().last()
                 ),
+            )
+        }
+        @JvmStatic
+        fun getItemData(): List<Array<Any?>> {
+            return listOf(
+                arrayOf(
+                    DomainFixtures.getArtistsItem(),
+                    DomainFixtures.getArtistsItem().menuId,
+                    MenuDataStoreFixtures.getArtistMenu(),
+                    DomainFixtures.getArtistsItem()
+                ),
+                arrayOf(
+                    null,
+                    DomainFixtures.getArtistsItem().menuId,
+                    null,
+                    null
+                ),
+
             )
         }
     }
