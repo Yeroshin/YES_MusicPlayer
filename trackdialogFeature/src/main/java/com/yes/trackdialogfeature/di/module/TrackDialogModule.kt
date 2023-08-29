@@ -57,7 +57,8 @@ class TrackDialogModule(val context: Activity) {
             getMenuUseCase,
             saveTracksToPlaylistUseCase,
             uiMapper,
-            menuStack
+            menuStack,
+            null
         )
     }
     @Provides

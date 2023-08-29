@@ -22,13 +22,13 @@ import com.yes.trackdialogfeature.util.EspressoIdlingResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
-import javax.inject.Inject
 
 open class TrackDialogViewModel(
     private val getMenuUseCase: UseCase<GetMenuUseCase.Params, Menu>,
     private val saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase,
     private val uiMapper: UiMapper,
     private val menuStack: ArrayDeque<MenuUi>,
+    private val espressoIdlingResource: EspressoIdlingResource?
 ) : BaseViewModel<TrackDialogContract.Event,
         State,
         Effect>() {
@@ -119,8 +119,8 @@ open class TrackDialogViewModel(
                 trackDialogState = TrackDialogContract.TrackDialogState.Loading
             )
         }
-
-        viewModelScope.launch(Dispatchers.IO) {
+        val tmp0 = 0
+        viewModelScope.launch(Dispatchers.Main) {
 
             val params = id?.let {
                 GetMenuUseCase.Params(
@@ -128,31 +128,32 @@ open class TrackDialogViewModel(
                     name
                 )
             }
-            EspressoIdlingResource.increment()
+            espressoIdlingResource?.increment()
             val result = getMenuUseCase(
                 params
             )
-
+            espressoIdlingResource?.decrement()
             when (result) {
                 is DomainResult.Success -> setState {
-                    val menuUi = uiMapper.map(
+                    var menuUi = uiMapper.map(
                         result.data,
                         ::setEvent
                     )
                     if (!menuStack.isEmpty()) {
-                        menuUi.items
-                            .toMutableList()
-                            .add(
+                        val items = menuUi.items.toMutableList()
+                        items.add(
+                            0,
+                            ItemUi(
+                                -1,
+                                "..",
                                 0,
-                                ItemUi(
-                                    -1,
-                                    "..",
-                                    0,
-                                    null,
-                                    TrackDialogContract.Event.OnItemBackClicked,
-                                    ::setEvent
-                                )
+                                null,
+                                TrackDialogContract.Event.OnItemBackClicked,
+                                ::setEvent
                             )
+                        )
+                        val newMenuUI = menuUi.copy(items = items)
+                        menuUi = newMenuUI
                     }
                     if (!menuStack.offer(menuUi)) {
                         setEffect {
@@ -162,10 +163,10 @@ open class TrackDialogViewModel(
                             trackDialogState = TrackDialogContract.TrackDialogState.Idle
                         )
                     } else {
-                      /*  if (!EspressoIdlingResource.countingIdlingResource.isIdleNow) {
-                            EspressoIdlingResource.decrement(); // Set app as idle.
-                        }*/
-                       // EspressoIdlingResource.decrement()
+                        /*  if (!EspressoIdlingResource.countingIdlingResource.isIdleNow) {
+                              EspressoIdlingResource.decrement(); // Set app as idle.
+                          }*/
+
                         copy(
                             trackDialogState = TrackDialogContract.TrackDialogState.Success(menuUi)
                         )
@@ -196,9 +197,9 @@ open class TrackDialogViewModel(
                     }
                 }
             }
-           EspressoIdlingResource.decrement()
+
         }
-        val tmp=0
+        val tmp = 0
 
     }
 
@@ -207,6 +208,7 @@ open class TrackDialogViewModel(
         private val saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase,
         private val uiMapper: UiMapper,
         private val menuStack: ArrayDeque<MenuUi>,
+        private val espressoIdlingResource: EspressoIdlingResource?
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
@@ -215,6 +217,7 @@ open class TrackDialogViewModel(
                 saveTracksToPlaylistUseCase,
                 uiMapper,
                 menuStack,
+                espressoIdlingResource,
             ) as T
         }
     }

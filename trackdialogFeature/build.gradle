@@ -36,6 +36,7 @@ android {
         //multiDexEnabled true
         // testInstrumentationRunner "com.yes.trackdialogfeature.DexOpeningTestRunner"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
     }
     /* packagingOptions {
          exclude("META-INF/LICENSE.md")
@@ -73,6 +74,11 @@ android {
    /* installation {
         timeOutInMs 30000
     }*/
+    sourceSets {
+        androidTest {
+            manifest.srcFile 'src/androidTest/AndroidManifest.xml'
+        }
+    }
 
 }
 

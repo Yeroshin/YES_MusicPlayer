@@ -1,7 +1,6 @@
 package com.yes.trackdialogfeature.presentation
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.FragmentScenario
@@ -10,16 +9,22 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.platform.app.InstrumentationRegistry
+import com.example.shared_test.MediaFileFixtures
 import com.yes.trackdialogfeature.di.components.DaggerTestTrackDialogComponent
 import com.yes.trackdialogfeature.di.module.TestAppModule
 import com.yes.trackdialogfeature.di.module.TestTrackDialogModule
+import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
+import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 import com.yes.trackdialogfeature.presentation.ui.TrackDialogAdapter
 import com.yes.trackdialogfeature.trackDialog
 import com.yes.trackdialogfeature.util.EspressoIdlingResource
-import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -37,44 +42,51 @@ class TrackDialogEndToEndTest {
             }
         }
     }
-  /*  class MyActivity : AppCompatActivity() {
+
+    /*  class MyActivity : AppCompatActivity() {
 
 
-        private val factory=DaggerTestTrackDialogComponent.builder()
-            .testTrackDialogModule(TestTrackDialogModule())
-             .testAppModule(TestAppModule(this))
-            .build()
-            .getViewModelFactory()
+          private val factory=DaggerTestTrackDialogComponent.builder()
+              .testTrackDialogModule(TestTrackDialogModule())
+               .testAppModule(TestAppModule(this))
+              .build()
+              .getViewModelFactory()
 
 
 
-        val dependency = TrackDialog.TrackDialogDependency(
-            factory
-        )
-        val trackDialogFactory = MockFragmentFactoryImpl(
-            dependency
-        )
-        //  MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
-        val scenario:FragmentScenario<TrackDialog> = launchFragment(
-            factory = trackDialogFactory
-        )
-      /*  scenario.onFragment { fragment ->
-            assert(fragment.requireDialog().isShowing)
-        }*/
-    }*/
-   /* class TestContainerActivity : AppCompatActivity() {
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-          //  setContentView(R.layout.activity_test_container)
-        }
-    }*/
-    private lateinit var scenario:FragmentScenario<TrackDialog>
+          val dependency = TrackDialog.TrackDialogDependency(
+              factory
+          )
+          val trackDialogFactory = MockFragmentFactoryImpl(
+              dependency
+          )
+          //  MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
+          val scenario:FragmentScenario<TrackDialog> = launchFragment(
+              factory = trackDialogFactory
+          )
+        /*  scenario.onFragment { fragment ->
+              assert(fragment.requireDialog().isShowing)
+          }*/
+      }*/
+    /* class TestContainerActivity : AppCompatActivity() {
+         override fun onCreate(savedInstanceState: Bundle?) {
+             super.onCreate(savedInstanceState)
+           //  setContentView(R.layout.activity_test_container)
+         }
+     }*/
+    private lateinit var scenario: FragmentScenario<TrackDialog>
+    private val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
+    private val mediaFileFixtures = MediaFileFixtures(context)
+
     @Before
     fun setUp() {
+        mediaFileFixtures.writeNonExistFiles()
 //////////////////////////////
-        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
+        //   testMediaFileCreator.createTestMediaFilesFromAssets()
+
+      //  IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
         /////////////////////////
-       // val activity=MyActivity()
+        // val activity=MyActivity()
         val factory = DaggerTestTrackDialogComponent.builder()
             .testTrackDialogModule(TestTrackDialogModule())
             .testAppModule(TestAppModule(ApplicationProvider.getApplicationContext()))
@@ -92,21 +104,28 @@ class TrackDialogEndToEndTest {
         scenario = launchFragment(
             factory = trackDialogFactory
         )
-       /* scenario.onFragment { fragment ->
-            assert(fragment.requireDialog().isShowing)
-        }*/
+        /* scenario.onFragment { fragment ->
+             assert(fragment.requireDialog().isShowing)
+         }*/
     }
+
     @After
-    fun tearDown(){
+    fun tearDown() {
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
     }
+
+    private val onClick: (TrackDialogContract.Event) -> Unit = {}
+
     @Test
-    fun showsTrackDialogStateIdle(){
+    fun showsTrackDialogStateIdle() {
 
         scenario.onFragment { fragment ->
             assert(fragment.requireDialog().isShowing)
 
         }
+
+
+
         trackDialog {
             matchTitleText("categories")
             matchProgressBarIsNotDisplayed()
@@ -114,22 +133,37 @@ class TrackDialogEndToEndTest {
 
         }
         onView(withId(com.yes.coreui.R.id.recyclerView))
-            .perform(RecyclerViewActions.actionOnItemAtPosition<TrackDialogAdapter.TrackHolder>(0, click()));
+            .perform(
+                RecyclerViewActions.actionOnItemAtPosition<TrackDialogAdapter.TrackHolder>(
+                    0,
+                    click()
+                )
+            );
+
         trackDialog {
-            //   matchTitleHasNoText()
-            matchProgressBarDisplayed()
-            matchDisableViewDisplayed()
-        }
-       /* trackDialog {
-            matchTitleHasNoText()
-            matchProgressBarDisplayed()
-            matchDisableViewDisplayed()
-        }*/
-       /* trackDialog {
-            matchTitleHasNoText()
+            matchTitleText("artists")
             matchProgressBarIsNotDisplayed()
             matchDisableViewIsNotDisplayed()
-        }*/
+            matchTrackDialogItemAtPosition(
+                1,
+                mediaFileFixtures.getArtists()[0]
+            )
+        }
+        /* trackDialog {
+             //   matchTitleHasNoText()
+             matchProgressBarDisplayed()
+             matchDisableViewDisplayed()
+         }*/
+        /* trackDialog {
+             matchTitleHasNoText()
+             matchProgressBarDisplayed()
+             matchDisableViewDisplayed()
+         }*/
+        /* trackDialog {
+             matchTitleHasNoText()
+             matchProgressBarIsNotDisplayed()
+             matchDisableViewIsNotDisplayed()
+         }*/
 
     }
 

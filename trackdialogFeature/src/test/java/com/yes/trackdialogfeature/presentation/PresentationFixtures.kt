@@ -50,7 +50,7 @@ object PresentationFixtures {
         )
     }
 
-    val uiMapper = UiMapper()
+    private val uiMapper = UiMapper()
     fun getArtistMenu(): MenuUi {
         return uiMapper.map(
             DomainFixtures.getArtistsMenu(),
@@ -59,8 +59,22 @@ object PresentationFixtures {
     }
 
     fun getArtistMenuWithBackItem(): MenuUi {
+        /* val menu = getArtistMenu()
+         menu.items.toMutableList().add(
+             0,
+             ItemUi(
+                 -1,
+                 "..",
+                 0,
+                 null,
+                 TrackDialogContract.Event.OnItemBackClicked,
+                 onClick
+             )
+         )
+         return menu*/
         val menu = getArtistMenu()
-        menu.items.toMutableList().add(
+        val items=menu.items.toMutableList()
+            items.add(
             0,
             ItemUi(
                 -1,
@@ -71,6 +85,9 @@ object PresentationFixtures {
                 onClick
             )
         )
-        return menu
+        return menu.copy(items = items)
+      /*  return menu.copy(
+            items = items
+        )*/
     }
 }

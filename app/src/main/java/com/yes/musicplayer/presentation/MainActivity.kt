@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import com.example.shared_test.MediaFileFixtures
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yes.musicplayer.R
 import com.yes.musicplayer.databinding.ActivityMainBinding
@@ -41,11 +42,10 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-       // checkPermissions()
+        checkPermissions()
         ////////////////////
-        val tmp= MediaDataStore(applicationContext)
-       // tmp.getAudioItems(null,null)
-        tmp.getAudioItems(MediaStore.Audio.Media.ARTIST,arrayOf("Gesaffelstein"))
+       // val mediaFileFixtures= MediaFileFixtures(applicationContext)
+      //  mediaFileFixtures.writeNonExistFiles()
 ////////////////////
     }
 

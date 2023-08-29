@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
+import androidx.test.espresso.IdlingRegistry
 import com.yes.trackdialogfeature.TrackDialogTest
 import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
 import com.yes.trackdialogfeature.data.mapper.MenuRepositoryMapper
@@ -26,6 +27,7 @@ import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
+import com.yes.trackdialogfeature.util.EspressoIdlingResource
 import dagger.Module
 import dagger.Provides
 
@@ -137,6 +139,11 @@ class TestTrackDialogModule(
     fun providesArrayDeque(): ArrayDeque<MenuUi>{
         return ArrayDeque()
     }
+    @Provides
+    fun providesEspressoIdlingResource(): EspressoIdlingResource{
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
+        return EspressoIdlingResource
+    }
 
     @Provides
     fun providesTrackDialogViewModelFactory(
@@ -144,12 +151,14 @@ class TestTrackDialogModule(
         saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase,
         uiMapper: UiMapper,
         menuStack: ArrayDeque<MenuUi>,
+        espressoIdlingResource: EspressoIdlingResource
     ): ViewModelProvider.Factory {
         return TrackDialogViewModel.Factory(
             getMenuUseCase,
             saveTracksToPlaylistUseCase,
             uiMapper,
             menuStack,
+            espressoIdlingResource
         )
     }
 

@@ -8,10 +8,12 @@ import androidx.fragment.app.testing.launchFragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.room.util.copy
 import androidx.test.espresso.IdlingRegistry
 import com.example.shared_test.UiFixturesGenerator
 import com.yes.core.presentation.BaseViewModel
+import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase
@@ -39,6 +41,7 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.withContext
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -88,17 +91,40 @@ class TrackDialogTest {
         }*/
 
         @OptIn(ExperimentalCoroutinesApi::class)
-        fun pushEvent(reduce: TrackDialogContract.State.() -> TrackDialogContract.State)
-     //   = runTest(UnconfinedTestDispatcher())
-        {
+        fun pushEvent(reduce: TrackDialogContract.State.() -> TrackDialogContract.State) {
             //  EspressoIdlingResource.increment()
             val newState = currentState.reduce()
-          //  val job=launch {
+            //  val job=launch {
+            _uiState.value = newState
+            //  }
+            //   job.cancel() // Отменить выполнение корутины
+            //    job.join()
+            // advanceUntilIdle()
+            //  EspressoIdlingResource.decrement()
+
+        }
+       /* fun tmp(){
+            updateLoading()
+            viewModelScope.launch(Dispatchers.Main){
+                withContext(Dispatchers.IO) {
+                    updateData()
+                }
+            }
+        }*/
+        fun pushEvent(state: TrackDialogContract.TrackDialogState) {
+            //  EspressoIdlingResource.increment()
+            val newState = currentState.copy(
+                trackDialogState = state
+            )
+            _uiState.value = newState
+           /* viewModelScope.launch(Dispatchers.Main){
                 _uiState.value = newState
-          //  }
-         //   job.cancel() // Отменить выполнение корутины
-        //    job.join()
-           // advanceUntilIdle()
+            }*/
+
+            //  }
+            //   job.cancel() // Отменить выполнение корутины
+            //    job.join()
+            // advanceUntilIdle()
             //  EspressoIdlingResource.decrement()
 
         }
@@ -163,8 +189,8 @@ class TrackDialogTest {
     @Before
     fun setUp() {
         // Dispatchers.setMain(testDispatcher)
-      //  IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
-      //  MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
+        //  IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
+        //  MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
         // IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
         scenario = launchFragment(
             factory = trackDialogFactory,
@@ -176,7 +202,7 @@ class TrackDialogTest {
     @After
     fun tearDown() {
         //  Dispatchers.resetMain()
-       // IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
+        // IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
         scenario.close()
     }
 
@@ -184,7 +210,7 @@ class TrackDialogTest {
     fun onInitShowsTrackDialogStateIdle() {
         scenario.onFragment { fragment ->
             assert(fragment.requireDialog().isShowing)
-           // fragment.showLoading()
+            // fragment.showLoading()
         }
         trackDialog {
             matchTitleHasNoText()
@@ -197,66 +223,78 @@ class TrackDialogTest {
             )
         }
 
-       trackDialog {
+        trackDialog {
             matchProgressBarDisplayed()
         }
 
     }
 
-      @Test
-      fun loading() {
-          trackDialog {
-              matchTitleHasNoText()
-              matchProgressBarIsNotDisplayed()
-              matchDisableViewIsNotDisplayed()
-          }
-          viewModel.pushEvent {
-              copy(
-                  TrackDialogContract.TrackDialogState.Loading
-              )
-          }
+    @Test
+    fun loading() {
+        trackDialog {
+            matchTitleHasNoText()
+            matchProgressBarIsNotDisplayed()
+            matchDisableViewIsNotDisplayed()
+        }
+        viewModel.pushEvent {
+            copy(
+                TrackDialogContract.TrackDialogState.Loading
+            )
+        }
 
-          trackDialog {
-              matchTitleHasNoText()
-              matchProgressBarDisplayed()
-              matchDisableViewDisplayed()
-          }
-      }
+        trackDialog {
+            matchTitleHasNoText()
+            matchProgressBarDisplayed()
+            matchDisableViewDisplayed()
+        }
+    }
 
-      @Test
-      fun dataSuccess() {
-          //////////////////////////////////////
-          viewModel.pushEvent {
-              copy(
-                  TrackDialogContract.TrackDialogState.Loading
-              )
-          }
+    @Test
+    fun dataSuccess() {
+        //////////////////////////////////////
+       /* viewModel.pushEvent {
+            copy(
+                TrackDialogContract.TrackDialogState.Loading
+            )
+        }*/
+        viewModel.pushEvent (
 
-          trackDialog {
-              matchTitleHasNoText()
-              matchProgressBarDisplayed()
-              matchDisableViewDisplayed()
-          }
-          //////////////////////////////////////
-          val number = 200
-          val item = UiFixturesGenerator.generateArtistsMenuUi(number)
-          viewModel.pushEvent {
-              copy(
-                  TrackDialogContract.TrackDialogState.Success(
-                      item
-                  )
-              )
-          }
-          trackDialog {
-              matchTitleText(item.title)
-              matchProgressBarIsNotDisplayed()
-              matchDisableViewIsNotDisplayed()
-              matchTrackDialogItemAtPosition(
-                  number - 1,
-                  item.items[number - 1]
-              )
-          }
-      }
+                TrackDialogContract.TrackDialogState.Loading
+
+            )
+
+        trackDialog {
+            matchTitleHasNoText()
+            matchProgressBarDisplayed()
+            matchDisableViewDisplayed()
+        }
+        //////////////////////////////////////
+        val number = 200
+        val item = UiFixturesGenerator.generateArtistsMenuUi(number)
+       /* viewModel.pushEvent {
+            copy(
+                TrackDialogContract.TrackDialogState.Success(
+                    item
+                )
+            )
+        }*/
+        viewModel.pushEvent (
+
+            TrackDialogContract.TrackDialogState.Success(
+                item
+            )
+
+        )
+        trackDialog {
+            matchTitleText(item.title)
+            matchProgressBarIsNotDisplayed()
+            matchDisableViewIsNotDisplayed()
+            matchTrackDialogItemAtPosition(
+                number - 1,
+                item.items[number - 1]
+            )
+        }
+    }
 }
 
 

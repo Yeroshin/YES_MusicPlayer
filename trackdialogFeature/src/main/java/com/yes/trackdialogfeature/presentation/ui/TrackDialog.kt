@@ -1,6 +1,8 @@
 package com.yes.trackdialogfeature.presentation.ui
 
+import android.media.MediaScannerConnection
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -21,6 +23,9 @@ import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 
 class TrackDialog(
@@ -81,7 +86,7 @@ class TrackDialog(
                 viewModel.uiState.collect {
                     renderUiState(it)
                 }
-           }
+            }
         }
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -100,7 +105,7 @@ class TrackDialog(
         when (state.trackDialogState) {
             is TrackDialogContract.TrackDialogState.Success -> {
                 dataLoaded(
-                    state.trackDialogState.title,
+                    state.trackDialogState.menu.title,
                     state.trackDialogState.menu.items
                 )
             }
@@ -125,7 +130,7 @@ class TrackDialog(
         binder.recyclerViewContainer.disableView.visibility = GONE
     }
 
-     private fun showLoading() {
+    private fun showLoading() {
         binder.recyclerViewContainer.progressBar.visibility = VISIBLE
         binder.recyclerViewContainer.disableView.visibility = VISIBLE
     }
@@ -147,10 +152,12 @@ class TrackDialog(
     class TrackDialogDependency(
         val factory: ViewModelProvider.Factory,
     )
+
     /* class TrackDialogDependency(
          val viewModel: IBaseViewModel<TrackDialogContract.Event, TrackDialogContract.State, TrackDialogContract.Effect>,
          val adapter: TrackDialogAdapter
      )*/
+
 
 }
 

@@ -56,6 +56,7 @@ class TrackDialogViewModelTest {
             saveTracksToPlaylistUseCase,
             uiMapper,
             menuStack,
+            null
         )
     }
     @AfterEach
@@ -162,12 +163,13 @@ class TrackDialogViewModelTest {
             } returns offerFixture
         }
 
-        // When
-        cut.setEvent(
-            inputFixture
-        )
+
 
         cut.uiState.test {
+            // When
+            cut.setEvent(
+                inputFixture
+            )
             assert(
                 awaitItem() == TrackDialogContract.State(
                     TrackDialogContract.TrackDialogState.Idle
@@ -178,6 +180,7 @@ class TrackDialogViewModelTest {
                     TrackDialogContract.TrackDialogState.Loading
                 )
             )
+
             assert(
                 awaitItem() == stateFixture
             )
@@ -284,7 +287,7 @@ class TrackDialogViewModelTest {
                     ),
                     DomainResult.Success(DomainFixtures.getArtistMenu()),
                     PresentationFixtures.getArtistMenu(),
-                    true,
+                    false,
                     true,
                     TrackDialogContract.State(
                         TrackDialogContract.TrackDialogState.Success(
