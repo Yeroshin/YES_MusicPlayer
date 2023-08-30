@@ -1,14 +1,15 @@
 package com.yes.trackdialogfeature.data.repository.dataSource
 
 import android.content.Context
+import android.database.Cursor
 import android.os.Build
 import android.provider.MediaStore
 import com.yes.trackdialogfeature.data.IMediaDataStore
 import com.yes.trackdialogfeature.data.repository.entity.MediaDataStoreEntity
 
 
-class MediaDataStore(private val appContext: Context) : IMediaDataStore {
-    fun getMediaItems(
+class MediaDataStore(private val context: Context) : IMediaDataStore {
+   /* fun getMediaItems(
         projection: Array<String>,
         selection: String?,
         selectionArgs: Array<String>?,
@@ -54,7 +55,7 @@ class MediaDataStore(private val appContext: Context) : IMediaDataStore {
         val selectio = null
         val selectionArg = emptyArray<String>();
 
-        val query = appContext.contentResolver.query(
+        val query = context.contentResolver.query(
             collection,
             projectio,
             selectio,
@@ -72,14 +73,9 @@ class MediaDataStore(private val appContext: Context) : IMediaDataStore {
         return audioList.map {
             MediaDataStoreEntity(
                 it,
-                "",
-                "",
-                0,
-                "",
-                0
             )
         }
-    }
+    }*/
 
     fun getAudioItems(
         selection: String?,
@@ -108,7 +104,7 @@ class MediaDataStore(private val appContext: Context) : IMediaDataStore {
         )
         val select = selection?.let { "$it = ?" } ?: "${MediaStore.Audio.Media.SIZE} = %"
         ///////////////////////
-        val query = appContext.contentResolver.query(
+        val query = context.contentResolver.query(
             collection,
             projection,
             select,
@@ -138,4 +134,73 @@ class MediaDataStore(private val appContext: Context) : IMediaDataStore {
         }
         return audioList
     }
+
+    private fun mapStringToConst(string: String?): String? {
+        return when (string) {
+            "artist" -> MediaStore.Audio.Media.ARTIST
+            "album" -> MediaStore.Audio.Media.ALBUM
+            "track" -> MediaStore.Audio.Media.TITLE
+            else -> null
+        }
+    }
+
+    fun getMediaItems(
+        get: String,
+        where: String?,
+        what: Array<String>,
+    ): List<MediaDataStoreEntity> {
+        val type = mapStringToConst(get)
+        val selection = mapStringToConst(where)
+        what.forEach {  mapStringToConst(it) }
+
+        val mediaList = mutableListOf<MediaDataStoreEntity>()
+        val collection =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                MediaStore.Audio.Media.getContentUri(
+                    MediaStore.VOLUME_EXTERNAL
+                )
+            } else {
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+            }
+
+        // Display videos in alphabetical order based on their display name.
+        val sortOrder = "${MediaStore.Audio.Media.DISPLAY_NAME} ASC"
+        /////////////////////////
+        val projection = arrayOf(
+            type
+        )
+        val select = selection?.let { "$it = ?" } //?: "${MediaStore.Audio.Media.SIZE} = %"
+        ///////////////////////
+        val query = context.contentResolver.query(
+            collection,
+            projection,
+            select,
+            what,
+            sortOrder
+        )
+        query?.use { cursor ->
+            // Cache column indices.
+            val columnIndex = cursor.getColumnIndex(type)
+            while (cursor.moveToNext()) {
+
+                when (cursor.getType(columnIndex)) {
+                    Cursor.FIELD_TYPE_STRING -> mediaList.add(
+                        MediaDataStoreEntity(
+                            cursor.getString(columnIndex),
+                        )
+                    )
+
+                    else -> {}
+                }
+            }
+        }
+
+        return mediaList
+    }
+
+    data class Param(
+        val type: String,
+        val selection: String?,
+        val selectionArgs: Array<String>?
+    )
 }

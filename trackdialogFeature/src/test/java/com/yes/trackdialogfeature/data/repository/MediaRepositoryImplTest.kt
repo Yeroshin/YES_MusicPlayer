@@ -68,9 +68,9 @@ class MediaRepositoryImplTest {
     ) {
         every {
             mediaDataStore.getMediaItems(
-                param["projection"] as  Array<String>,
+                param["projection"] as  String,
                 param["selection"] as String?,
-                param["selectionArgs"] as  Array<String>?
+                param["selectionArgs"] as  Array<String>
             )
         }returns mediaItemsEntity
         every {
@@ -79,7 +79,6 @@ class MediaRepositoryImplTest {
             )
         }returnsMany mediaItemsDomain
         val actual = cut.getMenuItems(
-            inputParam["id"] as Int,
             inputParam["type"] as String,
             inputParam["selectionType"] as String?,
             inputParam["name"] as String
@@ -123,7 +122,7 @@ class MediaRepositoryImplTest {
         fun getMenuItemsData(): List<Array<Any?>> {
             return listOf(
                 arrayOf(
-                    DomainFixtures.getArtistItems(),
+                    DomainFixtures.getArtistsItems(),
                     mapOf(
                         "id" to 4,
                         "type" to "artist",
@@ -132,10 +131,10 @@ class MediaRepositoryImplTest {
                     mapOf(
                         "projection" to arrayOf("artist"),
                         "selection" to null,
-                        "selectionArgs" to emptyArray<String>()
+                        "selectionArgs" to emptyArray()
                     ),
                     MediaDataStoreFixtures.getArtists(),
-                    DomainFixtures.getArtistItems()
+                    DomainFixtures.getArtistsItems()
                 ),
                 arrayOf(
                     listOf<MediaDataStoreEntity>(),
@@ -147,10 +146,10 @@ class MediaRepositoryImplTest {
                     mapOf(
                         "projection" to arrayOf("artist"),
                         "selection" to null,
-                        "selectionArgs" to emptyArray<String>()
+                        "selectionArgs" to emptyArray()
                     ),
                     listOf<MediaDataStoreEntity>(),
-                    DomainFixtures.getArtistItems()
+                    DomainFixtures.getArtistsItems()
                 ),
             )
         }

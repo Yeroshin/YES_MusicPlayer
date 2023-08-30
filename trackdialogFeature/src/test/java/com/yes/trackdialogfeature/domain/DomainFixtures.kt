@@ -24,18 +24,18 @@ object DomainFixtures {
     private val artists =
         MediaDataStoreFixtures.getArtists().map {
             Item(
-                4,
+                -1,
                 it.title,
-                "artist",
+                null,
                 false
             )
         }
     private val tracks =
         MediaDataStoreFixtures.getTracksMedia().map {
             Item(
-                7,
+                -1,
                 it.title,
-                "track",
+                null,
                 false
             )
         }
@@ -129,13 +129,11 @@ object DomainFixtures {
     }
 
     fun getArtistMenu(): Menu {
-        return dataResult.find { it.name == "artists" }
+       return dataResult.find { it.name == "artists" }
             ?.copy(children = artists)!!
     }
 
-    fun getArtistItems(): List<Item> {
-        return artists
-    }
+
 
     fun getArtistItemsWithSelectedItem(): List<Item> {
         val selectedArtist = artists.mapIndexed { index, item ->
@@ -159,15 +157,23 @@ object DomainFixtures {
     }
 
     fun getArtistsMenu(): Menu {
+        val artists= getArtistsItems().map { it.copy(menuId = 4, type = "artist") }
         return dataResult.find { it.name == "artists" }!!.copy(children = artists)
+    }
+    fun getArtistsItems(): List<Item> {
+        return artists
     }
 
     fun getPrimaryAlbumsItem(): Item {
         return categoryItems.find { it.name == "albums" }!!
     }
 
-    fun getTracksMenu(): Menu {
+    fun getSelectedArtistTracksMenu(): Menu {
+        val tracks=tracks.map { it.copy(menuId =7, type = "track" ) }
         return dataResult.find { it.name == artists[selectedItem].name }!!.copy(children = tracks)
+    }
+    fun getSelectedArtistTracksItems():List<Item>{
+        return tracks
     }
 
     fun getPrimaryTracksMenu(): Menu {
@@ -190,7 +196,7 @@ object DomainFixtures {
         return tracks[selectedItem]
     }
     fun getSelectedArtistItem():Item{
-        return artists[selectedItem]
+        return artists[selectedItem].copy(menuId = 4, type ="artist" )
     }
     fun getTracksFromSelectedArtist():List<Track>{
         return tracksAudio.filter {

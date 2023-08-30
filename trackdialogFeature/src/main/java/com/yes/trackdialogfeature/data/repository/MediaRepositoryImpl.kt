@@ -10,20 +10,20 @@ class MediaRepositoryImpl(
     private val mediaRepositoryMapper: MediaRepositoryMapper,
 ) {
     fun getMenuItems(
-        id: Int,
+
         type: String,
         selectionType: String?,
         selectionName: String
     ): List<Item> {
 
         return mediaDataStore.getMediaItems(
-            arrayOf(type),
+            type,
             selectionType,
             selectionType?.let {
                 arrayOf(selectionName)
             } ?: emptyArray(),
         ).map {
-            mediaRepositoryMapper.map(it).copy(menuId = id, type = type)
+            mediaRepositoryMapper.map(it)
         }
     }
 

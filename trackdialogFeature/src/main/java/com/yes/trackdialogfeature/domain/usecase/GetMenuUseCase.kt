@@ -18,19 +18,17 @@ class GetMenuUseCase(
        // Thread.sleep(10000)
 
         params?.let {
-            val currentItem = menuRepository.getItem(params.id)?: return DomainResult.Error(DomainResult.UnknownException)
-            val childPrimaryItem = menuRepository.getChildItem(params.id)
-                ?: return DomainResult.Error(MenuException.Empty)
-            val childItems = mediaRepository.getMenuItems(
-                childPrimaryItem.menuId,
-                childPrimaryItem.type ?: return DomainResult.Error(DomainResult.UnknownException),
-                currentItem.type,
+            val currentMenu=menuRepository.getItem(params.id)?:return DomainResult.Error(DomainResult.UnknownException)
+            val childMenu=menuRepository.getChildItem(params.id)?:return DomainResult.Error(MenuException.Empty)
+            val childItems=mediaRepository.getMenuItems(
+                childMenu.type?:return DomainResult.Error(DomainResult.UnknownException),
+                currentMenu.type,
                 params.name
             )
             return DomainResult.Success(
                 Menu(
                     params.name,
-                    childItems
+                    childItems.map { it.copy(menuId = childMenu.menuId, type = childMenu.type) }
                 )
             )
         } ?: run {

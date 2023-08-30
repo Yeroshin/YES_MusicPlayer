@@ -13,35 +13,19 @@ object MediaDataStoreFixtures {
     private val albums =
         SharedFixtureGenerator.generateMediaItemNames(count).map {
             MediaDataStoreEntity(
-                it,
-                //  0,
-                "",
-                "",
-                0,
-                "",
-                0
+                it
             )
         }
     private val artists =
         SharedFixtureGenerator.generateMediaItemNames(count).map {
             MediaDataStoreEntity(
-                it,
-                "",
-                "",
-                0,
-                "",
-                0
+                it
             )
         }
     private val tracks =
         SharedFixtureGenerator.generateMediaItemNames(count).map {
             MediaDataStoreEntity(
-                it,
-                "",
-                "",
-                0,
-                "",
-                0
+                it
             )
         }
 

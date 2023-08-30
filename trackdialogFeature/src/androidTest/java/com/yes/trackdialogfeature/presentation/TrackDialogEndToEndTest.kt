@@ -149,21 +149,24 @@ class TrackDialogEndToEndTest {
                 mediaFileFixtures.getArtists()[0]
             )
         }
-        /* trackDialog {
-             //   matchTitleHasNoText()
-             matchProgressBarDisplayed()
-             matchDisableViewDisplayed()
-         }*/
-        /* trackDialog {
-             matchTitleHasNoText()
-             matchProgressBarDisplayed()
-             matchDisableViewDisplayed()
-         }*/
-        /* trackDialog {
-             matchTitleHasNoText()
-             matchProgressBarIsNotDisplayed()
-             matchDisableViewIsNotDisplayed()
-         }*/
+
+        onView(withId(com.yes.coreui.R.id.recyclerView))
+            .perform(
+                RecyclerViewActions.actionOnItemAtPosition<TrackDialogAdapter.TrackHolder>(
+                    1,
+                    click()
+                )
+            );
+        trackDialog {
+            matchTitleText("artists")
+            matchProgressBarIsNotDisplayed()
+            matchDisableViewIsNotDisplayed()
+            matchTrackDialogItemAtPosition(
+                1,
+                mediaFileFixtures.getArtists()[0]
+            )
+        }
+
 
     }
 

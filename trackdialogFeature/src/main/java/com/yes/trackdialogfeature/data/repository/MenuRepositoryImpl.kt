@@ -30,10 +30,10 @@ class MenuRepositoryImpl(
     }
 
     fun getChildItem(id: Int): Item? {
-        return menuDataStore.getItemsWithParentId(id).lastOrNull()?.let {child->
-            menuDataStore.getItemsWithParentId(child.menuId).lastOrNull()?.let {
+        return menuDataStore.getItemsWithParentId(id).lastOrNull()?.let {
+
                 menuRepositoryMapper.mapToItem(it)
-            }
+
         }
     }
     fun getItem(id:Int):Item?{
