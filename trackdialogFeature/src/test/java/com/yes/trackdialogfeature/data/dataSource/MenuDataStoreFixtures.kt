@@ -34,6 +34,11 @@ object MenuDataStoreFixtures {
             null,
             "track",
         ),
+        MenuDataStoreEntity(
+            7,
+            null,
+            "track",
+        ),
     )
 
     fun getCategoriesMenu(): MenuDataStoreEntity {
@@ -53,13 +58,19 @@ object MenuDataStoreFixtures {
         return data.find { it.menuId == 4 }!!
     }
 
-    fun getTrackMenu(): MenuDataStoreEntity {
+    fun getTracksTrackMenu(): MenuDataStoreEntity {
         return data.find { it.menuId == 6 }!!
     }
-    fun getRootMenuId():Int{
+
+    fun getArtistTrackEntity():MenuDataStoreEntity {
+        return data.find { it.menuId == 7 }!!
+    }
+
+    fun getRootMenuId(): Int {
         return 0
     }
-    fun getArtistMenuId():Int{
+
+    fun getArtistMenuId(): Int {
         return 4
     }
 }

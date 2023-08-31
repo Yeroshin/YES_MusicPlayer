@@ -54,7 +54,9 @@ internal class GetMenuUseCaseTest {
         childItems: List<Item>?,
         rootMenu: Menu?,
     ) = runTest {
-        params?.let {
+
+
+       params?.let {
             every {
                 menuRepository.getItem(params.id)
             }returns currentMenu
@@ -83,8 +85,17 @@ internal class GetMenuUseCaseTest {
         val actual = cut(
             params
         )
+////////////////////////////////////
+        val menu=DomainFixtures.getSelectedArtistTracksMenu()
+        val newItems=menu.children
+        val items=DomainFixtures.getSelectedArtistTracksItems().map { it.copy(menuId =7, type = "track") }
+        assert(newItems==items)
+        ////////////////////////////////////
+        val expect= expected
+val tmp2=actual
+
         // Assert
-        assert(expected == actual)
+       assert(expect == actual)
     }
 
 
@@ -105,8 +116,7 @@ internal class GetMenuUseCaseTest {
                     DomainFixtures.getArtistsItems(),
                     null
                 ),
-                //STRANGE BUG - ALL CORRECT BUT NOT ASSERTED
-               /* arrayOf(
+                arrayOf(
                     Params(
                         DomainFixtures.getSelectedArtistItem().menuId,
                         DomainFixtures.getSelectedArtistItem().name
@@ -114,12 +124,12 @@ internal class GetMenuUseCaseTest {
                     DomainResult.Success(
                         DomainFixtures.getSelectedArtistTracksMenu()
                     ),
-                    DomainFixtures.getPrimaryArtistsItem(),
                     DomainFixtures.getPrimaryArtistItem(),
+                    DomainFixtures.getPrimaryArtistTrackItem(),
 
                     DomainFixtures.getSelectedArtistTracksItems(),
                     null
-                ),*/
+                ),
                 arrayOf(
                     null,
                     DomainResult.Success(

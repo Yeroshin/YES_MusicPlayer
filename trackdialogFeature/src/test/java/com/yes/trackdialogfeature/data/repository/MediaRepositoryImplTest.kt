@@ -29,6 +29,7 @@ class MediaRepositoryImplTest {
             mediaRepositoryMapper
         )
     }
+
     @Suppress("UNCHECKED_CAST")
     @ParameterizedTest
     @MethodSource("getAudioItemsData")

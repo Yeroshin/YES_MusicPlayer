@@ -12,7 +12,6 @@ import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.*
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
@@ -171,7 +170,7 @@ class MenuRepositoryImplTest {
                     MenuDataStoreFixtures.getArtistMenuId(),
                     listOf(
                         listOf( MenuDataStoreFixtures.getArtistMenu()),
-                       listOf( MenuDataStoreFixtures.getTrackMenu())
+                       listOf( MenuDataStoreFixtures.getTracksTrackMenu())
                     ),
                     DomainFixtures.getTracksItems().last()
                 ),
@@ -180,7 +179,7 @@ class MenuRepositoryImplTest {
                     MenuDataStoreFixtures.getArtistMenuId(),
                     listOf(
                         listOf(),
-                        listOf( MenuDataStoreFixtures.getTrackMenu())
+                        listOf( MenuDataStoreFixtures.getTracksTrackMenu())
                     ),
                     DomainFixtures.getTracksItems().last()
                 ),

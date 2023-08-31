@@ -178,13 +178,13 @@ object DomainFixtures {
 
     fun getPrimaryTracksMenu(): Menu {
         return menuRepositoryMapper.mapToMenu(
-            MenuDataStoreFixtures.getTrackMenu()
+            MenuDataStoreFixtures.getTracksTrackMenu()
         )
     }
 
-    fun getPrimaryTracksItem(): Item {
+    fun getPrimaryArtistTrackItem(): Item {
         return menuRepositoryMapper.mapToItem(
-            MenuDataStoreFixtures.getTrackMenu()
+            MenuDataStoreFixtures.getArtistTrackEntity()
         )
     }
 
