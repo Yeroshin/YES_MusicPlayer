@@ -51,7 +51,7 @@ object MediaDataStoreFixtures {
     private val tracksAudio = tracks.mapIndexed { index, element ->
         element.copy(
             element.title,
-            artists[index].title,
+            artists[selectedItem].title,
             albums[index].title,
             Random.nextLong(135000, 270000),
             "/storage/emulated/0/media/${element.title}.mp3",

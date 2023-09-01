@@ -39,50 +39,51 @@ class MediaRepositoryImplTest {
         param: Map<String, Any?>,
         mediaItemsEntity: List<MediaDataStoreEntity>,
         mediaItemsDomain: List<Track>
-    ){
+    ) {
         every {
             mediaDataStore.getAudioItems(
                 param["selection"] as String?,
-                param["selectionArgs"] as  Array<String>?
+                param["selectionArgs"] as Array<String>?
             )
-        }returns mediaItemsEntity
+        } returns mediaItemsEntity
         every {
             mediaRepositoryMapper.mapToTrack(
                 any()
             )
-        }returnsMany mediaItemsDomain
+        } returnsMany mediaItemsDomain
         val actual = cut.getAudioItems(
             inputParam["selectionType"] as String?,
             inputParam["selectionName"] as String
         )
         assert(expected == actual)
     }
+
     @Suppress("UNCHECKED_CAST")
     @ParameterizedTest
     @MethodSource("getMenuItemsData")
     fun getMenuItems(
         expected: List<Item>,
-        inputParam: Map<String, Any?>,
-        param: Map<String, Any?>,
+        inputParam: Array<String?>,
+        param: Array<Any>,
         mediaItemsEntity: List<MediaDataStoreEntity>,
         mediaItemsDomain: List<Item>
     ) {
         every {
             mediaDataStore.getMediaItems(
-                param["projection"] as  String,
-                param["selection"] as String?,
-                param["selectionArgs"] as  Array<String>
+                param[0] as String,
+                param[1] as String?,
+                param[2] as Array<String>
             )
-        }returns mediaItemsEntity
+        } returns mediaItemsEntity
         every {
             mediaRepositoryMapper.map(
                 any()
             )
-        }returnsMany mediaItemsDomain
+        } returnsMany mediaItemsDomain
         val actual = cut.getMenuItems(
-            inputParam["type"] as String,
-            inputParam["selectionType"] as String?,
-            inputParam["name"] as String
+            inputParam[0] as String,
+            inputParam[1],
+            inputParam[2] as String
         )
         assert(expected == actual)
     }
@@ -119,38 +120,39 @@ class MediaRepositoryImplTest {
                 )
             )
         }
+
         @JvmStatic
         fun getMenuItemsData(): List<Array<Any?>> {
             return listOf(
                 arrayOf(
                     DomainFixtures.getArtistsItems(),
-                    mapOf(
-                        "id" to 4,
-                        "type" to "artist",
-                        "name" to "artists"
+                    arrayOf(
+                        "artist",
+                        null,
+                        "artists"
                     ),
-                    mapOf(
-                        "projection" to arrayOf("artist"),
-                        "selection" to null,
-                        "selectionArgs" to emptyArray()
+                    arrayOf(
+                        "artist",
+                        null,
+                        emptyArray<String>()
                     ),
                     MediaDataStoreFixtures.getArtists(),
                     DomainFixtures.getArtistsItems()
                 ),
                 arrayOf(
-                    listOf<MediaDataStoreEntity>(),
-                    mapOf(
-                        "id" to 4,
-                        "type" to "artist",
-                        "name" to "artists"
+                    DomainFixtures.getSelectedArtistTracksItems(),
+                    arrayOf(
+                        "track",
+                        "artist",
+                        DomainFixtures.getSelectedArtistItem().name
                     ),
-                    mapOf(
-                        "projection" to arrayOf("artist"),
-                        "selection" to null,
-                        "selectionArgs" to emptyArray()
+                    arrayOf(
+                        "track",
+                        "artist",
+                        arrayOf(DomainFixtures.getSelectedArtistItem().name)
                     ),
-                    listOf<MediaDataStoreEntity>(),
-                    DomainFixtures.getArtistsItems()
+                    MediaDataStoreFixtures.getTracksFromSelectedArtist(),
+                    DomainFixtures.getSelectedArtistTracksItems()
                 ),
             )
         }
