@@ -13,7 +13,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 class MediaFileFixtures(private val context: Context) {
-
+    private val selectedArtist=1
     private val outputDir: File by lazy {
         getOutputDirectory()
     }
@@ -222,6 +222,7 @@ class MediaFileFixtures(private val context: Context) {
             null
         ) as List<String>
     }
+    private val onClick: (TrackDialogContract.Event) -> Unit = {}
 
     fun getArtists(): List<MenuUi.ItemUi> {
         val artists=getMedia(
@@ -229,8 +230,7 @@ class MediaFileFixtures(private val context: Context) {
             null,
             null
         ) as List<String>
-        val onClick: (TrackDialogContract.Event) -> Unit = {}
-        return artists.map {
+       return artists.map {
             MenuUi.ItemUi(
                 7,
                 it,
@@ -245,12 +245,30 @@ class MediaFileFixtures(private val context: Context) {
         }
     }
 
-    fun getArtistTracks(artist: String): List<String> {
-        return getMedia(
+    fun getSelectedArtistTracks(): List<MenuUi.ItemUi> {
+        val artist=getArtists()[selectedArtist].name
+        val tracks= getMedia(
             MediaStore.Audio.Media.TITLE,
             MediaStore.Audio.Media.ARTIST,
             arrayOf(artist)
         ) as List<String>
+        return tracks.map {
+            MenuUi.ItemUi(
+                7,
+                it,
+                1,
+                false,
+                TrackDialogContract.Event.OnItemClicked(
+                    7,
+                    it,
+                ),
+                onClick
+            )
+        }
+
+    }
+    fun getSelectedArtistIndex():Int{
+        return selectedArtist
     }
 
 }

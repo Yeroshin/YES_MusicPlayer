@@ -2,11 +2,14 @@ package com.yes.core.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yes.core.util.EspressoIdlingResource
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect>
+abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect>(
+    private val espressoIdlingResource: EspressoIdlingResource?
+)
     : ViewModel(), IBaseViewModel <Event , State , Effect >{
 
     private val initialState: State by lazy { createInitialState() }
@@ -40,11 +43,14 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect
     abstract fun handleEvent(event: Event)
 
     override fun setEvent(event: Event) {
+
         val newEvent = event
         viewModelScope.launch { _event.emit(newEvent) }
+        espressoIdlingResource?.increment()
     }
 
     protected fun setState(reduce: State.() -> State) {
+        espressoIdlingResource?.decrement()
         val newState = currentState.reduce()
         _uiState.value = newState
     }

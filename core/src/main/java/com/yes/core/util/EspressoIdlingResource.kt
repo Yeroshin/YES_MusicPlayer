@@ -1,4 +1,4 @@
-package com.yes.trackdialogfeature.util
+package com.yes.core.util
 
 import androidx.test.espresso.idling.CountingIdlingResource
 

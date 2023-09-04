@@ -1,12 +1,7 @@
 package com.yes.trackdialogfeature.di.module
 
-import android.app.Activity
-import android.content.Context
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.room.Room
 import androidx.test.espresso.IdlingRegistry
-import com.yes.trackdialogfeature.TrackDialogTest
 import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
 import com.yes.trackdialogfeature.data.mapper.MenuRepositoryMapper
 import com.yes.trackdialogfeature.data.repository.MediaRepositoryImpl
@@ -14,37 +9,20 @@ import com.yes.trackdialogfeature.data.repository.MenuRepositoryImpl
 import com.yes.trackdialogfeature.data.repository.SettingsRepositoryImpl
 import com.yes.trackdialogfeature.data.repository.dataSource.MediaDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
-import com.yes.trackdialogfeature.data.repository.dataSource.PlayListDataBase
 import com.yes.trackdialogfeature.data.repository.dataSource.SettingsDataStore
-import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.repository.IPlayListDao
 import com.yes.trackdialogfeature.domain.repository.ISettingsRepository
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase
-import com.yes.trackdialogfeature.domain.usecase.UseCase
-import com.yes.trackdialogfeature.presentation.TrackDialogEndToEndTest
-import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
-import com.yes.trackdialogfeature.util.EspressoIdlingResource
+import com.yes.core.util.EspressoIdlingResource
 import dagger.Module
 import dagger.Provides
 
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestDispatcher
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import java.util.ArrayDeque
 
 @Module
@@ -140,7 +118,7 @@ class TestTrackDialogModule(
         return ArrayDeque()
     }
     @Provides
-    fun providesEspressoIdlingResource(): EspressoIdlingResource{
+    fun providesEspressoIdlingResource(): EspressoIdlingResource {
         IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
         return EspressoIdlingResource
     }

@@ -5,20 +5,23 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
 import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.matcher.BoundedMatcher
-
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Description
 import org.hamcrest.Matcher
-import org.hamcrest.CoreMatchers.not
 
 
-open class BaseTestRobot {
+open class BaseTestRobot() {
     fun view(resId: Int): ViewInteraction = onView(withId(resId))
     fun matchText(viewInteraction: ViewInteraction, text: String): ViewInteraction = viewInteraction
         .check(matches(withText(text)))
@@ -33,7 +36,12 @@ open class BaseTestRobot {
     fun isNotDisplayed(viewInteraction: ViewInteraction): ViewInteraction = viewInteraction
         .check(matches(not(ViewMatchers.isDisplayed())))
 
-    fun  matchRecyclerViewItemDescendantTextAtPosition(viewInteraction: ViewInteraction,position:Int,viewId:Int,text:String): ViewInteraction = viewInteraction
+    fun matchRecyclerViewItemDescendantTextAtPosition(
+        viewInteraction: ViewInteraction,
+        position: Int,
+        viewId: Int,
+        text: String
+    ): ViewInteraction = viewInteraction
         .perform(scrollToPosition<RecyclerView.ViewHolder>(position))
         .check(matches(atPosition(position, ViewMatchers.hasDescendant(withId(viewId)), text)))
 
@@ -60,6 +68,46 @@ open class BaseTestRobot {
                 }
 
                 return matchResult
+            }
+        }
+    }
+
+    fun clickRecyclerViewItemView(
+        viewInteraction: ViewInteraction,
+        position:Int
+    ): ViewInteraction = viewInteraction
+        .perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                position,
+                click()
+            )
+        )
+
+    fun clickRecyclerViewItemViewChildView(
+        viewInteraction: ViewInteraction,
+        position: Int,
+        childViewId: Int,
+    ): ViewInteraction = viewInteraction
+        .perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                position,
+                clickChildViewWithId(childViewId)
+            )
+        )
+
+    private fun clickChildViewWithId(id: Int): ViewAction {
+        return object : ViewAction {
+            override fun getConstraints(): Matcher<View>? {
+                return null
+            }
+
+            override fun getDescription(): String {
+                return "Click on a child view with specified id."
+            }
+
+            override fun perform(uiController: UiController, view: View) {
+                val v = view.findViewById<View>(id)
+                v.performClick()
             }
         }
     }

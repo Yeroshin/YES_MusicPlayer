@@ -18,7 +18,7 @@ import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract.Effe
 import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.model.MenuUi.ItemUi
-import com.yes.trackdialogfeature.util.EspressoIdlingResource
+import com.yes.core.util.EspressoIdlingResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -28,10 +28,10 @@ open class TrackDialogViewModel(
     private val saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase,
     private val uiMapper: UiMapper,
     private val menuStack: ArrayDeque<MenuUi>,
-    private val espressoIdlingResource: EspressoIdlingResource?
-) : BaseViewModel<TrackDialogContract.Event,
-        State,
-        Effect>() {
+    espressoIdlingResource: EspressoIdlingResource?
+) : BaseViewModel<TrackDialogContract.Event,State, Effect>(
+    espressoIdlingResource
+) {
 
     override fun createInitialState(): State {
         return State(
@@ -119,7 +119,6 @@ open class TrackDialogViewModel(
                 trackDialogState = TrackDialogContract.TrackDialogState.Loading
             )
         }
-        val tmp0 = 0
         viewModelScope.launch(Dispatchers.Main) {
 
             val params = id?.let {
@@ -128,11 +127,11 @@ open class TrackDialogViewModel(
                     name
                 )
             }
-            espressoIdlingResource?.increment()
+            //  espressoIdlingResource?.increment()
             val result = getMenuUseCase(
                 params
             )
-            espressoIdlingResource?.decrement()
+            // espressoIdlingResource?.decrement()
             when (result) {
                 is DomainResult.Success -> setState {
                     var menuUi = uiMapper.map(

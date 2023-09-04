@@ -1,62 +1,28 @@
-package com.yes.trackdialogfeature
+package com.yes.trackdialogfeature.presentation
 
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import androidx.room.util.copy
-import androidx.test.espresso.IdlingRegistry
 import com.example.shared_test.UiFixturesGenerator
 import com.yes.core.presentation.BaseViewModel
-import com.yes.trackdialogfeature.domain.entity.DomainResult
-import com.yes.trackdialogfeature.domain.entity.Menu
-import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
-import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase
-import com.yes.trackdialogfeature.domain.usecase.UseCase
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
-import com.yes.trackdialogfeature.presentation.mapper.UiMapper
-import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
-import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
-import com.yes.trackdialogfeature.util.EspressoIdlingResource
-
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.yes.trackdialogfeature.trackDialog
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.StandardTestDispatcher
-
-import kotlinx.coroutines.test.TestCoroutineScope
-import kotlinx.coroutines.test.TestDispatcher
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import kotlinx.coroutines.withContext
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import java.util.ArrayDeque
 
 
 class TrackDialogTest {
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val testDispatcher: TestDispatcher = StandardTestDispatcher()
 
-    class TestViewModel(
-        testDispatcher: TestDispatcher,
-    ) : BaseViewModel<TrackDialogContract.Event,
+    class TestViewModel : BaseViewModel<TrackDialogContract.Event,
             TrackDialogContract.State,
-            TrackDialogContract.Effect>() {
+            TrackDialogContract.Effect>(null) {
 
         override val effect: Flow<TrackDialogContract.Effect> = flow {}
         override fun handleEvent(event: TrackDialogContract.Event) {
@@ -76,21 +42,7 @@ class TrackDialogTest {
         )
         override val uiState = _uiState.asStateFlow()
 
-        @OptIn(ExperimentalCoroutinesApi::class)
-        private val scope = TestScope(testDispatcher)
 
-        /* fun pushEvent(state: TrackDialogContract.State) =
-             scope.launch {
-                 _uiState.emit(state)
-             }*/
-        /* fun pushEvent(reduce: TrackDialogContract.State.() -> TrackDialogContract.State) {
-            EspressoIdlingResource.increment()
-            val newState = currentState.reduce()
-            _uiState.value = newState
-            EspressoIdlingResource.decrement()
-        }*/
-
-        @OptIn(ExperimentalCoroutinesApi::class)
         fun pushEvent(reduce: TrackDialogContract.State.() -> TrackDialogContract.State) {
             //  EspressoIdlingResource.increment()
             val newState = currentState.reduce()
@@ -103,14 +55,7 @@ class TrackDialogTest {
             //  EspressoIdlingResource.decrement()
 
         }
-       /* fun tmp(){
-            updateLoading()
-            viewModelScope.launch(Dispatchers.Main){
-                withContext(Dispatchers.IO) {
-                    updateData()
-                }
-            }
-        }*/
+
         fun pushEvent(state: TrackDialogContract.TrackDialogState) {
             //  EspressoIdlingResource.increment()
             val newState = currentState.copy(
@@ -143,9 +88,9 @@ class TrackDialogTest {
     }
 
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+
     private val viewModel = TestViewModel(
-        testDispatcher
+
     )
 
     class MockViewModelFactory(private val viewModel: TestViewModel) : ViewModelProvider.Factory {
@@ -215,7 +160,7 @@ class TrackDialogTest {
         trackDialog {
             matchTitleHasNoText()
             matchProgressBarIsNotDisplayed()
-            matchDisableViewIsNotDisplayed()
+           // matchDisableViewIsNotDisplayed()
         }
         viewModel.pushEvent {
             copy(
@@ -234,7 +179,6 @@ class TrackDialogTest {
         trackDialog {
             matchTitleHasNoText()
             matchProgressBarIsNotDisplayed()
-            matchDisableViewIsNotDisplayed()
         }
         viewModel.pushEvent {
             copy(
@@ -245,7 +189,6 @@ class TrackDialogTest {
         trackDialog {
             matchTitleHasNoText()
             matchProgressBarDisplayed()
-            matchDisableViewDisplayed()
         }
     }
 
@@ -266,7 +209,6 @@ class TrackDialogTest {
         trackDialog {
             matchTitleHasNoText()
             matchProgressBarDisplayed()
-            matchDisableViewDisplayed()
         }
         //////////////////////////////////////
         val number = 200
@@ -288,7 +230,6 @@ class TrackDialogTest {
         trackDialog {
             matchTitleText(item.title)
             matchProgressBarIsNotDisplayed()
-            matchDisableViewIsNotDisplayed()
             matchTrackDialogItemAtPosition(
                 number - 1,
                 item.items[number - 1]

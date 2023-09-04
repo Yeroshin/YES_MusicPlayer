@@ -1,6 +1,7 @@
 package com.yes.trackdialogfeature.presentation.ui
 
 import android.view.LayoutInflater
+import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yes.trackdialogfeature.databinding.ItemMediaBinding
@@ -50,7 +51,7 @@ class TrackDialogAdapter :
 
     }
 
-    inner class TrackHolder(private val binding: ItemMediaBinding) :
+    inner class TrackHolder( val binding: ItemMediaBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             position: Int,
@@ -61,6 +62,10 @@ class TrackDialogAdapter :
             binding.root.isSelected = false
             binding.root.isActivated = false
             binding.itemTitle.text = item.name
+            //TO DO think about refactor this
+            if(item.name==".."){
+                binding.checkBox.visibility=GONE
+            }
             binding.icon.setImageLevel(iconType)
             binding.root.setOnClickListener {
                 trackList[position].onClick(trackList[position].param)
