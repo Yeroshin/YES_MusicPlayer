@@ -16,6 +16,8 @@ import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.yes.trackdialogfeature.domain.entity.Track
+import com.yes.trackdialogfeature.domain.repository.IPlayListDao
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -72,9 +74,16 @@ open class BaseTestRobot() {
         }
     }
 
+    fun clickView(
+        viewInteraction: ViewInteraction,
+    ): ViewInteraction = viewInteraction
+        .perform(
+            click()
+        )
+
     fun clickRecyclerViewItemView(
         viewInteraction: ViewInteraction,
-        position:Int
+        position: Int
     ): ViewInteraction = viewInteraction
         .perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
@@ -95,6 +104,7 @@ open class BaseTestRobot() {
             )
         )
 
+
     private fun clickChildViewWithId(id: Int): ViewAction {
         return object : ViewAction {
             override fun getConstraints(): Matcher<View>? {
@@ -110,5 +120,12 @@ open class BaseTestRobot() {
                 v.performClick()
             }
         }
+    }
+
+    fun readTracksFromPlaylistDB(
+        playlistName: String,
+        playListRepository: IPlayListDao
+    ): List<Track> {
+        return playListRepository.getTracks(playlistName)
     }
 }

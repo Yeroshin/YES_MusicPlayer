@@ -10,7 +10,7 @@ import com.yes.trackdialogfeature.presentation.model.MenuUi
 class TrackDialogAdapter :
     RecyclerView.Adapter<TrackDialogAdapter.TrackHolder>() {
     // private lateinit var viewModel: TrackDialogViewModel
-    private var trackList = listOf<MenuUi.ItemUi>()
+    private var mediaList = listOf<MenuUi.ItemUi>()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackHolder {
@@ -26,11 +26,11 @@ class TrackDialogAdapter :
              "Media.TITLE"->iconType=2
              else->1
          }*/
-        holder.bind(position, trackList[position], trackList[position].iconType)
+        holder.bind(position, mediaList[position], mediaList[position].iconType)
     }
 
     override fun getItemCount(): Int {
-        return trackList.size
+        return mediaList.size
     }
 
     /* fun setViewModel(vm: TrackDialogViewModel) {
@@ -39,12 +39,12 @@ class TrackDialogAdapter :
 
     fun setItems(items: List<MenuUi.ItemUi>) {
 
-        trackList = items
+        mediaList = items
         notifyDataSetChanged()
     }
 
     fun getItems(): List<MenuUi.ItemUi> {
-        return trackList
+        return mediaList
     }
 
     fun onCheckboxClicked(position: Int) {
@@ -66,9 +66,12 @@ class TrackDialogAdapter :
             if(item.name==".."){
                 binding.checkBox.visibility=GONE
             }
+            binding.checkBox.setOnCheckedChangeListener{ buttonView, isChecked ->
+                mediaList[position].selected=isChecked
+            }
             binding.icon.setImageLevel(iconType)
             binding.root.setOnClickListener {
-                trackList[position].onClick(trackList[position].param)
+                mediaList[position].onClick(mediaList[position].param)
                 /*  trackList[position].onClick(
                       TrackDialogContract.Event.OnItemClicked(
                           item.id,

@@ -9,23 +9,21 @@ import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.BoundedMatcher
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.shared_test.MediaFileFixtures
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.trackdialogfeature.di.components.DaggerTestTrackDialogComponent
+import com.yes.trackdialogfeature.di.components.TestTrackDialogComponent
 import com.yes.trackdialogfeature.di.module.TestAppModule
 import com.yes.trackdialogfeature.di.module.TestTrackDialogModule
+import com.yes.trackdialogfeature.domain.repository.IPlayListDao
+import com.yes.trackdialogfeature.domain.repository.ISettingsRepository
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
-import com.yes.trackdialogfeature.presentation.ui.TrackDialogAdapter
 import com.yes.trackdialogfeature.trackDialog
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -48,40 +46,12 @@ class TrackDialogEndToEndTest {
         }
     }
 
-    /*  class MyActivity : AppCompatActivity() {
-
-
-          private val factory=DaggerTestTrackDialogComponent.builder()
-              .testTrackDialogModule(TestTrackDialogModule())
-               .testAppModule(TestAppModule(this))
-              .build()
-              .getViewModelFactory()
-
-
-
-          val dependency = TrackDialog.TrackDialogDependency(
-              factory
-          )
-          val trackDialogFactory = MockFragmentFactoryImpl(
-              dependency
-          )
-          //  MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
-          val scenario:FragmentScenario<TrackDialog> = launchFragment(
-              factory = trackDialogFactory
-          )
-        /*  scenario.onFragment { fragment ->
-              assert(fragment.requireDialog().isShowing)
-          }*/
-      }*/
-    /* class TestContainerActivity : AppCompatActivity() {
-         override fun onCreate(savedInstanceState: Bundle?) {
-             super.onCreate(savedInstanceState)
-           //  setContentView(R.layout.activity_test_container)
-         }
-     }*/
     private lateinit var scenario: FragmentScenario<TrackDialog>
     private val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
     private val mediaFileFixtures = MediaFileFixtures(context)
+    private lateinit var di: TestTrackDialogComponent
+    private lateinit var settings: ISettingsRepository
+    private lateinit var dataBase: IPlayListDao
 
     @Before
     fun setUp() {
@@ -92,11 +62,13 @@ class TrackDialogEndToEndTest {
         //  IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
         /////////////////////////
         // val activity=MyActivity()
-        val factory = DaggerTestTrackDialogComponent.builder()
+        di = DaggerTestTrackDialogComponent.builder()
             .testTrackDialogModule(TestTrackDialogModule())
             .testAppModule(TestAppModule(ApplicationProvider.getApplicationContext()))
             .build()
-            .getViewModelFactory()
+        val factory = di.getViewModelFactory()
+        dataBase = di.getDataBase()
+        settings=di.getSettings()
         //private val factory = MockViewModelFactory(viewModel)
         val dependency = TrackDialog.TrackDialogDependency(
             factory
@@ -134,77 +106,51 @@ class TrackDialogEndToEndTest {
         trackDialog {
             matchTitleText("categories")
             matchProgressBarIsNotDisplayed()
+            clickItemInMediaList(0)
 
-        }
-        onView(withId(com.yes.coreui.R.id.recyclerView))
-            .perform(
-                RecyclerViewActions.actionOnItemAtPosition<TrackDialogAdapter.TrackHolder>(
-                    0,
-                    click()
-                )
-            );
-
-        trackDialog {
             matchTitleText("artists")
             matchProgressBarIsNotDisplayed()
             matchTrackDialogItemAtPosition(
                 1,
                 mediaFileFixtures.getArtists()[0]
             )
-        }
-
-        onView(withId(com.yes.coreui.R.id.recyclerView))
-            .perform(
-                RecyclerViewActions.actionOnItemAtPosition<TrackDialogAdapter.TrackHolder>(
-                    1 + mediaFileFixtures.getSelectedArtistIndex(),
-                    click()
-                )
-            );
-
-        trackDialog {
-            matchTitleText(
-                mediaFileFixtures.getArtists()[mediaFileFixtures.getSelectedArtistIndex()].name
-            )
-            matchProgressBarIsNotDisplayed()
-            matchTrackDialogItemAtPosition(
-                1,
-                mediaFileFixtures.getSelectedArtistTracks()[0]
-            )
-        }
-
-
-
-
-       /* onView(withId(com.yes.coreui.R.id.recyclerView))
-            .perform(
-                RecyclerViewActions.actionOnItemAtPosition<TrackDialogAdapter.TrackHolder>(
-                    3,
-                    MyViewAction.clickChildViewWithId(com.yes.trackdialogfeature.R.id.checkBox)
-                )
-            )
-            .check(matches(withCheckBoxAtPositionIsChecked(3)))*/
-        trackDialog {
             clickItemInMediaList(
-                3
+                1 + mediaFileFixtures.getSelectedArtistIndex(),
             )
+            matchTitleText(
+                mediaFileFixtures.getArtists()[mediaFileFixtures.getSelectedArtistIndex()].name
+            )
+            matchProgressBarIsNotDisplayed()
+            matchTrackDialogItemAtPosition(
+                mediaFileFixtures.getSelectedArtistIndex(),
+                mediaFileFixtures.getSelectedArtistTracks()[0]
+            )
+            clickItemCheckBoxInMediaList(
+                mediaFileFixtures.getSelectedArtistIndex()
+            )
+            clickOkButton()
+            matchSelectedArtistTracksSavedToPlaylist(
+                mediaFileFixtures.getSelectedArtistTracks(),
+                settings,
+                dataBase
+            )
+
         }
-        trackDialog {
+
+       /* trackDialog {
             matchTitleText(
                 mediaFileFixtures.getArtists()[mediaFileFixtures.getSelectedArtistIndex()].name
             )
             matchProgressBarIsNotDisplayed()
 
             matchTrackDialogItemAtPosition(
-                1,
+                mediaFileFixtures.getSelectedArtistIndex(),
                 mediaFileFixtures.getSelectedArtistTracks()[0]
             )
-        }
+        }*/
 
 
     }
-
-
-
 
 
     fun withCheckBoxAtPositionIsChecked(

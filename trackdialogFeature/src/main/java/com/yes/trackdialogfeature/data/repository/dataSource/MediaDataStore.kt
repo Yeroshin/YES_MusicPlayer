@@ -78,9 +78,11 @@ class MediaDataStore(private val context: Context) : IMediaDataStore {
     }*/
 
     fun getAudioItems(
-        selection: String?,
-        selectionArgs: Array<String>?,
+        where: String?,
+        selectionArgs: Array<String>,
     ): List<MediaDataStoreEntity> {
+        val selection = mapStringToConst(where)
+        selectionArgs.forEach {  mapStringToConst(it) }
         val audioList = arrayListOf<MediaDataStoreEntity>()
         val collection =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -91,7 +93,6 @@ class MediaDataStore(private val context: Context) : IMediaDataStore {
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
             }
 
-        // Display videos in alphabetical order based on their display name.
         val sortOrder = "${MediaStore.Audio.Media.DISPLAY_NAME} ASC"
         /////////////////////////
         val projection = arrayOf(
@@ -102,7 +103,7 @@ class MediaDataStore(private val context: Context) : IMediaDataStore {
             MediaStore.Audio.Media.DATA,
             MediaStore.Audio.Media.SIZE
         )
-        val select = selection?.let { "$it = ?" } ?: "${MediaStore.Audio.Media.SIZE} = %"
+        val select = selection?.let { "$it = ?" }// ?: "${MediaStore.Audio.Media.SIZE} = %"
         ///////////////////////
         val query = context.contentResolver.query(
             collection,
