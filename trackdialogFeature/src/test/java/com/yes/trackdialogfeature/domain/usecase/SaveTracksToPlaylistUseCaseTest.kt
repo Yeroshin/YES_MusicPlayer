@@ -1,14 +1,18 @@
 package com.yes.trackdialogfeature.domain.usecase
 
+import com.example.shared_test.UiFixtures
 import com.yes.trackdialogfeature.data.dataSource.MediaDataStoreFixtures
 import com.yes.trackdialogfeature.data.dataSource.SettingsFixtures
 import com.yes.trackdialogfeature.data.repository.MediaRepositoryImpl
+import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase.Params
 import com.yes.trackdialogfeature.domain.repository.IPlayListDao
 import com.yes.trackdialogfeature.domain.entity.Track
-import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.entity.DomainResult
+import com.yes.trackdialogfeature.domain.entity.Menu.Item
+import com.yes.trackdialogfeature.domain.repository.IMenuRepository
 import com.yes.trackdialogfeature.domain.repository.ISettingsRepository
+import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.mockk
@@ -32,7 +36,7 @@ class SaveTracksToPlaylistUseCaseTest {
     private val mediaRepositoryImpl: MediaRepositoryImpl = mockk()
     private val playListRepository: IPlayListDao = mockk()
     private val settingsRepository: ISettingsRepository = mockk()
-
+private val menuRepository:IMenuRepository= mockk()
     @BeforeEach
     fun setUp() = runTest {
         Dispatchers.setMain(testDispatcher)
@@ -41,7 +45,8 @@ class SaveTracksToPlaylistUseCaseTest {
             testDispatcher,
             mediaRepositoryImpl,
             playListRepository,
-            settingsRepository
+            settingsRepository,
+            menuRepository
         )
     }
 
@@ -50,7 +55,8 @@ class SaveTracksToPlaylistUseCaseTest {
     fun run(
         params: Params?,
         expected: DomainResult<List<Long>>,
-        audio: List<Track>,
+        audioItems: List<Track>,
+        primaryItem: Item,
         savedAudio: List<Track>
     ) = runTest {
         every {
@@ -59,12 +65,16 @@ class SaveTracksToPlaylistUseCaseTest {
 
         params?.let {
             every {
+                menuRepository.getItem(params.items[1].id)
+            }returns primaryItem
+            every {
                 mediaRepositoryImpl.getAudioItems(
-                    params.items[1].type,
+                    primaryItem.type,
                     params.items[1].name
                 )
-            } returns audio
+            } returns audioItems
         }
+
         every {
             playListRepository.saveTracks(savedAudio)
         } returns listOf(1)
@@ -78,13 +88,19 @@ class SaveTracksToPlaylistUseCaseTest {
     }
 
     companion object {
+        private val mapper: UiMapper = UiMapper()
         @JvmStatic
         fun runData(): List<Array<Any?>> {
             return listOf(
                 arrayOf(
-                    Params(DomainFixtures.getSelectedTracksItems()),
+                    Params(
+                        UiFixtures.getArtistsMenuUi().items.map {
+                            mapper.map(it)
+                        }
+                    ),
                     DomainResult.Success(true),
                     MediaDataStoreFixtures.getSelectedTracksAudio(),
+                    DomainFixtures.getPrimaryArtistItem(),
                     MediaDataStoreFixtures.getSelectedTracksAudio().map {
                         it.copy(
                             playlistName = SettingsFixtures.getPlayListName()

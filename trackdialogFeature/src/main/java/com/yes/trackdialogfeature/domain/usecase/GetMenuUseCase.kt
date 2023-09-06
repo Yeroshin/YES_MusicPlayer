@@ -5,13 +5,13 @@ import com.yes.trackdialogfeature.data.repository.MenuRepositoryImpl
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.entity.MenuException
+import com.yes.trackdialogfeature.domain.repository.IMenuRepository
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase.Params
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.delay
 
 class GetMenuUseCase(
     dispatcher: CoroutineDispatcher,
-    private val menuRepository: MenuRepositoryImpl,
+    private val menuRepository: IMenuRepository,
     private val mediaRepository: MediaRepositoryImpl
 ) : UseCase<Params, Menu>(dispatcher) {
     override fun run(params: Params?): DomainResult<Menu> {
@@ -28,7 +28,7 @@ class GetMenuUseCase(
             return DomainResult.Success(
                 Menu(
                     params.name,
-                    childItems.map { it.copy(menuId = childMenu.menuId, type = childMenu.type) }
+                    childItems.map { it.copy(id = childMenu.id, type = childMenu.type) }
                 )
             )
         } ?: run {

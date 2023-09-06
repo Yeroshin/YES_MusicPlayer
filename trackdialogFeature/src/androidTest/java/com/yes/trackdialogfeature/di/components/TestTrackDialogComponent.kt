@@ -8,9 +8,10 @@ import com.yes.trackdialogfeature.di.module.TestTrackDialogModule
 import com.yes.trackdialogfeature.domain.repository.IPlayListDao
 import com.yes.trackdialogfeature.domain.repository.ISettingsRepository
 import dagger.Component
+import javax.inject.Singleton
 
 
-
+@Singleton
 @Component(modules = [TestTrackDialogModule::class,TestAppModule::class])
 interface TestTrackDialogComponent {
     fun getViewModelFactory(): ViewModelProvider.Factory

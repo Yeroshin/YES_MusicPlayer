@@ -13,7 +13,8 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 class MediaFileFixtures(private val context: Context) {
-    private val selectedArtist=1
+    private val selectedArtist=UiFixtures.getSelectedArtistIndex()
+    private val selectedArtistSelectedTrack=UiFixtures.getSelectedArtistSelectedTrack()
     private val outputDir: File by lazy {
         getOutputDirectory()
     }
@@ -267,8 +268,9 @@ class MediaFileFixtures(private val context: Context) {
         }
 
     }
-    fun getSelectedArtistIndex():Int{
-        return selectedArtist
+    fun getSelectedArtistSelectedTrack(): List<MenuUi.ItemUi>{
+        return listOf( getSelectedArtistTracks()[selectedArtistSelectedTrack])
     }
+
 
 }

@@ -1,5 +1,6 @@
 package com.yes.trackdialogfeature.presentation
 
+import android.Manifest
 import android.content.Context
 import android.view.View
 import android.widget.CheckBox
@@ -14,7 +15,9 @@ import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.GrantPermissionRule
 import com.example.shared_test.MediaFileFixtures
+import com.example.shared_test.UiFixtures
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.trackdialogfeature.di.components.DaggerTestTrackDialogComponent
 import com.yes.trackdialogfeature.di.components.TestTrackDialogComponent
@@ -29,11 +32,15 @@ import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
 
 class TrackDialogEndToEndTest {
 
+    @JvmField
+    @Rule
+    var permissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     class MockFragmentFactoryImpl(
         private val dep: TrackDialog.TrackDialogDependency
@@ -115,40 +122,27 @@ class TrackDialogEndToEndTest {
                 mediaFileFixtures.getArtists()[0]
             )
             clickItemInMediaList(
-                1 + mediaFileFixtures.getSelectedArtistIndex(),
+                1 + UiFixtures.getSelectedArtistIndex(),
             )
             matchTitleText(
-                mediaFileFixtures.getArtists()[mediaFileFixtures.getSelectedArtistIndex()].name
+                mediaFileFixtures.getArtists()[UiFixtures.getSelectedArtistIndex()].name
             )
             matchProgressBarIsNotDisplayed()
             matchTrackDialogItemAtPosition(
-                mediaFileFixtures.getSelectedArtistIndex(),
+                UiFixtures.getSelectedArtistIndex(),
                 mediaFileFixtures.getSelectedArtistTracks()[0]
             )
             clickItemCheckBoxInMediaList(
-                mediaFileFixtures.getSelectedArtistIndex()
+                1+UiFixtures.getSelectedArtistSelectedTrack()
             )
             clickOkButton()
             matchSelectedArtistTracksSavedToPlaylist(
-                mediaFileFixtures.getSelectedArtistTracks(),
+                mediaFileFixtures.getSelectedArtistSelectedTrack(),
                 settings,
                 dataBase
             )
 
         }
-
-       /* trackDialog {
-            matchTitleText(
-                mediaFileFixtures.getArtists()[mediaFileFixtures.getSelectedArtistIndex()].name
-            )
-            matchProgressBarIsNotDisplayed()
-
-            matchTrackDialogItemAtPosition(
-                mediaFileFixtures.getSelectedArtistIndex(),
-                mediaFileFixtures.getSelectedArtistTracks()[0]
-            )
-        }*/
-
 
     }
 

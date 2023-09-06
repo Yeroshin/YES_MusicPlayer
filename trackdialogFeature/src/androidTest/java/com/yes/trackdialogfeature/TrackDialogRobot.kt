@@ -1,8 +1,10 @@
 package com.yes.trackdialogfeature
 
+import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
 import com.yes.trackdialogfeature.domain.entity.Track
 import com.yes.trackdialogfeature.domain.repository.IPlayListDao
 import com.yes.trackdialogfeature.domain.repository.ISettingsRepository
+import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import junit.framework.TestCase.assertEquals
 
@@ -52,7 +54,13 @@ class TrackDialogRobot() : BaseTestRobot() {
         val actualTracks=readTracksFromPlaylistDB(
             playListName,
             playListRepository
-        )
-        assertEquals(expectedTracks, actualTracks)
+        ).map {
+            it.title
+        }
+        val expected=expectedTracks.map {
+            it.name
+        }
+
+        assertEquals(expected, actualTracks)
     }
 }

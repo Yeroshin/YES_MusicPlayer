@@ -88,7 +88,7 @@ internal class GetMenuUseCaseTest {
 ////////////////////////////////////
         val menu=DomainFixtures.getSelectedArtistTracksMenu()
         val newItems=menu.children
-        val items=DomainFixtures.getSelectedArtistTracksItems().map { it.copy(menuId =7, type = "track") }
+        val items=DomainFixtures.getSelectedArtistTracksItems().map { it.copy(id =7, type = "track") }
         assert(newItems==items)
         ////////////////////////////////////
         val expect= expected
@@ -105,7 +105,7 @@ val tmp2=actual
             return listOf(
                 arrayOf(
                     Params(
-                        DomainFixtures.getArtistsItem().menuId,
+                        DomainFixtures.getArtistsItem().id,
                         DomainFixtures.getArtistsItem().name
                     ),
                     DomainResult.Success(
@@ -118,7 +118,7 @@ val tmp2=actual
                 ),
                 arrayOf(
                     Params(
-                        DomainFixtures.getSelectedArtistItem().menuId,
+                        DomainFixtures.getSelectedArtistItem().id,
                         DomainFixtures.getSelectedArtistItem().name
                     ),
                     DomainResult.Success(

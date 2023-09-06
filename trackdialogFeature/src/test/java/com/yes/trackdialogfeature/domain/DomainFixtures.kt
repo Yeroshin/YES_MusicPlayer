@@ -1,6 +1,6 @@
 package com.yes.trackdialogfeature.domain
 
-import com.example.shared_test.SharedFixtureGenerator
+import com.example.shared_test.UiFixtures
 import com.yes.trackdialogfeature.data.dataSource.MediaDataStoreFixtures
 import com.yes.trackdialogfeature.data.dataSource.MenuDataStoreFixtures
 import com.yes.trackdialogfeature.data.mapper.MenuRepositoryMapper
@@ -20,7 +20,7 @@ object DomainFixtures {
     }
 
     private const val count = 5
-    private val selectedItem = SharedFixtureGenerator.getSelectedItem()
+    private val selectedArtist = UiFixtures.getSelectedArtistIndex()
     private val artists =
         MediaDataStoreFixtures.getArtists().map {
             Item(
@@ -84,7 +84,7 @@ object DomainFixtures {
             listOf()
         ),
         Menu(
-            artists[selectedItem].name,
+            artists[selectedArtist].name,
             listOf()
         ),
     )
@@ -137,7 +137,7 @@ object DomainFixtures {
 
     fun getArtistItemsWithSelectedItem(): List<Item> {
         val selectedArtist = artists.mapIndexed { index, item ->
-            if (index == selectedItem) {
+            if (index == selectedArtist) {
                 item.copy(selected = true)
             } else {
                 item
@@ -152,12 +152,12 @@ object DomainFixtures {
 
     fun getSelectedTracksItems(): List<Item> {
         val selectedArtists = artists.toMutableList()
-        selectedArtists[selectedItem] = selectedArtists[selectedItem].copy(selected = true)
+        selectedArtists[selectedArtist] = selectedArtists[selectedArtist].copy(selected = true)
         return selectedArtists
     }
 
     fun getArtistsMenu(): Menu {
-        val artists= getArtistsItems().map { it.copy(menuId = 4, type = "artist") }
+        val artists= getArtistsItems().map { it.copy(id = 4, type = "artist") }
         return dataResult.find { it.name == "artists" }!!.copy(children = artists)
     }
     fun getArtistsItems(): List<Item> {
@@ -169,8 +169,8 @@ object DomainFixtures {
     }
 
     fun getSelectedArtistTracksMenu(): Menu {
-        val tracks=tracks.map { it.copy(menuId =7, type = "track" ) }
-        return dataResult.find { it.name == artists[selectedItem].name }!!.copy(children = tracks)
+        val tracks=tracks.map { it.copy(id =7, type = "track" ) }
+        return dataResult.find { it.name == artists[selectedArtist].name }!!.copy(children = tracks)
     }
     fun getSelectedArtistTracksItems():List<Item>{
         return tracks
@@ -193,14 +193,14 @@ object DomainFixtures {
     }
 
     fun getSelectedTrackItem(): Item {
-        return tracks[selectedItem]
+        return tracks[selectedArtist]
     }
     fun getSelectedArtistItem():Item{
-        return artists[selectedItem].copy(menuId = 4, type ="artist" )
+        return artists[selectedArtist].copy(id = 4, type ="artist" )
     }
     fun getTracksFromSelectedArtist():List<Track>{
         return tracksAudio.filter {
-            it.artist== artists[selectedItem].name
+            it.artist== artists[selectedArtist].name
         }
     }
 

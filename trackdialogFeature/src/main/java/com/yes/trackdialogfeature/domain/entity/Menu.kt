@@ -5,7 +5,7 @@ data class Menu(
     val children: List<Item>
 ) {
     data class Item(
-        val menuId: Int,
+        val id: Int,
         val name: String,
         val type:String?,
         val selected:Boolean

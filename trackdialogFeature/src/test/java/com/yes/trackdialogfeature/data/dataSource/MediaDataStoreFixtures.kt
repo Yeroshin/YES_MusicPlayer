@@ -1,6 +1,7 @@
 package com.yes.trackdialogfeature.data.dataSource
 
 import com.example.shared_test.SharedFixtureGenerator
+import com.example.shared_test.UiFixtures
 import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
 import com.yes.trackdialogfeature.data.repository.entity.MediaDataStoreEntity
 import com.yes.trackdialogfeature.domain.DomainFixtures
@@ -8,31 +9,27 @@ import com.yes.trackdialogfeature.domain.entity.Track
 import kotlin.random.Random
 
 object MediaDataStoreFixtures {
-    private const val count = 5
-    private val selectedItem = SharedFixtureGenerator.getSelectedItem()
+
+    private val selectedItem = UiFixtures.getSelectedArtistIndex()
     private val albums =
-        SharedFixtureGenerator.generateMediaItemNames(count).map {
+        SharedFixtureGenerator.getAlbumsNames().map {
             MediaDataStoreEntity(
                 it
             )
         }
     private val artists =
-        SharedFixtureGenerator.generateMediaItemNames(count).map {
+        SharedFixtureGenerator.getArtistsNames().map {
             MediaDataStoreEntity(
                 it
             )
         }
     private val tracks =
-        SharedFixtureGenerator.generateMediaItemNames(count).map {
+        SharedFixtureGenerator.getTracksNames().map {
             MediaDataStoreEntity(
                 it
             )
         }
 
-
-    fun getCount(): Int {
-        return count
-    }
 
     fun getArtists(): List<MediaDataStoreEntity> {
         return artists
@@ -63,7 +60,7 @@ object MediaDataStoreFixtures {
         return tracksAudio
     }
 
-    val mediaRepositoryMapper = MediaRepositoryMapper()
+    private val mediaRepositoryMapper = MediaRepositoryMapper()
     fun getSelectedTracksAudio(): List<Track> {
         return listOf(
             mediaRepositoryMapper.mapToTrack(

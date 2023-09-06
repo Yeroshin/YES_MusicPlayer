@@ -7,7 +7,7 @@ import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.shared_test.UiFixturesGenerator
+import com.example.shared_test.UiFixtures
 import com.yes.core.presentation.BaseViewModel
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
@@ -211,8 +211,8 @@ class TrackDialogTest {
             matchProgressBarDisplayed()
         }
         //////////////////////////////////////
-        val number = 200
-        val item = UiFixturesGenerator.generateArtistsMenuUi(number)
+
+        val item = UiFixtures.getArtistsMenuUi()
        /* viewModel.pushEvent {
             copy(
                 TrackDialogContract.TrackDialogState.Success(
@@ -231,8 +231,8 @@ class TrackDialogTest {
             matchTitleText(item.title)
             matchProgressBarIsNotDisplayed()
             matchTrackDialogItemAtPosition(
-                number - 1,
-                item.items[number - 1]
+                item.items.size - 1,
+                item.items[item.items.size - 1]
             )
         }
     }

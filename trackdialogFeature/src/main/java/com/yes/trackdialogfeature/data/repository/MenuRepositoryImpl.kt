@@ -29,14 +29,14 @@ class MenuRepositoryImpl(
             }
     }
 
-    fun getChildItem(id: Int): Item? {
+    override fun getChildItem(id: Int): Item? {
         return menuDataStore.getItemsWithParentId(id).lastOrNull()?.let {
 
                 menuRepositoryMapper.mapToItem(it)
 
         }
     }
-    fun getItem(id:Int):Item?{
+    override fun getItem(id:Int):Item?{
         return menuDataStore.getItem(id)?.let {
             menuRepositoryMapper.mapToItem(it)
         }

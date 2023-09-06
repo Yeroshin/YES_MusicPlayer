@@ -1,10 +1,11 @@
 package com.yes.trackdialogfeature.data.dataSource
 
 import com.example.shared_test.SharedFixtureGenerator
+import com.example.shared_test.UiFixtures
 import com.yes.trackdialogfeature.domain.entity.Track
 
 object PlayListDAOFixtures {
-    private val selectedItem= SharedFixtureGenerator.getSelectedItem()
+    private val selectedItem= UiFixtures.getSelectedArtistIndex()
     private val tracks =
         MediaDataStoreFixtures.getTracksAudio().map {
             Track(

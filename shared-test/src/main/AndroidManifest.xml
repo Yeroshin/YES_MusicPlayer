@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <application
-        android:theme="@style/Theme.MusicPlayer"
-
-        >
-
-        <activity
-            android:name="com.example.shared_test.TmpActivity"
-            android:theme="@style/Theme.YESActivity"
-
-            android:exported="true"
-            ></activity>
-    </application>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </manifest>

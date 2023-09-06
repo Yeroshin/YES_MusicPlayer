@@ -43,7 +43,7 @@ class MediaRepositoryImplTest {
         every {
             mediaDataStore.getAudioItems(
                 param["selection"] as String?,
-                param["selectionArgs"] as Array<String>?
+                param["selectionArgs"] as Array<String>
             )
         } returns mediaItemsEntity
         every {

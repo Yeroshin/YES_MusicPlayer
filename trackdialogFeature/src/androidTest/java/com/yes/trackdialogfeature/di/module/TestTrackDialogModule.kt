@@ -18,6 +18,7 @@ import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import com.yes.core.util.EspressoIdlingResource
+import com.yes.trackdialogfeature.domain.repository.IMenuRepository
 import dagger.Module
 import dagger.Provides
 
@@ -100,13 +101,15 @@ class TestTrackDialogModule(
         dispatcher: CoroutineDispatcher,
         mediaRepositoryImpl: MediaRepositoryImpl,
         playListRepository: IPlayListDao,
-        settingsRepository: ISettingsRepository
+        settingsRepository: ISettingsRepository,
+        menuRepository:MenuRepositoryImpl
     ): SaveTracksToPlaylistUseCase {
         return SaveTracksToPlaylistUseCase(
             dispatcher,
             mediaRepositoryImpl,
             playListRepository,
-            settingsRepository
+            settingsRepository,
+            menuRepository
         )
     }
     @Provides

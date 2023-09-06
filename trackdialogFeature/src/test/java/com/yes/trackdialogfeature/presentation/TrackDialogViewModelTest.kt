@@ -19,7 +19,6 @@ import io.mockk.junit5.MockKExtension
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -278,11 +277,11 @@ class TrackDialogViewModelTest {
                 ),
                 arrayOf(
                     TrackDialogContract.Event.OnItemClicked(
-                        DomainFixtures.getArtistsItem().menuId,
+                        DomainFixtures.getArtistsItem().id,
                         DomainFixtures.getArtistsItem().name
                     ),
                     GetMenuUseCase.Params(
-                        DomainFixtures.getArtistsItem().menuId,
+                        DomainFixtures.getArtistsItem().id,
                         DomainFixtures.getArtistsItem().name
                     ),
                     DomainResult.Success(DomainFixtures.getArtistMenu()),
@@ -298,11 +297,11 @@ class TrackDialogViewModelTest {
                 ),
                 arrayOf(
                     TrackDialogContract.Event.OnItemClicked(
-                        DomainFixtures.getArtistsItem().menuId,
+                        DomainFixtures.getArtistsItem().id,
                         DomainFixtures.getArtistsItem().name
                     ),
                     GetMenuUseCase.Params(
-                        DomainFixtures.getArtistsItem().menuId,
+                        DomainFixtures.getArtistsItem().id,
                         DomainFixtures.getArtistsItem().name
                     ),
                     DomainResult.Success(DomainFixtures.getArtistMenu()),
@@ -316,11 +315,11 @@ class TrackDialogViewModelTest {
                 ),
                 arrayOf(
                     TrackDialogContract.Event.OnItemClicked(
-                        DomainFixtures.getArtistsItem().menuId,
+                        DomainFixtures.getArtistsItem().id,
                         DomainFixtures.getArtistsItem().name
                     ),
                     GetMenuUseCase.Params(
-                        DomainFixtures.getArtistsItem().menuId,
+                        DomainFixtures.getArtistsItem().id,
                         DomainFixtures.getArtistsItem().name
                     ),
                     DomainResult.Error(
@@ -336,11 +335,11 @@ class TrackDialogViewModelTest {
                 ),
                 arrayOf(
                     TrackDialogContract.Event.OnItemClicked(
-                        DomainFixtures.getArtistsItem().menuId,
+                        DomainFixtures.getArtistsItem().id,
                         DomainFixtures.getArtistsItem().name
                     ),
                     GetMenuUseCase.Params(
-                        DomainFixtures.getArtistsItem().menuId,
+                        DomainFixtures.getArtistsItem().id,
                         DomainFixtures.getArtistsItem().name
                     ),
                     DomainResult.Error(

@@ -199,13 +199,13 @@ class MenuRepositoryImplTest {
             return listOf(
                 arrayOf(
                     DomainFixtures.getArtistsItem(),
-                    DomainFixtures.getArtistsItem().menuId,
+                    DomainFixtures.getArtistsItem().id,
                     MenuDataStoreFixtures.getArtistMenu(),
                     DomainFixtures.getArtistsItem()
                 ),
                 arrayOf(
                     null,
-                    DomainFixtures.getArtistsItem().menuId,
+                    DomainFixtures.getArtistsItem().id,
                     null,
                     null
                 ),

@@ -51,7 +51,6 @@ open class TrackDialogViewModel(
 
             is TrackDialogContract.Event.OnButtonOkClicked -> {
                 saveItems(event.items)
-                dismiss()
             }
 
             is TrackDialogContract.Event.OnButtonCancelClicked -> {
@@ -69,8 +68,13 @@ open class TrackDialogViewModel(
     }
 
     private fun saveItems(items: List<ItemUi>) {
-        viewModelScope.launch(Dispatchers.Main) {
-            saveTracksToPlaylistUseCase(
+       /* setState {
+            copy(
+                trackDialogState = TrackDialogContract.TrackDialogState.Idle
+            )
+        }*/
+        viewModelScope.launch {
+            val result =saveTracksToPlaylistUseCase(
                 SaveTracksToPlaylistUseCase.Params(
                     //to do - filter back item
                     items.map {
@@ -78,7 +82,18 @@ open class TrackDialogViewModel(
                     }
                 )
             )
-            dismiss()
+            when(result){
+                is DomainResult.Success-> {
+                    setState {
+                        copy(
+                            trackDialogState = TrackDialogContract.TrackDialogState.Idle
+                        )
+                    }
+                }//dismiss()
+                else -> {}
+            }
+
+
         }
 
     }
@@ -196,10 +211,7 @@ open class TrackDialogViewModel(
                     }
                 }
             }
-
         }
-        val tmp = 0
-
     }
 
     class Factory(

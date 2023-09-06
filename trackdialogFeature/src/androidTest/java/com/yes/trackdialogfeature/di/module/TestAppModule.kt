@@ -8,6 +8,7 @@ import com.yes.trackdialogfeature.data.repository.dataSource.SettingsDataStore
 import com.yes.trackdialogfeature.domain.repository.IPlayListDao
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
 class TestAppModule(
@@ -19,6 +20,7 @@ class TestAppModule(
     }
 
     @Provides
+    @Singleton
     fun providesDatabase(
         context: Context
     ): PlayListDataBase {
@@ -27,7 +29,7 @@ class TestAppModule(
             PlayListDataBase::class.java,
         ).build()
     }
-
+    @Singleton
     @Provides
     fun providesPlayListDao(
         dataBase: PlayListDataBase

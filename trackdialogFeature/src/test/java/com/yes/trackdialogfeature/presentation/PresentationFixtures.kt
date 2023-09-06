@@ -7,6 +7,7 @@ import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.model.MenuUi.ItemUi
 
 object PresentationFixtures {
+
     val onClick: (TrackDialogContract.Event) -> Unit = {}
     fun getCategoriesMenu(): MenuUi {
 
@@ -57,6 +58,7 @@ object PresentationFixtures {
             onClick
         )
     }
+
 
     fun getArtistMenuWithBackItem(): MenuUi {
         /* val menu = getArtistMenu()
