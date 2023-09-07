@@ -13,7 +13,7 @@ class MenuUIDomainMapperTest {
         // arrange
         val domainModel = DomainFixtures.getArtistsMenu()
         val onClick=PresentationFixtures.onClick
-        val expected=PresentationFixtures.getCategoriesMenu()
+        val expected=PresentationFixtures.getArtistMenu()
 
         // act
         val actual = cut.map(domainModel,onClick)

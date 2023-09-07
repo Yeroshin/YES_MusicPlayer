@@ -29,7 +29,7 @@ open class TrackDialogViewModel(
     private val uiMapper: UiMapper,
     private val menuStack: ArrayDeque<MenuUi>,
     espressoIdlingResource: EspressoIdlingResource?
-) : BaseViewModel<TrackDialogContract.Event,State, Effect>(
+) : BaseViewModel<TrackDialogContract.Event, State, Effect>(
     espressoIdlingResource
 ) {
 
@@ -68,13 +68,13 @@ open class TrackDialogViewModel(
     }
 
     private fun saveItems(items: List<ItemUi>) {
-       /* setState {
-            copy(
-                trackDialogState = TrackDialogContract.TrackDialogState.Idle
-            )
-        }*/
+        /* setState {
+             copy(
+                 trackDialogState = TrackDialogContract.TrackDialogState.Idle
+             )
+         }*/
         viewModelScope.launch {
-            val result =saveTracksToPlaylistUseCase(
+            val result = saveTracksToPlaylistUseCase(
                 SaveTracksToPlaylistUseCase.Params(
                     //to do - filter back item
                     items.map {
@@ -82,15 +82,26 @@ open class TrackDialogViewModel(
                     }
                 )
             )
-            when(result){
-                is DomainResult.Success-> {
+            when (result) {
+                is DomainResult.Success -> {
                     setState {
                         copy(
                             trackDialogState = TrackDialogContract.TrackDialogState.Idle
                         )
                     }
-                }//dismiss()
-                else -> {}
+                    dismiss()
+                }
+
+                else -> {
+                    setEffect {
+                        Effect.UnknownException
+                    }
+                    setState {
+                        copy(
+                            trackDialogState = TrackDialogContract.TrackDialogState.Idle
+                        )
+                    }
+                }
             }
 
 
@@ -99,12 +110,14 @@ open class TrackDialogViewModel(
     }
 
     private fun getParentMenu() {
-        viewModelScope.launch(Dispatchers.Main) {
+
+        viewModelScope.launch(Dispatchers.IO) {
             setState {
                 copy(
                     trackDialogState = TrackDialogContract.TrackDialogState.Loading
                 )
             }
+            menuStack.removeLast()
             if (menuStack.isEmpty()) {
                 setState {
                     copy(
@@ -118,13 +131,14 @@ open class TrackDialogViewModel(
                 setState {
                     copy(
                         trackDialogState = TrackDialogContract.TrackDialogState.Success(
-                            menuStack.removeLast()
+                            //TO DOrefactor this
+                            menuStack.peekLast()!!
                         )
                     )
                 }
             }
-
         }
+
     }
 
     private fun getChildMenu(id: Int?, name: String) {

@@ -6,20 +6,16 @@ import android.app.Activity
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import com.example.shared_test.MediaFileFixtures
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yes.musicplayer.R
 import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.DaggerMainActivityComponent
 import com.yes.musicplayer.di.module.MainActivityModule
-
-import com.yes.trackdialogfeature.data.repository.dataSource.MediaDataStore
 import javax.inject.Inject
 
 
@@ -49,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 ////////////////////
     }
 
-    fun checkPermissions() {
+    private fun checkPermissions() {
 
         /////////////////////
         var info: PackageInfo? = null
@@ -96,9 +92,9 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
             run {
                 when (position) {
-                    0 -> tab.setText(getString(com.yes.coreui.R.string.playList))
-                    1 -> tab.setText(getString(com.yes.coreui.R.string.equalizer))
-                    2 -> tab.setText(getString(com.yes.coreui.R.string.alarm))
+                    0 -> tab.text = getString(com.yes.coreui.R.string.playList)
+                    1 -> tab.text = getString(com.yes.coreui.R.string.equalizer)
+                    2 -> tab.text = getString(com.yes.coreui.R.string.alarm)
                 }
             }
         }.attach()

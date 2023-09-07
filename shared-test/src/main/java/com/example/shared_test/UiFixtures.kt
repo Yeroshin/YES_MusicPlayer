@@ -1,7 +1,6 @@
 package com.example.shared_test
 
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
-import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 
 import kotlin.random.Random
@@ -39,6 +38,16 @@ object UiFixtures {
     }
     fun getSelectedArtistSelectedTrack():Int{
         return selectedArtistSelectedTrack
+    }
+    fun getBackItem(): MenuUi.ItemUi {
+        return MenuUi.ItemUi(
+            -1,
+            "..",
+            0,
+            null,
+            TrackDialogContract.Event.OnItemBackClicked,
+            onClick
+        )
     }
 
 }

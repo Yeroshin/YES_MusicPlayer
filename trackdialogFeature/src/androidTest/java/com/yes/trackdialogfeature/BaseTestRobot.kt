@@ -47,6 +47,15 @@ open class BaseTestRobot() {
         .perform(scrollToPosition<RecyclerView.ViewHolder>(position))
         .check(matches(atPosition(position, ViewMatchers.hasDescendant(withId(viewId)), text)))
 
+    fun notMatchRecyclerViewItemDescendantTextAtPosition(
+        viewInteraction: ViewInteraction,
+        position: Int,
+        viewId: Int,
+        text: String
+    ): ViewInteraction = viewInteraction
+        .perform(scrollToPosition<RecyclerView.ViewHolder>(position))
+        .check(matches(not(atPosition(position, ViewMatchers.hasDescendant(withId(viewId)), text))))
+
     private fun atPosition(
         position: Int,
         itemMatcher: Matcher<View>,

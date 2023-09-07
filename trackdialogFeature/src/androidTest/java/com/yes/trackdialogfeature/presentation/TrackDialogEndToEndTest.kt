@@ -1,21 +1,13 @@
 package com.yes.trackdialogfeature.presentation
 
-import android.Manifest
 import android.content.Context
-import android.view.View
-import android.widget.CheckBox
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragment
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.UiController
-import androidx.test.espresso.ViewAction
-import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.rule.GrantPermissionRule
 import com.example.shared_test.MediaFileFixtures
 import com.example.shared_test.UiFixtures
 import com.yes.core.util.EspressoIdlingResource
@@ -25,23 +17,19 @@ import com.yes.trackdialogfeature.di.module.TestAppModule
 import com.yes.trackdialogfeature.di.module.TestTrackDialogModule
 import com.yes.trackdialogfeature.domain.repository.IPlayListDao
 import com.yes.trackdialogfeature.domain.repository.ISettingsRepository
-import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 import com.yes.trackdialogfeature.trackDialog
-import org.hamcrest.Description
-import org.hamcrest.Matcher
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 
 class TrackDialogEndToEndTest {
 
-    @JvmField
-    @Rule
-    var permissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
+    /*  @JvmField
+      @Rule
+      var permissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+  */
     class MockFragmentFactoryImpl(
         private val dep: TrackDialog.TrackDialogDependency
     ) : FragmentFactory() {
@@ -63,34 +51,24 @@ class TrackDialogEndToEndTest {
     @Before
     fun setUp() {
         mediaFileFixtures.writeNonExistFiles()
-//////////////////////////////
-        //   testMediaFileCreator.createTestMediaFilesFromAssets()
 
-        //  IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
-        /////////////////////////
-        // val activity=MyActivity()
         di = DaggerTestTrackDialogComponent.builder()
             .testTrackDialogModule(TestTrackDialogModule())
             .testAppModule(TestAppModule(ApplicationProvider.getApplicationContext()))
             .build()
         val factory = di.getViewModelFactory()
         dataBase = di.getDataBase()
-        settings=di.getSettings()
-        //private val factory = MockViewModelFactory(viewModel)
+        settings = di.getSettings()
         val dependency = TrackDialog.TrackDialogDependency(
             factory
         )
         val trackDialogFactory = MockFragmentFactoryImpl(
             dependency
         )
-
-        //  MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
         scenario = launchFragment(
             factory = trackDialogFactory
         )
-        /* scenario.onFragment { fragment ->
-             assert(fragment.requireDialog().isShowing)
-         }*/
+
     }
 
     @After
@@ -98,29 +76,29 @@ class TrackDialogEndToEndTest {
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
     }
 
-    private val onClick: (TrackDialogContract.Event) -> Unit = {}
-
     @Test
-    fun savesSelectedArtistTracksToPlaylist() {
-
-        scenario.onFragment { fragment ->
-            assert(fragment.requireDialog().isShowing)
-
-        }
-
-
-
+    fun testNavigationOnMenu() {
         trackDialog {
+            //going three categories forward and then back to first
             matchTitleText("categories")
             matchProgressBarIsNotDisplayed()
+            notMatchTrackDialogItemAtPosition(
+                0,
+                UiFixtures.getBackItem()
+            )
+//////////////////////////////////////////
             clickItemInMediaList(0)
-
             matchTitleText("artists")
             matchProgressBarIsNotDisplayed()
+            matchTrackDialogItemAtPosition(
+                0,
+                UiFixtures.getBackItem()
+            )
             matchTrackDialogItemAtPosition(
                 1,
                 mediaFileFixtures.getArtists()[0]
             )
+///////////////////////////////////////
             clickItemInMediaList(
                 1 + UiFixtures.getSelectedArtistIndex(),
             )
@@ -129,11 +107,89 @@ class TrackDialogEndToEndTest {
             )
             matchProgressBarIsNotDisplayed()
             matchTrackDialogItemAtPosition(
+                0,
+                UiFixtures.getBackItem()
+            )
+            matchTrackDialogItemAtPosition(
                 UiFixtures.getSelectedArtistIndex(),
                 mediaFileFixtures.getSelectedArtistTracks()[0]
             )
+//clicking last category item second time should nothing happened
+            clickItemInMediaList(
+                1,
+            )
+            matchTitleText(
+                mediaFileFixtures.getArtists()[UiFixtures.getSelectedArtistIndex()].name
+            )
+            matchProgressBarIsNotDisplayed()
+            matchTrackDialogItemAtPosition(
+                0,
+                UiFixtures.getBackItem()
+            )
+            matchTrackDialogItemAtPosition(
+                UiFixtures.getSelectedArtistIndex(),
+                mediaFileFixtures.getSelectedArtistTracks()[0]
+            )
+
+            //going back
+            clickItemInMediaList(0)
+            matchTitleText("artists")
+            matchProgressBarIsNotDisplayed()
+            matchTrackDialogItemAtPosition(
+                0,
+                UiFixtures.getBackItem()
+            )
+            matchTrackDialogItemAtPosition(
+                1,
+                mediaFileFixtures.getArtists()[0]
+            )
+
+            clickItemInMediaList(0)
+            matchTitleText("categories")
+            matchProgressBarIsNotDisplayed()
+            notMatchTrackDialogItemAtPosition(
+                0,
+                UiFixtures.getBackItem()
+            )
+            //going one category forward and then back
+            clickItemInMediaList(0)
+            matchTitleText("artists")
+            matchProgressBarIsNotDisplayed()
+            matchTrackDialogItemAtPosition(
+                0,
+                UiFixtures.getBackItem()
+            )
+            matchTrackDialogItemAtPosition(
+                1,
+                mediaFileFixtures.getArtists()[0]
+            )
+
+            clickItemInMediaList(0)
+            matchTitleText("categories")
+            matchProgressBarIsNotDisplayed()
+            notMatchTrackDialogItemAtPosition(
+                0,
+                UiFixtures.getBackItem()
+            )
+        }
+    }
+
+    @Test
+    fun savesSelectedArtistSelectedTracksToPlaylist() {
+
+        scenario.onFragment { fragment ->
+            assert(fragment.requireDialog().isShowing)
+
+        }
+
+        trackDialog {
+
+            clickItemInMediaList(0)
+            clickItemInMediaList(
+                1 + UiFixtures.getSelectedArtistIndex(),
+            )
             clickItemCheckBoxInMediaList(
-                1+UiFixtures.getSelectedArtistSelectedTrack()
+                1 + UiFixtures.getSelectedArtistSelectedTrack()
             )
             clickOkButton()
             matchSelectedArtistTracksSavedToPlaylist(
@@ -146,43 +202,4 @@ class TrackDialogEndToEndTest {
 
     }
 
-
-    fun withCheckBoxAtPositionIsChecked(
-        position: Int,
-    ): Matcher<View> {
-        return object : BoundedMatcher<View, RecyclerView>(RecyclerView::class.java) {
-
-            override fun describeTo(description: Description) {
-                description.appendText("with checkbox at position: $position ")
-            }
-
-            override fun matchesSafely(recyclerView: RecyclerView): Boolean {
-                val viewHolder = recyclerView.findViewHolderForAdapterPosition(position)
-
-                val checkbox =
-                    viewHolder?.itemView?.findViewById<CheckBox>(com.yes.trackdialogfeature.R.id.checkBox)
-                return checkbox != null && checkbox.isChecked
-
-            }
-        }
-    }
-
-    object MyViewAction {
-        fun clickChildViewWithId(id: Int): ViewAction {
-            return object : ViewAction {
-                override fun getConstraints(): Matcher<View>? {
-                    return null
-                }
-
-                override fun getDescription(): String {
-                    return "Click on a child view with specified id."
-                }
-
-                override fun perform(uiController: UiController, view: View) {
-                    val v = view.findViewById<View>(id)
-                    v.performClick()
-                }
-            }
-        }
-    }
 }

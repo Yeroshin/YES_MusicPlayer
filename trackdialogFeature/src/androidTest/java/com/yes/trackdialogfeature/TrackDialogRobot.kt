@@ -1,10 +1,7 @@
 package com.yes.trackdialogfeature
 
-import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
-import com.yes.trackdialogfeature.domain.entity.Track
 import com.yes.trackdialogfeature.domain.repository.IPlayListDao
 import com.yes.trackdialogfeature.domain.repository.ISettingsRepository
-import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import junit.framework.TestCase.assertEquals
 
@@ -24,6 +21,13 @@ class TrackDialogRobot() : BaseTestRobot() {
 
     fun matchTrackDialogItemAtPosition(position: Int, item: MenuUi.ItemUi) =
         matchRecyclerViewItemDescendantTextAtPosition(
+            view(com.yes.coreui.R.id.recyclerView),
+            position,
+            R.id.item_title,
+            item.name
+        )
+    fun notMatchTrackDialogItemAtPosition(position: Int, item: MenuUi.ItemUi) =
+        notMatchRecyclerViewItemDescendantTextAtPosition(
             view(com.yes.coreui.R.id.recyclerView),
             position,
             R.id.item_title,
