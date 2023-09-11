@@ -13,8 +13,10 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 class MediaFileFixtures(private val context: Context) {
-    private val selectedArtist=UiFixtures.getSelectedArtistIndex()
-    private val selectedArtistSelectedTrack=UiFixtures.getSelectedArtistSelectedTrack()
+    private val networkPath = "http://23.111.104.132/chil96.aacp"
+
+    private val selectedArtist = UiFixtures.getSelectedArtistIndex()
+    private val selectedArtistSelectedTrack = UiFixtures.getSelectedArtistSelectedTrack()
     private val outputDir: File by lazy {
         getOutputDirectory()
     }
@@ -22,7 +24,7 @@ class MediaFileFixtures(private val context: Context) {
     private val createdFiles: ArrayList<String> = ArrayList()
     private val assetManager = context.assets
     fun createTestMediaFilesFromAssets() {
-       // val assetManager = context.assets
+        // val assetManager = context.assets
 
         if (!outputDir.exists()) {
             outputDir.mkdirs()
@@ -89,7 +91,8 @@ class MediaFileFixtures(private val context: Context) {
             }
         }
     }
-    private fun writeFileFromAsset(outputDir:File, fileName:String){
+
+    private fun writeFileFromAsset(outputDir: File, fileName: String) {
         try {
             val outputFile = File(outputDir, fileName)
             val inputStream = assetManager.open("media/$fileName")
@@ -113,11 +116,12 @@ class MediaFileFixtures(private val context: Context) {
                 null,
                 null
             )
-        }catch (e: IOException) {
+        } catch (e: IOException) {
             e.printStackTrace()
         }
     }
-     fun writeNonExistFiles(){
+
+    fun writeNonExistFiles() {
         if (!outputDir.exists()) {
             outputDir.mkdirs()
         }
@@ -127,11 +131,12 @@ class MediaFileFixtures(private val context: Context) {
         }
 
         for (assetFile in assetFiles) {
-            if(!checkFileExist(assetFile)){
-                writeFileFromAsset(outputDir,assetFile)
+            if (!checkFileExist(assetFile)) {
+                writeFileFromAsset(outputDir, assetFile)
             }
         }
     }
+
     private fun getOutputDirectory(): File {
         // В данном примере файлы сохраняются в публичной директории "Movies"
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC)
@@ -207,11 +212,11 @@ class MediaFileFixtures(private val context: Context) {
     }
 
 
-    private fun checkFileExist(fileName:String):Boolean {
-        val displayName=getMedia(
+    private fun checkFileExist(fileName: String): Boolean {
+        val displayName = getMedia(
             MediaStore.Audio.Media.DISPLAY_NAME,
             MediaStore.Audio.Media.DISPLAY_NAME,
-            arrayOf( fileName)
+            arrayOf(fileName)
         ) as List<*>
         return displayName.isNotEmpty()
     }
@@ -223,15 +228,16 @@ class MediaFileFixtures(private val context: Context) {
             null
         ) as List<String>
     }
+
     private val onClick: (TrackDialogContract.Event) -> Unit = {}
 
     fun getArtists(): List<MenuUi.ItemUi> {
-        val artists=getMedia(
+        val artists = getMedia(
             MediaStore.Audio.Media.ARTIST,
             null,
             null
         ) as List<String>
-       return artists.map {
+        return artists.map {
             MenuUi.ItemUi(
                 7,
                 it,
@@ -247,8 +253,8 @@ class MediaFileFixtures(private val context: Context) {
     }
 
     fun getSelectedArtistTracks(): List<MenuUi.ItemUi> {
-        val artist=getArtists()[selectedArtist].name
-        val tracks= getMedia(
+        val artist = getArtists()[selectedArtist].name
+        val tracks = getMedia(
             MediaStore.Audio.Media.TITLE,
             MediaStore.Audio.Media.ARTIST,
             arrayOf(artist)
@@ -268,8 +274,19 @@ class MediaFileFixtures(private val context: Context) {
         }
 
     }
-    fun getSelectedArtistSelectedTrack(): List<MenuUi.ItemUi>{
-        return listOf( getSelectedArtistTracks()[selectedArtistSelectedTrack])
+
+    fun getSelectedArtistSelectedTrack(): List<MenuUi.ItemUi> {
+        return listOf(getSelectedArtistTracks()[selectedArtistSelectedTrack])
+    }
+
+    fun getNetworkPath(): String {
+        return networkPath
+    }
+
+    fun getNetworkTrack(): MenuUi.ItemUi {
+        return MenuUi.ItemUi(
+            name=networkPath,
+        )
     }
 
 

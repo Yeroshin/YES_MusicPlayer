@@ -47,6 +47,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-1906964352">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="4.7_WXGA_API_31" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-1880879167">
           <value>
             <AndroidTestResultsTableState>
@@ -67,6 +80,19 @@
                 <map>
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_2_API_24" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-1748990065">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="4.7_WXGA_API_31" value="120" />
+                  <entry key="Duration" value="90" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>
@@ -281,6 +307,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="161394158">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="4.7_WXGA_API_31" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="483766641">
           <value>
             <AndroidTestResultsTableState>
@@ -328,6 +367,19 @@
               <option name="preferredColumnWidths">
                 <map>
                   <entry key="4.65_720p_Galaxy_Nexus_API_29" value="120" />
+                  <entry key="4.7_WXGA_API_31" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="814588425">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
                   <entry key="4.7_WXGA_API_31" value="120" />
                   <entry key="Duration" value="90" />
                   <entry key="Tests" value="360" />
@@ -446,6 +498,19 @@
           </value>
         </entry>
         <entry key="1760151404">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="4.7_WXGA_API_31" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="1889677777">
           <value>
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">

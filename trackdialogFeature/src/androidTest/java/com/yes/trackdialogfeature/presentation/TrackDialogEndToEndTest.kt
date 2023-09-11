@@ -192,7 +192,7 @@ class TrackDialogEndToEndTest {
                 1 + UiFixtures.getSelectedArtistSelectedTrack()
             )
             clickOkButton()
-            matchSelectedArtistTracksSavedToPlaylist(
+            matchSelectedTracksSavedToPlaylist(
                 mediaFileFixtures.getSelectedArtistSelectedTrack(),
                 settings,
                 dataBase
@@ -200,6 +200,23 @@ class TrackDialogEndToEndTest {
 
         }
 
+    }
+
+    @Test
+    fun savesNetworkSourceToPlaylist(){
+        trackDialog {
+            clickNetworkSourceButton()
+            enterAddressNetworkSource(
+                mediaFileFixtures.getNetworkPath()
+            )
+            clickOkButton()
+            matchNetworkSourceSavedToPlaylist(
+                mediaFileFixtures.getNetworkTrack(),
+                settings,
+                dataBase
+
+            )
+        }
     }
 
 }

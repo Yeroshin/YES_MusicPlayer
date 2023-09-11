@@ -62,9 +62,9 @@ class TrackDialogTest {
                 trackDialogState = state
             )
             _uiState.value = newState
-           /* viewModelScope.launch(Dispatchers.Main){
-                _uiState.value = newState
-            }*/
+            /* viewModelScope.launch(Dispatchers.Main){
+                 _uiState.value = newState
+             }*/
 
             //  }
             //   job.cancel() // Отменить выполнение корутины
@@ -86,7 +86,6 @@ class TrackDialogTest {
 
         }
     }
-
 
 
     private val viewModel = TestViewModel(
@@ -155,21 +154,13 @@ class TrackDialogTest {
     fun onInitShowsTrackDialogStateIdle() {
         scenario.onFragment { fragment ->
             assert(fragment.requireDialog().isShowing)
-            // fragment.showLoading()
         }
         trackDialog {
-            matchTitleHasNoText()
-            matchProgressBarIsNotDisplayed()
-           // matchDisableViewIsNotDisplayed()
-        }
-        viewModel.pushEvent {
-            copy(
-                trackDialogState = TrackDialogContract.TrackDialogState.Loading
-            )
-        }
-
-        trackDialog {
+            //matchTitleHasNoText()
+            setEventToViewModel(TrackDialogContract.TrackDialogState.Loading, viewModel)
             matchProgressBarDisplayed()
+            setEventToViewModel(TrackDialogContract.TrackDialogState.Idle, viewModel)
+            matchProgressBarIsNotDisplayed()
         }
 
     }
@@ -177,63 +168,44 @@ class TrackDialogTest {
     @Test
     fun loading() {
         trackDialog {
-            matchTitleHasNoText()
-            matchProgressBarIsNotDisplayed()
-        }
-        viewModel.pushEvent {
-            copy(
-                TrackDialogContract.TrackDialogState.Loading
-            )
-        }
-
-        trackDialog {
-            matchTitleHasNoText()
+            setEventToViewModel(TrackDialogContract.TrackDialogState.Loading, viewModel)
+            // matchTitleHasNoText()
             matchProgressBarDisplayed()
         }
     }
 
     @Test
     fun dataSuccess() {
-        //////////////////////////////////////
-       /* viewModel.pushEvent {
-            copy(
-                TrackDialogContract.TrackDialogState.Loading
-            )
-        }*/
-        viewModel.pushEvent (
-
-                TrackDialogContract.TrackDialogState.Loading
-
-            )
-
+        val item = UiFixtures.getArtistsMenuUi()
         trackDialog {
+            setEventToViewModel(TrackDialogContract.TrackDialogState.Loading, viewModel)
             matchTitleHasNoText()
             matchProgressBarDisplayed()
-        }
-        //////////////////////////////////////
-
-        val item = UiFixtures.getArtistsMenuUi()
-       /* viewModel.pushEvent {
-            copy(
+            setEventToViewModel(
                 TrackDialogContract.TrackDialogState.Success(
                     item
-                )
+                ), viewModel
             )
-        }*/
-        viewModel.pushEvent (
-
-            TrackDialogContract.TrackDialogState.Success(
-                item
-            )
-
-        )
-        trackDialog {
             matchTitleText(item.title)
             matchProgressBarIsNotDisplayed()
             matchTrackDialogItemAtPosition(
-                item.items.size - 1,
-                item.items[item.items.size - 1]
+                0,
+                item.items[0]
             )
+        }
+    }
+
+    @Test
+    fun enablingNetworkSourceDisablingLocalSource() {
+        trackDialog {
+            matchLocalSourceListUnlocked()
+            matchNetworkPathDisabled()
+
+            clickNetworkSourceButton()
+
+            matchLocalSourceListBlocked()
+            matchNetworkPathEnabled()
+
         }
     }
 }

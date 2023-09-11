@@ -30,15 +30,17 @@
             android:orientation="horizontal"
             android:visibility="visible">
 
-            <androidx.appcompat.widget.AppCompatImageButton
+
+            <CheckBox
                 android:id="@+id/network_btn"
                 android:layout_width="@dimen/button_Width_small"
                 android:layout_height="@dimen/button_height_small"
-
                 android:background="@drawable/button_single"
-                app:srcCompat="@drawable/wan"
-                app:tint="@color/tint_pressed_state_list" />
-
+                android:button="@null"
+                android:checked="true"
+                android:foreground="@drawable/wan"
+                android:foregroundGravity="center"
+                android:foregroundTint="@color/tint_pressed_state_list" />
             <FrameLayout
                 android:id="@+id/path_panel"
                 android:layout_width="match_parent"
@@ -49,7 +51,7 @@
                 android:visibility="visible">
 
                 <EditText
-                    android:id="@+id/path"
+                    android:id="@+id/networkPath"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"

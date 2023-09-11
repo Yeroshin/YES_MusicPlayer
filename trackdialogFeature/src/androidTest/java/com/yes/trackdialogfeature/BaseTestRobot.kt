@@ -4,10 +4,12 @@ package com.yes.trackdialogfeature
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
@@ -37,7 +39,10 @@ open class BaseTestRobot() {
 
     fun isNotDisplayed(viewInteraction: ViewInteraction): ViewInteraction = viewInteraction
         .check(matches(not(ViewMatchers.isDisplayed())))
-
+fun isEnabled(viewInteraction: ViewInteraction): ViewInteraction = viewInteraction
+    .check(matches(ViewMatchers.isEnabled()))
+    fun isNotEnabled(viewInteraction: ViewInteraction): ViewInteraction = viewInteraction
+        .check(matches(not(ViewMatchers.isEnabled())))
     fun matchRecyclerViewItemDescendantTextAtPosition(
         viewInteraction: ViewInteraction,
         position: Int,
@@ -130,6 +135,11 @@ open class BaseTestRobot() {
             }
         }
     }
+    fun typeText(
+        viewInteraction: ViewInteraction,
+        text:String
+    ): ViewInteraction = viewInteraction
+        .perform(ViewActions.typeText(text), ViewActions.closeSoftKeyboard())
 
     fun readTracksFromPlaylistDB(
         playlistName: String,

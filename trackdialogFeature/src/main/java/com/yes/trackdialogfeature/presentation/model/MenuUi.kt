@@ -8,11 +8,14 @@ data class MenuUi(
     val items: List<ItemUi>
 ) {
     data class ItemUi(
-        val id:Int,
-        val name:String,
-        val iconType:Int,
-        var selected:Boolean?,
-        val param:TrackDialogContract.Event,
-        val onClick: ((TrackDialogContract.Event) -> Unit)
+        val id:Int=-1,
+        val name:String="",
+        val iconType:Int=0,
+        var selected:Boolean?=null,
+        val param:TrackDialogContract.Event=TrackDialogContract.Event.OnItemClicked(
+            id,
+            name,
+        ),
+        val onClick: ((TrackDialogContract.Event) -> Unit)={}
     )
 }

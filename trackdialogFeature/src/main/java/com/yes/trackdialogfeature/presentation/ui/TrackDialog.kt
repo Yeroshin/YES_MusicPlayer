@@ -1,8 +1,6 @@
 package com.yes.trackdialogfeature.presentation.ui
 
-import android.media.MediaScannerConnection
 import android.os.Bundle
-import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -21,11 +19,7 @@ import com.yes.trackdialogfeature.R
 import com.yes.trackdialogfeature.databinding.TrackDialogBinding
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.model.MenuUi
-import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 
 
 class TrackDialog(
@@ -73,10 +67,29 @@ class TrackDialog(
         binder.buttons.okBtn.setOnClickListener {
             viewModel.setEvent(
                 TrackDialogContract.Event.OnButtonOkClicked(
-                    adapter.getItems()
+                    if (binder.networkBtn.isChecked) {
+                        adapter.getItems()
+                    } else {
+                        listOf(
+                            MenuUi.ItemUi(
+                                name = binder.networkPath.text.toString(),
+                                selected = true
+                            )
+                        )
+                    }
+
                 )
             )
-
+        }
+        binder.networkBtn.setOnCheckedChangeListener { _, isChecked ->
+            // write here your code for example ...
+            if (isChecked) {
+                binder.recyclerViewContainer.disableView.visibility = GONE
+                binder.networkPath.isEnabled = false
+            } else {
+                binder.recyclerViewContainer.disableView.visibility = VISIBLE
+                binder.networkPath.isEnabled = true
+            }
         }
     }
 
