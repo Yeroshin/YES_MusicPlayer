@@ -22,7 +22,7 @@ class TrackDialogTest {
 
     class TestViewModel : BaseViewModel<TrackDialogContract.Event,
             TrackDialogContract.State,
-            TrackDialogContract.Effect>(null) {
+            TrackDialogContract.Effect>() {
 
         override val effect: Flow<TrackDialogContract.Effect> = flow {}
         override fun handleEvent(event: TrackDialogContract.Event) {

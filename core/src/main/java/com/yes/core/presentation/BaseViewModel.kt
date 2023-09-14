@@ -7,9 +7,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect>(
-    private val espressoIdlingResource: EspressoIdlingResource?
-)
+abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect>
     : ViewModel(), IBaseViewModel <Event , State , Effect >{
 
     private val initialState: State by lazy { createInitialState() }
@@ -46,11 +44,11 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect
 
         val newEvent = event
         viewModelScope.launch { _event.emit(newEvent) }
-        espressoIdlingResource?.increment()
+
     }
 
     protected fun setState(reduce: State.() -> State) {
-        espressoIdlingResource?.decrement()
+
         val newState = currentState.reduce()
         _uiState.value = newState
     }

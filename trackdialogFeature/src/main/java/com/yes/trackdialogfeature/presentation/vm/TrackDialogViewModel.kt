@@ -20,6 +20,7 @@ import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.model.MenuUi.ItemUi
 import com.yes.core.util.EspressoIdlingResource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -28,10 +29,8 @@ open class TrackDialogViewModel(
     private val saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase,
     private val uiMapper: UiMapper,
     private val menuStack: ArrayDeque<MenuUi>,
-    espressoIdlingResource: EspressoIdlingResource?
-) : BaseViewModel<TrackDialogContract.Event, State, Effect>(
-    espressoIdlingResource
-) {
+    private val espressoIdlingResource: EspressoIdlingResource?
+) : BaseViewModel<TrackDialogContract.Event, State, Effect>() {
 
     override fun createInitialState(): State {
         return State(
@@ -73,6 +72,7 @@ open class TrackDialogViewModel(
                  trackDialogState = TrackDialogContract.TrackDialogState.Idle
              )
          }
+        espressoIdlingResource?.increment()
         viewModelScope.launch {
             val result = saveTracksToPlaylistUseCase(
                 SaveTracksToPlaylistUseCase.Params(
@@ -82,6 +82,7 @@ open class TrackDialogViewModel(
                     }
                 )
             )
+            espressoIdlingResource?.decrement()
             when (result) {
                 is DomainResult.Success -> {
                     setState {
@@ -89,10 +90,12 @@ open class TrackDialogViewModel(
                             trackDialogState = TrackDialogContract.TrackDialogState.Idle
                         )
                     }
+
                     dismiss()
                 }
 
                 else -> {
+
                     setEffect {
                         Effect.UnknownException
                     }
@@ -110,16 +113,19 @@ open class TrackDialogViewModel(
     }
 
     private fun getParentMenu() {
+        setState {
+            copy(
+                trackDialogState = TrackDialogContract.TrackDialogState.Loading
+            )
+        }
+       // espressoIdlingResource?.increment()
+        viewModelScope.launch {
+            //delay(5000)
 
-        viewModelScope.launch(Dispatchers.Main) {
-            setState {
-                copy(
-                    trackDialogState = TrackDialogContract.TrackDialogState.Loading
-                )
-            }
 
             menuStack.pollLast()
             menuStack.peekLast()?.let {
+
                 setState {
                     copy(
                         trackDialogState = TrackDialogContract.TrackDialogState.Success(
@@ -127,7 +133,9 @@ open class TrackDialogViewModel(
                         )
                     )
                 }
+              //  espressoIdlingResource?.decrement()
             }?:run {
+               // espressoIdlingResource?.decrement()
                 setState {
                     copy(
                         trackDialogState = TrackDialogContract.TrackDialogState.Idle
@@ -165,13 +173,13 @@ open class TrackDialogViewModel(
 
     private fun getChildMenu(id: Int?, name: String) {
 
-        setState {
-            copy(
-                trackDialogState = TrackDialogContract.TrackDialogState.Loading
-            )
-        }
-        viewModelScope.launch(Dispatchers.Main) {
-
+        espressoIdlingResource?.increment()
+        viewModelScope.launch {
+            setState {
+                copy(
+                    trackDialogState = TrackDialogContract.TrackDialogState.Loading
+                )
+            }
             val params = id?.let {
                 GetMenuUseCase.Params(
                     it,
@@ -182,7 +190,7 @@ open class TrackDialogViewModel(
             val result = getMenuUseCase(
                 params
             )
-            // espressoIdlingResource?.decrement()
+             espressoIdlingResource?.decrement()
             when (result) {
                 is DomainResult.Success -> setState {
                     var menuUi = uiMapper.map(
@@ -206,6 +214,7 @@ open class TrackDialogViewModel(
                         menuUi = newMenuUI
                     }
                     if (!menuStack.offer(menuUi)) {
+
                         setEffect {
                             Effect.UnknownException
                         }
@@ -227,6 +236,7 @@ open class TrackDialogViewModel(
                 is DomainResult.Error -> {
                     when (result.exception) {
                         is DomainResult.UnknownException -> {
+
                             setState {
                                 copy(
                                     trackDialogState = TrackDialogContract.TrackDialogState.Idle
