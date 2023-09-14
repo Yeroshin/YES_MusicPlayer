@@ -79,6 +79,7 @@ class TrackDialogEndToEndTest {
     @Test
     fun testNavigationOnMenu() {
         trackDialog {
+
             //going three categories forward and then back to first
             matchTitleText("categories")
             matchProgressBarIsNotDisplayed()

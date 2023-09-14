@@ -67,13 +67,14 @@ open class TrackDialogViewModel(
     }
 
     private fun saveItems(items: List<ItemUi>) {
-         setState {
-             copy(
-                 trackDialogState = TrackDialogContract.TrackDialogState.Idle
-             )
-         }
+
         espressoIdlingResource?.increment()
         viewModelScope.launch {
+            setState {
+                copy(
+                    trackDialogState = TrackDialogContract.TrackDialogState.Idle
+                )
+            }
             val result = saveTracksToPlaylistUseCase(
                 SaveTracksToPlaylistUseCase.Params(
                     //to do - filter back item
@@ -113,15 +114,15 @@ open class TrackDialogViewModel(
     }
 
     private fun getParentMenu() {
-        setState {
-            copy(
-                trackDialogState = TrackDialogContract.TrackDialogState.Loading
-            )
-        }
+
        // espressoIdlingResource?.increment()
         viewModelScope.launch {
             //delay(5000)
-
+            setState {
+                copy(
+                    trackDialogState = TrackDialogContract.TrackDialogState.Loading
+                )
+            }
 
             menuStack.pollLast()
             menuStack.peekLast()?.let {
@@ -145,28 +146,6 @@ open class TrackDialogViewModel(
                     Effect.UnknownException
                 }
             }
-            ///////////////////
-          /*  menuStack.removeLast()
-            if (menuStack.isEmpty()) {
-                setState {
-                    copy(
-                        trackDialogState = TrackDialogContract.TrackDialogState.Idle
-                    )
-                }
-                setEffect {
-                    Effect.UnknownException
-                }
-            } else {
-                setState {
-                    copy(
-                        trackDialogState = TrackDialogContract.TrackDialogState.Success(
-                            //TO DOrefactor this
-                            menuStack.peekLast()!!
-                        )
-                    )
-                }
-            }*/
-            ////////////////////////
         }
 
     }
@@ -186,7 +165,6 @@ open class TrackDialogViewModel(
                     name
                 )
             }
-            //  espressoIdlingResource?.increment()
             val result = getMenuUseCase(
                 params
             )
