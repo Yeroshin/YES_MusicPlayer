@@ -68,11 +68,11 @@ open class TrackDialogViewModel(
     }
 
     private fun saveItems(items: List<ItemUi>) {
-        /* setState {
+         setState {
              copy(
                  trackDialogState = TrackDialogContract.TrackDialogState.Idle
              )
-         }*/
+         }
         viewModelScope.launch {
             val result = saveTracksToPlaylistUseCase(
                 SaveTracksToPlaylistUseCase.Params(
@@ -111,13 +111,34 @@ open class TrackDialogViewModel(
 
     private fun getParentMenu() {
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Main) {
             setState {
                 copy(
                     trackDialogState = TrackDialogContract.TrackDialogState.Loading
                 )
             }
-            menuStack.removeLast()
+
+            menuStack.pollLast()
+            menuStack.peekLast()?.let {
+                setState {
+                    copy(
+                        trackDialogState = TrackDialogContract.TrackDialogState.Success(
+                            it
+                        )
+                    )
+                }
+            }?:run {
+                setState {
+                    copy(
+                        trackDialogState = TrackDialogContract.TrackDialogState.Idle
+                    )
+                }
+                setEffect {
+                    Effect.UnknownException
+                }
+            }
+            ///////////////////
+          /*  menuStack.removeLast()
             if (menuStack.isEmpty()) {
                 setState {
                     copy(
@@ -136,7 +157,8 @@ open class TrackDialogViewModel(
                         )
                     )
                 }
-            }
+            }*/
+            ////////////////////////
         }
 
     }

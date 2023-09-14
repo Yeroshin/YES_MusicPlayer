@@ -5,12 +5,12 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "tracks")
 data class Track(
     @PrimaryKey(autoGenerate = true)
-    val id: Long?,
+    val id: Long?=null,
     val playlistName: String,
-    val artist: String,
+    val artist: String="",
     val title: String,
     val uri: String,
-    val duration: Long,
-    val album:String,
-    val size:Long,
+    val duration: Long=-1,
+    val album:String="",
+    val size:Long=-1,
 )

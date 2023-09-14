@@ -6,6 +6,8 @@ import com.yes.trackdialogfeature.presentation.model.MenuUi
 import kotlin.random.Random
 
 object UiFixtures {
+    private const val networkPath = "http://23.111.104.132/chil96.aacp"
+
     private const val selectedArtist=1
     private const val selectedArtistSelectedTrack=1
     private val onClick: (TrackDialogContract.Event) -> Unit = {}
@@ -47,6 +49,15 @@ object UiFixtures {
             null,
             TrackDialogContract.Event.OnItemBackClicked,
             onClick
+        )
+    }
+    fun getNetworkPath(): String {
+        return networkPath
+    }
+    fun getNetworkTrack(): MenuUi.ItemUi {
+        return MenuUi.ItemUi(
+            name=networkPath,
+            selected = true
         )
     }
 

@@ -13,7 +13,6 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 class MediaFileFixtures(private val context: Context) {
-    private val networkPath = "http://23.111.104.132/chil96.aacp"
 
     private val selectedArtist = UiFixtures.getSelectedArtistIndex()
     private val selectedArtistSelectedTrack = UiFixtures.getSelectedArtistSelectedTrack()
@@ -279,15 +278,7 @@ class MediaFileFixtures(private val context: Context) {
         return listOf(getSelectedArtistTracks()[selectedArtistSelectedTrack])
     }
 
-    fun getNetworkPath(): String {
-        return networkPath
-    }
 
-    fun getNetworkTrack(): MenuUi.ItemUi {
-        return MenuUi.ItemUi(
-            name=networkPath,
-        )
-    }
 
 
 }

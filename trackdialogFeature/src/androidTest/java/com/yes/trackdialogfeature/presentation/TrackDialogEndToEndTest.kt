@@ -207,11 +207,11 @@ class TrackDialogEndToEndTest {
         trackDialog {
             clickNetworkSourceButton()
             enterAddressNetworkSource(
-                mediaFileFixtures.getNetworkPath()
+                UiFixtures.getNetworkPath()
             )
             clickOkButton()
             matchNetworkSourceSavedToPlaylist(
-                mediaFileFixtures.getNetworkTrack(),
+                UiFixtures.getNetworkTrack(),
                 settings,
                 dataBase
 

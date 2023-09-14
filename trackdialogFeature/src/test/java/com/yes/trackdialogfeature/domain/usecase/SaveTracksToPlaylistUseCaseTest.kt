@@ -36,7 +36,8 @@ class SaveTracksToPlaylistUseCaseTest {
     private val mediaRepositoryImpl: MediaRepositoryImpl = mockk()
     private val playListRepository: IPlayListDao = mockk()
     private val settingsRepository: ISettingsRepository = mockk()
-private val menuRepository:IMenuRepository= mockk()
+    private val menuRepository: IMenuRepository = mockk()
+
     @BeforeEach
     fun setUp() = runTest {
         Dispatchers.setMain(testDispatcher)
@@ -55,8 +56,8 @@ private val menuRepository:IMenuRepository= mockk()
     fun run(
         params: Params?,
         expected: DomainResult<List<Long>>,
-        audioItems: List<Track>,
-        primaryItem: Item,
+        audioItems: List<Track>?,
+        primaryItem: Item?,
         savedAudio: List<Track>
     ) = runTest {
         every {
@@ -64,15 +65,19 @@ private val menuRepository:IMenuRepository= mockk()
         } returns SettingsFixtures.getPlayListName()
 
         params?.let {
-            every {
-                menuRepository.getItem(params.items[1].id)
-            }returns primaryItem
-            every {
-                mediaRepositoryImpl.getAudioItems(
-                    primaryItem.type,
-                    params.items[1].name
-                )
-            } returns audioItems
+            audioItems?.let {
+                every {
+                    menuRepository.getItem(params.items[UiFixtures.getSelectedArtistIndex()].id)
+                } returns primaryItem
+
+                every {
+                    mediaRepositoryImpl.getAudioItems(
+                        primaryItem?.type,
+                        params.items[UiFixtures.getSelectedArtistIndex()].name
+                    )
+                } returns audioItems
+            }
+
         }
 
         every {
@@ -89,6 +94,7 @@ private val menuRepository:IMenuRepository= mockk()
 
     companion object {
         private val mapper: UiMapper = UiMapper()
+
         @JvmStatic
         fun runData(): List<Array<Any?>> {
             return listOf(
@@ -106,6 +112,21 @@ private val menuRepository:IMenuRepository= mockk()
                             playlistName = SettingsFixtures.getPlayListName()
                         )
                     },
+                ),
+                arrayOf(
+                    Params(
+                        listOf(UiFixtures.getNetworkTrack()).map {
+                            mapper.map(it)
+                        }
+                    ),
+                    DomainResult.Success(true),
+                    null,
+                    null,
+                    listOf(Track(
+                        playlistName = SettingsFixtures.getPlayListName(),
+                        title = UiFixtures.getNetworkTrack().name,
+                        uri = UiFixtures.getNetworkTrack().name,
+                    )),
                 )
             )
         }

@@ -28,14 +28,9 @@ class SaveTracksToPlaylistUseCase(
             if (isNetworkPath(mediaItem.name)) {
                 tracks.add(
                     Track(
-                        null,
-                        playListName,
-                        "",
-                        mediaItem.name,
-                        mediaItem.name,
-                        -1,
-                        "",
-                        -1
+                        playlistName = playListName,
+                        title = mediaItem.name,
+                        uri = mediaItem.name,
                     )
                 )
             } else {
@@ -50,11 +45,17 @@ class SaveTracksToPlaylistUseCase(
             }
 
         }
-        val tmp = playListRepository.saveTracks(tracks)
-        return DomainResult.Success(true)
+        val saveResult = playListRepository.saveTracks(tracks)
+        return if (saveResult.all { it > 0 }) {
+            DomainResult.Success(true)
+        } else {
+            DomainResult.Error(DomainResult.UnknownException)
+        }
+
+
     }
 
-    fun isNetworkPath(input: String): Boolean {
+    private fun isNetworkPath(input: String): Boolean {
         val audioUrlPrefixes = listOf("http://", "https://", "ftp://", "rtsp://", "rtmp://")
         return audioUrlPrefixes.any { input.startsWith(it, ignoreCase = true) }
     }
