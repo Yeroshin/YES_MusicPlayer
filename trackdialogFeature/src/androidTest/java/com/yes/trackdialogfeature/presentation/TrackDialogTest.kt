@@ -108,12 +108,12 @@ class TrackDialogTest {
 
 
     private val factory = MockViewModelFactory(viewModel)
-    private val dependency = TrackDialog.TrackDialogDependency(
+    private val dependency = TrackDialog.Dependency(
         factory
     )
 
     class MockFragmentFactoryImpl(
-        private val dep: TrackDialog.TrackDialogDependency
+        private val dep: TrackDialog.Dependency
     ) : FragmentFactory() {
 
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment {

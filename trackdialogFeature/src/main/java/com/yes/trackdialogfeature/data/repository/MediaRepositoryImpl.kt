@@ -1,9 +1,10 @@
 package com.yes.trackdialogfeature.data.repository
 
 import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
-import com.yes.trackdialogfeature.data.repository.dataSource.MediaDataStore
+
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
-import com.yes.trackdialogfeature.domain.entity.Track
+import com.yes.core.domain.models.Track
+import com.yes.core.repository.data.dataSource.MediaDataStore
 
 class MediaRepositoryImpl(
     private val mediaDataStore: MediaDataStore,

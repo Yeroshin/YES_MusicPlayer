@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.kotlinKapt)
+    alias(libs.plugins.devtoolsKsp)
 }
 
 android {
@@ -50,4 +52,12 @@ dependencies {
     //Shit for mockk to run on api<p
     //implementation 'com.github.tmurakami:dexopener:2.0.5'
     implementation libs.espresso.idling.resource
+
+    //room
+    implementation libs.androidx.room.runtime
+    kapt libs.androidx.room.compiler
+    //Dagger/////////////////////
+    implementation libs.dagger
+    androidTestImplementation libs.dagger
+    kapt libs.dagger.compiler
 }

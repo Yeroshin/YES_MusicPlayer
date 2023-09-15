@@ -1,10 +1,10 @@
 package com.yes.trackdialogfeature.data.mapper
 
 import com.yes.trackdialogfeature.data.dataSource.MediaDataStoreFixtures
-import com.yes.trackdialogfeature.data.repository.entity.MediaDataStoreEntity
+import com.yes.musicplayer.data.entity.MediaDataStoreEntity
 import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
-import com.yes.trackdialogfeature.domain.entity.Track
+import com.yes.core.domain.models.Track
 import org.junit.Assert.*
 
 import org.junit.jupiter.params.ParameterizedTest
@@ -16,7 +16,7 @@ class MediaRepositoryMapperTest {
     @ParameterizedTest
     @MethodSource("mapToItemData")
     fun map(
-        dataStoreEntity: MediaDataStoreEntity,
+        dataStoreEntity: com.yes.musicplayer.data.entity.MediaDataStoreEntity,
         expectedDomain: Item
     ) {
         val actual = cut.map(
@@ -28,7 +28,7 @@ class MediaRepositoryMapperTest {
     @ParameterizedTest
     @MethodSource("mapToTrackData")
     fun mapToTrack(
-        dataStoreEntity: MediaDataStoreEntity,
+        dataStoreEntity: com.yes.musicplayer.data.entity.MediaDataStoreEntity,
         expectedDomain: Track
     ) {
         val actual = cut.mapToTrack(

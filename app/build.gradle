@@ -57,6 +57,7 @@ android {
 dependencies {
     implementation project(path: ':playlistFeature')
     implementation project(path: ':coreUI')
+    implementation project(path: ':core')
     implementation project(path: ':playerFeature')
     implementation project(path: ':trackdialogFeature')
     //tmp
@@ -99,4 +100,7 @@ dependencies {
     //  kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0" //ImportantSHIT!!!
     //tmp
     // debugImplementation "androidx.test:monitor:1.6.1"
+//room
+    implementation libs.androidx.room.runtime
+    kapt libs.androidx.room.compiler
 }

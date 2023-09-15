@@ -4,9 +4,9 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
-import com.yes.trackdialogfeature.domain.repository.IPlayListDao
-import com.yes.trackdialogfeature.data.repository.entity.PlayListEntity
-import com.yes.trackdialogfeature.domain.entity.Track
+import com.yes.core.domain.repository.IPlayListDao
+import com.yes.musicplayer.data.entity.PlayListEntity
+import com.yes.core.domain.models.Track
 import junit.framework.TestCase.assertEquals
 
 import org.junit.After
@@ -18,13 +18,13 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class PlayListDataBaseTest {
     private lateinit var userDao: IPlayListDao
-    private lateinit var db: PlayListDataBase
+    private lateinit var db: com.yes.musicplayer.data.dataSource.PlayListDataBase
 
     @Before
     fun createDb() {
         db = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
-            PlayListDataBase::class.java
+            com.yes.musicplayer.data.dataSource.PlayListDataBase::class.java
         ).build()
         userDao = db.playListDao()
     }
@@ -36,7 +36,7 @@ class PlayListDataBaseTest {
 
     @Test
     fun writeAndReadPlayList() {
-        val playlist = PlayListEntity(
+        val playlist = com.yes.musicplayer.data.entity.PlayListEntity(
             null,
             "Default",
             0,
@@ -50,7 +50,7 @@ class PlayListDataBaseTest {
     @Test
     fun writeAndReadTracks() {
 
-        val playlist = PlayListEntity(
+        val playlist = com.yes.musicplayer.data.entity.PlayListEntity(
             null,
             "Default",
             0,

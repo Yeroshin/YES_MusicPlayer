@@ -3,9 +3,8 @@ package com.yes.trackdialogfeature.data.dataSource
 import com.example.shared_test.SharedFixtureGenerator
 import com.example.shared_test.UiFixtures
 import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
-import com.yes.trackdialogfeature.data.repository.entity.MediaDataStoreEntity
-import com.yes.trackdialogfeature.domain.DomainFixtures
-import com.yes.trackdialogfeature.domain.entity.Track
+import com.yes.musicplayer.data.entity.MediaDataStoreEntity
+import com.yes.core.domain.models.Track
 import kotlin.random.Random
 
 object MediaDataStoreFixtures {
@@ -13,35 +12,35 @@ object MediaDataStoreFixtures {
     private val selectedItem = UiFixtures.getSelectedArtistIndex()
     private val albums =
         SharedFixtureGenerator.getAlbumsNames().map {
-            MediaDataStoreEntity(
+            com.yes.musicplayer.data.entity.MediaDataStoreEntity(
                 it
             )
         }
     private val artists =
         SharedFixtureGenerator.getArtistsNames().map {
-            MediaDataStoreEntity(
+            com.yes.musicplayer.data.entity.MediaDataStoreEntity(
                 it
             )
         }
     private val tracks =
         SharedFixtureGenerator.getTracksNames().map {
-            MediaDataStoreEntity(
+            com.yes.musicplayer.data.entity.MediaDataStoreEntity(
                 it
             )
         }
 
 
-    fun getArtists(): List<MediaDataStoreEntity> {
+    fun getArtists(): List<com.yes.musicplayer.data.entity.MediaDataStoreEntity> {
         return artists
     }
 
-    fun getTracksFromSelectedArtist(): List<MediaDataStoreEntity> {
+    fun getTracksFromSelectedArtist(): List<com.yes.musicplayer.data.entity.MediaDataStoreEntity> {
         return tracksAudio.filter {
             it.artist == artists[selectedItem].title
         }
     }
 
-    fun getTracksMedia(): List<MediaDataStoreEntity> {
+    fun getTracksMedia(): List<com.yes.musicplayer.data.entity.MediaDataStoreEntity> {
         return tracks
     }
 
@@ -56,7 +55,7 @@ object MediaDataStoreFixtures {
         )
     }
 
-    fun getTracksAudio(): List<MediaDataStoreEntity> {
+    fun getTracksAudio(): List<com.yes.musicplayer.data.entity.MediaDataStoreEntity> {
         return tracksAudio
     }
 

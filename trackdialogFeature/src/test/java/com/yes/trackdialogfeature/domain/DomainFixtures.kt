@@ -8,7 +8,7 @@ import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
 import com.yes.trackdialogfeature.domain.entity.MenuException
-import com.yes.trackdialogfeature.domain.entity.Track
+import com.yes.core.domain.models.Track
 
 object DomainFixtures {
     fun getEmptyError(): MenuException {

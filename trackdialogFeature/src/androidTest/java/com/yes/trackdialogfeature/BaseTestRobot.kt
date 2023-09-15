@@ -4,7 +4,6 @@ package com.yes.trackdialogfeature
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
@@ -18,8 +17,8 @@ import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.yes.trackdialogfeature.domain.entity.Track
-import com.yes.trackdialogfeature.domain.repository.IPlayListDao
+import com.yes.core.domain.models.Track
+import com.yes.core.domain.repository.IPlayListDao
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Description
 import org.hamcrest.Matcher

@@ -1,7 +1,8 @@
 package com.yes.trackdialogfeature.data.repository
 
-import com.yes.trackdialogfeature.data.repository.dataSource.SettingsDataStore
-import com.yes.trackdialogfeature.domain.repository.ISettingsRepository
+
+import com.yes.core.repository.data.dataSource.SettingsDataStore
+import com.yes.core.domain.repository.ISettingsRepository
 
 class SettingsRepositoryImpl(
     private val settingsDataStore: SettingsDataStore

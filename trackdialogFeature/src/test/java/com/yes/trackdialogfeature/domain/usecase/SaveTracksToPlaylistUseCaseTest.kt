@@ -6,12 +6,12 @@ import com.yes.trackdialogfeature.data.dataSource.SettingsFixtures
 import com.yes.trackdialogfeature.data.repository.MediaRepositoryImpl
 import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase.Params
-import com.yes.trackdialogfeature.domain.repository.IPlayListDao
-import com.yes.trackdialogfeature.domain.entity.Track
+import com.yes.core.domain.repository.IPlayListDao
+import com.yes.core.domain.models.Track
 import com.yes.trackdialogfeature.domain.entity.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
 import com.yes.trackdialogfeature.domain.repository.IMenuRepository
-import com.yes.trackdialogfeature.domain.repository.ISettingsRepository
+import com.yes.core.domain.repository.ISettingsRepository
 import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -122,11 +122,13 @@ class SaveTracksToPlaylistUseCaseTest {
                     DomainResult.Success(true),
                     null,
                     null,
-                    listOf(Track(
+                    listOf(
+                        Track(
                         playlistName = SettingsFixtures.getPlayListName(),
                         title = UiFixtures.getNetworkTrack().name,
                         uri = UiFixtures.getNetworkTrack().name,
-                    )),
+                    )
+                    ),
                 )
             )
         }

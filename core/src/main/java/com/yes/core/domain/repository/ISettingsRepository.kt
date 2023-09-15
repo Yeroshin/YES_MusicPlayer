@@ -1,4 +1,4 @@
-package com.yes.trackdialogfeature.domain.repository
+package com.yes.core.domain.repository
 
 interface ISettingsRepository {
     fun getCurrentPlayListName():String

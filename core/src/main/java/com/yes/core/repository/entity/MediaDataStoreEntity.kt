@@ -1,4 +1,4 @@
-package com.yes.trackdialogfeature.data.repository.entity
+package com.yes.core.repository.data.entity
 
 data class MediaDataStoreEntity(
     val title:String,

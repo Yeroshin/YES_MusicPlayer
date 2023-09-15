@@ -1,9 +1,10 @@
 package com.yes.trackdialogfeature.data.mapper
 
 
-import com.yes.trackdialogfeature.data.repository.entity.MediaDataStoreEntity
+
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
-import com.yes.trackdialogfeature.domain.entity.Track
+import com.yes.core.domain.models.Track
+import com.yes.core.repository.data.entity.MediaDataStoreEntity
 
 class MediaRepositoryMapper {
     fun map(entity: MediaDataStoreEntity): Item {

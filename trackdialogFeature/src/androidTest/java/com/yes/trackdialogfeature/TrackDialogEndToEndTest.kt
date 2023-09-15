@@ -1,4 +1,4 @@
-package com.yes.trackdialogfeature.presentation
+package com.yes.trackdialogfeature
 
 import android.content.Context
 import androidx.fragment.app.Fragment
@@ -15,10 +15,9 @@ import com.yes.trackdialogfeature.di.components.DaggerTestTrackDialogComponent
 import com.yes.trackdialogfeature.di.components.TestTrackDialogComponent
 import com.yes.trackdialogfeature.di.module.TestAppModule
 import com.yes.trackdialogfeature.di.module.TestTrackDialogModule
-import com.yes.trackdialogfeature.domain.repository.IPlayListDao
-import com.yes.trackdialogfeature.domain.repository.ISettingsRepository
+import com.yes.core.domain.repository.IPlayListDao
+import com.yes.core.domain.repository.ISettingsRepository
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
-import com.yes.trackdialogfeature.trackDialog
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -31,7 +30,7 @@ class TrackDialogEndToEndTest {
       var permissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
   */
     class MockFragmentFactoryImpl(
-        private val dep: TrackDialog.TrackDialogDependency
+        private val dep: TrackDialog.Dependency
     ) : FragmentFactory() {
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
             return when (loadFragmentClass(classLoader, className)) {
@@ -59,7 +58,7 @@ class TrackDialogEndToEndTest {
         val factory = di.getViewModelFactory()
         dataBase = di.getDataBase()
         settings = di.getSettings()
-        val dependency = TrackDialog.TrackDialogDependency(
+        val dependency = TrackDialog.Dependency(
             factory
         )
         val trackDialogFactory = MockFragmentFactoryImpl(

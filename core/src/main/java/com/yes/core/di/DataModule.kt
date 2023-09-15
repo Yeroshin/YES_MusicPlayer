@@ -1,17 +1,17 @@
-package com.yes.trackdialogfeature.di.module
+package com.yes.core.di
 
 import android.content.Context
 import androidx.room.Room
-import com.yes.musicplayer.data.dataSource.MediaDataStore
-import com.yes.musicplayer.data.dataSource.PlayListDataBase
-import com.yes.musicplayer.data.dataSource.SettingsDataStore
 import com.yes.core.domain.repository.IPlayListDao
+import com.yes.core.repository.data.dataSource.MediaDataStore
+import com.yes.core.repository.data.dataSource.SettingsDataStore
+import com.yes.core.repository.dataSource.PlayListDataBase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class TestAppModule(
+class DataModule(
     private val context: Context
 ) {
     @Provides
@@ -23,16 +23,22 @@ class TestAppModule(
     @Singleton
     fun providesDatabase(
         context: Context
-    ): com.yes.musicplayer.data.dataSource.PlayListDataBase {
-        return Room.inMemoryDatabaseBuilder(
+    ): PlayListDataBase {
+        return Room.databaseBuilder(
             context,
-            com.yes.musicplayer.data.dataSource.PlayListDataBase::class.java,
+            PlayListDataBase::class.java,
+            "your_database_name"
         ).build()
+        /* return Room.inMemoryDatabaseBuilder(
+             context,
+             PlayListDataBase::class.java,
+         ).build()*/
     }
+
     @Singleton
     @Provides
     fun providesPlayListDao(
-        dataBase: com.yes.musicplayer.data.dataSource.PlayListDataBase
+        dataBase: PlayListDataBase
     ): IPlayListDao {
         return dataBase.playListDao()
     }
@@ -41,8 +47,8 @@ class TestAppModule(
     @Provides
     fun providesSettingsDataStore(
         context: Context
-    ): com.yes.musicplayer.data.dataSource.SettingsDataStore {
-        return com.yes.musicplayer.data.dataSource.SettingsDataStore(
+    ): SettingsDataStore {
+        return SettingsDataStore(
             context
         )
     }
@@ -51,8 +57,8 @@ class TestAppModule(
     @Provides
     fun providesMediaDataStore(
         context: Context
-    ): com.yes.musicplayer.data.dataSource.MediaDataStore {
-        return com.yes.musicplayer.data.dataSource.MediaDataStore(
+    ): MediaDataStore {
+        return MediaDataStore(
             context
         )
     }

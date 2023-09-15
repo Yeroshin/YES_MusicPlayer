@@ -1,14 +1,14 @@
-package com.yes.trackdialogfeature.data.repository.dataSource
+package com.yes.core.repository.data.dataSource
 
 import android.content.Context
 import android.database.Cursor
 import android.os.Build
 import android.provider.MediaStore
-import com.yes.trackdialogfeature.data.IMediaDataStore
-import com.yes.trackdialogfeature.data.repository.entity.MediaDataStoreEntity
+
+import com.yes.core.repository.data.entity.MediaDataStoreEntity
 
 
-class MediaDataStore(private val context: Context) : IMediaDataStore {
+class MediaDataStore(private val context: Context) {
 
 
     fun getAudioItems(

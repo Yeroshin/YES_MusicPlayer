@@ -1,7 +1,15 @@
 package com.yes.core.domain.models
 
-class PlayList {
-    private lateinit var name:String
-    private var currentTrack:Int=0
-    private lateinit var tracks:ArrayList<Track>
-}
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+
+
+@Entity(tableName = "playlists")
+data class PlayList(
+    @PrimaryKey(autoGenerate = true)
+    val id: Long?,
+    val name: String,
+    val currentTrack: Int,
+    val currentTrackPosition: Int,
+)

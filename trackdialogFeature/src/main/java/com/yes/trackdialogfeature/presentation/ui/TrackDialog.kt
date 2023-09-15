@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 
 
 class TrackDialog(
-    dependency: TrackDialogDependency
+    dependency: Dependency
 ) : BaseDialog() {
     private val binder by lazy {
         binding as TrackDialogBinding
@@ -162,7 +162,7 @@ class TrackDialog(
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-    class TrackDialogDependency(
+    class Dependency(
         val factory: ViewModelProvider.Factory,
     )
 

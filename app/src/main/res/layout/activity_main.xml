@@ -10,7 +10,7 @@
         android:padding="8dp">
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment_container"
+            android:id="@+id/player_controls"
             android:name="com.yes.playlistfeature.presentation.PlaylistFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

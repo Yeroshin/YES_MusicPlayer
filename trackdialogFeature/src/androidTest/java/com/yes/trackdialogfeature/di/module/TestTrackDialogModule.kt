@@ -7,18 +7,17 @@ import com.yes.trackdialogfeature.data.mapper.MenuRepositoryMapper
 import com.yes.trackdialogfeature.data.repository.MediaRepositoryImpl
 import com.yes.trackdialogfeature.data.repository.MenuRepositoryImpl
 import com.yes.trackdialogfeature.data.repository.SettingsRepositoryImpl
-import com.yes.trackdialogfeature.data.repository.dataSource.MediaDataStore
+import com.yes.musicplayer.data.dataSource.MediaDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
-import com.yes.trackdialogfeature.data.repository.dataSource.SettingsDataStore
-import com.yes.trackdialogfeature.domain.repository.IPlayListDao
-import com.yes.trackdialogfeature.domain.repository.ISettingsRepository
+import com.yes.musicplayer.data.dataSource.SettingsDataStore
+import com.yes.core.domain.repository.IPlayListDao
+import com.yes.core.domain.repository.ISettingsRepository
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase
 import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import com.yes.core.util.EspressoIdlingResource
-import com.yes.trackdialogfeature.domain.repository.IMenuRepository
 import dagger.Module
 import dagger.Provides
 
@@ -66,7 +65,7 @@ class TestTrackDialogModule(
 
     @Provides
     fun providesMediaRepository(
-        mediaDataStore: MediaDataStore,
+        mediaDataStore: com.yes.musicplayer.data.dataSource.MediaDataStore,
         mediaRepositoryMapper: MediaRepositoryMapper,
     ): MediaRepositoryImpl {
         return MediaRepositoryImpl(
@@ -89,8 +88,8 @@ class TestTrackDialogModule(
 
     @Provides
     fun providesSettingsRepository(
-        settingsDataStore: SettingsDataStore
-    ): ISettingsRepository{
+        settingsDataStore: com.yes.musicplayer.data.dataSource.SettingsDataStore
+    ): ISettingsRepository {
         return SettingsRepositoryImpl(
             settingsDataStore
         )

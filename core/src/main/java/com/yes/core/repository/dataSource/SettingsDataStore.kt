@@ -1,4 +1,4 @@
-package com.yes.trackdialogfeature.data.repository.dataSource
+package com.yes.core.repository.data.dataSource
 
 import android.app.Activity
 import android.content.Context

@@ -21,8 +21,8 @@ internal class MainActivityModule(private val activity: FragmentActivity) {
     fun provideFragmentAdapter(): FragmentAdapter {
 
         val fragmentsList = mutableListOf<Fragment>()
-        val playerFragment = PlaylistFragment()
-        fragmentsList.add(playerFragment)
+        val playlistFragment = PlaylistFragment()
+        fragmentsList.add(playlistFragment)
         return FragmentAdapter(activity, fragmentsList)
     }
 }

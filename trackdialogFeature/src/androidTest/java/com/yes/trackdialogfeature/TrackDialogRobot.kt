@@ -1,7 +1,7 @@
 package com.yes.trackdialogfeature
 
-import com.yes.trackdialogfeature.domain.repository.IPlayListDao
-import com.yes.trackdialogfeature.domain.repository.ISettingsRepository
+import com.yes.core.domain.repository.IPlayListDao
+import com.yes.core.domain.repository.ISettingsRepository
 import com.yes.trackdialogfeature.presentation.TrackDialogTest
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.model.MenuUi

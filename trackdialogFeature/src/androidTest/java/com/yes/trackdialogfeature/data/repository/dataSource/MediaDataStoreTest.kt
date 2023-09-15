@@ -7,7 +7,7 @@ import org.junit.Before
 
 class MediaDataStoreTest {
     private var context: Context = InstrumentationRegistry.getInstrumentation().targetContext
-    private val cut=MediaDataStore(context)
+    private val cut= com.yes.musicplayer.data.dataSource.MediaDataStore(context)
     @Before
     fun setUp() {
     }

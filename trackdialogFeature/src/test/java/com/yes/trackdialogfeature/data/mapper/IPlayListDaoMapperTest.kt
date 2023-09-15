@@ -2,8 +2,8 @@ package com.yes.trackdialogfeature.data.mapper
 
 import com.yes.trackdialogfeature.data.dataSource.MediaDataStoreFixtures
 import com.yes.trackdialogfeature.data.dataSource.PlayListDAOFixtures
-import com.yes.trackdialogfeature.data.repository.entity.MediaDataStoreEntity
-import com.yes.trackdialogfeature.domain.entity.Track
+import com.yes.musicplayer.data.entity.MediaDataStoreEntity
+import com.yes.core.domain.models.Track
 import io.mockk.MockKAnnotations
 import org.junit.Assert.*
 import org.junit.jupiter.api.BeforeEach
@@ -22,7 +22,7 @@ class IPlayListDaoMapperTest {
     @MethodSource("mapToItemData")
     fun map(
         expected: Track,
-        track: MediaDataStoreEntity
+        track: com.yes.musicplayer.data.entity.MediaDataStoreEntity
     ) {
         val actual=cut.map(track)
         assert(actual == expected)

@@ -1,20 +1,20 @@
-package com.yes.trackdialogfeature.domain.repository
+package com.yes.core.domain.repository
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.yes.trackdialogfeature.data.repository.entity.PlayListEntity
-import com.yes.trackdialogfeature.domain.entity.Track
+import com.yes.core.domain.models.PlayList
+import com.yes.core.domain.models.Track
 
 @Dao
 interface IPlayListDao {
     @Insert
-    fun savePlaylist(playlist: PlayListEntity)
+    fun savePlaylist(playlist: PlayList)
     @Query("SELECT * FROM playlists WHERE name =:playlistName")
-    fun getPlaylist(playlistName:String): PlayListEntity
+    fun getPlaylist(playlistName:String): PlayList
     @Update
-    fun updatePlaylist(playlist: PlayListEntity)
+    fun updatePlaylist(playlist: PlayList)
 
     @Insert
     fun saveTracks(tracks:List<Track>):List<Long>
