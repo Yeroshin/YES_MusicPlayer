@@ -2,11 +2,11 @@ package com.yes.trackdialogfeature.data.repository
 
 import com.yes.trackdialogfeature.data.dataSource.MediaDataStoreFixtures
 import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
-import com.yes.musicplayer.data.dataSource.MediaDataStore
-import com.yes.musicplayer.data.entity.MediaDataStoreEntity
 import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
 import com.yes.core.domain.models.Track
+import com.yes.core.repository.data.dataSource.MediaDataStore
+import com.yes.core.repository.data.entity.MediaDataStoreEntity
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.mockk
@@ -16,7 +16,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 
 class MediaRepositoryImplTest {
-    private val mediaDataStore: com.yes.musicplayer.data.dataSource.MediaDataStore = mockk()
+    private val mediaDataStore: MediaDataStore = mockk()
     private val mediaRepositoryMapper: MediaRepositoryMapper = mockk()
     private lateinit var cut: MediaRepositoryImpl
 
@@ -37,7 +37,7 @@ class MediaRepositoryImplTest {
         expected: List<Item>,
         inputParam: Map<String, Any?>,
         param: Map<String, Any?>,
-        mediaItemsEntity: List<com.yes.musicplayer.data.entity.MediaDataStoreEntity>,
+        mediaItemsEntity: List<MediaDataStoreEntity>,
         mediaItemsDomain: List<Track>
     ) {
         every {
@@ -65,7 +65,7 @@ class MediaRepositoryImplTest {
         expected: List<Item>,
         inputParam: Array<String?>,
         param: Array<Any>,
-        mediaItemsEntity: List<com.yes.musicplayer.data.entity.MediaDataStoreEntity>,
+        mediaItemsEntity: List<MediaDataStoreEntity>,
         mediaItemsDomain: List<Item>
     ) {
         every {

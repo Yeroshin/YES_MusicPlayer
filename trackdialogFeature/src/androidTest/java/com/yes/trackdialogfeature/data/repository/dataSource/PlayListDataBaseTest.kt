@@ -3,10 +3,11 @@ package com.yes.trackdialogfeature.data.repository.dataSource
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.yes.core.domain.models.PlayList
 
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.musicplayer.data.entity.PlayListEntity
 import com.yes.core.domain.models.Track
+import com.yes.core.repository.dataSource.PlayListDataBase
 import junit.framework.TestCase.assertEquals
 
 import org.junit.After
@@ -18,13 +19,13 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class PlayListDataBaseTest {
     private lateinit var userDao: IPlayListDao
-    private lateinit var db: com.yes.musicplayer.data.dataSource.PlayListDataBase
+    private lateinit var db: PlayListDataBase
 
     @Before
     fun createDb() {
         db = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
-            com.yes.musicplayer.data.dataSource.PlayListDataBase::class.java
+            PlayListDataBase::class.java
         ).build()
         userDao = db.playListDao()
     }
@@ -36,7 +37,7 @@ class PlayListDataBaseTest {
 
     @Test
     fun writeAndReadPlayList() {
-        val playlist = com.yes.musicplayer.data.entity.PlayListEntity(
+        val playlist = PlayList(
             null,
             "Default",
             0,
@@ -50,7 +51,7 @@ class PlayListDataBaseTest {
     @Test
     fun writeAndReadTracks() {
 
-        val playlist = com.yes.musicplayer.data.entity.PlayListEntity(
+        val playlist = PlayList(
             null,
             "Default",
             0,
@@ -70,6 +71,6 @@ class PlayListDataBaseTest {
         )
         userDao.saveTracks(tracks)
         val retrievedTracks = userDao.getTracks(playlist.name).map { it.copy(id = null) }
-        assertEquals(playlist, retrievedTracks)
+        assertEquals(tracks, retrievedTracks)
     }
 }

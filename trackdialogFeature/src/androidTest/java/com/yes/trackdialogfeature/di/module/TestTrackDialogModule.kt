@@ -7,11 +7,11 @@ import com.yes.trackdialogfeature.data.mapper.MenuRepositoryMapper
 import com.yes.trackdialogfeature.data.repository.MediaRepositoryImpl
 import com.yes.trackdialogfeature.data.repository.MenuRepositoryImpl
 import com.yes.trackdialogfeature.data.repository.SettingsRepositoryImpl
-import com.yes.musicplayer.data.dataSource.MediaDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
-import com.yes.musicplayer.data.dataSource.SettingsDataStore
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.domain.repository.ISettingsRepository
+import com.yes.core.repository.data.dataSource.MediaDataStore
+import com.yes.core.repository.data.dataSource.SettingsDataStore
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase
 import com.yes.trackdialogfeature.presentation.mapper.UiMapper
@@ -65,7 +65,7 @@ class TestTrackDialogModule(
 
     @Provides
     fun providesMediaRepository(
-        mediaDataStore: com.yes.musicplayer.data.dataSource.MediaDataStore,
+        mediaDataStore: MediaDataStore,
         mediaRepositoryMapper: MediaRepositoryMapper,
     ): MediaRepositoryImpl {
         return MediaRepositoryImpl(
@@ -88,7 +88,7 @@ class TestTrackDialogModule(
 
     @Provides
     fun providesSettingsRepository(
-        settingsDataStore: com.yes.musicplayer.data.dataSource.SettingsDataStore
+        settingsDataStore: SettingsDataStore
     ): ISettingsRepository {
         return SettingsRepositoryImpl(
             settingsDataStore

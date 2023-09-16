@@ -9,7 +9,6 @@ import com.yes.trackdialogfeature.data.mapper.MenuRepositoryMapper
 import com.yes.trackdialogfeature.data.repository.MediaRepositoryImpl
 import com.yes.trackdialogfeature.data.repository.MenuRepositoryImpl
 import com.yes.trackdialogfeature.data.repository.SettingsRepositoryImpl
-//import com.yes.trackdialogfeature.data.repository.MediaDataStore
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 
 import com.yes.core.domain.repository.IPlayListDao
@@ -19,6 +18,7 @@ import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase
 import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
+import com.yes.trackdialogfeature.presentation.ui.TrackDialog.Dependency
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import dagger.Module
 import dagger.Provides
@@ -29,15 +29,15 @@ import java.util.ArrayDeque
 @Module
 class TrackDialogModule {
 
-@Provides
-fun providesTrackDialogDependency(factory:ViewModelProvider.Factory):TrackDialog.Dependency{
-    return TrackDialog.Dependency(
-        factory
-    )
-}
+    @Provides
+    fun providesTrackDialogDependency(factory: ViewModelProvider.Factory): Dependency {
+        return Dependency(
+            factory
+        )
+    }
+
     @Provides
     fun providesCoroutineDispatcher(): CoroutineDispatcher {
-        //return StandardTestDispatcher()
         return Dispatchers.IO
     }
 
@@ -77,6 +77,7 @@ fun providesTrackDialogDependency(factory:ViewModelProvider.Factory):TrackDialog
             mediaRepositoryMapper,
         )
     }
+
     @Provides
     fun providesGetMenuUseCase(
         dispatcher: CoroutineDispatcher,
@@ -105,7 +106,7 @@ fun providesTrackDialogDependency(factory:ViewModelProvider.Factory):TrackDialog
         mediaRepositoryImpl: MediaRepositoryImpl,
         playListRepository: IPlayListDao,
         settingsRepository: ISettingsRepository,
-        menuRepository:MenuRepositoryImpl
+        menuRepository: MenuRepositoryImpl
     ): SaveTracksToPlaylistUseCase {
         return SaveTracksToPlaylistUseCase(
             dispatcher,
@@ -115,14 +116,17 @@ fun providesTrackDialogDependency(factory:ViewModelProvider.Factory):TrackDialog
             menuRepository
         )
     }
+
     @Provides
-    fun providesUiMapper():UiMapper{
+    fun providesUiMapper(): UiMapper {
         return UiMapper()
     }
+
     @Provides
-    fun providesArrayDeque(): ArrayDeque<MenuUi>{
+    fun providesArrayDeque(): ArrayDeque<MenuUi> {
         return ArrayDeque()
     }
+
     @Provides
     fun providesEspressoIdlingResource(): EspressoIdlingResource? {
         return null
@@ -144,7 +148,6 @@ fun providesTrackDialogDependency(factory:ViewModelProvider.Factory):TrackDialog
             espressoIdlingResource
         )
     }
-
 
 
 }
