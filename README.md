@@ -329,7 +329,7 @@ Here are a few additional resources.
   application testing
 
 ## Author
-[![Folow me](https://github.com/Yeroshin/YES_MusicPlayer/blob/master/misc/image/8.jpg)](https://www.linkedin.com/in/stanislav-yeroshin/){height="200px" width="200px"}
+[<img src="https://github.com/Yeroshin/YES_MusicPlayer/blob/master/misc/image/8.jpg" alt="Follow me" width="200" height="200"/>](https://www.linkedin.com/in/stanislav-yeroshin/)
 
 ## License
 
