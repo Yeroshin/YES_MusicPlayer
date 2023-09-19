@@ -2,7 +2,7 @@ package com.yes.trackdialogfeature.presentation
 
 import app.cash.turbine.test
 import com.yes.trackdialogfeature.domain.DomainFixtures
-import com.yes.trackdialogfeature.domain.entity.DomainResult
+import com.yes.core.domain.models.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.entity.MenuException
 

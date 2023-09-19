@@ -3,9 +3,10 @@ package com.yes.trackdialogfeature.domain.usecase
 import com.yes.trackdialogfeature.data.repository.MediaRepositoryImpl
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.domain.repository.ISettingsRepository
-import com.yes.trackdialogfeature.domain.entity.DomainResult
+import com.yes.core.domain.models.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
 import com.yes.core.domain.models.Track
+import com.yes.core.domain.useCase.UseCase
 import com.yes.trackdialogfeature.domain.repository.IMenuRepository
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase.Params
 import kotlinx.coroutines.CoroutineDispatcher

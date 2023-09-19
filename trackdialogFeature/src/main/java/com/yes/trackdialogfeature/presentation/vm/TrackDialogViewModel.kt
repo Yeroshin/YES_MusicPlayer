@@ -6,12 +6,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yes.core.presentation.BaseViewModel
 
-import com.yes.trackdialogfeature.domain.entity.DomainResult
+import com.yes.core.domain.models.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.entity.MenuException
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase
-import com.yes.trackdialogfeature.domain.usecase.UseCase
+import com.yes.core.domain.useCase.UseCase
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract.State
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract.Effect
@@ -19,8 +19,6 @@ import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.model.MenuUi.ItemUi
 import com.yes.core.util.EspressoIdlingResource
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 

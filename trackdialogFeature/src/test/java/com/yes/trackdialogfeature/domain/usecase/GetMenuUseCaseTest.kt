@@ -3,7 +3,7 @@ package com.yes.trackdialogfeature.domain.usecase
 import com.yes.trackdialogfeature.data.repository.MediaRepositoryImpl
 import com.yes.trackdialogfeature.data.repository.MenuRepositoryImpl
 import com.yes.trackdialogfeature.domain.DomainFixtures
-import com.yes.trackdialogfeature.domain.entity.DomainResult
+import com.yes.core.domain.models.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
 import kotlinx.coroutines.test.StandardTestDispatcher

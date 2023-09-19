@@ -8,7 +8,7 @@ import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase.Params
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.domain.models.Track
-import com.yes.trackdialogfeature.domain.entity.DomainResult
+import com.yes.core.domain.models.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
 import com.yes.trackdialogfeature.domain.repository.IMenuRepository
 import com.yes.core.domain.repository.ISettingsRepository

@@ -1,8 +1,7 @@
-package com.yes.trackdialogfeature.domain.usecase
+package com.yes.core.domain.useCase
 
+import com.yes.core.domain.models.DomainResult
 import kotlinx.coroutines.*
-import com.yes.trackdialogfeature.domain.entity.DomainResult
-import com.yes.trackdialogfeature.domain.entity.MenuException
 
 abstract class UseCase<REQUEST, MODEL>(
     private val dispatcher: CoroutineDispatcher
