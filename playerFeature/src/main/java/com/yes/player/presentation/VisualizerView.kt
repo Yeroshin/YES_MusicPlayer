@@ -10,17 +10,17 @@ import android.util.AttributeSet
 import android.view.View
 import kotlin.math.abs
 
-class VisualizerView(var con: Context, attrs: AttributeSet?) :
+class VisualizerView( con: Context, attrs: AttributeSet?) :
     View(con, attrs) {
-    var mVisualizer: Visualizer? = null
-    var magnitudes: DoubleArray? = null
-    var mPaint: Paint? = null
-    var _height = 0
-    var _width = 0
-    var sampling_rate = 0
-    var frequency_count = 16
-    var bars_count = 16
-    var prev_frequency: IntArray = intArrayOf()
+    private var mVisualizer: Visualizer? = null
+    private var magnitudes: DoubleArray? = null
+    private val mPaint: Paint? by lazy {  Paint()}
+    private val _height by lazy { getHeight() }
+    private val _width by lazy{getWidth()}
+    private var samplingRate = 0
+    private val frequencyCount = 16
+    private val barsCount = 16
+    private var prevFrequency: IntArray = intArrayOf()
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
         /*   if(YESMusicPlayerService.paused){
@@ -37,14 +37,13 @@ class VisualizerView(var con: Context, attrs: AttributeSet?) :
         }*/
 
         // setAudioSessionId(YESMusicPlayerService.mediaPlayer.getAudioSessionId());
-        mPaint = Paint()
+
         mPaint!!.color = Color.rgb(0, 0, 0)
         mPaint!!.style = Paint.Style.STROKE
-        _height = getHeight()
-        _width = getWidth()
-        mPaint!!.strokeWidth = (_width / frequency_count / 10 * 9).toFloat()
+
+        mPaint!!.strokeWidth = (_width / frequencyCount / 10 * 9).toFloat()
         // int w=width/frequency_count*2;
-        prev_frequency = IntArray(frequency_count + 1)
+        prevFrequency = IntArray(frequencyCount + 1)
     }
 
     override fun onDetachedFromWindow() {
@@ -58,30 +57,30 @@ class VisualizerView(var con: Context, attrs: AttributeSet?) :
     override fun onDraw(canvas: Canvas) {
         if (magnitudes != null) {
             //
-            val min_step = sampling_rate / magnitudes!!.size
+            val min_step = samplingRate / magnitudes!!.size
             ////////////////////////////////////////////
 
             ////////////////////////////////////////////
             // int frequency_step=magnitudes.length/frequency_count;
-            for (i in 1 until frequency_count + 1) {
+            for (i in 1 until frequencyCount + 1) {
                 // int fr=i*frequency_step;
                 var average = 0.0
                 val max_dB = 500
                 var y = 0
                 //  int frequency_step=magnitudes.length/frequency_count;
                 // int frequency=0;
-                if (i < frequency_count / 2) {
+                if (i < frequencyCount / 2) {
                     // frequency=i*22050/512;
-                    y = magnitudes!![i].toInt() * bars_count / max_dB
+                    y = magnitudes!![i].toInt() * barsCount / max_dB
                 } else {
                     val py =
-                        Math.round(Math.exp(Math.log(16.0) * 2 / frequency_count.toDouble() * (i - 1)))
+                        Math.round(Math.exp(Math.log(16.0) * 2 / frequencyCount.toDouble() * (i - 1)))
                             .toDouble()
                     val yy =
-                        Math.round(Math.exp(Math.log(16.0) * 2 / frequency_count.toDouble() * i))
+                        Math.round(Math.exp(Math.log(16.0) * 2 / frequencyCount.toDouble() * i))
                             .toDouble()
                     val ny =
-                        Math.round(Math.exp(Math.log(16.0) * 2 / frequency_count.toDouble() * (i + 1)))
+                        Math.round(Math.exp(Math.log(16.0) * 2 / frequencyCount.toDouble() * (i + 1)))
                             .toDouble()
                     val range = Math.round((ny - yy) / 2 + (yy - py) / 2).toDouble()
                     var k = 0
@@ -92,7 +91,7 @@ class VisualizerView(var con: Context, attrs: AttributeSet?) :
                         average += magnitudes!![(yy - (yy - py) / 2).toInt() + k]
                         k++
                     }
-                    y = (average / range * bars_count / max_dB).toInt()
+                    y = (average / range * barsCount / max_dB).toInt()
                     //y=0;
                     /*  int prev_yy =  (int)Math.round( Math.exp((Math.log(16) * (2 / (double)frequency_count)) * (i-1)))*frequency_step;
                     int yy =  (int)Math.round( Math.exp((Math.log(16) *  2/(double)frequency_count) * i))*frequency_step;
@@ -121,19 +120,19 @@ class VisualizerView(var con: Context, attrs: AttributeSet?) :
                 // int y=(int)magnitudes[i*frequency_step]*100/80;
                 //  int y=(int)magnitudes[i]*100/10*2;
                 // canvas.drawLine(i*width/frequency_count, 0, i*width/frequency_count, y, mPaint);
-                if (prev_frequency[i] < y) {
-                    prev_frequency[i]++
-                } else if (prev_frequency[i] > y) {
-                    prev_frequency[i]--
+                if (prevFrequency[i] < y) {
+                    prevFrequency[i]++
+                } else if (prevFrequency[i] > y) {
+                    prevFrequency[i]--
                 }
-                for (x in 0 until prev_frequency[i]) {
+                for (x in 0 until prevFrequency[i]) {
                     /*  int starty=x*height/10;
                     int stopy=height/8;
                     int h=starty+stopy;*/
                     canvas.drawLine(
-                        (i * _width / (frequency_count + 1)).toFloat(),
+                        (i * _width / (frequencyCount + 1)).toFloat(),
                         (_height - x * _height / 10).toFloat(),
-                        (i * _width / (frequency_count + 1)).toFloat(),
+                        (i * _width / (frequencyCount + 1)).toFloat(),
                         (_height - x * _height / 10 + _height / 15).toFloat(),
                         mPaint!!
                     )
@@ -184,7 +183,7 @@ class VisualizerView(var con: Context, attrs: AttributeSet?) :
                 fft: ByteArray,
                 samplingRate: Int
             ) {
-                sampling_rate = samplingRate / 2000
+                this@VisualizerView.samplingRate = samplingRate / 2000
                 val n = fft.size
                 magnitudes = DoubleArray(n / 2 + 1)
                 val phases = FloatArray(n / 2 + 1)

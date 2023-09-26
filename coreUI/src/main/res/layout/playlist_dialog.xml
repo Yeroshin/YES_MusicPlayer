@@ -36,7 +36,7 @@
                 android:visibility="visible">
 
                 <EditText
-                    android:id="@+id/path"
+                    android:id="@+id/networkPath"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
 
