@@ -43,11 +43,12 @@ The YES Music Player 2.0 is an application that plays music on your android devi
 
 The app has a few screens located in multiple feature modules:
 
-- Player screen - displays information about current track and contains buttons to control playback
-- Playlist screen - displays information about tracks in a playlist contains buttons to contains
-buttons for calling dialogs for loading tracks into a playlist and managing playlists
+- Player screen - displays information about current track and contains buttons to control playback (Work in Progress)
+- Playlist screen - displays information about tracks in a playlist contains buttons to contains (Work in Progress)
+buttons for calling dialogs for loading tracks into a playlist and managing playlists (Work in Progress)
 - Equalizer screen - empty (Work in Progress)
 - AlarmClock screen - empty (Work in Progress)
+- TrackDialogFeature - dialog for adding selected media to playlist
   <br/><br/>
 
 <p>
@@ -78,7 +79,7 @@ ecosystem.
         * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) - store
           and manage UI-related
           data in a lifecycle-aware way
-        * [Room](https://developer.android.com/jetpack/androidx/releases/room) - store offline cache
+        * [Room](https://developer.android.com/jetpack/androidx/releases/room) - store playlists
 * Modern Architecture
     * [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
     * Single activity architecture

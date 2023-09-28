@@ -6,13 +6,12 @@ import androidx.fragment.app.FragmentFactory
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.yes.musicplayer.presentation.MainActivity
 import com.yes.musicplayer.presentation.UniversalFragmentAdapter
-import com.yes.player.presentation.PlayerFragment
+import com.yes.player.presentation.ui.PlayerFragment
 import com.yes.playlistfeature.presentation.PlaylistFragment
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 
 
 @Module

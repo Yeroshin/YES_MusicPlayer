@@ -1,4 +1,4 @@
-package com.yes.player.presentation
+package com.yes.player.presentation.ui
 
 import android.content.Context
 import android.graphics.Typeface
