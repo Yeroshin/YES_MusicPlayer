@@ -11,8 +11,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/player_controls"
-            android:name="com.yes.playlistfeature.presentation.PlaylistFragment"
-            android:layout_width="match_parent"
+           android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             tools:layout="@layout/player">

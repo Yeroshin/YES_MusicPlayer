@@ -5,7 +5,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -26,7 +25,9 @@ import com.yes.playlistfeature.presentation.PlaylistFragment
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 
 
-class MainActivity : AppCompatActivity(), PlaylistFragment.MediaChooserManager {
+class MainActivity :
+    AppCompatActivity(),
+    PlaylistFragment.MediaChooserManager {
     interface DependencyResolver {
         fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent
     }
@@ -56,14 +57,15 @@ class MainActivity : AppCompatActivity(), PlaylistFragment.MediaChooserManager {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        supportFragmentManager.fragmentFactory = fragmentFactory
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
+
+
         setContentView(view)
-
+        supportFragmentManager.fragmentFactory = fragmentFactory
         checkPermissions()
-
 
 
     }
@@ -145,17 +147,25 @@ class MainActivity : AppCompatActivity(), PlaylistFragment.MediaChooserManager {
             classLoader,
             PlayerFragment::class.java.name
         )
-        supportFragmentManager.commit {
+
+
+        supportFragmentManager.beginTransaction()
+            .add(R.id.player_controls, playerFragment)
+            .commit()
+       /* supportFragmentManager.commit {
 
             replace(R.id.player_controls, playerFragment)
-        }
+        }*/
     }
 
     class MainActivityFragmentFactory(
         private val trackDialogDependency: TrackDialog.Dependency,
 
         ) : FragmentFactory() {
-        override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
+        override fun instantiate(
+            classLoader: ClassLoader,
+            className: String
+        ): Fragment {
             return when (loadFragmentClass(classLoader, className)) {
                 //TrackDialog::class.java -> TrackDialog()
                 TrackDialog::class.java -> TrackDialog(trackDialogDependency)

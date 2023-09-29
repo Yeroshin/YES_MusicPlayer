@@ -38,7 +38,7 @@ dependencies {
     implementation project(path: ':core')
     implementation project(path: ':musicPlayerFeature')
 
-    implementation libs.media3//tmp
+    implementation libs.media//tmp
 
     implementation 'androidx.core:core-ktx:1.9.0'
     //for fragments
