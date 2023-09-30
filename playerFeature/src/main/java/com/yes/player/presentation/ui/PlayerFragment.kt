@@ -3,8 +3,10 @@ package com.yes.player.presentation.ui
 import android.content.ComponentName
 import android.content.Context
 import android.media.browse.MediaBrowser
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
+import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
@@ -17,6 +19,7 @@ import androidx.viewbinding.ViewBinding
 import com.example.musicplayerfeature.media.MusicService
 import com.yes.player.R
 import com.yes.player.databinding.PlayerBinding
+import java.io.File
 import java.util.UUID
 
 
@@ -59,11 +62,37 @@ class PlayerFragment : Fragment() {
     private lateinit var mediaBrowser : MediaBrowserCompat
     private fun loadItem() {
 
+        val mediaId = "unique_media_id" // Уникальный идентификатор элемента плейлиста
+        val title = "Название трека"
+        val artist = "Исполнитель"
+        val album = "Альбом"
+        val duration = 300000L// Длительность трека в миллисекундах
+        val filePath = "/путь/к/файлу.mp3" // Путь к файлу
 
+// Создаем MediaDescriptionCompat для элемента плейлиста
+        val mediaDescription = MediaDescriptionCompat.Builder()
+            .setMediaId(mediaId)
+            .setTitle(title)
+            .setSubtitle(artist)
+            .setDescription(album)
+            .setMediaUri(Uri.fromFile(File(filePath)))
+            .build()
+
+// Создаем MediaMetadataCompat для элемента плейлиста
+        val mediaMetadata = MediaMetadataCompat.Builder()
+            .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, mediaDescription.mediaId.toString())
+            .putString(MediaMetadataCompat.METADATA_KEY_TITLE, mediaDescription.title.toString())
+            .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, mediaDescription.subtitle.toString())
+            .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, mediaDescription.description.toString())
+            .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration)
+            .build()
+
+// Создаем MediaSessionCompat.QueueItem для элемента плейлиста
+        val mediaItem = MediaSessionCompat.QueueItem(mediaDescription, mediaMetadata.description.mediaId.hashCode().toLong())
        // mediaBrowser.connect()
 
         val mediaController = MediaControllerCompat(requireContext(), mediaBrowser.sessionToken)
-        val mediaItem = MediaSessionCompat.QueueItem(mediaDescription, mediaMetadata.description.mediaId.hashCode().toLong())
+
        mediaController.addQueueItem(mediaItem)
     }
     private var subscriptionCallback: MediaBrowserCompat.SubscriptionCallback =
