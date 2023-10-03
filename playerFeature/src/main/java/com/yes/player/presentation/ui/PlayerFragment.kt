@@ -6,12 +6,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.Tracks
+import androidx.media3.session.LibraryResult
+import androidx.media3.session.MediaBrowser
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import androidx.viewbinding.ViewBinding
@@ -45,12 +50,39 @@ class PlayerFragment : Fragment() {
         //////////////////////////
         return binder.root
     }
+    private lateinit var browserFuture: ListenableFuture<MediaBrowser>
+    private val browser: MediaBrowser?
+        get() = if (browserFuture.isDone && !browserFuture.isCancelled) browserFuture.get() else null
     private lateinit var controllerFuture: ListenableFuture<MediaController>
     private val controller: MediaController?
         get() = if (controllerFuture.isDone) controllerFuture.get() else null
     override fun onStart() {
         super.onStart()
         initializeController()
+        initializeBrowser()
+    }
+    private fun initializeBrowser() {
+        browserFuture =
+            MediaBrowser.Builder(
+                requireActivity(),
+                SessionToken(requireActivity(), ComponentName(requireActivity(), MusicService::class.java))
+            )
+                .buildAsync()
+        browserFuture.addListener({ pushRoot() }, ContextCompat.getMainExecutor(requireActivity()))
+    }
+    private fun pushRoot() {
+        // browser can be initialized many times
+        // only push root at the first initialization
+        val browser = this.browser ?: return
+        val rootFuture = browser.getLibraryRoot(/* params= */ null)
+        rootFuture.addListener(
+            {
+                val result: LibraryResult<MediaItem> = rootFuture.get()!!
+                val root: MediaItem = result.value!!
+             //   pushPathStack(root)
+            },
+            ContextCompat.getMainExecutor(requireContext())
+        )
     }
     private fun initializeController() {
         controllerFuture =
@@ -61,6 +93,7 @@ class PlayerFragment : Fragment() {
                 .buildAsync()
         controllerFuture.addListener({ setController() }, MoreExecutors.directExecutor())
     }
+
     private fun setController() {
         val controller = this.controller ?: return
 
@@ -90,7 +123,7 @@ class PlayerFragment : Fragment() {
                 }
 
                 override fun onPlaybackStateChanged(playbackState: Int) {
-                    if(playbackState==Player.EVENT_PLAYBACK_STATE_CHANGED)
+
                     super.onPlaybackStateChanged(playbackState)
                 }
 
@@ -108,12 +141,38 @@ class PlayerFragment : Fragment() {
     var playlistId = UUID.randomUUID().toString()
   //  private lateinit var mediaBrowserConnectionCallback:MediaBrowserConnectionCallback
    // private lateinit var mediaBrowser : MediaBrowserCompat
+  private fun displayFolder() {
+      val browser = this.browser ?: return
+      val id: String = "intent.getStringExtra(MEDIA_ITEM_ID_KEY)!!"
+      val mediaItemFuture = browser.getItem(id)
+      val childrenFuture =
+          browser.getChildren(id, /* page= */ 0, /* pageSize= */ Int.MAX_VALUE, /* params= */ null)
+      mediaItemFuture.addListener(
+          {
+           //   val title: TextView = findViewById(R.id.folder_description)
+              val result = mediaItemFuture.get()!!
+            //  title.text = result.value!!.mediaMetadata.title
+          },
+          ContextCompat.getMainExecutor(requireContext())
+      )
+      childrenFuture.addListener(
+          {
+              val result = childrenFuture.get()!!
+              val children = result.value!!
+
+             /* subItemMediaList.clear()
+              subItemMediaList.addAll(children)
+              mediaListAdapter.notifyDataSetChanged()*/
+          },
+          ContextCompat.getMainExecutor(requireContext())
+      )
+  }
     private fun loadItem() {
      /* controller!!.setMediaItem(MediaItem.fromUri(
           "https://storage.googleapis.com/uamp/The_Kyoto_Connection_-_Wake_Up/01_-_Intro_-_The_Way_Of_Waking_Up_feat_Alan_Watts.mp3"
       ))*/
 
-
+        displayFolder()
     /*  val media = MediaItem.Builder().setMediaId(
           "https://storage.googleapis.com/uamp/The_Kyoto_Connection_-_Wake_Up/01_-_Intro_-_The_Way_Of_Waking_Up_feat_Alan_Watts.mp3"
       ).build()*/
