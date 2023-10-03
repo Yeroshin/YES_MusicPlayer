@@ -38,13 +38,15 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.androidx.test.ext.junit
     androidTestImplementation libs.espresso.core
-    implementation libs.media
+//    implementation libs.media
 
     //exoPlayer
-    implementation libs.exoplayer.core
+    implementation "androidx.media3:media3-session:1.1.1"
+    implementation "androidx.media3:media3-exoplayer:1.1.1"
+   /* implementation libs.exoplayer.core
     implementation libs.exoplayer.ui
     implementation libs.extension.mediasession
-    implementation libs.extension.cast
+    implementation libs.extension.cast*/
 
     //coroutines
   /*  api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"

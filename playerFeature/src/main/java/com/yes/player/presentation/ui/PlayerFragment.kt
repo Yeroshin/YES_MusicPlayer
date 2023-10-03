@@ -1,26 +1,26 @@
 package com.yes.player.presentation.ui
 
 import android.content.ComponentName
-import android.content.Context
-import android.media.browse.MediaBrowser
-import android.net.Uri
 import android.os.Bundle
-import android.support.v4.media.MediaBrowserCompat
-import android.support.v4.media.MediaDescriptionCompat
-import android.support.v4.media.MediaMetadataCompat
-import android.support.v4.media.session.MediaControllerCompat
-import android.support.v4.media.session.MediaSessionCompat
-import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
+import androidx.media3.common.Tracks
+import androidx.media3.session.MediaController
+import androidx.media3.session.SessionToken
 import androidx.viewbinding.ViewBinding
 import com.example.musicplayerfeature.media.MusicService
-import com.yes.player.R
+import com.google.common.util.concurrent.ListenableFuture
+import com.google.common.util.concurrent.MoreExecutors
 import com.yes.player.databinding.PlayerBinding
-import java.io.File
 import java.util.UUID
+
 
 
 class PlayerFragment : Fragment() {
@@ -45,24 +45,86 @@ class PlayerFragment : Fragment() {
         //////////////////////////
         return binder.root
     }
-
+    private lateinit var controllerFuture: ListenableFuture<MediaController>
+    private val controller: MediaController?
+        get() = if (controllerFuture.isDone) controllerFuture.get() else null
     override fun onStart() {
         super.onStart()
-        mediaBrowserConnectionCallback = MediaBrowserConnectionCallback(requireContext())
-        mediaBrowser = MediaBrowserCompat(
-            context, ComponentName(
-                requireContext(),
-                MusicService::class.java
-            ), mediaBrowserConnectionCallback, null
+        initializeController()
+    }
+    private fun initializeController() {
+        controllerFuture =
+            MediaController.Builder(
+                requireActivity(),
+                SessionToken(requireActivity(), ComponentName(requireActivity(), MusicService::class.java))
+            )
+                .buildAsync()
+        controllerFuture.addListener({ setController() }, MoreExecutors.directExecutor())
+    }
+    private fun setController() {
+        val controller = this.controller ?: return
+
+       /* playerView.player = controller
+
+        updateCurrentPlaylistUI()
+        updateMediaMetadataUI(controller.mediaMetadata)
+        playerView.setShowSubtitleButton(controller.currentTracks.isTypeSupported(TRACK_TYPE_TEXT))
+*/
+        controller.addListener(
+            object : Player.Listener {
+                override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+                  //  updateMediaMetadataUI(mediaItem?.mediaMetadata ?: MediaMetadata.EMPTY)
+                }
+
+                override fun onTracksChanged(tracks: Tracks) {
+                   // playerView.setShowSubtitleButton(tracks.isTypeSupported(TRACK_TYPE_TEXT))
+                }
+                override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
+                    super.onMediaMetadataChanged(mediaMetadata)
+
+                }
+
+                override fun onIsPlayingChanged(isPlaying: Boolean) {
+                    super.onIsPlayingChanged(isPlaying)
+
+                }
+
+                override fun onPlaybackStateChanged(playbackState: Int) {
+                    if(playbackState==Player.EVENT_PLAYBACK_STATE_CHANGED)
+                    super.onPlaybackStateChanged(playbackState)
+                }
+
+                override fun onPlayerError(error: PlaybackException) {
+                    super.onPlayerError(error)
+                }
+
+                override fun onPlayerErrorChanged(error: PlaybackException?) {
+                    super.onPlayerErrorChanged(error)
+
+                }
+            }
         )
-        mediaBrowser.connect()
     }
     var playlistId = UUID.randomUUID().toString()
-    private lateinit var mediaBrowserConnectionCallback:MediaBrowserConnectionCallback
-    private lateinit var mediaBrowser : MediaBrowserCompat
+  //  private lateinit var mediaBrowserConnectionCallback:MediaBrowserConnectionCallback
+   // private lateinit var mediaBrowser : MediaBrowserCompat
     private fun loadItem() {
+     /* controller!!.setMediaItem(MediaItem.fromUri(
+          "https://storage.googleapis.com/uamp/The_Kyoto_Connection_-_Wake_Up/01_-_Intro_-_The_Way_Of_Waking_Up_feat_Alan_Watts.mp3"
+      ))*/
 
-        val mediaId = "unique_media_id" // Уникальный идентификатор элемента плейлиста
+
+    /*  val media = MediaItem.Builder().setMediaId(
+          "https://storage.googleapis.com/uamp/The_Kyoto_Connection_-_Wake_Up/01_-_Intro_-_The_Way_Of_Waking_Up_feat_Alan_Watts.mp3"
+      ).build()*/
+      val media = MediaItem.Builder().setUri(
+          "https://storage.googleapis.com/uamp/The_Kyoto_Connection_-_Wake_Up/01_-_Intro_-_The_Way_Of_Waking_Up_feat_Alan_Watts.mp3"
+      ).build()
+      controller!!.setMediaItem(media)
+      controller!!.prepare()
+      controller!!.play()
+
+       /* val mediaId = "unique_media_id" // Уникальный идентификатор элемента плейлиста
         val title = "Название трека"
         val artist = "Исполнитель"
         val album = "Альбом"
@@ -89,13 +151,23 @@ class PlayerFragment : Fragment() {
 
 // Создаем MediaSessionCompat.QueueItem для элемента плейлиста
         val mediaItem = MediaSessionCompat.QueueItem(mediaDescription, mediaMetadata.description.mediaId.hashCode().toLong())
-       // mediaBrowser.connect()
+       // mediaBrowser.connect()*/
+     //  val mediaItem = MediaBrowserCompat.MediaItem.fromUri(getString(R.string.media_url_mp3))
+     /*   val mediaController = MediaController(requireContext(), mediaBrowser.sessionToken)
 
-        val mediaController = MediaControllerCompat(requireContext(), mediaBrowser.sessionToken)
+    //   mediaController.addQueueItem(mediaItem)
+        val mediaDescription = MediaDescriptionCompat.Builder()
+            .setMediaId("wake_up_01")
+            .setTitle("Intro - The Way Of Waking Up (feat. Alan Watts)")
+            .setMediaUri(Uri.parse("
+            https://storage.googleapis.com/uamp/The_Kyoto_Connection_-_Wake_Up/01_-_Intro_-_The_Way_Of_Waking_Up_feat_Alan_Watts.mp3
+            "))
+            .build()
+        mediaController.addQueueItem(mediaDescription)
+        mediaController.transportControls.play();*/
 
-       mediaController.addQueueItem(mediaItem)
     }
-    private var subscriptionCallback: MediaBrowserCompat.SubscriptionCallback =
+  /*  private var subscriptionCallback: MediaBrowserCompat.SubscriptionCallback =
         object : MediaBrowserCompat.SubscriptionCallback() {
             override fun onChildrenLoaded(
                 parentId: String,
@@ -105,9 +177,9 @@ class PlayerFragment : Fragment() {
                 val b=children
                 // Обработка изменений в плейлисте
             }
-        }
-    private lateinit var mediaController: MediaControllerCompat
-    private inner class MediaControllerCallback : MediaControllerCompat.Callback() {
+        }*/
+   // private lateinit var mediaController: MediaControllerCompat
+   /* private inner class MediaControllerCallback : MediaControllerCompat.Callback() {
 
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
             //  playbackState.postValue(state ?: EMPTY_PLAYBACK_STATE)
@@ -145,6 +217,6 @@ class PlayerFragment : Fragment() {
         override fun onConnectionFailed() {
             //  isConnected.postValue(false)
         }
-    }
+    }*/
 
 }

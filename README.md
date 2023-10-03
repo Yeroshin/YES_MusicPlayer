@@ -332,6 +332,9 @@ Here are a few additional resources.
 ## Author
 [<img src="https://github.com/Yeroshin/YES_MusicPlayer/blob/master/misc/image/8.jpg" alt="Follow me" width="100" height="125"/>](https://www.linkedin.com/in/stanislav-yeroshin/)
 
+## Download
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="" height="50">](https://play.google.com/store/apps/details?id=com.ys.musicplayer.free&pli=1)
+
 ## License
 
 ```

@@ -28,10 +28,10 @@ turbine = "1.0.0"
 
 [libraries]
 
-exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayerCore" }
-exoplayer-ui = { module = "com.google.android.exoplayer:exoplayer-ui", version.ref = "exoplayerCore" }
-extension-cast = { module = "com.google.android.exoplayer:extension-cast", version.ref = "exoplayerCore" }
-extension-mediasession = { module = "com.google.android.exoplayer:extension-mediasession", version.ref = "exoplayerCore" }
+#exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayerCore" }
+#exoplayer-ui = { module = "com.google.android.exoplayer:exoplayer-ui", version.ref = "exoplayerCore" }
+#extension-cast = { module = "com.google.android.exoplayer:extension-cast", version.ref = "exoplayerCore" }
+#extension-mediasession = { module = "com.google.android.exoplayer:extension-mediasession", version.ref = "exoplayerCore" }
 hamcrest={module='org.hamcrest:hamcrest',version.ref = "hamcrest"}
 androidx-espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "espresso" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
@@ -56,8 +56,8 @@ mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockkVersion
 navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation-fragment-ktx" }
 navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation-ui-ktx" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
-media = { module = "androidx.media:media", version.ref = "androidx-media" }
-media3 = { module = "androidx.media3:media3", version.ref = "androidx-media3" }
+#media = { module = "androidx.media:media", version.ref = "androidx-media" }
+#media3 = { module = "androidx.media3:media3", version.ref = "androidx-media3" }
 
 [plugins]
 androidLibrary = { id = 'com.android.library', version.ref = "androidGradlePlugin" }

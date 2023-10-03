@@ -1,64 +1,66 @@
 package com.example.musicplayerfeature.media
 
-import android.os.Bundle
-import android.support.v4.media.MediaBrowserCompat
-import android.support.v4.media.session.MediaSessionCompat
-import android.support.v4.media.session.PlaybackStateCompat
-import androidx.core.content.PackageManagerCompat.LOG_TAG
-import androidx.media.MediaBrowserServiceCompat
+
+
+import androidx.media3.common.MediaItem
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.session.MediaSession
+import androidx.media3.session.MediaSessionService
+import com.google.common.util.concurrent.Futures
+import com.google.common.util.concurrent.ListenableFuture
+import com.google.common.util.concurrent.SettableFuture
 
 
 private const val MY_MEDIA_ROOT_ID = "media_root_id"
 private const val MY_EMPTY_MEDIA_ROOT_ID = "empty_root_id"
-class MusicService: MediaBrowserServiceCompat() {
-    override fun onGetRoot(
-        clientPackageName: String,
-        clientUid: Int,
-        rootHints: Bundle?
-    ): BrowserRoot {
-        return BrowserRoot(MY_MEDIA_ROOT_ID, null)
-    }
+@UnstableApi class MusicService: MediaSessionService(), MediaSession.Callback {
+    private var mediaSession: MediaSession? = null
 
-    override fun onLoadChildren(
-        parentId: String,
-        result: Result<MutableList<MediaBrowserCompat.MediaItem>>
-    ) {
-        val mediaItems = emptyList<MediaBrowserCompat.MediaItem>()
+    // If desired, validate the controller before returning the media session
+    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): androidx.media3.session.MediaSession? =
+        mediaSession
 
-        // Check if this is the root menu:
-        if (MY_MEDIA_ROOT_ID == parentId) {
-            // Build the MediaItem objects for the top level,
-            // and put them in the mediaItems list...
-        } else {
-            // Examine the passed parentMediaId to see which submenu we're at,
-            // and put the children of that menu in the mediaItems list...
-        }
-        result.sendResult(mediaItems.toMutableList())
-    }
-    private var mediaSession: MediaSessionCompat? = null
-    private lateinit var stateBuilder: PlaybackStateCompat.Builder
+    // Create your player and media session in the onCreate lifecycle event
     override fun onCreate() {
         super.onCreate()
-        // Create a MediaSessionCompat
-        mediaSession = MediaSessionCompat(baseContext, "MusicService").apply {
-
-            // Enable callbacks from MediaButtons and TransportControls
-            setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS
-                    or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
-            )
-
-            // Set an initial PlaybackState with ACTION_PLAY, so media buttons can start the player
-            stateBuilder = PlaybackStateCompat.Builder()
-                .setActions(PlaybackStateCompat.ACTION_PLAY
-                        or PlaybackStateCompat.ACTION_PLAY_PAUSE
-                )
-            setPlaybackState(stateBuilder.build())
-
-            // MySessionCallback() has methods that handle callbacks from a media controller
-           // setCallback(MySessionCallback())
-
-            // Set the session's token so that client activities can communicate with it.
-            setSessionToken(sessionToken)
-        }
+        val player = ExoPlayer.Builder(this).build()
+        mediaSession = MediaSession.Builder(this, player).build()
     }
+
+    // Remember to release the player and media session in onDestroy
+    override fun onDestroy() {
+        mediaSession?.run {
+            player.release()
+            release()
+            mediaSession = null
+        }
+        super.onDestroy()
+    }
+    override fun onAddMediaItems(
+        mediaSession: MediaSession,
+        controller: MediaSession.ControllerInfo,
+        mediaItems: MutableList<MediaItem>
+    ): ListenableFuture<MutableList<MediaItem>> {
+        val updatedMediaItems = mediaItems
+            .map {
+                it.buildUpon().setUri(it.mediaId)
+                .build()
+            }.toMutableList()
+        return Futures.immediateFuture(updatedMediaItems)
+    }
+    override fun onPlaybackResumption(
+        mediaSession: MediaSession,
+        controller: MediaSession.ControllerInfo
+    ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> {
+        val settable = SettableFuture.create<MediaSession.MediaItemsWithStartPosition>()
+        /*scope.launch {
+            // Your app is responsible for storing the playlist and the start position
+            // to use here
+            val resumptionPlaylist = restorePlaylist()
+            settable.set(resumptionPlaylist)
+        }*/
+        return settable
+    }
+
 }

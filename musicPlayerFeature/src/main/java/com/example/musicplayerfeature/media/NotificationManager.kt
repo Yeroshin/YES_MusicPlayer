@@ -8,11 +8,9 @@ import kotlinx.coroutines.SupervisorJob
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
-import android.support.v4.media.session.MediaControllerCompat
-import android.support.v4.media.session.MediaSessionCompat
+
 import com.example.musicplayerfeature.R
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.PlayerNotificationManager
+
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -21,10 +19,10 @@ const val NOW_PLAYING_NOTIFICATION_ID = 0xb339 // Arbitrary number used to ident
 
 internal class NotificationManager(
     private val context: Context,
-    sessionToken: MediaSessionCompat.Token,
-    notificationListener: PlayerNotificationManager.NotificationListener
+  /*  sessionToken: MediaSessionCompat.Token,
+    notificationListener: PlayerNotificationManager.NotificationListener*/
 ) {
-    private var player: Player? = null
+  /*  private var player: Player? = null
     private val serviceJob = SupervisorJob()
     private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
     private val notificationManager: PlayerNotificationManager
@@ -106,5 +104,5 @@ internal class NotificationManager(
                      .get()
              }
          }*/
-    }
+    }*/
 }
