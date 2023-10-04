@@ -1,4 +1,4 @@
-package com.yes.coreui
+package com.yes.core.presentation
 
 import android.content.Context
 import android.graphics.Point

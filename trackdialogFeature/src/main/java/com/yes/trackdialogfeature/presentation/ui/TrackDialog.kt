@@ -14,7 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yes.core.presentation.BaseViewModel
-import com.yes.coreui.BaseDialog
+import com.yes.core.presentation.BaseDialog
 import com.yes.trackdialogfeature.R
 import com.yes.trackdialogfeature.databinding.TrackDialogBinding
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract

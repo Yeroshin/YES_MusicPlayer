@@ -35,7 +35,7 @@ class TrackDialogAdapter :
         return mediaList
     }
 
-    inner class TrackHolder( val binding: ItemMediaBinding) :
+    inner class TrackHolder(private val binding: ItemMediaBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             position: Int,

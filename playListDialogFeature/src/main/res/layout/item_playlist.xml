@@ -23,7 +23,7 @@
         tools:text="id" />
 
     <TextView
-        android:id="@+id/song_title"
+        android:id="@+id/playlist_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
