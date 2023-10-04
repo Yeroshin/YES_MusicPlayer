@@ -49,5 +49,13 @@
     <string name="newPlaylist">Новый плейлист</string>
     <string name="error">Ошибка</string>
 
+    <string name="tracks">Ошибка</string>
+    <string name="artists">исполнители</string>
+    <string name="albums">альбомы</string>
+    <string name="folder">каталоги</string>
+    <string name="genres">жанры</string>
+    <string name="categories">категории</string>
+
+    <string name="UnknownException">неизвестная ошибка</string>
 
 </resources>

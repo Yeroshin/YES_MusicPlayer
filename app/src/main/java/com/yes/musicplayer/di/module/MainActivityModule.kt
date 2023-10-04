@@ -2,27 +2,53 @@ package com.yes.musicplayer.di.module
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import com.yes.musicplayer.presentation.FragmentAdapter
+import androidx.fragment.app.FragmentFactory
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.yes.musicplayer.presentation.MainActivity
+import com.yes.musicplayer.presentation.UniversalFragmentAdapter
 import com.yes.player.presentation.PlayerFragment
 import com.yes.playlistfeature.presentation.PlaylistFragment
+import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
+
 
 @Module
-internal class MainActivityModule(val activity: FragmentActivity) {
+internal class MainActivityModule(
+    private val activity: FragmentActivity
+) {
 
     @Provides
-    fun provideFragment(): Fragment {
-        return PlayerFragment()
+    fun provideFragment(
+        fragmentFactory: FragmentFactory
+    ): Fragment {
+        return fragmentFactory.instantiate(
+            ClassLoader.getSystemClassLoader(),
+            PlayerFragment::class.java.name
+        )
+       // return PlayerFragment()
     }
-    @Provides
-    fun provideFragmentAdapter(): FragmentAdapter {
 
-        val fragmentsList= mutableListOf<Fragment>()
-        val playerFragment= PlaylistFragment()
-        fragmentsList.add(playerFragment)
-        val fragmentAdapter= FragmentAdapter(activity,fragmentsList)
-        return fragmentAdapter
+    @Provides
+    fun provideMainActivityFragmentFactory(
+        trackDialogDependency: TrackDialog.Dependency,
+    ): FragmentFactory {
+        return MainActivity.MainActivityFragmentFactory(
+            trackDialogDependency,
+
+        )
+    }
+
+    @Provides
+    fun provideFragmentAdapter(
+        fragmentFactory: FragmentFactory
+    ): FragmentStateAdapter {
+
+
+        val fragmentsList = listOf( PlaylistFragment::class.java)
+
+        return UniversalFragmentAdapter(activity, fragmentsList, fragmentFactory)
     }
 }

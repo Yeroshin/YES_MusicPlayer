@@ -33,7 +33,7 @@
         android:showDividers="beginning">
 
         <ImageButton
-            android:id="@+id/btn_add"
+            android:id="@+id/btn_media"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height_small"
@@ -54,7 +54,7 @@
             app:tint="@color/tint_pressed_state_list" />
 
         <ImageButton
-            android:id="@+id/btn_opt"
+            android:id="@+id/btn_playlist"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height_small"
 

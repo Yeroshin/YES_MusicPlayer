@@ -51,4 +51,12 @@
     <string name="newPlaylist">New playlist</string>
     <string name="error">Error</string>
 
+    <string name="tracks">tracks</string>
+    <string name="artists">artists</string>
+    <string name="albums">albums</string>
+    <string name="folder">folder</string>
+    <string name="genres">genres</string>
+    <string name="categories">categories</string>
+    <string name="UnknownException">Unknown Exception</string>
+
 </resources>

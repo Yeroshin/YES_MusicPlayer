@@ -1,13 +1,13 @@
 package com.yes.playlistfeature.di.module
-import android.app.Dialog
-import androidx.fragment.app.DialogFragment
-import com.yes.trackdiialogfeature.presentation.TrackDialog
+
+
+import com.yes.playlistfeature.presentation.PlaylistFragment.Dependency
+import com.yes.playlistfeature.presentation.PlaylistFragment.MediaChooserManager
 import dagger.Module
 import dagger.Provides
+
 @Module
 class PlayListModule {
-    @Provides
-    fun provideTrackDialog(): DialogFragment {
-        return TrackDialog()
-    }
+
+
 }
