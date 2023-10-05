@@ -2,7 +2,7 @@ package com.yes.trackdialogfeature.di.module
 
 import androidx.lifecycle.ViewModelProvider
 import com.yes.core.repository.data.dataSource.MediaDataStore
-import com.yes.core.repository.data.dataSource.SettingsDataStore
+import com.yes.core.repository.dataSource.SettingsDataStore
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
 import com.yes.trackdialogfeature.data.mapper.MenuRepositoryMapper
@@ -17,7 +17,6 @@ import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase
 import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
-import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog.Dependency
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import dagger.Module

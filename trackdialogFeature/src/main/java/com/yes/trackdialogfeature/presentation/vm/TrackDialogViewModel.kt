@@ -70,7 +70,7 @@ open class TrackDialogViewModel(
         viewModelScope.launch {
             setState {
                 copy(
-                    trackDialogState = TrackDialogContract.TrackDialogState.Idle
+                    trackDialogState = TrackDialogContract.TrackDialogState.Loading
                 )
             }
             val result = saveTracksToPlaylistUseCase(

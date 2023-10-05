@@ -6,6 +6,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.yes.core.domain.models.PlayList
 import com.yes.core.domain.models.Track
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface IPlayListDao {
@@ -13,6 +14,8 @@ interface IPlayListDao {
     fun savePlaylist(playlist: PlayList)
     @Query("SELECT * FROM playlists WHERE name =:playlistName")
     fun getPlaylist(playlistName:String): PlayList
+    @Query("SELECT * FROM playlists")
+   fun subscribePlaylists(): Flow<List<PlayList>>
     @Update
     fun updatePlaylist(playlist: PlayList)
 

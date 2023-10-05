@@ -45,6 +45,7 @@ class PlayListDialog(
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
         setupRecyclerView()
+
     }
 
     private fun setupRecyclerView() {

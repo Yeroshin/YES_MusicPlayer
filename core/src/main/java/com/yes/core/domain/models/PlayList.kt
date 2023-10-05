@@ -10,6 +10,4 @@ data class PlayList(
     @PrimaryKey(autoGenerate = true)
     val id: Long?,
     val name: String,
-    val currentTrack: Int,
-    val currentTrackPosition: Int,
 )

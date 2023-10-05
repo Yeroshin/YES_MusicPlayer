@@ -1,7 +1,9 @@
-package com.yes.trackdialogfeature.di.module
+package com.yes.playlistdialogfeature.di.module
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.repository.data.dataSource.MediaDataStore
 import com.yes.core.repository.dataSource.SettingsDataStore
@@ -25,10 +27,19 @@ class TestAppModule(
         context: Context
     ): PlayListDataBase {
         return Room.inMemoryDatabaseBuilder(
-            context,
+            context.applicationContext,
             PlayListDataBase::class.java,
-        ).build()
+        )
+            .addCallback(object : RoomDatabase.Callback() {
+                override fun onCreate(db: SupportSQLiteDatabase) {
+                    super.onCreate(db)
+                    db.execSQL("INSERT OR IGNORE INTO playlists(name) VALUES('default hello world 1');")
+                }
+            }
+            )
+            .build()
     }
+
     @Singleton
     @Provides
     fun providesPlayListDao(
