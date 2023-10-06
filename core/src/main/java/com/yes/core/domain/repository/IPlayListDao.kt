@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface IPlayListDao {
     @Insert
-    fun savePlaylist(playlist: PlayList)
+    fun savePlaylist(playlist: PlayList):Long
     @Query("SELECT * FROM playlists WHERE name =:playlistName")
     fun getPlaylist(playlistName:String): PlayList
     @Query("SELECT * FROM playlists")

@@ -17,4 +17,9 @@ class PlayListDialogRepositoryImpl(
             }
         }
     }
+    fun saveNewPlaylist(playListName:String):Long{
+        return playListDao.savePlaylist(
+            mapper.map(playListName)
+        )
+    }
 }

@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.yes.core.domain.models.DomainResult
 import com.yes.core.presentation.BaseViewModel
 import com.yes.core.util.EspressoIdlingResource
-import com.yes.playlistdialogfeature.domain.entity.Item
 import com.yes.playlistdialogfeature.domain.usecase.AddPlayListUseCase
 import com.yes.playlistdialogfeature.domain.usecase.DeletePlayListUseCase
 import com.yes.playlistdialogfeature.domain.usecase.SetPlaylistUseCase
@@ -17,7 +16,6 @@ import com.yes.playlistdialogfeature.presentation.contract.PlayListDialogContrac
 import com.yes.playlistdialogfeature.presentation.contract.PlayListDialogContract.Effect
 import com.yes.playlistdialogfeature.presentation.mapper.UiMapper
 import com.yes.playlistdialogfeature.presentation.model.ItemUi
-import kotlinx.coroutines.flow.collect
 
 import kotlinx.coroutines.launch
 
@@ -33,6 +31,7 @@ class PlayListDialogViewModel(
     init {
         subscribePlaylists()
     }
+
     override fun createInitialState(): State {
         return State(
             PlayListDialogContract.PlayListDialogState.Idle
@@ -41,32 +40,34 @@ class PlayListDialogViewModel(
 
     override fun handleEvent(event: Event) {
         when (event) {
-            is Event.OnButtonAddClicked -> {
-                addPlayList()
+            is Event.OnAddPlaylist -> {
+                addPlayList(event.name)
             }
 
-            is Event.OnButtonCancelClicked -> {
-                subscribePlaylists()
+            is Event.OnCancel -> {
+                dismiss()
             }
 
-            is Event.OnButtonOkClicked -> {
+            is Event.OnOk -> {
                 setPlaylist(event.items)
             }
-            is Event.OnDelete->{
+
+            is Event.OnDelete -> {
                 deletePlayList(event.item)
             }
         }
     }
-    private fun deletePlayList(item:ItemUi){
+
+    private fun deletePlayList(item: ItemUi) {
         viewModelScope.launch {
-            val result = deletePlayListUseCase(
+             deletePlayListUseCase(
                 DeletePlayListUseCase.Params(
                     uiMapper.map(item)
                 )
             )
         }
     }
-lateinit var tmp: Item
+
     private fun subscribePlaylists() {
         espressoIdlingResource?.increment()
         viewModelScope.launch {
@@ -75,15 +76,16 @@ lateinit var tmp: Item
                     playListDialogState = PlayListDialogContract.PlayListDialogState.Loading
                 )
             }
-            val result=subscribePlayListsUseCase()
+            val playLists = subscribePlayListsUseCase()
             espressoIdlingResource?.decrement()
-            when(result){
-                is DomainResult.Success ->{
-                    result.data.collect{
+            when (playLists) {
+                is DomainResult.Success -> {
+
+                    playLists.data.collect {
                         setState {
                             copy(
                                 playListDialogState = PlayListDialogContract.PlayListDialogState.Success(
-                                    it.map { item->
+                                    it.map { item ->
                                         uiMapper.map(item)
                                     }
                                 )
@@ -99,11 +101,53 @@ lateinit var tmp: Item
     }
 
     private fun setPlaylist(items: List<ItemUi>) {
-        subscribePlaylists()
+        espressoIdlingResource?.increment()
+        viewModelScope.launch {
+            setState {
+                copy(
+                    playListDialogState = PlayListDialogContract.PlayListDialogState.Loading
+                )
+            }
+            val playLists = setPlaylistUseCase(
+                SetPlaylistUseCase.Params(items)
+            )
+            espressoIdlingResource?.decrement()
+            when (playLists) {
+                is DomainResult.Success -> {
+                    dismiss()
+                }
+
+                is DomainResult.Error -> TODO()
+            }
+        }
     }
 
-    private fun addPlayList() {
+    private fun addPlayList(playListName: String) {
+        espressoIdlingResource?.increment()
+        viewModelScope.launch {
+            setState {
+                copy(
+                    playListDialogState = PlayListDialogContract.PlayListDialogState.Loading
+                )
+            }
+            val playListsId = addPlayListUseCase(
+                AddPlayListUseCase.Params(
+                    playListName
+                )
+            )
+            espressoIdlingResource?.decrement()
+            when (playListsId) {
+                is DomainResult.Success -> {
+                    setState {
+                        copy(
+                            playListDialogState = PlayListDialogContract.PlayListDialogState.Idle
+                        )
+                    }
+                }
 
+                is DomainResult.Error -> TODO()
+            }
+        }
     }
 
     private fun dismiss() {

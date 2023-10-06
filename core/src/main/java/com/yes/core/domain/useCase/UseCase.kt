@@ -29,6 +29,6 @@ abstract class UseCase<REQUEST, RESULT>(
             }
         }
     }
-    abstract fun run(params: REQUEST?): DomainResult<RESULT>
+    abstract suspend fun run(params: REQUEST?): DomainResult<RESULT>
 
 }

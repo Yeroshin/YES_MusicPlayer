@@ -12,7 +12,7 @@ class DeletePlayListUseCase(
 ):UseCase<DeletePlayListUseCase.Params,Long>(dispatcher) {
 
 
-    override fun run(params: Params?): DomainResult<Long> {
+    override suspend fun run(params: Params?): DomainResult<Long> {
         TODO("Not yet implemented")
     }
     data class Params(

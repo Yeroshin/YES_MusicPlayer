@@ -6,12 +6,14 @@ import com.yes.playlistdialogfeature.presentation.model.ItemUi
 class UiMapper {
     fun map(item: ItemUi): Item {
         return Item(
+            item.id,
             item.name,
             item.current
         )
     }
     fun map(item: Item): ItemUi {
         return ItemUi(
+            item.id,
             item.name,
             item.current
         )

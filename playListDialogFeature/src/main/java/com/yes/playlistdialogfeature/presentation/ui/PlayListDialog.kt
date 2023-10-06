@@ -55,19 +55,22 @@ class PlayListDialog(
         binder.recyclerViewContainer.recyclerView.layoutManager = layoutManager
         binder.recyclerViewContainer.recyclerView.adapter = adapter
         binder.buttons.cancelBtn.setOnClickListener {
-            viewModel.setEvent(PlayListDialogContract.Event.OnButtonCancelClicked)
+            viewModel.setEvent(PlayListDialogContract.Event.OnCancel)
         }
         binder.buttons.okBtn.setOnClickListener {
             viewModel.setEvent(
-                PlayListDialogContract.Event.OnButtonOkClicked(
+                PlayListDialogContract.Event.OnOk(
                     adapter.getItems()
 
                 )
             )
         }
         binder.addPlaylistBtn.setOnClickListener {
-
-
+            viewModel.setEvent(
+                PlayListDialogContract.Event.OnAddPlaylist(
+                    binder.playlistName.text.toString()
+                )
+            )
         }
     }
     private fun observeViewModel() {

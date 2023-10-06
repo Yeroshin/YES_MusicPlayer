@@ -1,11 +1,14 @@
 package com.yes.playlistdialogfeature.di.module
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.ViewModelProvider
 import androidx.test.espresso.IdlingRegistry
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.playlistdialogfeature.data.mapper.Mapper
 import com.yes.playlistdialogfeature.data.repository.PlayListDialogRepositoryImpl
+import com.yes.playlistdialogfeature.data.repository.SettingsRepositoryImpl
 import com.yes.playlistdialogfeature.domain.usecase.AddPlayListUseCase
 import com.yes.playlistdialogfeature.domain.usecase.DeletePlayListUseCase
 import com.yes.playlistdialogfeature.domain.usecase.SetPlaylistUseCase
@@ -45,15 +48,22 @@ class TestPlayListDialogModule {
             playListDao,
         )
     }
-
+    @Provides
+    fun providesSettingsRepository(
+        dataStore: DataStore<Preferences>
+    ): SettingsRepositoryImpl {
+        return SettingsRepositoryImpl(dataStore)
+    }
     @Provides
     fun providesSubscribePlayListsUseCase(
         dispatcher: CoroutineDispatcher,
-        playListDialogRepositoryImpl: PlayListDialogRepositoryImpl
+        playListDialogRepositoryImpl: PlayListDialogRepositoryImpl,
+        settingsRepository: SettingsRepositoryImpl
     ): SubscribePlayListsUseCase {
         return SubscribePlayListsUseCase(
             dispatcher,
-            playListDialogRepositoryImpl
+            playListDialogRepositoryImpl,
+            settingsRepository
         )
     }
     @Provides

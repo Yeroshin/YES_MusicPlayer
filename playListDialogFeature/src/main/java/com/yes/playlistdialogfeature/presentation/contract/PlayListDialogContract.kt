@@ -7,10 +7,10 @@ import com.yes.playlistdialogfeature.presentation.model.ItemUi
 
 class PlayListDialogContract {
     sealed class Event : UiEvent {
-        data class OnButtonAddClicked(val name:String):Event()
-        data object OnButtonCancelClicked : Event()
+        data class OnAddPlaylist(val name:String):Event()
+        data object OnCancel : Event()
         data class OnDelete(val item:ItemUi):Event()
-        data class OnButtonOkClicked(val items:List<ItemUi>) : Event()
+        data class OnOk(val items:List<ItemUi>) : Event()
     }
     sealed class PlayListDialogState{
         data object Idle :PlayListDialogState()

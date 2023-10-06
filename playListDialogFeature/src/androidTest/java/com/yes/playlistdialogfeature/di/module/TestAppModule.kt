@@ -1,6 +1,10 @@
 package com.yes.playlistdialogfeature.di.module
 
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -10,8 +14,9 @@ import com.yes.core.repository.dataSource.SettingsDataStore
 import com.yes.core.repository.dataSource.PlayListDataBase
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 
+import javax.inject.Singleton
+private const val USER_PREFERENCES = "user_preferences"
 @Module
 class TestAppModule(
     private val context: Context
@@ -55,6 +60,13 @@ class TestAppModule(
     ): SettingsDataStore {
         return SettingsDataStore(
             context
+        )
+    }
+    @Provides
+    @Singleton
+    fun provideDataStore( context: Context): DataStore<Preferences> {
+        return PreferenceDataStoreFactory.create(
+            produceFile = { context.preferencesDataStoreFile(USER_PREFERENCES) }
         )
     }
 

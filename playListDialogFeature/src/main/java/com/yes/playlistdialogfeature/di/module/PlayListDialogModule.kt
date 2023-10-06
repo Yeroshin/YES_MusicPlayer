@@ -5,6 +5,7 @@ import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.playlistdialogfeature.data.mapper.Mapper
 import com.yes.playlistdialogfeature.data.repository.PlayListDialogRepositoryImpl
+import com.yes.playlistdialogfeature.data.repository.SettingsRepositoryImpl
 import com.yes.playlistdialogfeature.domain.usecase.AddPlayListUseCase
 import com.yes.playlistdialogfeature.domain.usecase.DeletePlayListUseCase
 import com.yes.playlistdialogfeature.domain.usecase.SetPlaylistUseCase
@@ -49,19 +50,24 @@ class PlayListDialogModule {
     @Provides
     fun providesSubscribePlayListsUseCase(
         dispatcher: CoroutineDispatcher,
-        playListDialogRepositoryImpl: PlayListDialogRepositoryImpl
+        playListDialogRepositoryImpl: PlayListDialogRepositoryImpl,
+         settingsRepository: SettingsRepositoryImpl
     ): SubscribePlayListsUseCase {
         return SubscribePlayListsUseCase(
             dispatcher,
-            playListDialogRepositoryImpl
+            playListDialogRepositoryImpl,
+            settingsRepository
         )
     }
     @Provides
     fun providesAddPlayListUseCase(
         dispatcher: CoroutineDispatcher,
-        playListDialogRepositoryImpl: PlayListDialogRepositoryImpl
-    ): AddPlayListUseCase {
-        return AddPlayListUseCase()
+        playListDialogRepositoryImpl: PlayListDialogRepositoryImpl,
+        settingsRepository: SettingsRepositoryImpl ): AddPlayListUseCase {
+        return AddPlayListUseCase(
+            dispatcher,
+            playListDialogRepositoryImpl,
+            settingsRepository )
     }
     @Provides
     fun providesDeletePlayListUseCase(

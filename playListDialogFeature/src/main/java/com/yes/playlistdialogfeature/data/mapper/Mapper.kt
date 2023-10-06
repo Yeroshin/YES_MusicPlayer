@@ -6,7 +6,15 @@ import com.yes.playlistdialogfeature.domain.entity.Item
 class Mapper {
     fun map(playlist:PlayList):Item{
         return Item(
-            playlist.name,
+            id=playlist.id?:0,
+            name=playlist.name,
         )
     }
+    fun map(playlistName:String):PlayList{
+        return PlayList(
+            null,
+            name=playlistName,
+        )
+    }
+
 }
