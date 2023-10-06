@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yes.core.presentation.BaseDialog
 import com.yes.core.presentation.BaseViewModel
@@ -54,6 +55,12 @@ class PlayListDialog(
 
         binder.recyclerViewContainer.recyclerView.layoutManager = layoutManager
         binder.recyclerViewContainer.recyclerView.adapter = adapter
+        val swipeToDeleteCallback = SwipeToDeleteCallback(adapter)
+        val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+        itemTouchHelper.attachToRecyclerView(
+            binder.recyclerViewContainer.recyclerView
+        )
+
         binder.buttons.cancelBtn.setOnClickListener {
             viewModel.setEvent(PlayListDialogContract.Event.OnCancel)
         }

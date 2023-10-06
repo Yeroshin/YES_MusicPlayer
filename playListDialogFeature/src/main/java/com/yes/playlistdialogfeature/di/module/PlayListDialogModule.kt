@@ -80,9 +80,11 @@ class PlayListDialogModule {
     @Provides
     fun providesSetPlaylistUseCase(
         dispatcher: CoroutineDispatcher,
+        settingsRepository: SettingsRepositoryImpl
     ): SetPlaylistUseCase {
         return SetPlaylistUseCase(
-
+            dispatcher,
+            settingsRepository
         )
     }
     @Provides

@@ -69,9 +69,14 @@ class TestPlayListDialogModule {
     @Provides
     fun providesAddPlayListUseCase(
         dispatcher: CoroutineDispatcher,
-        playListDialogRepositoryImpl: PlayListDialogRepositoryImpl
+        playListDialogRepositoryImpl: PlayListDialogRepositoryImpl,
+        settingsRepository: SettingsRepositoryImpl
     ): AddPlayListUseCase {
-        return AddPlayListUseCase()
+        return AddPlayListUseCase(
+            dispatcher,
+            playListDialogRepositoryImpl,
+            settingsRepository
+        )
     }
     @Provides
     fun providesDeletePlayListUseCase(
@@ -84,9 +89,11 @@ class TestPlayListDialogModule {
     @Provides
     fun providesSetPlaylistUseCase(
         dispatcher: CoroutineDispatcher,
+        settingsRepository: SettingsRepositoryImpl
     ): SetPlaylistUseCase {
         return SetPlaylistUseCase(
-
+            dispatcher,
+            settingsRepository
         )
     }
     @Provides

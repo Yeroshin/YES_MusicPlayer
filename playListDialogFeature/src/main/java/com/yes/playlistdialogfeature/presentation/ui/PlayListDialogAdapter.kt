@@ -1,15 +1,15 @@
 package com.yes.playlistdialogfeature.presentation.ui
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yes.playlistdialogfeature.databinding.ItemPlaylistBinding
 import com.yes.playlistdialogfeature.presentation.model.ItemUi
 
 class PlayListDialogAdapter:
-    RecyclerView.Adapter<PlayListDialogAdapter.PlayListHolder>(){
-    private var itemsList = listOf<ItemUi>()
+    RecyclerView.Adapter<PlayListDialogAdapter.PlayListHolder>(),
+    SwipeToDeleteCallback.SwipeToDeleteAdapter {
+    private var itemsList = mutableListOf<ItemUi>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayListHolder {
         val binding = ItemPlaylistBinding
@@ -21,7 +21,7 @@ class PlayListDialogAdapter:
         return itemsList.size
     }
     fun setItems(items: List<ItemUi>) {
-        itemsList = items
+        itemsList = items.toMutableList()
         notifyDataSetChanged()
     }
     fun getItems():List<ItemUi>{
@@ -49,5 +49,10 @@ class PlayListDialogAdapter:
                 item.selected=true
             }
         }
+    }
+
+    override fun deleteItem(position: Int) {
+        itemsList.removeAt(position)
+        notifyDataSetChanged()
     }
 }
