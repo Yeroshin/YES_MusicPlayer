@@ -1,5 +1,7 @@
 package com.yes.playlistdialogfeature.di.module
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.ViewModelProvider
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.util.EspressoIdlingResource
@@ -22,25 +24,24 @@ import kotlinx.coroutines.Dispatchers
 @Module
 class PlayListDialogModule {
     @Provides
-    fun providesPlayListDialogDependency(factory: ViewModelProvider.Factory): PlayListDialog.Dependency {
+    fun providesPlayListDialogDependency(factory: PlayListDialogViewModel.Factory): PlayListDialog.Dependency {
         return PlayListDialog.Dependency(
             factory
         )
     }
 
+
+
     @Provides
-    fun providesCoroutineDispatcher(): CoroutineDispatcher {
-        return Dispatchers.IO
-    }
-    @Provides
-    fun providesMapper():Mapper{
+    fun providesMapper(): Mapper {
         return Mapper()
     }
+
     @Provides
     fun providesPlayListDialogRepository(
         mapper: Mapper,
         playListDao: IPlayListDao,
-    ):PlayListDialogRepositoryImpl {
+    ): PlayListDialogRepositoryImpl {
         return PlayListDialogRepositoryImpl(
             mapper,
             playListDao,
@@ -51,7 +52,7 @@ class PlayListDialogModule {
     fun providesSubscribePlayListsUseCase(
         dispatcher: CoroutineDispatcher,
         playListDialogRepositoryImpl: PlayListDialogRepositoryImpl,
-         settingsRepository: SettingsRepositoryImpl
+        settingsRepository: SettingsRepositoryImpl
     ): SubscribePlayListsUseCase {
         return SubscribePlayListsUseCase(
             dispatcher,
@@ -59,24 +60,29 @@ class PlayListDialogModule {
             settingsRepository
         )
     }
+
     @Provides
     fun providesAddPlayListUseCase(
         dispatcher: CoroutineDispatcher,
         playListDialogRepositoryImpl: PlayListDialogRepositoryImpl,
-        settingsRepository: SettingsRepositoryImpl ): AddPlayListUseCase {
+        settingsRepository: SettingsRepositoryImpl
+    ): AddPlayListUseCase {
         return AddPlayListUseCase(
             dispatcher,
             playListDialogRepositoryImpl,
-            settingsRepository )
+            settingsRepository
+        )
     }
+
     @Provides
     fun providesDeletePlayListUseCase(
         dispatcher: CoroutineDispatcher,
-   ): DeletePlayListUseCase {
+    ): DeletePlayListUseCase {
         return DeletePlayListUseCase(
             dispatcher
         )
     }
+
     @Provides
     fun providesSetPlaylistUseCase(
         dispatcher: CoroutineDispatcher,
@@ -87,14 +93,20 @@ class PlayListDialogModule {
             settingsRepository
         )
     }
+
     @Provides
     fun providesUiMapper(): UiMapper {
         return UiMapper()
     }
     @Provides
-    fun providesEspressoIdlingResource(): EspressoIdlingResource? {
-        return null
+    fun providesSettingsRepository(
+        dataStore: DataStore<Preferences>
+    ): SettingsRepositoryImpl {
+        return SettingsRepositoryImpl(
+            dataStore
+        )
     }
+
 
     @Provides
     fun providesPlayListDialogViewModelFactory(
@@ -104,7 +116,7 @@ class PlayListDialogModule {
         setPlaylistUseCase: SetPlaylistUseCase,
         uiMapper: UiMapper,
         espressoIdlingResource: EspressoIdlingResource?
-    ): ViewModelProvider.Factory {
+    ): PlayListDialogViewModel.Factory {
         return PlayListDialogViewModel.Factory(
             subscribePlayLists,
             addPlayListUseCase,

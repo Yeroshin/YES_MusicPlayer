@@ -29,16 +29,13 @@ import java.util.ArrayDeque
 class TrackDialogModule {
 
     @Provides
-    fun providesTrackDialogDependency(factory: ViewModelProvider.Factory): Dependency {
+    fun providesTrackDialogDependency(factory: TrackDialogViewModel.Factory): Dependency {
         return Dependency(
             factory
         )
     }
 
-    @Provides
-    fun providesCoroutineDispatcher(): CoroutineDispatcher {
-        return Dispatchers.IO
-    }
+
 
     @Provides
     fun providesMenuRepositoryMapper(): MenuRepositoryMapper {
@@ -126,10 +123,7 @@ class TrackDialogModule {
         return ArrayDeque()
     }
 
-    @Provides
-    fun providesEspressoIdlingResource(): EspressoIdlingResource? {
-        return null
-    }
+
 
     @Provides
     fun providesTrackDialogViewModelFactory(
@@ -138,7 +132,7 @@ class TrackDialogModule {
         uiMapper: UiMapper,
         menuStack: ArrayDeque<MenuUi>,
         espressoIdlingResource: EspressoIdlingResource?
-    ): ViewModelProvider.Factory {
+    ): TrackDialogViewModel.Factory {
         return TrackDialogViewModel.Factory(
             getMenuUseCase,
             saveTracksToPlaylistUseCase,

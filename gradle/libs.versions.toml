@@ -20,6 +20,7 @@ constraintlayout = "2.1.4"
 mockkVersion = "1.12.2"
 navigation-fragment-ktx = "2.5.3"
 navigation-ui-ktx = "2.5.3"
+preferenceKtx = "1.2.1"
 room = "2.5.2"
 rules = "1.5.0"#"1.4.0"
 runner = "1.5.2"#"1.4.0"
@@ -32,6 +33,7 @@ androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref
 androidx-fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "fragmentKtx" }
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtx" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 hamcrest={module='org.hamcrest:hamcrest',version.ref = "hamcrest"}
 androidx-espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "espresso" }

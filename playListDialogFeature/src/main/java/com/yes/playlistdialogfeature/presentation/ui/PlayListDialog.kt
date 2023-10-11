@@ -18,6 +18,7 @@ import com.yes.playlistdialogfeature.R
 import com.yes.playlistdialogfeature.databinding.PlaylistDialogBinding
 import com.yes.playlistdialogfeature.presentation.contract.PlayListDialogContract
 import com.yes.playlistdialogfeature.presentation.model.ItemUi
+import com.yes.playlistdialogfeature.presentation.vm.PlayListDialogViewModel
 import kotlinx.coroutines.launch
 
 class PlayListDialog(
@@ -140,6 +141,6 @@ class PlayListDialog(
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
     class Dependency(
-        val factory: ViewModelProvider.Factory,
+        val factory: PlayListDialogViewModel.Factory,
     )
 }

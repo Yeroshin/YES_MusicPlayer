@@ -19,6 +19,7 @@ import com.yes.trackdialogfeature.R
 import com.yes.trackdialogfeature.databinding.TrackDialogBinding
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.model.MenuUi
+import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import kotlinx.coroutines.launch
 
 
@@ -163,7 +164,7 @@ class TrackDialog(
     }
 
     class Dependency(
-        val factory: ViewModelProvider.Factory,
+        val factory: TrackDialogViewModel.Factory,
     )
 
     /* class TrackDialogDependency(
