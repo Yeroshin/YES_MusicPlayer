@@ -48,7 +48,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             tools:itemCount="30"
-            tools:listitem="@layout/item_playlist" />
+             />
 
         <ProgressBar
             android:id="@+id/progressBar"

@@ -10,15 +10,23 @@ import androidx.lifecycle.ViewModelProvider
 import com.yes.playlistfeature.databinding.FragmentPlaylistBinding
 
 
-class PlaylistFragment : Fragment(){
-    interface MediaChooserManager{
+class PlaylistFragment : Fragment() {
+    interface MediaChooserManager {
         fun showMediaDialog()
     }
+
+    interface PlaylistManager {
+        fun showPlaylistDialog()
+    }
+
     private lateinit var binding: FragmentPlaylistBinding
 
-private val mediaChooserManager:MediaChooserManager by lazy {
-    activity as MediaChooserManager
-}
+    private val mediaChooserManager: MediaChooserManager by lazy {
+        activity as MediaChooserManager
+    }
+    private val playlistManager: PlaylistManager by lazy {
+        activity as PlaylistManager
+    }
 
 
     override fun onCreateView(
@@ -27,9 +35,12 @@ private val mediaChooserManager:MediaChooserManager by lazy {
     ): View {
 
         // Inflate the layout for this fragment
-        binding=FragmentPlaylistBinding.inflate(inflater)
-        binding.btnMedia.setOnClickListener{
-          mediaChooserManager.showMediaDialog()
+        binding = FragmentPlaylistBinding.inflate(inflater)
+        binding.btnMedia.setOnClickListener {
+            mediaChooserManager.showMediaDialog()
+        }
+        binding.btnPlaylist.setOnClickListener {
+            playlistManager.showPlaylistDialog()
         }
         return binding.root
     }

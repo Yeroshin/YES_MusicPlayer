@@ -22,14 +22,19 @@ import com.yes.musicplayer.YESApplication
 import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.MainActivityComponent
 import com.yes.player.presentation.PlayerFragment
+import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
 import com.yes.playlistfeature.presentation.PlaylistFragment
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 
 
-class MainActivity : AppCompatActivity(), PlaylistFragment.MediaChooserManager {
+class MainActivity :
+    AppCompatActivity(),
+    PlaylistFragment.MediaChooserManager,
+    PlaylistFragment.PlaylistManager {
     interface DependencyResolver {
         fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent
-   }
+    }
+
     private val myApplication: YESApplication by lazy {
         application as YESApplication
     }
@@ -45,13 +50,13 @@ class MainActivity : AppCompatActivity(), PlaylistFragment.MediaChooserManager {
     /*private val playerFragment: Fragment by lazy {
         mainActivityComponent.getPlayerFragment()
     }*/
-    private val fragmentFactory:FragmentFactory by lazy {
+    private val fragmentFactory: FragmentFactory by lazy {
         mainActivityComponent.getFragmentFactory()
     }
 
-  /*  private val trackDialogDependency: TrackDialog.Dependency by lazy {
-        mainActivityComponent.getTrackDialogDependency()
-    }*/
+    /*  private val trackDialogDependency: TrackDialog.Dependency by lazy {
+          mainActivityComponent.getTrackDialogDependency()
+      }*/
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,7 +113,6 @@ class MainActivity : AppCompatActivity(), PlaylistFragment.MediaChooserManager {
     }
 
 
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>, grantResults: IntArray
@@ -128,33 +132,36 @@ class MainActivity : AppCompatActivity(), PlaylistFragment.MediaChooserManager {
     }
 
     private fun setFragments() {
-       binding.viewPager.adapter = fragmentAdapter
-         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
-             run {
-                 when (position) {
-                     0 -> tab.text = getString(com.yes.coreui.R.string.playList)
-                     1 -> tab.text = getString(com.yes.coreui.R.string.equalizer)
-                     2 -> tab.text = getString(com.yes.coreui.R.string.alarm)
-                 }
-             }
-         }.attach()
+        binding.viewPager.adapter = fragmentAdapter
+        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+            run {
+                when (position) {
+                    0 -> tab.text = getString(com.yes.coreui.R.string.playList)
+                    1 -> tab.text = getString(com.yes.coreui.R.string.equalizer)
+                    2 -> tab.text = getString(com.yes.coreui.R.string.alarm)
+                }
+            }
+        }.attach()
 
-val playerFragment=supportFragmentManager.fragmentFactory.instantiate(classLoader,PlayerFragment::class.java.name)
+        val playerFragment = supportFragmentManager.fragmentFactory.instantiate(
+            classLoader,
+            PlayerFragment::class.java.name
+        )
         supportFragmentManager.commit {
 
-            replace(R.id.player_controls,playerFragment)
+            replace(R.id.player_controls, playerFragment)
         }
     }
-    class MainActivityFragmentFactory(
-       private val trackDialogDependency: TrackDialog.Dependency,
 
-    ) : FragmentFactory() {
+    class MainActivityFragmentFactory(
+        private val trackDialogDependency: TrackDialog.Dependency,
+        private val playListDialogDependency: PlayListDialog.Dependency
+        ) : FragmentFactory() {
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
             return when (loadFragmentClass(classLoader, className)) {
-                //TrackDialog::class.java -> TrackDialog()
+                PlayListDialog::class.java -> PlayListDialog(playListDialogDependency)
                 TrackDialog::class.java -> TrackDialog(trackDialogDependency)
-                PlayerFragment::class.java->PlayerFragment()
-              //  PlaylistFragment::class.java -> PlaylistFragment()
+                PlayerFragment::class.java -> PlayerFragment()
                 PlaylistFragment::class.java -> PlaylistFragment()
 
                 else -> super.instantiate(classLoader, className)
@@ -162,12 +169,20 @@ val playerFragment=supportFragmentManager.fragmentFactory.instantiate(classLoade
         }
     }
 
+
     override fun showMediaDialog() {
         (supportFragmentManager.fragmentFactory.instantiate(
             classLoader,
             TrackDialog::class.java.name
         ) as DialogFragment).show(supportFragmentManager, null)
 
+    }
+
+    override fun showPlaylistDialog() {
+        (supportFragmentManager.fragmentFactory.instantiate(
+            classLoader,
+            PlayListDialog::class.java.name
+        ) as DialogFragment).show(supportFragmentManager, null)
     }
 }
 

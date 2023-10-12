@@ -14,7 +14,7 @@ class GetMenuUseCase(
     private val menuRepository: IMenuRepository,
     private val mediaRepository: MediaRepositoryImpl
 ) : UseCase<Params, Menu>(dispatcher) {
-    override fun run(params: Params?): DomainResult<Menu> {
+    override suspend fun run(params: Params?): DomainResult<Menu> {
        // Thread.sleep(10000)
 
         params?.let {

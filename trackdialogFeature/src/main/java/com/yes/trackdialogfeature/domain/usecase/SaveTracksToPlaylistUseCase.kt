@@ -18,7 +18,7 @@ class SaveTracksToPlaylistUseCase(
     private val settingsRepository: ISettingsRepository,
     private val menuRepository: IMenuRepository
 ) : UseCase<Params, Boolean>(dispatcher) {
-    override fun run(params: Params?): DomainResult<Boolean> {
+    override suspend fun run(params: Params?): DomainResult<Boolean> {
         val selectedItems = params?.items?.filter {
             it.selected
         }

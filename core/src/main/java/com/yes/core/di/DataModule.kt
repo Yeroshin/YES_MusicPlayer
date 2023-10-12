@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.repository.data.dataSource.MediaDataStore
-import com.yes.core.repository.data.dataSource.SettingsDataStore
+import com.yes.core.repository.dataSource.SettingsDataStore
 import com.yes.core.repository.dataSource.PlayListDataBase
 import dagger.Module
 import dagger.Provides
