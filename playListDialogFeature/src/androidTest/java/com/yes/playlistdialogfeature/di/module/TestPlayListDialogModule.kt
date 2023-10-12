@@ -2,7 +2,6 @@ package com.yes.playlistdialogfeature.di.module
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.lifecycle.ViewModelProvider
 import androidx.test.espresso.IdlingRegistry
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.util.EspressoIdlingResource
@@ -81,9 +80,11 @@ class TestPlayListDialogModule {
     @Provides
     fun providesDeletePlayListUseCase(
         dispatcher: CoroutineDispatcher,
+        playListDialogRepositoryImpl: PlayListDialogRepositoryImpl,
     ): DeletePlayListUseCase {
         return DeletePlayListUseCase(
-            dispatcher
+            dispatcher,
+            playListDialogRepositoryImpl
         )
     }
     @Provides
@@ -101,7 +102,7 @@ class TestPlayListDialogModule {
         return UiMapper()
     }
     @Provides
-    fun providesEspressoIdlingResource(): EspressoIdlingResource? {
+    fun providesEspressoIdlingResource(): EspressoIdlingResource {
         IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
         return EspressoIdlingResource
     }
