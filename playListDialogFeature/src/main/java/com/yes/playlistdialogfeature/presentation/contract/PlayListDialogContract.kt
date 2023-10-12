@@ -9,7 +9,7 @@ class PlayListDialogContract {
     sealed class Event : UiEvent {
         data class OnAddPlaylist(val name:String):Event()
         data object OnCancel : Event()
-        data class OnDelete(val item:ItemUi):Event()
+        data class OnDeletePlaylist(val item:ItemUi):Event()
         data class OnOk(val items:List<ItemUi>) : Event()
     }
     sealed class PlayListDialogState{

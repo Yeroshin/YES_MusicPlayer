@@ -52,7 +52,7 @@ class PlayListDialogViewModel(
                 setPlaylist(event.items)
             }
 
-            is Event.OnDelete -> {
+            is Event.OnDeletePlaylist -> {
                 deletePlayList(event.item)
             }
         }
@@ -109,7 +109,11 @@ class PlayListDialogViewModel(
                 )
             }
             val playLists = setPlaylistUseCase(
-                SetPlaylistUseCase.Params(items)
+                SetPlaylistUseCase.Params(
+                    items.map {
+                        uiMapper.map(it)
+                    }
+                )
             )
             espressoIdlingResource?.decrement()
             when (playLists) {

@@ -8,13 +8,22 @@ import kotlinx.coroutines.CoroutineDispatcher
 
 class DeletePlayListUseCase(
     dispatcher: CoroutineDispatcher,
+    private val playListDialogRepositoryImpl: PlayListDialogRepositoryImpl,
+) : UseCase<DeletePlayListUseCase.Params, Int>(dispatcher) {
 
-):UseCase<DeletePlayListUseCase.Params,Long>(dispatcher) {
 
-
-    override suspend fun run(params: Params?): DomainResult<Long> {
-        TODO("Not yet implemented")
+    override suspend fun run(params: Params?): DomainResult<Int> {
+        return params?.let {
+            DomainResult.Success(
+                playListDialogRepositoryImpl.deletePlaylist(
+                    it.item
+                )
+            )
+        } ?: run {
+            return DomainResult.Error(DomainResult.UnknownException)
+        }
     }
+
     data class Params(
         val item: Item
     )

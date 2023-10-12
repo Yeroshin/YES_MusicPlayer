@@ -7,8 +7,8 @@ import com.yes.playlistdialogfeature.databinding.ItemPlaylistBinding
 import com.yes.playlistdialogfeature.presentation.model.ItemUi
 
 class PlayListDialogAdapter:
-    RecyclerView.Adapter<PlayListDialogAdapter.PlayListHolder>(),
-    SwipeToDeleteCallback.SwipeToDeleteAdapter {
+    RecyclerView.Adapter<PlayListDialogAdapter.PlayListHolder>() {
+
     private var itemsList = mutableListOf<ItemUi>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayListHolder {
@@ -38,7 +38,7 @@ class PlayListDialogAdapter:
             item: ItemUi,
         ) {
 
-            binding.root.isSelected = false
+            binding.root.isSelected = item.selected
             binding.root.isActivated = item.current
             binding.playlistTitle.text = item.name
             binding.id.text=position.toString()
@@ -47,12 +47,8 @@ class PlayListDialogAdapter:
                     it.selected=false
                 }
                 item.selected=true
+                notifyDataSetChanged()
             }
         }
-    }
-
-    override fun deleteItem(position: Int) {
-        itemsList.removeAt(position)
-        notifyDataSetChanged()
     }
 }

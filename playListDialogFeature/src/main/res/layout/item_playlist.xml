@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/playlist_item"
+    android:background="@drawable/playlist_item_background_selectable"
     android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal"
     android:padding="4dp">
@@ -17,7 +17,7 @@
         android:layout_weight="7"
 
         android:gravity="center"
-        android:textColor="@color/item_activateble_state_list"
+        android:textColor="@color/item_activatable_state_list"
         android:textSize="@dimen/font_size_regular"
         android:textStyle="bold"
         tools:text="id" />
@@ -35,7 +35,7 @@
         android:scrollHorizontally="true"
         android:singleLine="true"
 
-        android:textColor="@color/item_activateble_state_list"
+        android:textColor="@color/item_activatable_state_list"
         android:textStyle="bold"
         tools:text="Playlist title" />
 

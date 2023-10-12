@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/playlist_item"
+    android:background="@drawable/playlist_item_background_selectable"
     android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal">
 
@@ -28,7 +28,7 @@
         android:focusable="true"
         android:gravity="center_vertical"
         android:singleLine="true"
-        android:textColor="@color/item_activateble_state_list"
+        android:textColor="@color/item_activatable_state_list"
         android:textSize="20sp"
         android:textStyle="bold"
         tools:text="file selected"></TextView>

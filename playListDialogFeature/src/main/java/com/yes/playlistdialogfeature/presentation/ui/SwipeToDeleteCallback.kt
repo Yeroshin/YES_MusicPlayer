@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 
-class SwipeToDeleteCallback(private val adapter:SwipeToDeleteAdapter) : ItemTouchHelper.Callback() {
-    interface SwipeToDeleteAdapter{
+class SwipeToDeleteCallback(private val callback:Callback) : ItemTouchHelper.Callback() {
+    interface Callback{
         fun deleteItem(position:Int)
     }
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
@@ -25,7 +25,7 @@ class SwipeToDeleteCallback(private val adapter:SwipeToDeleteAdapter) : ItemTouc
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val position = viewHolder.adapterPosition
-        adapter.deleteItem(position)
+        callback.deleteItem(position)
     }
 
     override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {

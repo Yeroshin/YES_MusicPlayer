@@ -22,4 +22,9 @@ class PlayListDialogRepositoryImpl(
             mapper.map(playListName)
         )
     }
+    fun deletePlaylist(item:Item):Int{
+        return playListDao.deletePlaylist(
+            mapper.map(item)
+        )
+    }
 }

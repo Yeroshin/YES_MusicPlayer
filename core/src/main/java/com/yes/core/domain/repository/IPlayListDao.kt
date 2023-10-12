@@ -1,6 +1,7 @@
 package com.yes.core.domain.repository
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -11,16 +12,23 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface IPlayListDao {
     @Insert
-    fun savePlaylist(playlist: PlayList):Long
+    fun savePlaylist(playlist: PlayList): Long
+
     @Query("SELECT * FROM playlists WHERE name =:playlistName")
-    fun getPlaylist(playlistName:String): PlayList
+    fun getPlaylist(playlistName: String): PlayList
+
     @Query("SELECT * FROM playlists")
-   fun subscribePlaylists(): Flow<List<PlayList>>
-    @Update
-    fun updatePlaylist(playlist: PlayList)
+    fun subscribePlaylists(): Flow<List<PlayList>>
+
+    /*  @Update
+      fun updatePlaylist(playlist: PlayList)*/
+    @Delete
+    fun deletePlaylist(playList:PlayList):Int
+
 
     @Insert
-    fun saveTracks(tracks:List<Track>):List<Long>
+    fun saveTracks(tracks: List<Track>): List<Long>
+
     @Query("SELECT * FROM tracks WHERE playlistName =:playlistName")
-    fun getTracks(playlistName:String): List<Track>
+    fun getTracks(playlistName: String): List<Track>
 }

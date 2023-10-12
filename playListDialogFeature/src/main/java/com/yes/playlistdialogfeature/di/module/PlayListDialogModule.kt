@@ -31,7 +31,6 @@ class PlayListDialogModule {
     }
 
 
-
     @Provides
     fun providesMapper(): Mapper {
         return Mapper()
@@ -77,9 +76,11 @@ class PlayListDialogModule {
     @Provides
     fun providesDeletePlayListUseCase(
         dispatcher: CoroutineDispatcher,
+        playListDialogRepositoryImpl: PlayListDialogRepositoryImpl
     ): DeletePlayListUseCase {
         return DeletePlayListUseCase(
-            dispatcher
+            dispatcher,
+            playListDialogRepositoryImpl
         )
     }
 
@@ -98,6 +99,7 @@ class PlayListDialogModule {
     fun providesUiMapper(): UiMapper {
         return UiMapper()
     }
+
     @Provides
     fun providesSettingsRepository(
         dataStore: DataStore<Preferences>

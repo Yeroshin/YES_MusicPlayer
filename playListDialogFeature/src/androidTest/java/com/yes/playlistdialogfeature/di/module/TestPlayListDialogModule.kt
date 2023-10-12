@@ -24,7 +24,7 @@ import kotlinx.coroutines.Dispatchers
 @Module
 class TestPlayListDialogModule {
     @Provides
-    fun providesPlayListDialogDependency(factory: ViewModelProvider.Factory): PlayListDialog.Dependency {
+    fun providesPlayListDialogDependency(factory: PlayListDialogViewModel.Factory): PlayListDialog.Dependency {
         return PlayListDialog.Dependency(
             factory
         )
@@ -114,7 +114,7 @@ class TestPlayListDialogModule {
         setPlaylistUseCase: SetPlaylistUseCase,
         uiMapper: UiMapper,
         espressoIdlingResource: EspressoIdlingResource?
-    ): ViewModelProvider.Factory {
+    ): PlayListDialogViewModel.Factory {
         return PlayListDialogViewModel.Factory(
             subscribePlayLists,
             addPlayListUseCase,

@@ -3,7 +3,7 @@ package com.yes.playlistdialogfeature.domain.usecase
 import com.yes.core.domain.models.DomainResult
 import com.yes.core.domain.useCase.UseCase
 import com.yes.playlistdialogfeature.data.repository.SettingsRepositoryImpl
-import com.yes.playlistdialogfeature.presentation.model.ItemUi
+import com.yes.playlistdialogfeature.domain.entity.Item
 import kotlinx.coroutines.CoroutineDispatcher
 
 class SetPlaylistUseCase(
@@ -17,6 +17,6 @@ class SetPlaylistUseCase(
         )
         return DomainResult.Success(0)
     }
-    data class Params(val items: List<ItemUi>)
+    data class Params(val items: List<Item>)
 
 }

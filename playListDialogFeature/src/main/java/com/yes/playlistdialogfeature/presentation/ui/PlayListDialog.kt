@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -23,7 +22,7 @@ import kotlinx.coroutines.launch
 
 class PlayListDialog(
     dependency: Dependency
-): BaseDialog(){
+): BaseDialog(),SwipeToDeleteCallback.Callback{
     override val layout = R.layout.playlist_dialog
     private val adapter = PlayListDialogAdapter()
     private val binder by lazy {
@@ -56,7 +55,7 @@ class PlayListDialog(
 
         binder.recyclerViewContainer.recyclerView.layoutManager = layoutManager
         binder.recyclerViewContainer.recyclerView.adapter = adapter
-        val swipeToDeleteCallback = SwipeToDeleteCallback(adapter)
+        val swipeToDeleteCallback = SwipeToDeleteCallback(this)
         val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
         itemTouchHelper.attachToRecyclerView(
             binder.recyclerViewContainer.recyclerView
@@ -69,7 +68,6 @@ class PlayListDialog(
             viewModel.setEvent(
                 PlayListDialogContract.Event.OnOk(
                     adapter.getItems()
-
                 )
             )
         }
@@ -124,6 +122,7 @@ class PlayListDialog(
     }
     private fun dataLoaded( items: List<ItemUi>) {
         adapter.setItems(items)
+        binder.recyclerViewContainer.dialogTitle.text=items.find { it.current }?.name
         binder.recyclerViewContainer.progressBar.visibility = View.GONE
         binder.recyclerViewContainer.disableView.visibility = View.GONE
     }
@@ -143,4 +142,13 @@ class PlayListDialog(
     class Dependency(
         val factory: PlayListDialogViewModel.Factory,
     )
+
+    override fun deleteItem(position: Int) {
+        viewModel.setEvent(
+            PlayListDialogContract.Event.OnDeletePlaylist(
+                adapter.getItems()[position]
+            )
+        )
+
+    }
 }

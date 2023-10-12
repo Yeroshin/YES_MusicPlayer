@@ -10,6 +10,12 @@ class Mapper {
             name=playlist.name,
         )
     }
+    fun map(playlist:Item):PlayList{
+        return PlayList(
+            id=playlist.id,
+            name=playlist.name,
+        )
+    }
     fun map(playlistName:String):PlayList{
         return PlayList(
             null,

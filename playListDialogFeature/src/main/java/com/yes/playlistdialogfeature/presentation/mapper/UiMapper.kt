@@ -8,7 +8,7 @@ class UiMapper {
         return Item(
             item.id,
             item.name,
-            item.current
+            item.selected
         )
     }
     fun map(item: Item): ItemUi {
