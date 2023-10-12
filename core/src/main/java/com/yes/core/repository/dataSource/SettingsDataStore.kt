@@ -1,20 +1,28 @@
 package com.yes.core.repository.dataSource
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-import android.content.Context
+class SettingsDataStore(
+    private val dataStore: DataStore<Preferences>
+) {
+    private object PreferencesKeys {
+        val CURRENT_PLAYLIST_ID = longPreferencesKey("currentPlaylistId")
+    }
 
+    fun subscribeCurrentPlaylistId(): Flow<Long> =
+        dataStore.data
+            .map { preferences ->
+                preferences[PreferencesKeys.CURRENT_PLAYLIST_ID] ?: 0
+            }
 
-class SettingsDataStore(context: Context) {
-    private val sharedPref = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-
-    fun putString(key:String, value:String){
-        with (sharedPref.edit()) {
-            putString(key, value)
-            apply()
+    suspend fun updateCurrentPlaylistId(currentPlaylistId: Long) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.CURRENT_PLAYLIST_ID] = currentPlaylistId
         }
     }
-    fun getString(key:String):String?{
-        return sharedPref.getString(key, null)
-    }
-
 }

@@ -68,5 +68,5 @@ dependencies {
     //Preferences DataStore
     implementation libs.androidx.datastore.preferences
     androidTestImplementation libs.androidx.datastore.preferences.core
-    androidTestImplementation 'androidx.preference:preference-ktx:1.1.1'
+    androidTestImplementation libs.androidx.preference.ktx
 }

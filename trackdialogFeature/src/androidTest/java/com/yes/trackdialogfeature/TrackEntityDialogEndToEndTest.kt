@@ -23,7 +23,7 @@ import org.junit.Before
 import org.junit.Test
 
 
-class TrackDialogEndToEndTest {
+class TrackEntityDialogEndToEndTest {
 
     /*  @JvmField
       @Rule

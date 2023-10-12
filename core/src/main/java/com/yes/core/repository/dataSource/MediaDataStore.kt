@@ -5,7 +5,7 @@ import android.database.Cursor
 import android.os.Build
 import android.provider.MediaStore
 
-import com.yes.core.repository.data.entity.MediaDataStoreEntity
+import com.yes.core.repository.entity.MediaDataStoreEntity
 
 
 class MediaDataStore(private val context: Context) {

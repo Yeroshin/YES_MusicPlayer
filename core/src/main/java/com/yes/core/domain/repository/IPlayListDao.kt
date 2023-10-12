@@ -4,31 +4,33 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
-import com.yes.core.domain.models.PlayList
-import com.yes.core.domain.models.Track
+import com.yes.core.repository.entity.PlayListEntity
+import com.yes.core.repository.entity.TrackEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface IPlayListDao {
     @Insert
-    fun savePlaylist(playlist: PlayList): Long
+    fun savePlaylist(playlist: PlayListEntity): Long
 
     @Query("SELECT * FROM playlists WHERE name =:playlistName")
-    fun getPlaylist(playlistName: String): PlayList
+    fun getPlaylist(playlistName: String): PlayListEntity
 
     @Query("SELECT * FROM playlists")
-    fun subscribePlaylists(): Flow<List<PlayList>>
+    fun subscribePlaylists(): Flow<List<PlayListEntity>>
 
     /*  @Update
       fun updatePlaylist(playlist: PlayList)*/
     @Delete
-    fun deletePlaylist(playList:PlayList):Int
+    fun deletePlaylist(playListEntity: PlayListEntity):Int
 
 
     @Insert
-    fun saveTracks(tracks: List<Track>): List<Long>
+    fun saveTracks(trackEntities: List<TrackEntity>): List<Long>
 
     @Query("SELECT * FROM tracks WHERE playlistName =:playlistName")
-    fun getTracks(playlistName: String): List<Track>
+    fun getTracks(playlistName: String): List<TrackEntity>
+
+    @Query("SELECT * FROM tracks WHERE id =:id")
+    fun subscribeTracksWithPlaylistId(id: Long):Flow< List<TrackEntity>>
 }

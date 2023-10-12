@@ -1,8 +1,7 @@
 package com.yes.trackdialogfeature.di.module
 
-import androidx.lifecycle.ViewModelProvider
 import com.yes.core.repository.data.dataSource.MediaDataStore
-import com.yes.core.repository.dataSource.SettingsDataStore
+import com.yes.core.repository.dataSource.SettingsSharedPreferences
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
 import com.yes.trackdialogfeature.data.mapper.MenuRepositoryMapper
@@ -22,7 +21,6 @@ import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import java.util.ArrayDeque
 
 @Module
@@ -89,10 +87,10 @@ class TrackDialogModule {
 
     @Provides
     fun providesSettingsRepository(
-        settingsDataStore: SettingsDataStore
+        settingsSharedPreferences: SettingsSharedPreferences
     ): ISettingsRepository {
         return SettingsRepositoryImpl(
-            settingsDataStore
+            settingsSharedPreferences
         )
     }
 

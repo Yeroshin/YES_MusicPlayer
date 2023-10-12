@@ -8,7 +8,7 @@ import com.yes.core.domain.models.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
 import com.yes.trackdialogfeature.domain.entity.MenuException
-import com.yes.core.domain.models.Track
+import com.yes.core.repository.entity.TrackEntity
 
 object DomainFixtures {
     fun getEmptyError(): MenuException {
@@ -40,7 +40,7 @@ object DomainFixtures {
             )
         }
     private val tracksAudio = MediaDataStoreFixtures.getTracksAudio().map {
-        Track(
+        TrackEntity(
             null,
             "",
             it.artist,
@@ -51,7 +51,7 @@ object DomainFixtures {
             it.size,
         )
     }
-    fun getTracksAudio():List<Track>{
+    fun getTracksAudio():List<TrackEntity>{
         return tracksAudio
     }
     private val categoryItems = listOf(
@@ -198,7 +198,7 @@ object DomainFixtures {
     fun getSelectedArtistItem():Item{
         return artists[selectedArtist].copy(id = 4, type ="artist" )
     }
-    fun getTracksFromSelectedArtist():List<Track>{
+    fun getTracksFromSelectedArtist():List<TrackEntity>{
         return tracksAudio.filter {
             it.artist== artists[selectedArtist].name
         }

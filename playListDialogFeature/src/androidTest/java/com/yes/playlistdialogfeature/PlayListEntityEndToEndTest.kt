@@ -19,7 +19,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-class PlayListEndToEndTest {
+class PlayListEntityEndToEndTest {
     private lateinit var di: TestPlayListDialogComponent
     private lateinit var scenario: FragmentScenario<PlayListDialog>
     class MockFragmentFactoryImpl(

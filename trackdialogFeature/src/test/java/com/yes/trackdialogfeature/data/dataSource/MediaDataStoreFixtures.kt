@@ -3,8 +3,8 @@ package com.yes.trackdialogfeature.data.dataSource
 import com.example.shared_test.SharedFixtureGenerator
 import com.example.shared_test.UiFixtures
 import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
-import com.yes.core.domain.models.Track
-import com.yes.core.repository.data.entity.MediaDataStoreEntity
+import com.yes.core.repository.entity.TrackEntity
+import com.yes.core.repository.entity.MediaDataStoreEntity
 import kotlin.random.Random
 
 object MediaDataStoreFixtures {
@@ -60,7 +60,7 @@ object MediaDataStoreFixtures {
     }
 
     private val mediaRepositoryMapper = MediaRepositoryMapper()
-    fun getSelectedTracksAudio(): List<Track> {
+    fun getSelectedTracksAudio(): List<TrackEntity> {
         return listOf(
             mediaRepositoryMapper.mapToTrack(
                 tracksAudio[selectedItem]

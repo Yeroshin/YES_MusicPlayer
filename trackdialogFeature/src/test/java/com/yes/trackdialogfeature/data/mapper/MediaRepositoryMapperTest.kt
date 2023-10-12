@@ -3,8 +3,8 @@ package com.yes.trackdialogfeature.data.mapper
 import com.yes.trackdialogfeature.data.dataSource.MediaDataStoreFixtures
 import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
-import com.yes.core.domain.models.Track
-import com.yes.core.repository.data.entity.MediaDataStoreEntity
+import com.yes.core.repository.entity.TrackEntity
+import com.yes.core.repository.entity.MediaDataStoreEntity
 import org.junit.Assert.*
 
 import org.junit.jupiter.params.ParameterizedTest
@@ -29,7 +29,7 @@ class MediaRepositoryMapperTest {
     @MethodSource("mapToTrackData")
     fun mapToTrack(
         dataStoreEntity: MediaDataStoreEntity,
-        expectedDomain: Track
+        expectedDomain: TrackEntity
     ) {
         val actual = cut.mapToTrack(
             dataStoreEntity

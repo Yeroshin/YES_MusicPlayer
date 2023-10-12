@@ -12,7 +12,7 @@ import com.yes.core.util.EspressoIdlingResource
 import com.yes.musicplayer.presentation.MainActivity
 import com.yes.musicplayer.presentation.UniversalFragmentAdapter
 import com.yes.player.presentation.PlayerFragment
-import com.yes.playlistfeature.presentation.PlaylistFragment
+import com.yes.playlistfeature.presentation.ui.PlaylistFragment
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 
 import dagger.Module

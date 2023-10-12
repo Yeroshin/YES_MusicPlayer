@@ -23,7 +23,7 @@ import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.MainActivityComponent
 import com.yes.player.presentation.PlayerFragment
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
-import com.yes.playlistfeature.presentation.PlaylistFragment
+import com.yes.playlistfeature.presentation.ui.PlaylistFragment
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 
 

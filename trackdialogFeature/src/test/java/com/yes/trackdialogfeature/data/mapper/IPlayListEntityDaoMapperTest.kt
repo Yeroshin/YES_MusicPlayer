@@ -2,15 +2,15 @@ package com.yes.trackdialogfeature.data.mapper
 
 import com.yes.trackdialogfeature.data.dataSource.MediaDataStoreFixtures
 import com.yes.trackdialogfeature.data.dataSource.PlayListDAOFixtures
-import com.yes.core.domain.models.Track
-import com.yes.core.repository.data.entity.MediaDataStoreEntity
+import com.yes.core.repository.entity.TrackEntity
+import com.yes.core.repository.entity.MediaDataStoreEntity
 import io.mockk.MockKAnnotations
 import org.junit.Assert.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 
-class IPlayListDaoMapperTest {
+class IPlayListEntityDaoMapperTest {
     private lateinit var cut:PlayListDaoMapper
     @BeforeEach
     fun setUp()  {
@@ -21,7 +21,7 @@ class IPlayListDaoMapperTest {
     @ParameterizedTest
     @MethodSource("mapToItemData")
     fun map(
-        expected: Track,
+        expected: TrackEntity,
         track: MediaDataStoreEntity
     ) {
         val actual=cut.map(track)
