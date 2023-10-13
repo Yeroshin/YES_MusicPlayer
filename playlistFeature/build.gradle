@@ -1,11 +1,8 @@
 plugins {
-    id 'com.android.library'
-   // alias(libs.plugins.androidLibrary)
-   // id 'com.android.application'
-   // id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
-  //  alias(libs.plugins.kotlinKapt)
-   // alias(libs.plugins.devtoolsKsp)
+    alias(libs.plugins.kotlinKapt)
+    alias(libs.plugins.devtoolsKsp)
 }
 
 android {
@@ -42,13 +39,17 @@ android {
 }
 
 dependencies {
-   // androidTestImplementation 'androidx.multidex:multidex:2.0.1'
+    // androidTestImplementation 'androidx.multidex:multidex:2.0.1'
 
     implementation project(path: ':core')
     implementation project(path: ':coreUI')
+    //Dagger/////////////////////
+    implementation libs.dagger
+    androidTestImplementation libs.dagger
+    kapt libs.dagger.compiler
+    kaptAndroidTest libs.dagger.compiler
 
-
-//fragment
+    //fragment
     debugImplementation libs.androidx.fragment.testing
     implementation libs.androidx.fragment.ktx
 

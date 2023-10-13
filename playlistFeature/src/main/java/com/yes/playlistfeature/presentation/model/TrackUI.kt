@@ -1,4 +1,5 @@
 package com.yes.playlistfeature.presentation.model
 
-class TrackUI {
-}
+data class TrackUI (
+    val id:Long
+)

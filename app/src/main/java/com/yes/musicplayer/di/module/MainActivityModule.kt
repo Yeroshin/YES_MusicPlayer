@@ -12,7 +12,7 @@ import com.yes.core.util.EspressoIdlingResource
 import com.yes.musicplayer.presentation.MainActivity
 import com.yes.musicplayer.presentation.UniversalFragmentAdapter
 import com.yes.player.presentation.PlayerFragment
-import com.yes.playlistfeature.presentation.ui.PlaylistFragment
+import com.yes.playlistfeature.presentation.ui.Playlist
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 
 import dagger.Module
@@ -49,11 +49,13 @@ internal class MainActivityModule(
     @Provides
     fun provideMainActivityFragmentFactory(
         trackDialogDependency: TrackDialog.Dependency,
-        playListDialog: PlayListDialog.Dependency
+        playListDialogDependency: PlayListDialog.Dependency,
+        playlistDependency:Playlist.Dependency
     ): FragmentFactory {
         return MainActivity.MainActivityFragmentFactory(
             trackDialogDependency,
-            playListDialog
+            playListDialogDependency,
+            playlistDependency
         )
     }
     @Provides
@@ -70,7 +72,7 @@ internal class MainActivityModule(
     ): FragmentStateAdapter {
 
 
-        val fragmentsList = listOf( PlaylistFragment::class.java)
+        val fragmentsList = listOf( Playlist::class.java)
 
         return UniversalFragmentAdapter(activity, fragmentsList, fragmentFactory)
     }

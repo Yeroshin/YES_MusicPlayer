@@ -5,28 +5,40 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewbinding.ViewBinding
 import com.yes.core.presentation.BaseViewModel
-import com.yes.playlistfeature.databinding.FragmentPlaylistBinding
+import com.yes.playlistfeature.databinding.PlaylistBinding
 import com.yes.playlistfeature.presentation.contract.PlaylistContract
+import com.yes.playlistfeature.presentation.model.TrackUI
 import com.yes.playlistfeature.presentation.vm.PlaylistViewModel
 import kotlinx.coroutines.launch
 
 
-class PlaylistFragment : Fragment() {
+class Playlist(
+    dependency: Dependency
+) : Fragment() {
     interface MediaChooserManager {
         fun showMediaDialog()
+    }
+
+    interface PlayModeSelector {
+        fun switchMode()
     }
 
     interface PlaylistManager {
         fun showPlaylistDialog()
     }
 
-    private lateinit var binding: FragmentPlaylistBinding
+    private lateinit var binding: ViewBinding
+    private val binder by lazy {
+        binding as PlaylistBinding
+    }
 
     private val mediaChooserManager: MediaChooserManager by lazy {
         activity as MediaChooserManager
@@ -40,25 +52,22 @@ class PlaylistFragment : Fragment() {
             PlaylistContract.Effect> by viewModels {
         dependency.factory
     }
+    private val adapter =dependency.adapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
         // Inflate the layout for this fragment
-        binding = FragmentPlaylistBinding.inflate(inflater)
-        binding.btnMedia.setOnClickListener {
-            mediaChooserManager.showMediaDialog()
-        }
-        binding.btnPlaylist.setOnClickListener {
-            playlistManager.showPlaylistDialog()
-        }
+        binding = PlaylistBinding.inflate(inflater)
+
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
-        setupRecyclerView()
+        setupView()
     }
 
     private fun observeViewModel() {
@@ -81,67 +90,65 @@ class PlaylistFragment : Fragment() {
             }
         }
     }
-    private fun setupRecyclerView() {
+
+    private fun setupView() {
+        binder.btnMedia.setOnClickListener {
+            mediaChooserManager.showMediaDialog()
+        }
+        binder.btnPlaylist.setOnClickListener {
+            playlistManager.showPlaylistDialog()
+        }
+
         val layoutManager = LinearLayoutManager(context)
+        binder.playList.layoutManager = layoutManager
+        binder.playList.adapter = adapter
 
 
-        binder.recyclerViewContainer.recyclerView.layoutManager = layoutManager
-        binder.recyclerViewContainer.recyclerView.adapter = adapter
-        binder.buttons.cancelBtn.setOnClickListener {
-            viewModel.setEvent(TrackDialogContract.Event.OnButtonCancelClicked)
-        }
-        binder.buttons.okBtn.setOnClickListener {
-            viewModel.setEvent(
-                TrackDialogContract.Event.OnButtonOkClicked(
-                    if (binder.networkBtn.isChecked) {
-                        adapter.getItems()
-                    } else {
-                        listOf(
-                            MenuUi.ItemUi(
-                                name = binder.networkPath.text.toString(),
-                                selected = true
-                            )
-                        )
-                    }
-
-                )
-            )
-        }
-        binder.networkBtn.setOnCheckedChangeListener { _, isChecked ->
-            // write here your code for example ...
-            if (isChecked) {
-                binder.recyclerViewContainer.disableView.visibility = View.GONE
-                binder.networkPath.isEnabled = false
-            } else {
-                binder.recyclerViewContainer.disableView.visibility = View.VISIBLE
-                binder.networkPath.isEnabled = true
-            }
-        }
     }
+
     private fun renderUiState(state: PlaylistContract.State) {
         when (state.playlistState) {
-            is PlaylistContract.TrackDialogState.Success -> {
+            is PlaylistContract.PlaylistState.Success -> {
                 dataLoaded(
-                    state.trackDialogState.menu.title,
-                    state.trackDialogState.menu.items
+                    state.playlistState.tracks,
                 )
             }
 
-            is PlaylistContract.TrackDialogState.Loading -> {
+            is PlaylistContract.PlaylistState.Loading -> {
                 showLoading()
             }
 
-            is PlaylistContract.TrackDialogState.Idle -> {
+            is PlaylistContract.PlaylistState.Idle -> {
                 idleView()
             }
 
         }
     }
+    private fun dataLoaded(tracks: List<TrackUI>) {
+        adapter.setItems(tracks)
+      /*  binder.recyclerViewContainer.progressBar.visibility = View.GONE
+        binder.recyclerViewContainer.disableView.visibility = View.GONE*/
+    }
+    private fun idleView() {
+        // binder.recyclerViewContainer.dialogTitle.text = ""
+        /*  binder.recyclerViewContainer.progressBar.visibility = View.GONE
+          binder.recyclerViewContainer.disableView.visibility = View.GONE*/
+    }
 
+    private fun showLoading() {
+        /*  binder.recyclerViewContainer.progressBar.visibility = View.VISIBLE
+          binder.recyclerViewContainer.disableView.visibility = View.VISIBLE*/
+    }
+
+    private fun showError(message: Int) {
+        /* binder.recyclerViewContainer.progressBar.visibility = View.GONE
+         binder.recyclerViewContainer.disableView.visibility = View.GONE*/
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
 
 
     class Dependency(
         val factory: PlaylistViewModel.Factory,
-
-        )
+        val adapter: PlaylistAdapter
+    )
 }

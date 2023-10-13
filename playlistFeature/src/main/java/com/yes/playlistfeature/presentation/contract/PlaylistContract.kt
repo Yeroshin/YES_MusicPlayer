@@ -20,7 +20,7 @@ class PlaylistContract {
         data object Idle : PlaylistState()
 
         data object Loading : PlaylistState()
-        data class Success(val menu: TrackUI) : PlaylistState() {
+        data class Success(val tracks: List<TrackUI>) : PlaylistState() {
 
 
         }

@@ -14,6 +14,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
+import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
@@ -23,14 +24,14 @@ import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.MainActivityComponent
 import com.yes.player.presentation.PlayerFragment
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
-import com.yes.playlistfeature.presentation.ui.PlaylistFragment
+import com.yes.playlistfeature.presentation.ui.Playlist
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 
 
 class MainActivity :
     AppCompatActivity(),
-    PlaylistFragment.MediaChooserManager,
-    PlaylistFragment.PlaylistManager {
+    Playlist.MediaChooserManager,
+    Playlist.PlaylistManager {
     interface DependencyResolver {
         fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent
     }
@@ -148,21 +149,22 @@ class MainActivity :
             PlayerFragment::class.java.name
         )
         supportFragmentManager.commit {
-
-            replace(R.id.player_controls, playerFragment)
+            setReorderingAllowed(true)
+            add<PlayerFragment>(R.id.player_controls)
         }
     }
 
     class MainActivityFragmentFactory(
         private val trackDialogDependency: TrackDialog.Dependency,
-        private val playListDialogDependency: PlayListDialog.Dependency
+        private val playListDialogDependency: PlayListDialog.Dependency,
+        private val playlistDependency:Playlist.Dependency
         ) : FragmentFactory() {
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
             return when (loadFragmentClass(classLoader, className)) {
                 PlayListDialog::class.java -> PlayListDialog(playListDialogDependency)
                 TrackDialog::class.java -> TrackDialog(trackDialogDependency)
                 PlayerFragment::class.java -> PlayerFragment()
-                PlaylistFragment::class.java -> PlaylistFragment()
+                Playlist::class.java -> Playlist(playlistDependency)
 
                 else -> super.instantiate(classLoader, className)
             }
