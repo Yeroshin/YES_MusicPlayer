@@ -28,6 +28,7 @@ class PlayListDialogAdapter:
         return itemsList
     }
 
+
     override fun onBindViewHolder(holder: PlayListHolder, position: Int) {
         holder.bind(position, itemsList[position])
     }

@@ -14,7 +14,8 @@ class PlayListDaoMapper {
             track.data,
             track.duration,
             track.album,
-            track.size
+            track.size,
+            0
         )
     }
 }

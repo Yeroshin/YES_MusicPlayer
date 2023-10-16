@@ -6,6 +6,7 @@ import com.yes.core.repository.dataSource.SettingsDataStore
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.playlistfeature.data.repository.PlayListRepositoryImpl
 import com.yes.playlistfeature.data.repository.SettingsRepositoryImpl
+import com.yes.playlistfeature.domain.usecase.DeleteTrackUseCase
 import com.yes.playlistfeature.domain.usecase.SubscribeCurrentPlaylistTracksUseCase
 import com.yes.playlistfeature.presentation.mapper.Mapper
 import com.yes.playlistfeature.presentation.ui.Playlist
@@ -20,15 +21,17 @@ class PlayListModule {
     @Provides
     fun providesSettingsRepository(
         dataStore: SettingsDataStore
-    ):SettingsRepositoryImpl {
+    ): SettingsRepositoryImpl {
         return SettingsRepositoryImpl(
             dataStore
         )
     }
+
     @Provides
     fun providesDataMapper(): com.yes.playlistfeature.data.mapper.Mapper {
         return com.yes.playlistfeature.data.mapper.Mapper()
     }
+
     @Provides
     fun providesPlayListRepository(
         mapper: com.yes.playlistfeature.data.mapper.Mapper,
@@ -59,15 +62,31 @@ class PlayListModule {
     }
 
     @Provides
+    fun providesDeleteTrackUseCase(
+        dispatcher: CoroutineDispatcher,
+        playListRepositoryImpl: PlayListRepositoryImpl,
+        settingsRepository: SettingsRepositoryImpl
+
+    ): DeleteTrackUseCase {
+        return DeleteTrackUseCase(
+            dispatcher,
+            playListRepositoryImpl,
+            settingsRepository
+        )
+    }
+
+    @Provides
     fun providesPlaylistViewModelFactory(
         espressoIdlingResource: EspressoIdlingResource?,
         subscribeCurrentPlaylistTracksUseCase: SubscribeCurrentPlaylistTracksUseCase,
-        mapper: Mapper
+        mapper: Mapper,
+        deleteTrackUseCase: DeleteTrackUseCase
     ): PlaylistViewModel.Factory {
         return PlaylistViewModel.Factory(
             espressoIdlingResource,
             subscribeCurrentPlaylistTracksUseCase,
-            mapper
+            mapper,
+            deleteTrackUseCase
         )
     }
 

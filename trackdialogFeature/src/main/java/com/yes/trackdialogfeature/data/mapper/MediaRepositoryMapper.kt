@@ -24,7 +24,8 @@ class MediaRepositoryMapper {
             entity.data,
             entity.duration,
             entity.album,
-            entity.size
+            entity.size,
+            0
         )
     }
 }

@@ -21,6 +21,15 @@ class PlaylistAdapter:
         itemsList = items.toMutableList()
         notifyDataSetChanged()
     }
+    fun getItem(position:Int):TrackUI{
+        return itemsList[position]
+    }
+    fun removeItem(position:Int){
+
+    }
+    fun moveItem(fromPosition:Int, toPosition:Int){
+
+    }
     override fun onBindViewHolder(holder: PlaylistAdapter.ViewHolder, position: Int) {
         holder.bind(position, itemsList[position])
     }

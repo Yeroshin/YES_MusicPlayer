@@ -6,13 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
 import com.yes.core.presentation.BaseViewModel
+import com.yes.core.presentation.ItemTouchHelperCallback
+import com.yes.playlistfeature.R
 import com.yes.playlistfeature.databinding.PlaylistBinding
 import com.yes.playlistfeature.presentation.contract.PlaylistContract
 import com.yes.playlistfeature.presentation.model.TrackUI
@@ -98,7 +102,34 @@ class Playlist(
         binder.btnPlaylist.setOnClickListener {
             playlistManager.showPlaylistDialog()
         }
+///////////////
+        val deleteIconDrawable = ContextCompat.getDrawable(requireContext(), com.yes.coreui.R.drawable.trash_can_outline)
+        val itemTouchHelperCallback = ItemTouchHelperCallback(
+            enableSwipeToDelete = true,
+            enableDragAndDrop = true,
+            onSwipeCallback = { position ->
+                // Обработка свайпа элемента
+                // Например, удаление элемента из списка
+                viewModel.setEvent(
+                    PlaylistContract.Event.OnDeleteTrack(
+                        adapter.getItem(position)
+                    )
+                )
+            },
+            onDragAndDropCallback = { fromPosition, toPosition ->
+                // Обработка перетаскивания элемента
+                // Например, изменение позиции элемента в списке
+                adapter.moveItem(fromPosition, toPosition)
+                true
+            },
+            deleteIconDrawable = deleteIconDrawable
+        )
 
+        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(
+            binder.playList
+        )
+        ///////////////
         val layoutManager = LinearLayoutManager(context)
         binder.playList.layoutManager = layoutManager
         binder.playList.adapter = adapter

@@ -7,7 +7,7 @@ import com.yes.playlistfeature.presentation.model.TrackUI
 
 class PlaylistContract {
     sealed class Event : UiEvent {
-
+        data class OnDeleteTrack(val track:TrackUI) : Event()
     }
 
     data class State(

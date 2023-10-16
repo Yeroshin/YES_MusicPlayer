@@ -13,4 +13,5 @@ data class TrackEntity(
     val duration: Long=-1,
     val album:String="",
     val size:Long=-1,
+    val position:Int
 )

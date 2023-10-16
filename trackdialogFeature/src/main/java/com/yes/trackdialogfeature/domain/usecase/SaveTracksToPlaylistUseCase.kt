@@ -10,7 +10,9 @@ import com.yes.core.domain.useCase.UseCase
 import com.yes.trackdialogfeature.domain.repository.IMenuRepository
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase.Params
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.last
 
 class SaveTracksToPlaylistUseCase(
     dispatcher: CoroutineDispatcher,
@@ -25,14 +27,22 @@ class SaveTracksToPlaylistUseCase(
         }
         val trackEntities = mutableListOf<TrackEntity>()
         val playListId = settingsRepository.subscribeCurrentPlayListId().first()
-
+        val existingItems=playListRepository.subscribeTracksWithPlaylistId(playListId).first()
+        var lastPosition= existingItems
+                .maxByOrNull {
+                    it.position
+                }?.position?:0
+        trackEntities.addAll(existingItems)
         selectedItems?.onEach { mediaItem ->
+
             if (isNetworkPath(mediaItem.name)) {
+                lastPosition++
                 trackEntities.add(
                     TrackEntity(
                         playlistId = playListId,
                         title = mediaItem.name,
                         uri = mediaItem.name,
+                        position = lastPosition
                     )
                 )
             } else {
@@ -41,7 +51,11 @@ class SaveTracksToPlaylistUseCase(
                         menuRepository.getItem(mediaItem.id)?.type,
                         mediaItem.name
                     ).map {
-                        it.copy(playlistId = playListId)
+                        lastPosition++
+                        it.copy(
+                            playlistId = playListId,
+                            position = lastPosition
+                        )
                     }
                 )
             }

@@ -12,9 +12,21 @@ class PlayListRepositoryImpl(
 ) {
     fun subscribeTracksWithPlaylistId(playlistId: Long): Flow<List<Track>> {
         return playListDao.subscribeTracksWithPlaylistId(playlistId).map {
-            it.map { item->
+            it.map { item ->
                 mapper.map(item)
             }
         }
+    }
+
+    fun deleteTrack(track: Track) {
+        playListDao.deleteTrack(
+            mapper.map(track)
+        )
+    }
+
+    fun updateTrack(track: Track) {
+        playListDao.updateTrack(
+            mapper.map(track)
+        )
     }
 }

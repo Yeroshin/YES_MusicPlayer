@@ -14,7 +14,21 @@ class Mapper {
             track.uri,
             track.duration,
             track.album,
-            track.size
+            track.size,
+            track.position
+        )
+    }
+    fun map(track:Track):TrackEntity{
+        return TrackEntity(
+            track.id,
+            track.id,
+            track.artist,
+            track.title,
+            track.uri,
+            track.duration,
+            track.album,
+            track.size,
+            track.position
         )
     }
 

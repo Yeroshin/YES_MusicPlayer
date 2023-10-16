@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.yes.core.repository.entity.PlayListEntity
 import com.yes.core.repository.entity.TrackEntity
 import kotlinx.coroutines.flow.Flow
@@ -33,4 +34,9 @@ interface IPlayListDao {
 
     @Query("SELECT * FROM tracks WHERE playlistId =:id")
     fun subscribeTracksWithPlaylistId(id: Long):Flow< List<TrackEntity>>
+
+    @Delete
+    fun deleteTrack(trackEntity: TrackEntity):Int
+    @Update
+    fun updateTrack(trackEntity: TrackEntity):Int
 }

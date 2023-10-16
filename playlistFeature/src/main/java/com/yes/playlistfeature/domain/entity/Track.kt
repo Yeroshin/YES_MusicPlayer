@@ -9,4 +9,5 @@ data class Track(
     val duration: Long,
     val album:String,
     val size:Long,
+    val position:Int
 )

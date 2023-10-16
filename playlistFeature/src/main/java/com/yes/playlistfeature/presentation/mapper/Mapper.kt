@@ -12,6 +12,19 @@ class Mapper {
             formatTime(track.duration),
         )
     }
+    fun map(track: TrackUI): Track {
+        return Track(
+            track.id,
+            0,
+            "",
+            track.title,
+            "",
+            0,
+            "",
+            0,
+            0
+        )
+    }
     private fun formatTime(milliseconds: Long): String {
         val seconds = (milliseconds / 1000).toInt() % 60
         val minutes = (milliseconds / (1000 * 60) % 60).toInt()
