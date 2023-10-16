@@ -8,7 +8,7 @@ class PlayListDaoMapper {
     fun map(track: MediaDataStoreEntity): TrackEntity {
         return TrackEntity(
             null,
-            "",
+            0,
             track.artist,
             track.title,
             track.data,

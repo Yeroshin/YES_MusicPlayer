@@ -9,7 +9,7 @@ import com.yes.trackdialogfeature.data.repository.MenuRepositoryImpl
 import com.yes.trackdialogfeature.data.repository.SettingsRepositoryImpl
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.core.domain.repository.ISettingsRepository
+import com.yes.trackdialogfeature.domain.repository.SettingsRepository
 import com.yes.core.repository.data.dataSource.MediaDataStore
 import com.yes.core.repository.dataSource.SettingsSharedPreferences
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
@@ -89,7 +89,7 @@ class TestTrackDialogModule(
     @Provides
     fun providesSettingsRepository(
         settingsSharedPreferences: SettingsSharedPreferences
-    ): ISettingsRepository {
+    ): SettingsRepository {
         return SettingsRepositoryImpl(
             settingsSharedPreferences
         )
@@ -100,7 +100,7 @@ class TestTrackDialogModule(
         dispatcher: CoroutineDispatcher,
         mediaRepositoryImpl: MediaRepositoryImpl,
         playListRepository: IPlayListDao,
-        settingsRepository: ISettingsRepository,
+        settingsRepository: SettingsRepository,
         menuRepository:MenuRepositoryImpl
     ): SaveTracksToPlaylistUseCase {
         return SaveTracksToPlaylistUseCase(

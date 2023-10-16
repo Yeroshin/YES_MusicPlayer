@@ -20,7 +20,7 @@ class SettingsDataStore(
                 preferences[PreferencesKeys.CURRENT_PLAYLIST_ID] ?: 0
             }
 
-    suspend fun updateCurrentPlaylistId(currentPlaylistId: Long) {
+    suspend fun setCurrentPlaylistId(currentPlaylistId: Long) {
         dataStore.edit { preferences ->
             preferences[PreferencesKeys.CURRENT_PLAYLIST_ID] = currentPlaylistId
         }

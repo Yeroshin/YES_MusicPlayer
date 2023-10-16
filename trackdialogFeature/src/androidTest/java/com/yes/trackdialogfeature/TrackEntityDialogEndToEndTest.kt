@@ -16,7 +16,7 @@ import com.yes.trackdialogfeature.di.components.TestTrackDialogComponent
 import com.yes.trackdialogfeature.di.module.TestAppModule
 import com.yes.trackdialogfeature.di.module.TestTrackDialogModule
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.core.domain.repository.ISettingsRepository
+import com.yes.trackdialogfeature.domain.repository.SettingsRepository
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 import org.junit.After
 import org.junit.Before
@@ -44,7 +44,7 @@ class TrackEntityDialogEndToEndTest {
     private val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
     private val mediaFileFixtures = MediaFileFixtures(context)
     private lateinit var di: TestTrackDialogComponent
-    private lateinit var settings: ISettingsRepository
+    private lateinit var settings: SettingsRepository
     private lateinit var dataBase: IPlayListDao
 
     @Before

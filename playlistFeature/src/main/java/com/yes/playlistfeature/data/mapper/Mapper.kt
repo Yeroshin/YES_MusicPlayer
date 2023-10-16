@@ -7,7 +7,14 @@ import com.yes.playlistfeature.presentation.model.TrackUI
 class Mapper {
     fun map(track:TrackEntity):Track{
         return Track(
-            track.id?:0
+            track.id?:0,
+            track.id?:0,
+            track.artist,
+            track.title,
+            track.uri,
+            track.duration,
+            track.album,
+            track.size
         )
     }
 

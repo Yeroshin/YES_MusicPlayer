@@ -21,13 +21,13 @@
             android:background="#000000"
             android:scrollbars="vertical"
             tools:itemCount="10"
-            tools:listitem="@layout/item_playlist" />
+            tools:listitem="@layout/item_track" />
 
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/button_height_small"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
         android:showDividers="beginning">
@@ -36,7 +36,7 @@
             android:id="@+id/btn_media"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height_small"
+            android:layout_height="match_parent"
 
             android:layout_weight="1"
             android:background="@drawable/button_left"
@@ -46,7 +46,7 @@
         <ImageButton
             android:id="@+id/btn_mode"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height_small"
+            android:layout_height="match_parent"
 
             android:layout_weight="1"
             android:background="@drawable/button_center"
@@ -56,7 +56,7 @@
         <ImageButton
             android:id="@+id/btn_playlist"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height_small"
+            android:layout_height="match_parent"
 
             android:layout_weight="1"
             android:background="@drawable/button_right"

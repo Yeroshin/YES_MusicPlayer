@@ -11,7 +11,7 @@ import com.yes.core.repository.entity.TrackEntity
 import com.yes.core.domain.models.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
 import com.yes.trackdialogfeature.domain.repository.IMenuRepository
-import com.yes.core.domain.repository.ISettingsRepository
+import com.yes.trackdialogfeature.domain.repository.SettingsRepository
 import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -35,7 +35,7 @@ class SaveTracksToPlaylistUseCaseTest {
     private lateinit var cut: SaveTracksToPlaylistUseCase
     private val mediaRepositoryImpl: MediaRepositoryImpl = mockk()
     private val playListRepository: IPlayListDao = mockk()
-    private val settingsRepository: ISettingsRepository = mockk()
+    private val settingsRepository: SettingsRepository = mockk()
     private val menuRepository: IMenuRepository = mockk()
 
     @BeforeEach
@@ -61,7 +61,7 @@ class SaveTracksToPlaylistUseCaseTest {
         savedAudio: List<TrackEntity>
     ) = runTest {
         every {
-            settingsRepository.getCurrentPlayListName()
+            settingsRepository.getCurrentPlayListId()
         } returns SettingsFixtures.getPlayListName()
 
         params?.let {

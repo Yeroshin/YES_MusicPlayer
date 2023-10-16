@@ -28,9 +28,9 @@ interface IPlayListDao {
     @Insert
     fun saveTracks(trackEntities: List<TrackEntity>): List<Long>
 
-    @Query("SELECT * FROM tracks WHERE playlistName =:playlistName")
+    @Query("SELECT * FROM tracks WHERE playlistId =:playlistName")
     fun getTracks(playlistName: String): List<TrackEntity>
 
-    @Query("SELECT * FROM tracks WHERE id =:id")
+    @Query("SELECT * FROM tracks WHERE playlistId =:id")
     fun subscribeTracksWithPlaylistId(id: Long):Flow< List<TrackEntity>>
 }

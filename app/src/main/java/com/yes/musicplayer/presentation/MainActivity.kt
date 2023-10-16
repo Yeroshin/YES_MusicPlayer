@@ -14,15 +14,12 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import com.yes.musicplayer.R
 import com.yes.musicplayer.YESApplication
 import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.MainActivityComponent
-import com.yes.player.presentation.PlayerFragment
+import com.yes.player.presentation.PlayerControls
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
 import com.yes.playlistfeature.presentation.ui.Playlist
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
@@ -144,14 +141,14 @@ class MainActivity :
             }
         }.attach()
 
-        val playerFragment = supportFragmentManager.fragmentFactory.instantiate(
+      /*  val playerFragment = supportFragmentManager.fragmentFactory.instantiate(
             classLoader,
             PlayerFragment::class.java.name
-        )
-        supportFragmentManager.commit {
+        )*/
+      /*  supportFragmentManager.commit {
             setReorderingAllowed(true)
             add<PlayerFragment>(R.id.player_controls)
-        }
+        }*/
     }
 
     class MainActivityFragmentFactory(
@@ -163,7 +160,7 @@ class MainActivity :
             return when (loadFragmentClass(classLoader, className)) {
                 PlayListDialog::class.java -> PlayListDialog(playListDialogDependency)
                 TrackDialog::class.java -> TrackDialog(trackDialogDependency)
-                PlayerFragment::class.java -> PlayerFragment()
+                PlayerControls::class.java -> PlayerControls()
                 Playlist::class.java -> Playlist(playlistDependency)
 
                 else -> super.instantiate(classLoader, className)

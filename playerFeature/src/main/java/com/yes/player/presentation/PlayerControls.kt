@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.yes.player.R
 
-class PlayerFragment:Fragment(R.layout.player) {
+class PlayerControls:Fragment(R.layout.player) {
 
     override fun onCreateView(
         inflater: LayoutInflater,

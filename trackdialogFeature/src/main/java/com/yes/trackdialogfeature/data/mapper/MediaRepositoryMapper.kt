@@ -18,7 +18,7 @@ class MediaRepositoryMapper {
     fun mapToTrack(entity: MediaDataStoreEntity): TrackEntity {
         return TrackEntity(
             null,
-            "",
+            0,
             entity.artist,
             entity.title,
             entity.data,

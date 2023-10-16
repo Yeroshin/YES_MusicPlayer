@@ -35,10 +35,12 @@ class PlaylistAdapter:
             item: TrackUI,
         ) {
 
-           /* binding.root.isSelected = item.selected
+            binding.root.isSelected = item.selected
             binding.root.isActivated = item.current
-            binding.playlistTitle.text = item.name*/
-            binding.id.text=position.toString()
+            binding.playlistTitle.text = item.title
+            binding.songInfo.text = item.info
+            binding.duration.text = item.duration
+            binding.position.text=(position+1).toString()+"."
             binding.root.setOnClickListener {
 
             }

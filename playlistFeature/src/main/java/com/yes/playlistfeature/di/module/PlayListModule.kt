@@ -26,6 +26,10 @@ class PlayListModule {
         )
     }
     @Provides
+    fun providesDataMapper(): com.yes.playlistfeature.data.mapper.Mapper {
+        return com.yes.playlistfeature.data.mapper.Mapper()
+    }
+    @Provides
     fun providesPlayListRepository(
         mapper: com.yes.playlistfeature.data.mapper.Mapper,
         playListDao: IPlayListDao,
