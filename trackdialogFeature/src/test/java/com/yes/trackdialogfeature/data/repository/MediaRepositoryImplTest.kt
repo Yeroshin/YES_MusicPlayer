@@ -4,9 +4,9 @@ import com.yes.trackdialogfeature.data.dataSource.MediaDataStoreFixtures
 import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
 import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
-import com.yes.core.domain.models.Track
+import com.yes.core.repository.entity.TrackEntity
 import com.yes.core.repository.data.dataSource.MediaDataStore
-import com.yes.core.repository.data.entity.MediaDataStoreEntity
+import com.yes.core.repository.entity.MediaDataStoreEntity
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.mockk
@@ -38,7 +38,7 @@ class MediaRepositoryImplTest {
         inputParam: Map<String, Any?>,
         param: Map<String, Any?>,
         mediaItemsEntity: List<MediaDataStoreEntity>,
-        mediaItemsDomain: List<Track>
+        mediaItemsDomain: List<TrackEntity>
     ) {
         every {
             mediaDataStore.getAudioItems(

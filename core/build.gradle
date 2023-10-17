@@ -56,8 +56,15 @@ dependencies {
     //room
     implementation libs.androidx.room.runtime
     kapt libs.androidx.room.compiler
+    implementation libs.androidx.room.ktx
     //Dagger/////////////////////
     implementation libs.dagger
     androidTestImplementation libs.dagger
     kapt libs.dagger.compiler
+
+    //Preferences DataStore
+    implementation libs.androidx.datastore.preferences
+    androidTestImplementation libs.androidx.datastore.preferences.core
+    androidTestImplementation libs.androidx.preference.ktx
+
 }

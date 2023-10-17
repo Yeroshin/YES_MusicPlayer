@@ -14,7 +14,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/coreUI" />
-            <option value="$PROJECT_DIR$/musicPlayerFeature" />
+            <option value="$PROJECT_DIR$/playListDialogFeature" />
             <option value="$PROJECT_DIR$/playerFeature" />
             <option value="$PROJECT_DIR$/playlistFeature" />
             <option value="$PROJECT_DIR$/shared-test" />

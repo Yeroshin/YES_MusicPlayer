@@ -91,6 +91,7 @@ dependencies {
     //room
     implementation libs.androidx.room.runtime
     kapt libs.androidx.room.compiler
+
    /// kaptAndroidTest libs.androidx.room.testing
 
     // To use Kotlin annotation processing tool (kapt)

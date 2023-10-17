@@ -7,11 +7,11 @@ import com.yes.trackdialogfeature.data.repository.MediaRepositoryImpl
 import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase.Params
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.core.domain.models.Track
+import com.yes.core.repository.entity.TrackEntity
 import com.yes.core.domain.models.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
 import com.yes.trackdialogfeature.domain.repository.IMenuRepository
-import com.yes.core.domain.repository.ISettingsRepository
+import com.yes.trackdialogfeature.domain.repository.SettingsRepository
 import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -35,7 +35,7 @@ class SaveTracksToPlaylistUseCaseTest {
     private lateinit var cut: SaveTracksToPlaylistUseCase
     private val mediaRepositoryImpl: MediaRepositoryImpl = mockk()
     private val playListRepository: IPlayListDao = mockk()
-    private val settingsRepository: ISettingsRepository = mockk()
+    private val settingsRepository: SettingsRepository = mockk()
     private val menuRepository: IMenuRepository = mockk()
 
     @BeforeEach
@@ -56,12 +56,12 @@ class SaveTracksToPlaylistUseCaseTest {
     fun run(
         params: Params?,
         expected: DomainResult<List<Long>>,
-        audioItems: List<Track>?,
+        audioItems: List<TrackEntity>?,
         primaryItem: Item?,
-        savedAudio: List<Track>
+        savedAudio: List<TrackEntity>
     ) = runTest {
         every {
-            settingsRepository.getCurrentPlayListName()
+            settingsRepository.getCurrentPlayListId()
         } returns SettingsFixtures.getPlayListName()
 
         params?.let {
@@ -123,7 +123,7 @@ class SaveTracksToPlaylistUseCaseTest {
                     null,
                     null,
                     listOf(
-                        Track(
+                        TrackEntity(
                         playlistName = SettingsFixtures.getPlayListName(),
                         title = UiFixtures.getNetworkTrack().name,
                         uri = UiFixtures.getNetworkTrack().name,

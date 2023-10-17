@@ -1,13 +1,13 @@
 package com.yes.trackdialogfeature.data.dataSource
 
 import com.example.shared_test.UiFixtures
-import com.yes.core.domain.models.Track
+import com.yes.core.repository.entity.TrackEntity
 
 object PlayListDAOFixtures {
     private val selectedItem= UiFixtures.getSelectedArtistIndex()
-    private val tracks =
+    private val trackEntities =
         MediaDataStoreFixtures.getTracksAudio().map {
-            Track(
+            TrackEntity(
                 null,
                 "",
                 it.artist,
@@ -20,10 +20,10 @@ object PlayListDAOFixtures {
         }
 
 
-    fun getTracks(): List<Track> {
-        return tracks
+    fun getTracks(): List<TrackEntity> {
+        return trackEntities
     }
-    fun getSelectedTracks():List<Track>{
-        return listOf(tracks[selectedItem])
+    fun getSelectedTracks():List<TrackEntity>{
+        return listOf(trackEntities[selectedItem])
     }
 }

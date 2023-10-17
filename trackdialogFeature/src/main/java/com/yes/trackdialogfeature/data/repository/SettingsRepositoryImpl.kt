@@ -1,22 +1,20 @@
 package com.yes.trackdialogfeature.data.repository
 
 
-import com.yes.core.repository.data.dataSource.SettingsDataStore
-import com.yes.core.domain.repository.ISettingsRepository
+import com.yes.core.repository.dataSource.SettingsDataStore
+import com.yes.trackdialogfeature.domain.repository.SettingsRepository
+import kotlinx.coroutines.flow.Flow
 
 class SettingsRepositoryImpl(
-    private val settingsDataStore: SettingsDataStore
-) : ISettingsRepository {
-    override fun getCurrentPlayListName(): String {
-        return settingsDataStore.getString("currentPlayList")
-            ?: run {
-                setCurrentPlayListName("Default Playlist")
-                return "Default Playlist"
-            }
+    private val settings: SettingsDataStore
+) : SettingsRepository {
+    override fun subscribeCurrentPlayListId(): Flow<Long> {
+        return settings.subscribeCurrentPlaylistId()
+
     }
 
-    override fun setCurrentPlayListName(name: String) {
-        settingsDataStore.putString("currentPlayList", name)
+    override suspend fun setCurrentPlayListId(id:Long) {
+        settings.setCurrentPlaylistId(id)
     }
 
 }

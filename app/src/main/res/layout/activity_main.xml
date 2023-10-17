@@ -11,7 +11,8 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/player_controls"
-           android:layout_width="match_parent"
+            android:name="com.yes.player.presentation.PlayerControls"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             tools:layout="@layout/player">
@@ -29,7 +30,7 @@
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="@dimen/button_height_regular"
                 android:background="#00FFFFFF"
                 android:theme="@style/text"
                 app:tabGravity="center"

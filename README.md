@@ -43,12 +43,13 @@ The YES Music Player 2.0 is an application that plays music on your android devi
 
 The app has a few screens located in multiple feature modules:
 
-- Player screen - displays information about current track and contains buttons to control playback (Work in Progress)
-- Playlist screen - displays information about tracks in a playlist contains buttons to contains (Work in Progress)
-buttons for calling dialogs for loading tracks into a playlist and managing playlists (Work in Progress)
+- Player screen - displays information about current track and contains buttons to control playback
+- Playlist screen - displays information about tracks in a playlist contains buttons to contains
+buttons for calling dialogs for loading tracks into a playlist and managing playlists(Work in Progress)
 - Equalizer screen - empty (Work in Progress)
 - AlarmClock screen - empty (Work in Progress)
-- TrackDialogFeature - dialog for adding selected media to playlist
+- PlayListDialog screen (Done)
+- TracksDialog screen (Done)
   <br/><br/>
 
 <p>
@@ -79,7 +80,7 @@ ecosystem.
         * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) - store
           and manage UI-related
           data in a lifecycle-aware way
-        * [Room](https://developer.android.com/jetpack/androidx/releases/room) - store playlists
+        * [Room](https://developer.android.com/jetpack/androidx/releases/room) - store offline cache
 * Modern Architecture
     * [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
     * Single activity architecture
@@ -331,9 +332,6 @@ Here are a few additional resources.
 
 ## Author
 [<img src="https://github.com/Yeroshin/YES_MusicPlayer/blob/master/misc/image/8.jpg" alt="Follow me" width="100" height="125"/>](https://www.linkedin.com/in/stanislav-yeroshin/)
-
-## Download
-[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="" height="50">](https://play.google.com/store/apps/details?id=com.ys.musicplayer.free&pli=1)
 
 ## License
 

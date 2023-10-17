@@ -3,7 +3,7 @@ package com.yes.trackdialogfeature.data.repository
 import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
 
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
-import com.yes.core.domain.models.Track
+import com.yes.core.repository.entity.TrackEntity
 import com.yes.core.repository.data.dataSource.MediaDataStore
 
 class MediaRepositoryImpl(
@@ -30,7 +30,7 @@ class MediaRepositoryImpl(
     fun getAudioItems(
         selectionType: String?,
         selectionName: String
-    ): List<Track> {
+    ): List<TrackEntity> {
 
         return mediaDataStore.getAudioItems(
             selectionType,

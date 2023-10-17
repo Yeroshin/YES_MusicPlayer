@@ -55,9 +55,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:inputType="textPersonName"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="#4CAF50"
+                    android:textColor="@color/green"
                     tools:visibility="visible" />
             </FrameLayout>
 

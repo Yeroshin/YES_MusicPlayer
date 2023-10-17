@@ -1,8 +1,8 @@
 package com.yes.trackdialogfeature
 
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.core.domain.repository.ISettingsRepository
-import com.yes.trackdialogfeature.presentation.TrackDialogTest
+import com.yes.trackdialogfeature.domain.repository.SettingsRepository
+import com.yes.trackdialogfeature.presentation.TrackEntityDialogTest
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import junit.framework.TestCase.assertEquals
@@ -77,7 +77,7 @@ class TrackDialogRobot() : BaseTestRobot() {
         position,
     )
     fun setEventToViewModel(state: TrackDialogContract.TrackDialogState,
-                            viewModel: TrackDialogTest.TestViewModel
+                            viewModel: TrackEntityDialogTest.TestViewModel
     ){
         viewModel.pushEvent (
            state
@@ -85,10 +85,10 @@ class TrackDialogRobot() : BaseTestRobot() {
     }
     fun matchSelectedTracksSavedToPlaylist(
         expectedTracks:List<MenuUi.ItemUi>,
-        settingsRepository: ISettingsRepository,
+        settingsRepository: SettingsRepository,
         playListRepository: IPlayListDao
     ){
-        val playListName = settingsRepository.getCurrentPlayListName()
+        val playListName = settingsRepository.getCurrentPlayListId()
         val actualTracks=readTracksFromPlaylistDB(
             playListName,
             playListRepository
@@ -103,10 +103,10 @@ class TrackDialogRobot() : BaseTestRobot() {
     }
     fun matchNetworkSourceSavedToPlaylist(
         expectedTracks:MenuUi.ItemUi,
-        settingsRepository: ISettingsRepository,
+        settingsRepository: SettingsRepository,
         playListRepository: IPlayListDao
     ){
-        val playListName = settingsRepository.getCurrentPlayListName()
+        val playListName = settingsRepository.getCurrentPlayListId()
         val actualTracks=readTracksFromPlaylistDB(
             playListName,
             playListRepository

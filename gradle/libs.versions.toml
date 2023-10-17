@@ -1,9 +1,8 @@
 [versions]
 androidGradlePlugin = "8.1.1"#"7.4.0"
-androidx-media = "1.6.0"
-androidx-media3 = "1.6.0"
 dagger = "2.47"
-exoplayerCore = "2.19.1"
+datastorePreferences = "1.0.0"
+fragmentKtx = "1.6.1"
 junit-jupiter = "5.9.3"
 kotlin = "1.6.21"
 ksp = "1.8.0-1.0.8"#do not change
@@ -15,23 +14,27 @@ hamcrest="2.2"
 espresso = "3.3.0"#do not change
 appcompat = "1.6.1"
 kotlinxCoroutinesTest = "1.3.2"
+lifecycleRuntimeKtx = "2.6.2"
 material = "1.9.0"
 constraintlayout = "2.1.4"
 mockkVersion = "1.12.2"
 navigation-fragment-ktx = "2.5.3"
 navigation-ui-ktx = "2.5.3"
+preferenceKtx = "1.2.1"
 room = "2.5.2"
 rules = "1.5.0"#"1.4.0"
 runner = "1.5.2"#"1.4.0"
 turbine = "1.0.0"
 
-
 [libraries]
-
-#exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayerCore" }
-#exoplayer-ui = { module = "com.google.android.exoplayer:exoplayer-ui", version.ref = "exoplayerCore" }
-#extension-cast = { module = "com.google.android.exoplayer:extension-cast", version.ref = "exoplayerCore" }
-#extension-mediasession = { module = "com.google.android.exoplayer:extension-mediasession", version.ref = "exoplayerCore" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastorePreferences" }
+androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
+androidx-fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "fragmentKtx" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtx" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 hamcrest={module='org.hamcrest:hamcrest',version.ref = "hamcrest"}
 androidx-espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "espresso" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
@@ -56,8 +59,6 @@ mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockkVersion
 navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation-fragment-ktx" }
 navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation-ui-ktx" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
-#media = { module = "androidx.media:media", version.ref = "androidx-media" }
-#media3 = { module = "androidx.media3:media3", version.ref = "androidx-media3" }
 
 [plugins]
 androidLibrary = { id = 'com.android.library', version.ref = "androidGradlePlugin" }
@@ -66,5 +67,4 @@ kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 devtoolsKsp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlinKapt={id="org.jetbrains.kotlin.kapt",version.ref="kapt"}
 [bundles]
-
 

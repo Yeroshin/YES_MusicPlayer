@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.repository.data.dataSource.MediaDataStore
-import com.yes.core.repository.data.dataSource.SettingsDataStore
+import com.yes.core.repository.dataSource.SettingsSharedPreferences
 import com.yes.core.repository.dataSource.PlayListDataBase
 import dagger.Module
 import dagger.Provides
@@ -41,8 +41,8 @@ class TestAppModule(
     @Provides
     fun providesSettingsDataStore(
         context: Context
-    ): SettingsDataStore {
-        return SettingsDataStore(
+    ): SettingsSharedPreferences {
+        return SettingsSharedPreferences(
             context
         )
     }

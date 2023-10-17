@@ -14,11 +14,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yes.core.presentation.BaseViewModel
-import com.yes.coreui.BaseDialog
+import com.yes.core.presentation.BaseDialog
 import com.yes.trackdialogfeature.R
 import com.yes.trackdialogfeature.databinding.TrackDialogBinding
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.model.MenuUi
+import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import kotlinx.coroutines.launch
 
 
@@ -163,7 +164,7 @@ class TrackDialog(
     }
 
     class Dependency(
-        val factory: ViewModelProvider.Factory,
+        val factory: TrackDialogViewModel.Factory,
     )
 
     /* class TrackDialogDependency(

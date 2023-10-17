@@ -5,6 +5,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -13,21 +14,21 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
-import androidx.fragment.app.commit
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import com.yes.musicplayer.R
 import com.yes.musicplayer.YESApplication
 import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.MainActivityComponent
-import com.yes.player.presentation.ui.PlayerFragment
-import com.yes.playlistfeature.presentation.PlaylistFragment
+import com.yes.player.presentation.PlayerControls
+import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
+import com.yes.playlistfeature.presentation.ui.Playlist
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 
 
 class MainActivity :
     AppCompatActivity(),
-    PlaylistFragment.MediaChooserManager {
+    Playlist.MediaChooserManager,
+    Playlist.PlaylistManager {
     interface DependencyResolver {
         fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent
     }
@@ -57,16 +58,13 @@ class MainActivity :
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        supportFragmentManager.fragmentFactory = fragmentFactory
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
-
-
         setContentView(view)
-        supportFragmentManager.fragmentFactory = fragmentFactory
-        checkPermissions()
 
+        checkPermissions()
 
     }
 
@@ -143,40 +141,33 @@ class MainActivity :
             }
         }.attach()
 
-        val playerFragment = supportFragmentManager.fragmentFactory.instantiate(
+      /*  val playerFragment = supportFragmentManager.fragmentFactory.instantiate(
             classLoader,
             PlayerFragment::class.java.name
-        )
-
-
-        supportFragmentManager.beginTransaction()
-            .add(R.id.player_controls, playerFragment)
-            .commit()
-       /* supportFragmentManager.commit {
-
-            replace(R.id.player_controls, playerFragment)
+        )*/
+      /*  supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            add<PlayerFragment>(R.id.player_controls)
         }*/
     }
 
     class MainActivityFragmentFactory(
         private val trackDialogDependency: TrackDialog.Dependency,
-
+        private val playListDialogDependency: PlayListDialog.Dependency,
+        private val playlistDependency:Playlist.Dependency
         ) : FragmentFactory() {
-        override fun instantiate(
-            classLoader: ClassLoader,
-            className: String
-        ): Fragment {
+        override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
             return when (loadFragmentClass(classLoader, className)) {
-                //TrackDialog::class.java -> TrackDialog()
+                PlayListDialog::class.java -> PlayListDialog(playListDialogDependency)
                 TrackDialog::class.java -> TrackDialog(trackDialogDependency)
-                PlayerFragment::class.java -> PlayerFragment()
-                //  PlaylistFragment::class.java -> PlaylistFragment()
-                PlaylistFragment::class.java -> PlaylistFragment()
+                PlayerControls::class.java -> PlayerControls()
+                Playlist::class.java -> Playlist(playlistDependency)
 
                 else -> super.instantiate(classLoader, className)
             }
         }
     }
+
 
     override fun showMediaDialog() {
         (supportFragmentManager.fragmentFactory.instantiate(
@@ -184,6 +175,13 @@ class MainActivity :
             TrackDialog::class.java.name
         ) as DialogFragment).show(supportFragmentManager, null)
 
+    }
+
+    override fun showPlaylistDialog() {
+        (supportFragmentManager.fragmentFactory.instantiate(
+            classLoader,
+            PlayListDialog::class.java.name
+        ) as DialogFragment).show(supportFragmentManager, null)
     }
 }
 
