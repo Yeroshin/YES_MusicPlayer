@@ -45,9 +45,11 @@ The app has a few screens located in multiple feature modules:
 
 - Player screen - displays information about current track and contains buttons to control playback
 - Playlist screen - displays information about tracks in a playlist contains buttons to contains
-buttons for calling dialogs for loading tracks into a playlist and managing playlists
+buttons for calling dialogs for loading tracks into a playlist and managing playlists(Work in Progress)
 - Equalizer screen - empty (Work in Progress)
 - AlarmClock screen - empty (Work in Progress)
+- PlayListDialog screen (Done)
+- TracksDialog screen (Done)
   <br/><br/>
 
 <p>
