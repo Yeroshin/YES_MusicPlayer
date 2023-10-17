@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 
 class SubscribeCurrentPlaylistTracksUseCase(
     dispatcher: CoroutineDispatcher,
@@ -17,8 +18,11 @@ class SubscribeCurrentPlaylistTracksUseCase(
 ) : UseCase<Any, Flow<List<Track>>>(dispatcher) {
     override suspend fun run(params: Any?): DomainResult<Flow<List<Track>>> {
         return DomainResult.Success(
-            settingsRepository.subscribeCurrentPlaylistId().flatMapLatest {
-                playListRepositoryImpl.subscribeTracksWithPlaylistId(it)
+            settingsRepository.subscribeCurrentPlaylistId().flatMapLatest {playlistId ->
+                playListRepositoryImpl.subscribeTracksWithPlaylistId(playlistId )
+                  /*  .map { tracks ->
+                        tracks.sortedBy { it.position }
+                    }*/
             }
         )
     }

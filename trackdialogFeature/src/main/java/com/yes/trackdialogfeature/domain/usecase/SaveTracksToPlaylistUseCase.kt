@@ -32,7 +32,7 @@ class SaveTracksToPlaylistUseCase(
                 .maxByOrNull {
                     it.position
                 }?.position?:0
-        trackEntities.addAll(existingItems)
+      //  trackEntities.addAll(existingItems)
         selectedItems?.onEach { mediaItem ->
 
             if (isNetworkPath(mediaItem.name)) {

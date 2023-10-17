@@ -23,6 +23,7 @@ class PlayListDialogRepositoryImpl(
         )
     }
     fun deletePlaylist(item:Item):Int{
+        playListDao.deleteTracksByPlaylistId(item.id)
         return playListDao.deletePlaylist(
             mapper.map(item)
         )

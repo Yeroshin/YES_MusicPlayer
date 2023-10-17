@@ -39,4 +39,7 @@ interface IPlayListDao {
     fun deleteTrack(trackEntity: TrackEntity):Int
     @Update
     fun updateTrack(trackEntity: TrackEntity):Int
+
+    @Query("DELETE FROM tracks WHERE playlistId = :playlistId")
+    fun deleteTracksByPlaylistId(playlistId: Long)
 }
