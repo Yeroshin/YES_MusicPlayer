@@ -20,6 +20,7 @@ import com.yes.musicplayer.YESApplication
 import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.MainActivityComponent
 import com.yes.player.presentation.PlayerControls
+import com.yes.player.presentation.ui.PlayerFragment
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
 import com.yes.playlistfeature.presentation.ui.Playlist
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
@@ -33,8 +34,8 @@ class MainActivity :
         fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent
     }
 
-    private val myApplication: YESApplication by lazy {
-        application as YESApplication
+    private val myApplication: DependencyResolver by lazy {
+        application as DependencyResolver
     }
     private lateinit var binding: ActivityMainBinding
     private val mainActivityComponent: MainActivityComponent by lazy {
@@ -160,7 +161,7 @@ class MainActivity :
             return when (loadFragmentClass(classLoader, className)) {
                 PlayListDialog::class.java -> PlayListDialog(playListDialogDependency)
                 TrackDialog::class.java -> TrackDialog(trackDialogDependency)
-                PlayerControls::class.java -> PlayerControls()
+                PlayerFragment::class.java -> PlayerFragment()
                 Playlist::class.java -> Playlist(playlistDependency)
 
                 else -> super.instantiate(classLoader, className)

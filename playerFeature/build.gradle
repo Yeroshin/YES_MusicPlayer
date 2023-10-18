@@ -1,6 +1,8 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kotlinKapt)
+    alias(libs.plugins.devtoolsKsp)
 }
 
 android {
@@ -36,13 +38,16 @@ android {
 dependencies {
     implementation project(path: ':coreUI')
     implementation project(path: ':core')
-    implementation project(path: ':musicPlayerFeature')
+
+    
 
   //  implementation libs.media3//tmp
-    implementation "androidx.media3:media3-session:1.1.1"
-    implementation "androidx.media3:media3-exoplayer:1.1.1"
-    implementation "androidx.media3:media3-exoplayer-dash:1.1.1"
-    implementation "androidx.media3:media3-ui:1.1.1"
+    implementation libs.androidx.media3.session
+    implementation libs.androidx.media3.exoplayer
+    implementation libs.androidx.media3.exoplayer.dash
+    implementation libs.androidx.media3.ui
+
+
 
     implementation libs.core.ktx
     implementation libs.appcompat
@@ -56,4 +61,9 @@ dependencies {
     implementation libs.androidx.lifecycle.runtime.ktx
     implementation libs.androidx.lifecycle.viewmodel.ktx
     implementation libs.androidx.fragment.ktx
+    //Dagger/////////////////////
+    implementation libs.dagger
+    androidTestImplementation libs.dagger
+    kapt libs.dagger.compiler
+    kaptAndroidTest libs.dagger.compiler
 }
