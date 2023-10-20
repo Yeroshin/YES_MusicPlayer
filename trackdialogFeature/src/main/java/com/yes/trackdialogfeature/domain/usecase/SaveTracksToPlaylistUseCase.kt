@@ -22,18 +22,18 @@ class SaveTracksToPlaylistUseCase(
     private val menuRepository: IMenuRepository
 ) : UseCase<Params, Boolean>(dispatcher) {
     override suspend fun run(params: Params?): DomainResult<Boolean> {
-        val selectedItems = params?.items?.filter {
-            it.selected
-        }
         val trackEntities = mutableListOf<TrackEntity>()
         val playListId = settingsRepository.subscribeCurrentPlayListId().first()
-        val existingItems=playListRepository.subscribeTracksWithPlaylistId(playListId).first()
-        var lastPosition= existingItems
-                .maxByOrNull {
-                    it.position
-                }?.position?:0
-      //  trackEntities.addAll(existingItems)
-        selectedItems?.onEach { mediaItem ->
+        var lastPosition = playListRepository
+            .subscribeTracksWithPlaylistId(playListId)
+            .first()
+            .maxByOrNull {
+                it.position
+            }?.position ?: 0
+
+        params?.items?.filter {
+            it.selected
+        }?.onEach { mediaItem ->
 
             if (isNetworkPath(mediaItem.name)) {
                 lastPosition++

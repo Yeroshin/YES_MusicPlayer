@@ -20,16 +20,19 @@ class DeleteTrackUseCase(
     override suspend fun run(params: Params?): DomainResult<Boolean> {
 
         return params?.let {
-            playListRepository.deleteTrack(params.track)
-            val items = playListRepository.subscribeTracksWithPlaylistId(
+          //  playListRepository.deleteTrack(params.track)
+           val tmp= playListRepository.subscribeTracksWithPlaylistId(
                 settingsRepository.subscribeCurrentPlaylistId().first()
             )
-                .firstOrNull()
+               /* .firstOrNull()
                 ?.sortedBy { it.position }
                 ?.forEachIndexed { index, track ->
-                    val updatedTrack = track.copy(position = index)
-                    playListRepository.updateTrack(updatedTrack)
-                }
+                    playListRepository.updateTrack(
+                        track.copy(position = index)
+                    )
+                }*/
+            val tmp2=tmp.firstOrNull()
+            tmp2?.sortedBy { it.position }
             DomainResult.Success(true)
         } ?: DomainResult.Error(DomainResult.UnknownException)
 

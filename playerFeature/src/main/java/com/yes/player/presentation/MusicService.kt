@@ -39,19 +39,10 @@ class MusicService: MediaSessionService() {
 
     override fun onCreate() {
         super.onCreate()
-        dependency=(application as  DependencyResolver)
-            .getMusicServiceComponent()
+        dependency=(application as DependencyResolver).getMusicServiceComponent()
         mapper=dependency.mapper
         subscribeCurrentPlaylistTracksUseCase=dependency.subscribeCurrentPlaylistTracksUseCase
         subscribeTracks()
-        //////////////////
-        val media = MediaItem.Builder().setUri(
-            "https://storage.googleapis.com/uamp/The_Kyoto_Connection_-_Wake_Up/01_-_Intro_-_The_Way_Of_Waking_Up_feat_Alan_Watts.mp3"
-        ).build()
-        /*  player.setMediaItem(media)
-          player.prepare()
-          player.play()*/
-        ///////////////////
     }
 
     private fun subscribeTracks() {

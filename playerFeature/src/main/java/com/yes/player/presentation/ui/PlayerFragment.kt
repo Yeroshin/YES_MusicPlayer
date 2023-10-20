@@ -115,6 +115,7 @@ class PlayerFragment : Fragment() {
     }
 
     private fun play() {
+        val tmp=controller?.currentTracks
         controller?.play()
     }
 
