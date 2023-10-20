@@ -64,7 +64,7 @@ class MusicService: MediaSessionService() {
                 is DomainResult.Success -> {
                     playLists.data.collect {
                         it.map { item ->
-                            player.setMediaItem(
+                            player.addMediaItem(
                                 mapper.map(item)
                             )
                         }
