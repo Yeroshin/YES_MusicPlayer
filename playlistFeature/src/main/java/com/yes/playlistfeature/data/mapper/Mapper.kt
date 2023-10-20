@@ -8,7 +8,7 @@ class Mapper {
     fun map(track:TrackEntity):Track{
         return Track(
             track.id?:0,
-            track.id?:0,
+            track.playlistId,
             track.artist,
             track.title,
             track.uri,
@@ -21,7 +21,7 @@ class Mapper {
     fun map(track:Track):TrackEntity{
         return TrackEntity(
             track.id,
-            track.id,
+            track.playlistId,
             track.artist,
             track.title,
             track.uri,
