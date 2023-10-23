@@ -3,6 +3,7 @@ package com.yes.playlistdialogfeature.di.module
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.ViewModelProvider
+import com.yes.core.di.IoDispatcher
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.playlistdialogfeature.data.mapper.Mapper
@@ -49,7 +50,7 @@ class PlayListDialogModule {
 
     @Provides
     fun providesSubscribePlayListsUseCase(
-        dispatcher: CoroutineDispatcher,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
         playListDialogRepositoryImpl: PlayListDialogRepositoryImpl,
         settingsRepository: SettingsRepositoryImpl
     ): SubscribePlayListsUseCase {
@@ -62,7 +63,7 @@ class PlayListDialogModule {
 
     @Provides
     fun providesAddPlayListUseCase(
-        dispatcher: CoroutineDispatcher,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
         playListDialogRepositoryImpl: PlayListDialogRepositoryImpl,
         settingsRepository: SettingsRepositoryImpl
     ): AddPlayListUseCase {
@@ -75,7 +76,7 @@ class PlayListDialogModule {
 
     @Provides
     fun providesDeletePlayListUseCase(
-        dispatcher: CoroutineDispatcher,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
         playListDialogRepositoryImpl: PlayListDialogRepositoryImpl
     ): DeletePlayListUseCase {
         return DeletePlayListUseCase(
@@ -86,7 +87,7 @@ class PlayListDialogModule {
 
     @Provides
     fun providesSetPlaylistUseCase(
-        dispatcher: CoroutineDispatcher,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
         settingsRepository: SettingsRepositoryImpl
     ): SetPlaylistUseCase {
         return SetPlaylistUseCase(

@@ -1,31 +1,19 @@
 package com.yes.player.presentation.ui
 
-import android.content.ComponentName
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-
-
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.media3.common.MediaItem
-import androidx.media3.common.PlaybackException
-import androidx.media3.common.Player
-import androidx.media3.common.Tracks
-import androidx.media3.session.MediaController
-import androidx.media3.session.SessionToken
 import androidx.viewbinding.ViewBinding
-import com.google.common.util.concurrent.ListenableFuture
-
-import com.google.common.util.concurrent.MoreExecutors
 import com.yes.core.presentation.BaseViewModel
 import com.yes.player.databinding.PlayerBinding
-import com.yes.core.presentation.MusicService
 import com.yes.player.presentation.model.InfoUI
 import com.yes.player.presentation.contract.PlayerContract
 import com.yes.player.presentation.vm.PlayerViewModel

@@ -18,15 +18,25 @@ import com.yes.core.repository.dataSource.PlayerDataSource
 import com.yes.core.repository.dataSource.SettingsDataStore
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import javax.inject.Qualifier
 import javax.inject.Singleton
 private const val USER_PREFERENCES = "user_preferences"
 @Module
 class DataModule(
     private val context: Context
 ) {
+
+    @IoDispatcher
+    @Provides
+    fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
+
+    @MainDispatcher
+    @Provides
+    fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
     @Provides
     fun providesActivity(): Context {
         return context
@@ -106,3 +116,14 @@ class DataModule(
     }
 
 }
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class DefaultDispatcher
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class IoDispatcher
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class MainDispatcher

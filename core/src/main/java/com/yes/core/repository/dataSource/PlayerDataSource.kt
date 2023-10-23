@@ -12,6 +12,9 @@ import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 import com.yes.core.presentation.MusicService
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class PlayerDataSource(
     private val context: Context
@@ -39,7 +42,9 @@ class PlayerDataSource(
                 .buildAsync()
         controllerFuture.addListener({ setController() }, MoreExecutors.directExecutor())
     }
-
+    private val _isPlaying = MutableStateFlow(false)
+    val isPlaying: StateFlow<Boolean>
+        get() = _isPlaying
     private fun setController() {
         controller.addListener(
             object : Player.Listener {
@@ -63,6 +68,7 @@ class PlayerDataSource(
                         }
 
                         Player.STATE_READY -> {
+                            _isPlaying.value = true
                             Toast.makeText(context, "ready", Toast.LENGTH_SHORT).show()
                         }
 
@@ -99,17 +105,15 @@ class PlayerDataSource(
         return controller.currentPosition
     }
 
-    fun isPlaying(): Boolean {
-        return controller.isPlaying
+    fun isPlaying(): Flow<Boolean> {
+        return isPlaying
     }
 
     fun setTracks(items: List<MediaItem>) {
-       // controller.clearMediaItems()
         controller.addMediaItems(items)
-        val tmp=controller.getMediaItemAt(0)
-        val tmp2=tmp
-        val tmp3=controller.getMediaItemCount()
-        val tmp4=tmp3
+    }
+    fun clearTracks(){
+        controller.clearMediaItems()
     }
 
 

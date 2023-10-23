@@ -1,5 +1,7 @@
 package com.yes.player.di.module
 
+import com.yes.core.di.IoDispatcher
+import com.yes.core.di.MainDispatcher
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.repository.dataSource.PlayerDataSource
 import com.yes.core.repository.dataSource.SettingsDataStore
@@ -8,6 +10,8 @@ import com.yes.player.data.repository.PlayerRepository
 import com.yes.player.data.repository.PlaylistRepositoryImpl
 import com.yes.player.data.repository.SettingsRepositoryImpl
 import com.yes.player.domain.usecase.PlayUseCase
+import com.yes.player.domain.usecase.SeekToNextUseCase
+import com.yes.player.domain.usecase.SeekToPreviousUseCase
 import com.yes.player.domain.usecase.SubscribeCurrentPlaylistUseCase
 import com.yes.player.domain.usecase.SubscribeDurationCounterUseCase
 import com.yes.player.presentation.mapper.MapperUI
@@ -48,7 +52,7 @@ class PlayerModule {
 
     @Provides
     fun providesSubscribeDurationCounterUseCase(
-        dispatcher: CoroutineDispatcher,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
         playerRepository: PlayerRepository
     ): SubscribeDurationCounterUseCase {
         return SubscribeDurationCounterUseCase(
@@ -56,36 +60,66 @@ class PlayerModule {
             playerRepository
         )
     }
+
     @Provides
     fun providesPlayerRepository(
         playerDataSource: PlayerDataSource
-    ): PlayerRepository{
+    ): PlayerRepository {
         return PlayerRepository(
             playerDataSource
         )
     }
+
     @Provides
     fun providesPlayUseCase(
+        @MainDispatcher dispatcher: CoroutineDispatcher,
         playerRepository: PlayerRepository
     ): PlayUseCase {
         return PlayUseCase(
+            dispatcher,
+            playerRepository
+        )
+    }
+
+    @Provides
+    fun providesMapperUI(): MapperUI {
+        return MapperUI()
+    }
+
+    @Provides
+    fun providesSeekToNextUseCase(
+        @MainDispatcher dispatcher: CoroutineDispatcher,
+        playerRepository: PlayerRepository
+    ): SeekToNextUseCase {
+        return SeekToNextUseCase(
+            dispatcher,
             playerRepository
         )
     }
     @Provides
-    fun providesMapperUI(): MapperUI {
-        return MapperUI()
+    fun providesSeekToPreviousUseCase(
+        @MainDispatcher dispatcher: CoroutineDispatcher,
+        playerRepository: PlayerRepository
+    ): SeekToPreviousUseCase {
+        return SeekToPreviousUseCase(
+            dispatcher,
+            playerRepository
+        )
     }
     @Provides
     fun providesPlayerViewModelFactory(
         mapperUI: MapperUI,
         playUseCase: PlayUseCase,
-        subscribeDurationCounterUseCase: SubscribeDurationCounterUseCase
+        subscribeDurationCounterUseCase: SubscribeDurationCounterUseCase,
+        seekToNextUseCase: SeekToNextUseCase,
+        seekToPreviousUseCase: SeekToPreviousUseCase
     ): PlayerViewModel.Factory {
         return PlayerViewModel.Factory(
             mapperUI,
             playUseCase,
-            subscribeDurationCounterUseCase
+            subscribeDurationCounterUseCase,
+            seekToNextUseCase,
+            seekToPreviousUseCase
         )
     }
 

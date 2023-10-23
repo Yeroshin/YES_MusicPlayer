@@ -23,20 +23,19 @@ class PlayerRepository(
     }
 
 
-    fun isPlaying():Boolean{
-        return playerDataSource.isPlaying()
-    }
-    suspend fun subscribeCurrentPosition()=flow {
-        while (playerDataSource.isPlaying()) {
 
-            emit(
-                DurationCounter(
-                    playerDataSource.getCurrentPosition()
+    suspend fun subscribeCurrentPosition()=flow {
+        playerDataSource.isPlaying.collect{
+            while (it) {
+                emit(
+                    DurationCounter(
+                        playerDataSource.getCurrentPosition()
+                    )
                 )
-            )
-            // Задержка на 1 секунду
-            delay(1000)
+                delay(1000)
+            }
         }
+
     }
 
 }

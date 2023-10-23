@@ -1,6 +1,8 @@
 package com.yes.playlistfeature.di.module
 
 
+import com.yes.core.di.IoDispatcher
+import com.yes.core.di.MainDispatcher
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.repository.dataSource.PlayerDataSource
 import com.yes.core.repository.dataSource.SettingsDataStore
@@ -54,7 +56,7 @@ class PlayListModule {
 
     @Provides
     fun providesSubscribeCurrentPlaylistTracksUseCase(
-        dispatcher: CoroutineDispatcher,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
         playListRepositoryImpl: PlayListRepositoryImpl,
         settingsRepository: SettingsRepositoryImpl
     ): SubscribeCurrentPlaylistTracksUseCase {
@@ -67,7 +69,7 @@ class PlayListModule {
 
     @Provides
     fun providesDeleteTrackUseCase(
-        dispatcher: CoroutineDispatcher,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
         playListRepositoryImpl: PlayListRepositoryImpl,
         settingsRepository: SettingsRepositoryImpl
 
@@ -90,9 +92,11 @@ class PlayListModule {
     }
     @Provides
     fun providesSetTracksToPlayerPlaylistUseCase(
+        @MainDispatcher dispatcher: CoroutineDispatcher,
         playerRepository: PlayerRepository,
         ): SetTracksToPlayerPlaylistUseCase {
         return SetTracksToPlayerPlaylistUseCase(
+            dispatcher,
             playerRepository
         )
     }

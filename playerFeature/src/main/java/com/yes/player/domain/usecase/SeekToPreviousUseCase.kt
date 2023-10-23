@@ -5,13 +5,12 @@ import com.yes.core.domain.useCase.UseCase
 import com.yes.player.data.repository.PlayerRepository
 import kotlinx.coroutines.CoroutineDispatcher
 
-class PlayUseCase(
+class SeekToPreviousUseCase (
     dispatcher: CoroutineDispatcher,
     private val playerRepository: PlayerRepository
-): UseCase<Unit, Unit>(dispatcher) {
-    override suspend fun run(params: Unit?): DomainResult<Unit> {
-        playerRepository.play()
-        return DomainResult.Success(Unit)
-    }
-
+    ): UseCase<Unit, Unit>(dispatcher) {
+        override suspend fun run(params: Unit?): DomainResult<Unit> {
+            playerRepository.seekPrevious()
+            return DomainResult.Success(Unit)
+        }
 }

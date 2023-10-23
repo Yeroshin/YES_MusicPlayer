@@ -7,27 +7,39 @@ import androidx.lifecycle.viewModelScope
 import com.yes.core.domain.models.DomainResult
 import com.yes.core.presentation.BaseViewModel
 import com.yes.player.domain.usecase.PlayUseCase
+import com.yes.player.domain.usecase.SeekToNextUseCase
+import com.yes.player.domain.usecase.SeekToPreviousUseCase
 import com.yes.player.domain.usecase.SubscribeDurationCounterUseCase
 import com.yes.player.presentation.contract.PlayerContract.*
 import com.yes.player.presentation.mapper.MapperUI
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
     private val mapperUI: MapperUI,
     private val playUseCase: PlayUseCase,
-    private val subscribeDurationCounterUseCase: SubscribeDurationCounterUseCase
+    private val subscribeDurationCounterUseCase: SubscribeDurationCounterUseCase,
+    private val seekToNextUseCase: SeekToNextUseCase,
+    private val seekToPreviousUseCase: SeekToPreviousUseCase
 ) : BaseViewModel<Event, State, Effect>() {
+    private var job: Job? = null
+
     init {
-       // subscribePlaylist()
+        subscribeDurationCounter()
     }
-    private fun subscribePlaylist(){
+
+    private fun subscribePlayList() {
+
+    }
+
+    private fun subscribeDurationCounter() {
         viewModelScope.launch {
 
             val result = subscribeDurationCounterUseCase()
 
             when (result) {
                 is DomainResult.Success -> {
-                    result.data.collect{
+                    result.data.collect {
                         setState {
                             copy(
                                 playerState = PlayerState.Success(
@@ -37,6 +49,7 @@ class PlayerViewModel(
                         }
                     }
                 }
+
                 is DomainResult.Error -> TODO()
             }
 
@@ -57,11 +70,11 @@ class PlayerViewModel(
             }
 
             is Event.OnSeekToNext -> {
-
+                seekToNext()
             }
 
             is Event.OnSeekToPrevious -> {
-
+                seekToPrevious()
             }
 
             is Event.OnSeek -> {
@@ -71,21 +84,50 @@ class PlayerViewModel(
     }
 
     private fun play() {
-        playUseCase()
-        subscribePlaylist()
+        viewModelScope.launch {
+            val result = playUseCase()
+            when (result) {
+                is DomainResult.Success -> {}
+                is DomainResult.Error -> TODO()
+            }
+        }
+    }
+
+    private fun seekToNext() {
+        viewModelScope.launch {
+            val result = seekToNextUseCase()
+            when (result) {
+                is DomainResult.Success -> {}
+                is DomainResult.Error -> TODO()
+            }
+        }
+    }
+
+    private fun seekToPrevious() {
+        viewModelScope.launch {
+            val result = seekToPreviousUseCase()
+            when (result) {
+                is DomainResult.Success -> {}
+                is DomainResult.Error -> TODO()
+            }
+        }
     }
 
     class Factory(
         private val mapperUI: MapperUI,
         private val playSynchroUseCase: PlayUseCase,
-        private val subscribeDurationCounterUseCase: SubscribeDurationCounterUseCase
+        private val subscribeDurationCounterUseCase: SubscribeDurationCounterUseCase,
+        private val seekToNextUseCase: SeekToNextUseCase,
+        private val seekToPreviousUseCase: SeekToPreviousUseCase
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return PlayerViewModel(
                 mapperUI,
                 playSynchroUseCase,
-                subscribeDurationCounterUseCase
+                subscribeDurationCounterUseCase,
+                seekToNextUseCase,
+                seekToPreviousUseCase
             ) as T
         }
     }

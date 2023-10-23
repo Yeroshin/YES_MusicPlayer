@@ -18,6 +18,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
 
+
 private const val USER_PREFERENCES = "user_preferences"
 @Module
 internal class MainActivityModule(
@@ -49,10 +50,8 @@ internal class MainActivityModule(
             playerDependency
         )
     }
-    @Provides
-    fun providesCoroutineDispatcher(): CoroutineDispatcher {
-        return Dispatchers.IO
-    }
+
+
     @Provides
     fun providesEspressoIdlingResource(): EspressoIdlingResource? {
         return null

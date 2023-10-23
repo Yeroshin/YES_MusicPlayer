@@ -1,5 +1,6 @@
 package com.yes.trackdialogfeature.di.module
 
+import com.yes.core.di.IoDispatcher
 import com.yes.core.repository.data.dataSource.MediaDataStore
 import com.yes.core.repository.dataSource.SettingsSharedPreferences
 import com.yes.core.util.EspressoIdlingResource
@@ -75,7 +76,7 @@ class TrackDialogModule {
 
     @Provides
     fun providesGetMenuUseCase(
-        dispatcher: CoroutineDispatcher,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
         menuRepository: MenuRepositoryImpl,
         mediaRepository: MediaRepositoryImpl
     ): GetMenuUseCase {
@@ -97,7 +98,7 @@ class TrackDialogModule {
 
     @Provides
     fun providesSaveTracksToPlaylistUseCase(
-        dispatcher: CoroutineDispatcher,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
         mediaRepositoryImpl: MediaRepositoryImpl,
         playListRepository: IPlayListDao,
         settingsRepository: SettingsRepositoryImpl,
