@@ -94,11 +94,22 @@ class PlayerDataSource(
     fun pause() {
         controller.pause()
     }
-    fun getCurrentPosition():Long{
+
+    fun getCurrentPosition(): Long {
         return controller.currentPosition
     }
-    fun isPlaying():Boolean{
+
+    fun isPlaying(): Boolean {
         return controller.isPlaying
+    }
+
+    fun setTracks(items: List<MediaItem>) {
+       // controller.clearMediaItems()
+        controller.addMediaItems(items)
+        val tmp=controller.getMediaItemAt(0)
+        val tmp2=tmp
+        val tmp3=controller.getMediaItemCount()
+        val tmp4=tmp3
     }
 
 

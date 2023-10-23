@@ -7,21 +7,22 @@ import com.yes.core.domain.models.DomainResult
 import com.yes.core.presentation.BaseViewModel
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.playlistfeature.domain.usecase.DeleteTrackUseCase
+import com.yes.playlistfeature.domain.usecase.SetTracksToPlayerPlaylistUseCase
 
 import com.yes.playlistfeature.domain.usecase.SubscribeCurrentPlaylistTracksUseCase
 import com.yes.playlistfeature.presentation.contract.PlaylistContract
 import com.yes.playlistfeature.presentation.contract.PlaylistContract.State
 import com.yes.playlistfeature.presentation.contract.PlaylistContract.Effect
-import com.yes.playlistfeature.presentation.mapper.Mapper
+import com.yes.playlistfeature.presentation.mapper.MapperUI
 import com.yes.playlistfeature.presentation.model.TrackUI
 import kotlinx.coroutines.launch
-import java.util.ArrayDeque
 
 class PlaylistViewModel(
     private val subscribeCurrentPlaylistTracksUseCase: SubscribeCurrentPlaylistTracksUseCase,
-    private val mapper: Mapper,
+    private val mapperUI: MapperUI,
     private val espressoIdlingResource: EspressoIdlingResource?,
-    private val deleteTrackUseCase: DeleteTrackUseCase
+    private val deleteTrackUseCase: DeleteTrackUseCase,
+    private val setTracksToPlayerPlaylistUseCase: SetTracksToPlayerPlaylistUseCase
 ) : BaseViewModel<PlaylistContract.Event, State, Effect>() {
     init {
         subscribeTracks()
@@ -49,7 +50,7 @@ class PlaylistViewModel(
             }
             val result = deleteTrackUseCase(
                 DeleteTrackUseCase.Params(
-                    mapper.map(trackUI)
+                    mapperUI.map(trackUI)
                 )
 
             )
@@ -81,11 +82,16 @@ class PlaylistViewModel(
                 is DomainResult.Success -> {
 
                     playLists.data.collect {
+                        setTracksToPlayerPlaylistUseCase(
+                            SetTracksToPlayerPlaylistUseCase.Params(
+                                it
+                            )
+                        )
                         setState {
                             copy(
                                 playlistState = PlaylistContract.PlaylistState.Success(
                                     it.map { item ->
-                                        mapper.map(item)
+                                        mapperUI.map(item)
                                     }
                                 )
                             )
@@ -102,16 +108,18 @@ class PlaylistViewModel(
     class Factory(
         private val espressoIdlingResource: EspressoIdlingResource?,
         private val subscribeCurrentPlaylistTracksUseCase: SubscribeCurrentPlaylistTracksUseCase,
-        private val mapper: Mapper,
-        private val deleteTrackUseCase: DeleteTrackUseCase
+        private val mapperUI: MapperUI,
+        private val deleteTrackUseCase: DeleteTrackUseCase,
+        private val setTracksToPlayerPlaylistUseCase: SetTracksToPlayerPlaylistUseCase
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return PlaylistViewModel(
                 subscribeCurrentPlaylistTracksUseCase,
-                mapper,
+                mapperUI,
                 espressoIdlingResource,
-                deleteTrackUseCase
+                deleteTrackUseCase,
+                setTracksToPlayerPlaylistUseCase
                 ) as T
         }
     }

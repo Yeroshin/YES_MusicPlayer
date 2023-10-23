@@ -1,8 +1,12 @@
 package com.yes.playlistfeature.data.mapper
 
+
 import com.yes.core.repository.entity.TrackEntity
 import com.yes.playlistfeature.domain.entity.Track
-import com.yes.playlistfeature.presentation.model.TrackUI
+import androidx.media3.common.MediaItem
+
+
+
 
 class Mapper {
     fun map(track:TrackEntity):Track{
@@ -30,6 +34,17 @@ class Mapper {
             track.size,
             track.position
         )
+    }
+    fun mapToMediaItem(item:Track): MediaItem {
+       /* val mmd = MediaMetadata.Builder()
+            .setTitle("Example")
+            .setArtist("Artist name")
+            .setMediaUri("...".toUri())
+            .build()*/
+
+        return MediaItem.Builder()
+            .setUri(item.uri)
+                .build()
     }
 
 }

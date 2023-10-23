@@ -2,13 +2,17 @@ package com.yes.playlistfeature.di.module
 
 
 import com.yes.core.domain.repository.IPlayListDao
+import com.yes.core.repository.dataSource.PlayerDataSource
 import com.yes.core.repository.dataSource.SettingsDataStore
 import com.yes.core.util.EspressoIdlingResource
+import com.yes.playlistfeature.data.mapper.Mapper
 import com.yes.playlistfeature.data.repository.PlayListRepositoryImpl
+import com.yes.playlistfeature.data.repository.PlayerRepository
 import com.yes.playlistfeature.data.repository.SettingsRepositoryImpl
 import com.yes.playlistfeature.domain.usecase.DeleteTrackUseCase
+import com.yes.playlistfeature.domain.usecase.SetTracksToPlayerPlaylistUseCase
 import com.yes.playlistfeature.domain.usecase.SubscribeCurrentPlaylistTracksUseCase
-import com.yes.playlistfeature.presentation.mapper.Mapper
+import com.yes.playlistfeature.presentation.mapper.MapperUI
 import com.yes.playlistfeature.presentation.ui.Playlist
 import com.yes.playlistfeature.presentation.ui.PlaylistAdapter
 import com.yes.playlistfeature.presentation.vm.PlaylistViewModel
@@ -28,13 +32,13 @@ class PlayListModule {
     }
 
     @Provides
-    fun providesDataMapper(): com.yes.playlistfeature.data.mapper.Mapper {
-        return com.yes.playlistfeature.data.mapper.Mapper()
+    fun providesDataMapper(): Mapper {
+        return Mapper()
     }
 
     @Provides
     fun providesPlayListRepository(
-        mapper: com.yes.playlistfeature.data.mapper.Mapper,
+        mapper: Mapper,
         playListDao: IPlayListDao,
     ): PlayListRepositoryImpl {
         return PlayListRepositoryImpl(
@@ -44,8 +48,8 @@ class PlayListModule {
     }
 
     @Provides
-    fun providesMapper(): Mapper {
-        return Mapper()
+    fun providesMapperUI(): MapperUI {
+        return MapperUI()
     }
 
     @Provides
@@ -74,19 +78,39 @@ class PlayListModule {
             settingsRepository
         )
     }
-
+    @Provides
+    fun providesPlayerRepository(
+        mapper:Mapper,
+        playerDataSource: PlayerDataSource
+    ): PlayerRepository {
+        return PlayerRepository(
+            mapper,
+            playerDataSource
+        )
+    }
+    @Provides
+    fun providesSetTracksToPlayerPlaylistUseCase(
+        playerRepository: PlayerRepository,
+        ): SetTracksToPlayerPlaylistUseCase {
+        return SetTracksToPlayerPlaylistUseCase(
+            playerRepository
+        )
+    }
     @Provides
     fun providesPlaylistViewModelFactory(
         espressoIdlingResource: EspressoIdlingResource?,
         subscribeCurrentPlaylistTracksUseCase: SubscribeCurrentPlaylistTracksUseCase,
-        mapper: Mapper,
-        deleteTrackUseCase: DeleteTrackUseCase
+        mapperUI: MapperUI,
+        deleteTrackUseCase: DeleteTrackUseCase,
+        setTracksToPlayerPlaylistUseCase: SetTracksToPlayerPlaylistUseCase
+
     ): PlaylistViewModel.Factory {
         return PlaylistViewModel.Factory(
             espressoIdlingResource,
             subscribeCurrentPlaylistTracksUseCase,
-            mapper,
-            deleteTrackUseCase
+            mapperUI,
+            deleteTrackUseCase,
+            setTracksToPlayerPlaylistUseCase
         )
     }
 

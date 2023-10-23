@@ -20,9 +20,9 @@ class SubscribeCurrentPlaylistTracksUseCase(
         return DomainResult.Success(
             settingsRepository.subscribeCurrentPlaylistId().flatMapLatest {playlistId ->
                 playListRepositoryImpl.subscribeTracksWithPlaylistId(playlistId )
-                  /*  .map { tracks ->
+                    .map { tracks ->
                         tracks.sortedBy { it.position }
-                    }*/
+                    }
             }
         )
     }
