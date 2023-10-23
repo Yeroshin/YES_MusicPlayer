@@ -25,7 +25,15 @@ class PlayerRepository(
 
 
     suspend fun subscribeCurrentPosition()=flow {
-        playerDataSource.isPlaying.collect{
+        while (true) {
+            emit(
+                DurationCounter(
+                    playerDataSource.getCurrentPosition()
+                )
+            )
+            delay(1000)
+        }
+       /* playerDataSource.isPlaying.collect{
             while (it) {
                 emit(
                     DurationCounter(
@@ -34,7 +42,7 @@ class PlayerRepository(
                 )
                 delay(1000)
             }
-        }
+        }*/
 
     }
 

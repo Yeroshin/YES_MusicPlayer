@@ -83,8 +83,8 @@ class DataModule(
             corruptionHandler = ReplaceFileCorruptionHandler(
                 produceNewData = { emptyPreferences() }
             ),
-            migrations = listOf(SharedPreferencesMigration(context,USER_PREFERENCES)),
-            scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
+         //   migrations = listOf(SharedPreferencesMigration(context,USER_PREFERENCES)),
+          //  scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
             produceFile = { context.preferencesDataStoreFile(USER_PREFERENCES) }
         )
     }

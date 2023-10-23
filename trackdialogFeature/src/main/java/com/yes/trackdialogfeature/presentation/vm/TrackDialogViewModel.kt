@@ -93,7 +93,7 @@ open class TrackDialogViewModel(
                     dismiss()
                 }
 
-                else -> {
+                is DomainResult.Error -> {
 
                     setEffect {
                         Effect.UnknownException

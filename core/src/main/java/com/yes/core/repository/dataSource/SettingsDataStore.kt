@@ -6,7 +6,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 class SettingsDataStore(
     private val dataStore: DataStore<Preferences>
 ) {
@@ -14,11 +15,14 @@ class SettingsDataStore(
         val CURRENT_PLAYLIST_ID = longPreferencesKey("currentPlaylistId")
     }
 
-    fun subscribeCurrentPlaylistId(): Flow<Long> =
-        dataStore.data
-            .map { preferences ->
-                preferences[PreferencesKeys.CURRENT_PLAYLIST_ID] ?: 0
-            }
+    suspend fun subscribeCurrentPlaylistId(): Flow<Long> =
+        withContext(Dispatchers.IO){
+            dataStore.data
+                .map { preferences ->
+                    preferences[PreferencesKeys.CURRENT_PLAYLIST_ID] ?: 0
+                }
+        }
+
 
     suspend fun setCurrentPlaylistId(currentPlaylistId: Long) {
         dataStore.edit { preferences ->

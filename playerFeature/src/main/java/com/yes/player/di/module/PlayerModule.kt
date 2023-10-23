@@ -96,6 +96,7 @@ class PlayerModule {
             playerRepository
         )
     }
+
     @Provides
     fun providesSeekToPreviousUseCase(
         @MainDispatcher dispatcher: CoroutineDispatcher,
@@ -106,20 +107,36 @@ class PlayerModule {
             playerRepository
         )
     }
+
+    @Provides
+    fun providesSubscribeCurrentPlaylistUseCase(
+        @IoDispatcher dispatcher: CoroutineDispatcher,
+        playListRepositoryImpl: PlaylistRepositoryImpl,
+        settingsRepository: SettingsRepositoryImpl
+    ): SubscribeCurrentPlaylistUseCase {
+        return SubscribeCurrentPlaylistUseCase(
+            dispatcher,
+            playListRepositoryImpl,
+            settingsRepository
+        )
+    }
+
     @Provides
     fun providesPlayerViewModelFactory(
         mapperUI: MapperUI,
         playUseCase: PlayUseCase,
         subscribeDurationCounterUseCase: SubscribeDurationCounterUseCase,
         seekToNextUseCase: SeekToNextUseCase,
-        seekToPreviousUseCase: SeekToPreviousUseCase
+        seekToPreviousUseCase: SeekToPreviousUseCase,
+        subscribeCurrentPlaylistUseCase: SubscribeCurrentPlaylistUseCase
     ): PlayerViewModel.Factory {
         return PlayerViewModel.Factory(
             mapperUI,
             playUseCase,
             subscribeDurationCounterUseCase,
             seekToNextUseCase,
-            seekToPreviousUseCase
+            seekToPreviousUseCase,
+            subscribeCurrentPlaylistUseCase
         )
     }
 

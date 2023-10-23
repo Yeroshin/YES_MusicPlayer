@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class SettingsRepositoryImpl(
     private val settings: SettingsDataStore
 ) : SettingsRepository {
-    override fun subscribeCurrentPlayListId(): Flow<Long> {
+    override suspend fun subscribeCurrentPlayListId(): Flow<Long> {
         return settings.subscribeCurrentPlaylistId()
 
     }

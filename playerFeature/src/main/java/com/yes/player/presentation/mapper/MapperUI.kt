@@ -1,12 +1,18 @@
 package com.yes.player.presentation.mapper
 
 import com.yes.player.domain.model.DurationCounter
+import com.yes.player.domain.model.Playlist
 import com.yes.player.presentation.model.InfoUI
 
 class MapperUI {
     fun map(durationCounter: DurationCounter): InfoUI{
         return InfoUI(
             durationCounter = formatTime(durationCounter.data)
+        )
+    }
+    fun map(playlist: Playlist): InfoUI{
+        return InfoUI(
+            playListName = playlist.name
         )
     }
     private fun formatTime(milliseconds: Long): String {
