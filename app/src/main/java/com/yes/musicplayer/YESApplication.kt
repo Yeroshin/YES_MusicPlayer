@@ -8,29 +8,16 @@ import com.yes.musicplayer.di.components.DaggerMainActivityComponent
 import com.yes.musicplayer.di.components.MainActivityComponent
 import com.yes.musicplayer.di.module.MainActivityModule
 import com.yes.musicplayer.presentation.MainActivity
-import com.yes.player.presentation.MusicService
+import com.yes.core.presentation.MusicService
 
-class YESApplication: Application(),
-    MainActivity.DependencyResolver,
-MusicService.DependencyResolver{
-
-
-    private lateinit var musicServiceDependency: MusicService.Dependency
-    private lateinit var mainActivityComponent: MainActivityComponent
+class YESApplication : Application(),
+    MainActivity.DependencyResolver {
     override fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent {
-        mainActivityComponent=DaggerMainActivityComponent
+        return DaggerMainActivityComponent
             .builder()
             .mainActivityModule(MainActivityModule(activity))
-           // .trackDialogModule(TrackDialogModule())
+            // .trackDialogModule(TrackDialogModule())
             .dataModule(DataModule(activity))
             .build()
-        return mainActivityComponent
     }
-    override fun getMusicServiceComponent(): MusicService.Dependency{
-        return mainActivityComponent.getMusicServiceDependency()
-    }
-
-
-
-
 }

@@ -37,7 +37,7 @@
                     android:textSize="@dimen/font_size_regular" />
 
                 <TextView
-                    android:id="@+id/dialog_title"
+                    android:id="@+id/playList_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
@@ -140,7 +140,7 @@
                 android:thumb="@android:color/background_dark" />
 
             <TextView
-                android:id="@+id/duration_info"
+                android:id="@+id/duration"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="4"

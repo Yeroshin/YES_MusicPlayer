@@ -1,33 +1,16 @@
 package com.yes.player.data.mapper
 
-import com.yes.core.repository.entity.TrackEntity
-import com.yes.player.domain.model.Track
+
+
+import com.yes.core.repository.entity.PlayListEntity
+import com.yes.player.domain.model.Playlist
 
 class Mapper {
-    fun map(track: TrackEntity): Track {
-        return Track(
-            track.id?:0,
-            track.id?:0,
-            track.artist,
-            track.title,
-            track.uri,
-            track.duration,
-            track.album,
-            track.size,
-            track.position
+    fun map(playlist: PlayListEntity): Playlist {
+        return Playlist(
+            playlist.id?:0,
+            playlist.name,
         )
     }
-    fun map(track:Track): TrackEntity {
-        return TrackEntity(
-            track.id,
-            track.id,
-            track.artist,
-            track.title,
-            track.uri,
-            track.duration,
-            track.album,
-            track.size,
-            track.position
-        )
-    }
+
 }

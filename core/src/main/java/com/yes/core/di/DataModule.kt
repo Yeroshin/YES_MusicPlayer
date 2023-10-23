@@ -14,6 +14,7 @@ import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.repository.data.dataSource.MediaDataStore
 import com.yes.core.repository.dataSource.SettingsSharedPreferences
 import com.yes.core.repository.dataSource.PlayListDataBase
+import com.yes.core.repository.dataSource.PlayerDataSource
 import com.yes.core.repository.dataSource.SettingsDataStore
 import dagger.Module
 import dagger.Provides
@@ -83,6 +84,14 @@ class DataModule(
     ): SettingsDataStore {
         return SettingsDataStore(
             dataStore
+        )
+    }
+    @Provides
+    fun providesPlayerDataSource(
+        context: Context
+    ): PlayerDataSource {
+        return PlayerDataSource(
+            context
         )
     }
 

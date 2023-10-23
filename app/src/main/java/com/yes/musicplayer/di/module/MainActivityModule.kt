@@ -8,6 +8,7 @@ import com.yes.core.util.EspressoIdlingResource
 import com.yes.musicplayer.presentation.MainActivity
 import com.yes.musicplayer.presentation.UniversalFragmentAdapter
 import com.yes.player.presentation.PlayerControls
+import com.yes.player.presentation.ui.PlayerFragment
 import com.yes.playlistfeature.presentation.ui.Playlist
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 
@@ -38,12 +39,14 @@ internal class MainActivityModule(
     fun provideMainActivityFragmentFactory(
         trackDialogDependency: TrackDialog.Dependency,
         playListDialogDependency: PlayListDialog.Dependency,
-        playlistDependency:Playlist.Dependency
+        playlistDependency:Playlist.Dependency,
+        playerDependency:PlayerFragment.Dependency
     ): FragmentFactory {
         return MainActivity.MainActivityFragmentFactory(
             trackDialogDependency,
             playListDialogDependency,
-            playlistDependency
+            playlistDependency,
+            playerDependency
         )
     }
     @Provides

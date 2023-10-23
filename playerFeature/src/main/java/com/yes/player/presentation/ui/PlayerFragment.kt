@@ -9,6 +9,10 @@ import android.widget.Toast
 
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
@@ -19,73 +23,28 @@ import androidx.viewbinding.ViewBinding
 import com.google.common.util.concurrent.ListenableFuture
 
 import com.google.common.util.concurrent.MoreExecutors
+import com.yes.core.presentation.BaseViewModel
 import com.yes.player.databinding.PlayerBinding
-import com.yes.player.presentation.MusicService
+import com.yes.core.presentation.MusicService
+import com.yes.player.presentation.model.InfoUI
+import com.yes.player.presentation.contract.PlayerContract
+import com.yes.player.presentation.vm.PlayerViewModel
+import kotlinx.coroutines.launch
 
 
-class PlayerFragment : Fragment() {
-    private lateinit var controllerFuture: ListenableFuture<MediaController>
-    private val controller: MediaController?
-        get() = if (controllerFuture.isDone) controllerFuture.get() else null
+class PlayerFragment(
+    dependency: Dependency
+) : Fragment() {
 
 
-    override fun onStart() {
-        super.onStart()
-        initializeController()
-
-    }
-    private fun initializeController() {
-        controllerFuture =
-            MediaController.Builder(
-                requireContext(),
-                SessionToken(
-                    requireContext(),
-                    ComponentName(requireContext(),
-                        MusicService::class.java
-                    )
-                )
-            )
-                .buildAsync()
-        controllerFuture.addListener({ setController() }, MoreExecutors.directExecutor())
-    }
-    private fun setController() {
-        val controller = this.controller ?: return
-        controller.addListener(
-            object : Player.Listener {
-                override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-                    Toast.makeText(context, "MediaItemTransition", Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onTracksChanged(tracks: Tracks) {
-                    Toast.makeText(context, "TracksChanged", Toast.LENGTH_SHORT).show()
-                }
-                override fun onPlaybackStateChanged(playbackState: Int) {
-                    // Обработка изменений состояния проигрывания
-                    when (playbackState) {
-                        Player.STATE_IDLE -> {
-                            Toast.makeText(context, "idle", Toast.LENGTH_SHORT).show()
-                        }
-                        Player.STATE_BUFFERING -> {
-                            Toast.makeText(context, "buffering", Toast.LENGTH_SHORT).show()
-                        }
-                        Player.STATE_READY -> {
-                            Toast.makeText(context, "ready", Toast.LENGTH_SHORT).show()
-                        }
-                        Player.STATE_ENDED -> {
-                            Toast.makeText(context, "ended", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-
-                override fun onPlayerError(error: PlaybackException) {
-                    Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
-                }
-            }
-        )
-    }
     private lateinit var binding: ViewBinding
     private val binder by lazy {
         binding as PlayerBinding
+    }
+    private val viewModel: BaseViewModel<PlayerContract.Event,
+            PlayerContract.State,
+            PlayerContract.Effect> by viewModels {
+        dependency.factory
     }
 
 
@@ -95,28 +54,87 @@ class PlayerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = PlayerBinding.inflate(inflater, container, false)
-        //  super.onCreateView(inflater, container, savedInstanceState)
-        binder.btnPlay.setOnClickListener {
-            play()
-        }
-        binder.btnRew.setOnClickListener {
-            seekToPrevious()
-        }
-        binder.btnFwd.setOnClickListener {
-            next()
-        }
+
         return binder.root
     }
-    private fun seekToPrevious(){
-        controller?.seekToPreviousMediaItem()
-    }
-    fun next(){
-        controller?.seekToNextMediaItem()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUpView()
+        observeViewModel()
     }
 
-    private fun play() {
-        val tmp=controller?.currentTracks
-        controller?.play()
+    private fun observeViewModel() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect {
+                    renderUiState(it)
+                }
+            }
+        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.effect.collect {
+                    when (it) {
+                        is PlayerContract.Effect.UnknownException -> {
+                            showError(com.yes.coreui.R.string.UnknownException)
+                        }
+                    }
+                }
+            }
+        }
     }
 
+    private fun setUpView() {
+        binder.btnPlay.setOnClickListener {
+            viewModel.setEvent(PlayerContract.Event.OnPlay)
+        }
+        binder.btnRew.setOnClickListener {
+            viewModel.setEvent(PlayerContract.Event.OnSeekToPrevious)
+        }
+        binder.btnFwd.setOnClickListener {
+            viewModel.setEvent(PlayerContract.Event.OnSeekToNext)
+        }
+    }
+
+
+    private fun renderUiState(state: PlayerContract.State) {
+        when (state.playerState) {
+            is PlayerContract.PlayerState.Success -> {
+                dataLoaded(
+                    state.playerState.info,
+                )
+            }
+
+            is PlayerContract.PlayerState.Loading -> {
+                showLoading()
+            }
+
+            is PlayerContract.PlayerState.Idle -> {
+                idleView()
+            }
+
+        }
+    }
+
+    private fun dataLoaded(info: InfoUI) {
+        binder.playListName.text = info.playListName
+        binder.trackTitle.text = info.trackTitle
+        binder.durationCounter.text = info.durationCounter
+        binder.duration.text = info.duration
+    }
+
+    private fun idleView() {
+    }
+
+    private fun showLoading() {
+    }
+
+    private fun showError(message: Int) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    class Dependency(
+        val factory: PlayerViewModel.Factory,
+    )
 }

@@ -7,7 +7,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.yes.core.di.DataModule
 import com.yes.musicplayer.di.module.MainActivityModule
 import com.yes.player.di.module.PlayerModule
-import com.yes.player.presentation.MusicService
+import com.yes.core.presentation.MusicService
+import com.yes.player.presentation.ui.PlayerFragment
 import com.yes.playlistdialogfeature.di.module.PlayListDialogModule
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
 import com.yes.playlistfeature.di.module.PlayListModule
@@ -36,5 +37,5 @@ interface MainActivityComponent {
     fun getTrackDialogFeatureDependency(): TrackDialog.Dependency
     fun getPlayListDialogFeatureDependency(): PlayListDialog.Dependency
     fun getPlaylistFeatureDependency(): Playlist.Dependency
-    fun getMusicServiceDependency(): MusicService.Dependency
+    fun getPlayerDependency(): PlayerFragment.Dependency
 }

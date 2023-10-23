@@ -16,10 +16,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import com.yes.musicplayer.YESApplication
 import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.MainActivityComponent
-import com.yes.player.presentation.PlayerControls
 import com.yes.player.presentation.ui.PlayerFragment
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
 import com.yes.playlistfeature.presentation.ui.Playlist
@@ -155,13 +153,14 @@ class MainActivity :
     class MainActivityFragmentFactory(
         private val trackDialogDependency: TrackDialog.Dependency,
         private val playListDialogDependency: PlayListDialog.Dependency,
-        private val playlistDependency:Playlist.Dependency
+        private val playlistDependency:Playlist.Dependency,
+        private val playerDependency:PlayerFragment.Dependency
         ) : FragmentFactory() {
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
             return when (loadFragmentClass(classLoader, className)) {
                 PlayListDialog::class.java -> PlayListDialog(playListDialogDependency)
                 TrackDialog::class.java -> TrackDialog(trackDialogDependency)
-                PlayerFragment::class.java -> PlayerFragment()
+                PlayerFragment::class.java -> PlayerFragment(playerDependency)
                 Playlist::class.java -> Playlist(playlistDependency)
 
                 else -> super.instantiate(classLoader, className)

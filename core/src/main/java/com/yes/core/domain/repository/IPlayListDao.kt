@@ -14,8 +14,8 @@ interface IPlayListDao {
     @Insert
     fun savePlaylist(playlist: PlayListEntity): Long
 
-    @Query("SELECT * FROM playlists WHERE name =:playlistName")
-    fun getPlaylist(playlistName: String): PlayListEntity
+    @Query("SELECT * FROM playlists WHERE id =:id")
+    fun getPlaylist(id: Long): PlayListEntity
 
     @Query("SELECT * FROM playlists")
     fun subscribePlaylists(): Flow<List<PlayListEntity>>

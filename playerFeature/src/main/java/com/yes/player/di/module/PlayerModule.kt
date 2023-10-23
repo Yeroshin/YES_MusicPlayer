@@ -1,12 +1,18 @@
 package com.yes.player.di.module
 
 import com.yes.core.domain.repository.IPlayListDao
+import com.yes.core.repository.dataSource.PlayerDataSource
 import com.yes.core.repository.dataSource.SettingsDataStore
 import com.yes.player.data.mapper.Mapper
+import com.yes.player.data.repository.PlayerRepository
 import com.yes.player.data.repository.PlaylistRepositoryImpl
 import com.yes.player.data.repository.SettingsRepositoryImpl
-import com.yes.player.domain.usecase.SubscribeCurrentPlaylistTracksUseCase
-import com.yes.player.presentation.MusicService
+import com.yes.player.domain.usecase.PlayUseCase
+import com.yes.player.domain.usecase.SubscribeCurrentPlaylistUseCase
+import com.yes.player.domain.usecase.SubscribeDurationCounterUseCase
+import com.yes.player.presentation.mapper.MapperUI
+import com.yes.player.presentation.ui.PlayerFragment
+import com.yes.player.presentation.vm.PlayerViewModel
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
@@ -27,10 +33,6 @@ class PlayerModule {
         return Mapper()
     }
 
-    @Provides
-    fun providesServiceMapper(): com.yes.player.presentation.mapper.Mapper {
-        return com.yes.player.presentation.mapper.Mapper()
-    }
 
     @Provides
     fun providesPlayListRepository(
@@ -43,27 +45,56 @@ class PlayerModule {
         )
     }
 
+
     @Provides
-    fun providesSubscribeCurrentPlaylistTracksUseCase(
+    fun providesSubscribeDurationCounterUseCase(
         dispatcher: CoroutineDispatcher,
-        playListRepositoryImpl: PlaylistRepositoryImpl,
-        settingsRepository: SettingsRepositoryImpl
-    ): SubscribeCurrentPlaylistTracksUseCase {
-        return SubscribeCurrentPlaylistTracksUseCase(
+        playerRepository: PlayerRepository
+    ): SubscribeDurationCounterUseCase {
+        return SubscribeDurationCounterUseCase(
             dispatcher,
-            playListRepositoryImpl,
-            settingsRepository
+            playerRepository
+        )
+    }
+    @Provides
+    fun providesPlayerRepository(
+        playerDataSource: PlayerDataSource
+    ): PlayerRepository{
+        return PlayerRepository(
+            playerDataSource
+        )
+    }
+    @Provides
+    fun providesPlayUseCase(
+        playerRepository: PlayerRepository
+    ): PlayUseCase {
+        return PlayUseCase(
+            playerRepository
+        )
+    }
+    @Provides
+    fun providesMapperUI(): MapperUI {
+        return MapperUI()
+    }
+    @Provides
+    fun providesPlayerViewModelFactory(
+        mapperUI: MapperUI,
+        playUseCase: PlayUseCase,
+        subscribeDurationCounterUseCase: SubscribeDurationCounterUseCase
+    ): PlayerViewModel.Factory {
+        return PlayerViewModel.Factory(
+            mapperUI,
+            playUseCase,
+            subscribeDurationCounterUseCase
         )
     }
 
     @Provides
     fun providesDependency(
-        mapper: com.yes.player.presentation.mapper.Mapper,
-        subscribeCurrentPlaylistTracksUseCase: SubscribeCurrentPlaylistTracksUseCase
-    ): MusicService.Dependency {
-        return MusicService.Dependency(
-            mapper,
-            subscribeCurrentPlaylistTracksUseCase
+        factory: PlayerViewModel.Factory,
+    ): PlayerFragment.Dependency {
+        return PlayerFragment.Dependency(
+            factory
         )
     }
 }
