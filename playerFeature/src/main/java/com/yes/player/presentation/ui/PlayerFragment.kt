@@ -106,7 +106,7 @@ class PlayerFragment(
     }
 
     private fun dataLoaded(info: InfoUI) {
-        binder.playListName.text = info.playListName
+        info.playListName?.let {  binder.playListName.text = info.playListName}
         binder.trackTitle.text = info.trackTitle
         binder.durationCounter.text = info.durationCounter
         binder.duration.text = info.duration
