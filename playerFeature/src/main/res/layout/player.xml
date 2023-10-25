@@ -66,9 +66,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
-                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:fontFamily="@font/a_lcdnova_allfont_ru"
                     android:gravity="center_vertical"
+                    android:ellipsize="marquee"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:scrollHorizontally="true"
                     android:singleLine="true"

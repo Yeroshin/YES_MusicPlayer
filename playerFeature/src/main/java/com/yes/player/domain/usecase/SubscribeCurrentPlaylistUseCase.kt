@@ -9,10 +9,11 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class SubscribeCurrentPlaylistUseCase(
-    dispatcher: CoroutineDispatcher,
+    private val dispatcher: CoroutineDispatcher,
     private val playListRepositoryImpl: PlaylistRepositoryImpl,
     private val settingsRepository: SettingsRepositoryImpl
 ) : UseCase<Any, Flow<Playlist>>(dispatcher) {
@@ -22,6 +23,7 @@ class SubscribeCurrentPlaylistUseCase(
                 .map { playlistId ->
                     playListRepositoryImpl.getPlaylist(playlistId)
                 }
+                .flowOn(dispatcher)
         )
     }
 }

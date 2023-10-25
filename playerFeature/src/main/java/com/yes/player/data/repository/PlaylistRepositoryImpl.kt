@@ -13,13 +13,10 @@ class PlaylistRepositoryImpl (
     private val mapper: Mapper,
     private val playListDao: IPlayListDao,
 ){
-    suspend fun getPlaylist(playlistId: Long): Playlist {
-        return withContext(Dispatchers.IO){
-            mapper.map(
+    fun getPlaylist(playlistId: Long): Playlist {
+       return  mapper.map(
                 playListDao.getPlaylist(playlistId)
             )
-        }
-
-
     }
+
 }

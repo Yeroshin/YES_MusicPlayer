@@ -10,7 +10,7 @@ class PlayerRepository(
     private val playerDataSource: PlayerDataSource
 ) {
     fun setTracks(tracks: List<Track>) {
-        playerDataSource.clearTracks()
+       // playerDataSource.clearTracks()
         playerDataSource.setTracks(
             tracks.map {
                 mapper.mapToMediaItem(it)

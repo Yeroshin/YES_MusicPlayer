@@ -7,15 +7,12 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.musicplayer.presentation.MainActivity
 import com.yes.musicplayer.presentation.UniversalFragmentAdapter
-import com.yes.player.presentation.PlayerControls
 import com.yes.player.presentation.ui.PlayerFragment
 import com.yes.playlistfeature.presentation.ui.Playlist
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 
 import dagger.Module
 import dagger.Provides
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
 
 
@@ -25,7 +22,7 @@ internal class MainActivityModule(
     private val activity: FragmentActivity
 ) {
 
-    @Provides
+  /*  @Provides
     fun provideFragment(
         fragmentFactory: FragmentFactory
     ): Fragment {
@@ -34,7 +31,7 @@ internal class MainActivityModule(
             PlayerControls::class.java.name
         )
        // return PlayerFragment()
-    }
+    }*/
     
     @Provides
     fun provideMainActivityFragmentFactory(

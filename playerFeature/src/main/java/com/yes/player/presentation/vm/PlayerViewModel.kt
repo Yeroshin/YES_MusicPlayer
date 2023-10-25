@@ -10,6 +10,7 @@ import com.yes.player.domain.usecase.PlayUseCase
 import com.yes.player.domain.usecase.SeekToNextUseCase
 import com.yes.player.domain.usecase.SeekToPreviousUseCase
 import com.yes.player.domain.usecase.SubscribeCurrentPlaylistUseCase
+import com.yes.player.domain.usecase.SubscribeCurrentTrackInfoUseCase
 import com.yes.player.domain.usecase.SubscribeDurationCounterUseCase
 import com.yes.player.presentation.contract.PlayerContract.*
 import com.yes.player.presentation.mapper.MapperUI
@@ -22,15 +23,37 @@ class PlayerViewModel(
     private val subscribeDurationCounterUseCase: SubscribeDurationCounterUseCase,
     private val seekToNextUseCase: SeekToNextUseCase,
     private val seekToPreviousUseCase: SeekToPreviousUseCase,
-    private val subscribeCurrentPlaylistUseCase: SubscribeCurrentPlaylistUseCase
+    private val subscribeCurrentPlaylistUseCase: SubscribeCurrentPlaylistUseCase,
+    private val subscribeCurrentTrackInfoUseCase: SubscribeCurrentTrackInfoUseCase
 ) : BaseViewModel<Event, State, Effect>() {
-    private var job: Job? = null
 
     init {
-        subscribeDurationCounter()
+       subscribeDurationCounter()
         subscribeCurrentPlaylist()
+        subscribeCurrentTrack()
     }
+private fun subscribeCurrentTrack(){
+    viewModelScope.launch {
 
+        when (val result = subscribeCurrentTrackInfoUseCase()) {
+            is DomainResult.Success -> {
+                result.data.collect {
+                    setState {
+                        copy(
+                            playerState = PlayerState.Success(
+                                mapperUI.map(it)
+                            )
+                        )
+                    }
+                }
+            }
+
+            is DomainResult.Error -> setEffect {
+                Effect.UnknownException
+            }
+        }
+    }
+}
     private fun subscribeCurrentPlaylist() {
         viewModelScope.launch {
 
@@ -47,7 +70,9 @@ class PlayerViewModel(
                     }
                 }
 
-                is DomainResult.Error -> TODO()
+                is DomainResult.Error -> setEffect {
+                    Effect.UnknownException
+                }
             }
         }
     }
@@ -68,7 +93,9 @@ class PlayerViewModel(
                     }
                 }
 
-                is DomainResult.Error -> TODO()
+                is DomainResult.Error -> setEffect {
+                    Effect.UnknownException
+                }
             }
         }
     }
@@ -104,7 +131,9 @@ class PlayerViewModel(
             val result = playUseCase()
             when (result) {
                 is DomainResult.Success -> {}
-                is DomainResult.Error -> TODO()
+                is DomainResult.Error -> setEffect {
+                    Effect.UnknownException
+                }
             }
         }
     }
@@ -114,7 +143,9 @@ class PlayerViewModel(
             val result = seekToNextUseCase()
             when (result) {
                 is DomainResult.Success -> {}
-                is DomainResult.Error -> TODO()
+                is DomainResult.Error -> setEffect {
+                    Effect.UnknownException
+                }
             }
         }
     }
@@ -124,7 +155,9 @@ class PlayerViewModel(
             val result = seekToPreviousUseCase()
             when (result) {
                 is DomainResult.Success -> {}
-                is DomainResult.Error -> TODO()
+                is DomainResult.Error -> setEffect {
+                    Effect.UnknownException
+                }
             }
         }
     }
@@ -135,7 +168,8 @@ class PlayerViewModel(
         private val subscribeDurationCounterUseCase: SubscribeDurationCounterUseCase,
         private val seekToNextUseCase: SeekToNextUseCase,
         private val seekToPreviousUseCase: SeekToPreviousUseCase,
-        private val subscribeCurrentPlaylistUseCase: SubscribeCurrentPlaylistUseCase
+        private val subscribeCurrentPlaylistUseCase: SubscribeCurrentPlaylistUseCase,
+        private val subscribeCurrentTrackInfoUseCase: SubscribeCurrentTrackInfoUseCase
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
@@ -145,7 +179,8 @@ class PlayerViewModel(
                 subscribeDurationCounterUseCase,
                 seekToNextUseCase,
                 seekToPreviousUseCase,
-                subscribeCurrentPlaylistUseCase
+                subscribeCurrentPlaylistUseCase,
+                subscribeCurrentTrackInfoUseCase
             ) as T
         }
     }

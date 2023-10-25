@@ -1,6 +1,7 @@
 package com.yes.player.presentation.mapper
 
 import com.yes.player.domain.model.DurationCounter
+import com.yes.player.domain.model.MediaInfo
 import com.yes.player.domain.model.Playlist
 import com.yes.player.presentation.model.InfoUI
 
@@ -13,6 +14,13 @@ class MapperUI {
     fun map(playlist: Playlist): InfoUI{
         return InfoUI(
             playListName = playlist.name
+
+        )
+    }
+    fun map(mediaInfo: MediaInfo): InfoUI{
+        return InfoUI(
+            trackTitle = mediaInfo.artist?.let { artist ->
+                artist+mediaInfo.title?.let { " - $it" } } ?: mediaInfo.title
         )
     }
     private fun formatTime(milliseconds: Long): String {

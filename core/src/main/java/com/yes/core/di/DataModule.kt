@@ -10,6 +10,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.repository.data.dataSource.MediaDataStore
 import com.yes.core.repository.dataSource.SettingsSharedPreferences
@@ -47,15 +49,27 @@ class DataModule(
     fun providesDatabase(
         context: Context
     ): PlayListDataBase {
-        return Room.databaseBuilder(
+      /*  return Room.databaseBuilder(
             context,
             PlayListDataBase::class.java,
             "your_database_name"
-        ).build()
+        )
+            .addCallback(object : RoomDatabase.Callback() {
+                override fun onCreate(db: SupportSQLiteDatabase) {
+                    super.onCreate(db)
+                    // Добавление записи при первом создании базы данных
+                    // Например:
+                    val myDao = db.playListDao()
+                     val playlist = Playlist(1, "Your playlist name")
+                     playListDao.insert(playlist)
+                }
+            })
+            .build()*/
         /* return Room.inMemoryDatabaseBuilder(
              context,
              PlayListDataBase::class.java,
          ).build()*/
+        return PlayListDataBase .getInstance(context)
     }
 
     @Singleton

@@ -23,8 +23,6 @@ class PlayerContract {
     sealed class PlayerState {
         data class Success(val info: InfoUI):PlayerState()
         data object Idle : PlayerState()
-        data object Loading : PlayerState()
-
     }
 
     sealed class Effect : UiEffect {

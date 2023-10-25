@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.widget.Toast
 import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.Tracks
@@ -13,13 +14,15 @@ import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 import com.yes.core.presentation.MusicService
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class PlayerDataSource(
     private val context: Context
 ) {
-    private lateinit var controllerFuture: ListenableFuture<androidx.media3.session.MediaController>
+    private lateinit var controllerFuture: ListenableFuture<MediaController>
     private val controller: MediaController
         get() = controllerFuture.get()
 
@@ -40,12 +43,27 @@ class PlayerDataSource(
                 )
             )
                 .buildAsync()
-        controllerFuture.addListener({ setController() }, MoreExecutors.directExecutor())
+        controllerFuture.addListener({ setController(controllerFuture.get()) }, MoreExecutors.directExecutor())
+        //////////////////
+
+
     }
+
     private val _isPlaying = MutableStateFlow(false)
     val isPlaying: StateFlow<Boolean>
         get() = _isPlaying
-    private fun setController() {
+
+    private val _mediaMetadataFlow: MutableStateFlow<MediaMetadata> = MutableStateFlow(
+        MediaMetadata.Builder()
+          /*  .setDisplayTitle("Your title here")
+            .setArtist("Your artist name")*/
+            .build()
+    )
+    private val mediaMetadataFlow = _mediaMetadataFlow.asStateFlow()
+
+
+
+    private fun setController(controller: MediaController) {
         controller.addListener(
             object : Player.Listener {
                 override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
@@ -57,6 +75,7 @@ class PlayerDataSource(
                 }
 
                 override fun onPlaybackStateChanged(playbackState: Int) {
+
                     // Обработка изменений состояния проигрывания
                     when (playbackState) {
                         Player.STATE_IDLE -> {
@@ -81,6 +100,12 @@ class PlayerDataSource(
                 override fun onPlayerError(error: PlaybackException) {
                     Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
                 }
+
+                override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
+                    //TODO
+                    _mediaMetadataFlow.value=mediaMetadata
+                    Toast.makeText(context, "MediaMetadataChanged", Toast.LENGTH_SHORT).show()
+                }
             }
         )
     }
@@ -94,6 +119,7 @@ class PlayerDataSource(
     }
 
     fun play() {
+       // controller.prepare()
         controller.play()
     }
 
@@ -110,10 +136,11 @@ class PlayerDataSource(
     }
 
     fun setTracks(items: List<MediaItem>) {
-        controller.addMediaItems(items)
+        controller.setMediaItems(items)
     }
-    fun clearTracks(){
-        controller.clearMediaItems()
+
+    fun subscribeCurrentMediaMetadata(): Flow<MediaMetadata> {
+        return mediaMetadataFlow
     }
 
 

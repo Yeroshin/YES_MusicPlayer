@@ -13,6 +13,7 @@ import com.yes.player.domain.usecase.PlayUseCase
 import com.yes.player.domain.usecase.SeekToNextUseCase
 import com.yes.player.domain.usecase.SeekToPreviousUseCase
 import com.yes.player.domain.usecase.SubscribeCurrentPlaylistUseCase
+import com.yes.player.domain.usecase.SubscribeCurrentTrackInfoUseCase
 import com.yes.player.domain.usecase.SubscribeDurationCounterUseCase
 import com.yes.player.presentation.mapper.MapperUI
 import com.yes.player.presentation.ui.PlayerFragment
@@ -63,10 +64,12 @@ class PlayerModule {
 
     @Provides
     fun providesPlayerRepository(
-        playerDataSource: PlayerDataSource
+        playerDataSource: PlayerDataSource,
+        mapper: Mapper
     ): PlayerRepository {
         return PlayerRepository(
-            playerDataSource
+            playerDataSource,
+            mapper
         )
     }
 
@@ -120,6 +123,16 @@ class PlayerModule {
             settingsRepository
         )
     }
+    @Provides
+    fun providesSubscribeCurrentTrackInfoUseCase(
+        @IoDispatcher dispatcher: CoroutineDispatcher,
+        playerRepository: PlayerRepository
+    ): SubscribeCurrentTrackInfoUseCase {
+        return SubscribeCurrentTrackInfoUseCase(
+            dispatcher,
+            playerRepository
+        )
+    }
 
     @Provides
     fun providesPlayerViewModelFactory(
@@ -128,7 +141,8 @@ class PlayerModule {
         subscribeDurationCounterUseCase: SubscribeDurationCounterUseCase,
         seekToNextUseCase: SeekToNextUseCase,
         seekToPreviousUseCase: SeekToPreviousUseCase,
-        subscribeCurrentPlaylistUseCase: SubscribeCurrentPlaylistUseCase
+        subscribeCurrentPlaylistUseCase: SubscribeCurrentPlaylistUseCase,
+        subscribeCurrentTrackInfoUseCase: SubscribeCurrentTrackInfoUseCase
     ): PlayerViewModel.Factory {
         return PlayerViewModel.Factory(
             mapperUI,
@@ -136,7 +150,8 @@ class PlayerModule {
             subscribeDurationCounterUseCase,
             seekToNextUseCase,
             seekToPreviousUseCase,
-            subscribeCurrentPlaylistUseCase
+            subscribeCurrentPlaylistUseCase,
+            subscribeCurrentTrackInfoUseCase
         )
     }
 

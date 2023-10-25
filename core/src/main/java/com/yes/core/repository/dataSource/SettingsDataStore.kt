@@ -16,12 +16,12 @@ class SettingsDataStore(
     }
 
     suspend fun subscribeCurrentPlaylistId(): Flow<Long> =
-        withContext(Dispatchers.IO){
+      //  withContext(Dispatchers.IO){
             dataStore.data
                 .map { preferences ->
-                    preferences[PreferencesKeys.CURRENT_PLAYLIST_ID] ?: 0
+                    preferences[PreferencesKeys.CURRENT_PLAYLIST_ID] ?: 1
                 }
-        }
+       // }
 
 
     suspend fun setCurrentPlaylistId(currentPlaylistId: Long) {

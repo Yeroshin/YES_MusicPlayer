@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface IPlayListDao {
+    @Query("SELECT COUNT(*) FROM playlists")
+    fun getPlaylistCount(): Int
     @Insert
     fun savePlaylist(playlist: PlayListEntity): Long
 

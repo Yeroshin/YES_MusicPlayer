@@ -31,7 +31,7 @@ import javax.inject.Singleton
 )
 interface MainActivityComponent {
 
-    fun getPlayerFragment(): Fragment
+  //  fun getPlayerFragment(): Fragment
     fun getFragmentAdapter(): FragmentStateAdapter
     fun getFragmentFactory(): FragmentFactory
     fun getTrackDialogFeatureDependency(): TrackDialog.Dependency
