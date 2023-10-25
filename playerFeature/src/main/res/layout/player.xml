@@ -25,6 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
+                android:descendantFocusability="blocksDescendants"
                 android:orientation="vertical">
 
                 <TextView
@@ -43,9 +44,12 @@
 
                     android:fontFamily="@font/a_lcdnova_allfont_ru"
                     android:gravity="center_vertical"
+
+                    android:focusable="true"
+                    android:ellipsize="marquee"
                     android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
                     android:singleLine="true"
+
                     android:textColor="@color/black"
                     android:textSize="@dimen/font_size_large"
                     tools:text="hello" />
@@ -66,14 +70,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
-                    android:focusable="true"
+
                     android:focusableInTouchMode="true"
                     android:fontFamily="@font/a_lcdnova_allfont_ru"
                     android:gravity="center_vertical"
+
+                    android:focusable="true"
                     android:ellipsize="marquee"
                     android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
                     android:singleLine="true"
+
                     android:textColor="@color/black"
                     android:textSize="@dimen/font_size_large"
                     tools:text="привет" />

@@ -78,16 +78,18 @@ class PlayerFragment(
 
     private fun setUpView() {
         //////////////
-       /* val textView = binder.trackTitle
+        val textView = binder.trackTitle
 
 // Устанавливаем фокус, чтобы текст начал прокручиваться
-        textView.isFocusable = true
+      /*  textView.isFocusable = true
         textView.isFocusableInTouchMode = true
-
+        textView.requestFocus()*/
+        textView.isSelected = true
+/*
 // Создаем анимацию смещения текста
         val animation = TranslateAnimation(
-            Animation.RELATIVE_TO_SELF, 0f,
             Animation.RELATIVE_TO_SELF, 1f,
+            Animation.RELATIVE_TO_SELF, 0f,
             Animation.RELATIVE_TO_SELF, 0f,
             Animation.RELATIVE_TO_SELF, 0f
         )
