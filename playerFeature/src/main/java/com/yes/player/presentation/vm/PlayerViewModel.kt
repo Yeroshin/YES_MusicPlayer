@@ -10,11 +10,10 @@ import com.yes.player.domain.usecase.PlayUseCase
 import com.yes.player.domain.usecase.SeekToNextUseCase
 import com.yes.player.domain.usecase.SeekToPreviousUseCase
 import com.yes.player.domain.usecase.SubscribeCurrentPlaylistUseCase
-import com.yes.player.domain.usecase.SubscribeCurrentTrackInfoUseCase
+import com.yes.player.domain.usecase.SubscribePlayerStateUseCase
 import com.yes.player.domain.usecase.SubscribeDurationCounterUseCase
 import com.yes.player.presentation.contract.PlayerContract.*
 import com.yes.player.presentation.mapper.MapperUI
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
@@ -24,7 +23,7 @@ class PlayerViewModel(
     private val seekToNextUseCase: SeekToNextUseCase,
     private val seekToPreviousUseCase: SeekToPreviousUseCase,
     private val subscribeCurrentPlaylistUseCase: SubscribeCurrentPlaylistUseCase,
-    private val subscribeCurrentTrackInfoUseCase: SubscribeCurrentTrackInfoUseCase
+    private val subscribePlayerStateUseCase: SubscribePlayerStateUseCase
 ) : BaseViewModel<Event, State, Effect>() {
 
     init {
@@ -35,7 +34,7 @@ class PlayerViewModel(
 private fun subscribeCurrentTrack(){
     viewModelScope.launch {
 
-        when (val result = subscribeCurrentTrackInfoUseCase()) {
+        when (val result = subscribePlayerStateUseCase()) {
             is DomainResult.Success -> {
                 result.data.collect {
                     setState {
@@ -121,9 +120,12 @@ private fun subscribeCurrentTrack(){
             }
 
             is Event.OnSeek -> {
-
+                seek(event.position)
             }
         }
+    }
+    private fun seek(position:Int){
+
     }
 
     private fun play() {
@@ -169,7 +171,7 @@ private fun subscribeCurrentTrack(){
         private val seekToNextUseCase: SeekToNextUseCase,
         private val seekToPreviousUseCase: SeekToPreviousUseCase,
         private val subscribeCurrentPlaylistUseCase: SubscribeCurrentPlaylistUseCase,
-        private val subscribeCurrentTrackInfoUseCase: SubscribeCurrentTrackInfoUseCase
+        private val subscribePlayerStateUseCase: SubscribePlayerStateUseCase
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
@@ -180,7 +182,7 @@ private fun subscribeCurrentTrack(){
                 seekToNextUseCase,
                 seekToPreviousUseCase,
                 subscribeCurrentPlaylistUseCase,
-                subscribeCurrentTrackInfoUseCase
+                subscribePlayerStateUseCase
             ) as T
         }
     }

@@ -7,7 +7,7 @@ import com.yes.player.domain.model.PlayerState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 
-class SubscribeCurrentTrackInfoUseCase(
+class SubscribePlayerStateUseCase(
     dispatcher: CoroutineDispatcher,
     private val playerRepository: PlayerRepository,
 ) : UseCase<Any, Flow<PlayerState>>(dispatcher) {

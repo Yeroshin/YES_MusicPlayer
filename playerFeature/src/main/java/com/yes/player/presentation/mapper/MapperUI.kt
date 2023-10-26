@@ -8,7 +8,8 @@ import com.yes.player.presentation.model.PlayerStateUI
 class MapperUI {
     fun map(durationCounter: DurationCounter): PlayerStateUI{
         return PlayerStateUI(
-            durationCounter = formatTime(durationCounter.data)
+            durationCounter = formatTime(durationCounter.data),
+            progress = durationCounter.data.toInt()
         )
     }
     fun map(playlist: Playlist): PlayerStateUI{
@@ -21,7 +22,11 @@ class MapperUI {
         return PlayerStateUI(
             trackTitle = playerState.artist?.let { artist ->
                 artist+playerState.title?.let { " - $it" } } ?: playerState.title,
-            stateBuffering = playerState.stateBuffering
+            stateBuffering = playerState.stateBuffering,
+            durationInt = playerState.duration?.toInt(),
+            duration = playerState.duration?.let {
+                formatTime(playerState.duration)
+            }
         )
     }
     private fun formatTime(milliseconds: Long): String {

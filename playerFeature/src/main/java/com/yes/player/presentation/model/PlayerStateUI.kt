@@ -5,5 +5,7 @@ data class PlayerStateUI(
     val trackTitle:String?=null,
     val durationCounter:String?=null,
     val duration:String?=null,
-    val stateBuffering:Boolean=false
+    val durationInt:Int?=null,
+    val stateBuffering:Boolean=false,
+    val progress:Int?=null
 )

@@ -12,7 +12,6 @@ class PlayerContract {
         data object OnPlay : Event()
         data object OnSeekToPrevious : Event()
         data object OnSeekToNext : Event()
-
     }
 
     data class State(

@@ -5,7 +5,9 @@ import com.yes.player.data.mapper.Mapper
 import com.yes.player.domain.model.PlayerState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.map
 
 
@@ -13,24 +15,29 @@ class PlayerRepository(
     private val playerDataSource: PlayerDataSource,
     private val mapper: Mapper
 ) {
-    fun play(){
+    fun play() {
         playerDataSource.play()
     }
-    fun pause(){
+
+    fun pause() {
         playerDataSource.pause()
     }
-    fun seekForward(){
+
+    fun seekForward() {
         playerDataSource.seekToNext()
     }
-    fun seekPrevious(){
+
+    fun seekPrevious() {
         playerDataSource.seekToPrevious()
     }
 
+    fun isPlaying(): Boolean {
+        return playerDataSource.isPlaying.value
+    }
 
+    suspend fun subscribeCurrentPosition() = flow {
 
-    suspend fun subscribeCurrentPosition()=flow {
-
-        playerDataSource.isPlaying.collect{
+        playerDataSource.isPlaying.collect {
             while (it) {
                 emit(
                     mapper.map(
@@ -42,10 +49,11 @@ class PlayerRepository(
         }
 
     }
+
     fun subscribeCurrentTrackInfo(): Flow<PlayerState> {
         return playerDataSource.subscribeCurrentPlayerData().map {
-                mapper.map(it)
-            }
+            mapper.map(it)
+        }
     }
 
 }

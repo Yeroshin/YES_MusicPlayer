@@ -13,7 +13,7 @@ import com.yes.player.domain.usecase.PlayUseCase
 import com.yes.player.domain.usecase.SeekToNextUseCase
 import com.yes.player.domain.usecase.SeekToPreviousUseCase
 import com.yes.player.domain.usecase.SubscribeCurrentPlaylistUseCase
-import com.yes.player.domain.usecase.SubscribeCurrentTrackInfoUseCase
+import com.yes.player.domain.usecase.SubscribePlayerStateUseCase
 import com.yes.player.domain.usecase.SubscribeDurationCounterUseCase
 import com.yes.player.presentation.mapper.MapperUI
 import com.yes.player.presentation.ui.PlayerFragment
@@ -127,8 +127,8 @@ class PlayerModule {
     fun providesSubscribeCurrentTrackInfoUseCase(
         @IoDispatcher dispatcher: CoroutineDispatcher,
         playerRepository: PlayerRepository
-    ): SubscribeCurrentTrackInfoUseCase {
-        return SubscribeCurrentTrackInfoUseCase(
+    ): SubscribePlayerStateUseCase {
+        return SubscribePlayerStateUseCase(
             dispatcher,
             playerRepository
         )
@@ -142,7 +142,7 @@ class PlayerModule {
         seekToNextUseCase: SeekToNextUseCase,
         seekToPreviousUseCase: SeekToPreviousUseCase,
         subscribeCurrentPlaylistUseCase: SubscribeCurrentPlaylistUseCase,
-        subscribeCurrentTrackInfoUseCase: SubscribeCurrentTrackInfoUseCase
+        subscribePlayerStateUseCase: SubscribePlayerStateUseCase
     ): PlayerViewModel.Factory {
         return PlayerViewModel.Factory(
             mapperUI,
@@ -151,7 +151,7 @@ class PlayerModule {
             seekToNextUseCase,
             seekToPreviousUseCase,
             subscribeCurrentPlaylistUseCase,
-            subscribeCurrentTrackInfoUseCase
+            subscribePlayerStateUseCase
         )
     }
 

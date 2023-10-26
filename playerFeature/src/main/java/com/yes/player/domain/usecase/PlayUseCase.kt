@@ -10,7 +10,11 @@ class PlayUseCase(
     private val playerRepository: PlayerRepository
 ): UseCase<Unit, Unit>(dispatcher) {
     override suspend fun run(params: Unit?): DomainResult<Unit> {
-        playerRepository.play()
+        if(playerRepository.isPlaying()){
+            playerRepository.pause()
+        }else{
+            playerRepository.play()
+        }
         return DomainResult.Success(Unit)
     }
 
