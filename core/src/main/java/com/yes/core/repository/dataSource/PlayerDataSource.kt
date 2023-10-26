@@ -11,6 +11,7 @@ import androidx.media3.common.Player
 import androidx.media3.common.Tracks
 import androidx.media3.exoplayer.MetadataRetriever
 import androidx.media3.exoplayer.source.TrackGroupArray
+import androidx.media3.extractor.metadata.id3.CommentFrame
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.FutureCallback
@@ -67,7 +68,7 @@ class PlayerDataSource(
     )
     private val mediaMetadataFlow = _mediaMetadataFlow.asStateFlow()
 
-    private val listener=object : Player.Listener {
+  /*  private val listener=object : Player.Listener {
         override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
          //   Toast.makeText(context, "MediaItemTransition", Toast.LENGTH_SHORT).show()
         }
@@ -104,20 +105,62 @@ class PlayerDataSource(
         }
 
         override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
-            //TODO
             _mediaMetadataFlow.value=mediaMetadata
-            Toast.makeText(context, "MediaMetadataChanged", Toast.LENGTH_SHORT).show()
         }
 
         override fun onPlaylistMetadataChanged(mediaMetadata: MediaMetadata) {
             super.onPlaylistMetadataChanged(mediaMetadata)
             Toast.makeText(context, "MediaMetadataChanged", Toast.LENGTH_SHORT).show()
         }
-    }
+    }*/
 
     private fun setController(controller: MediaController) {
         controller.addListener(
-            listener
+            object : Player.Listener {
+                override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+                    //   Toast.makeText(context, "MediaItemTransition", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onTracksChanged(tracks: Tracks) {
+                    Toast.makeText(context, "TracksChanged", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onPlaybackStateChanged(playbackState: Int) {
+
+                    // Обработка изменений состояния проигрывания
+                    when (playbackState) {
+                        Player.STATE_IDLE -> {
+                            Toast.makeText(context, "idle", Toast.LENGTH_SHORT).show()
+                        }
+
+                        Player.STATE_BUFFERING -> {
+                            Toast.makeText(context, "buffering", Toast.LENGTH_SHORT).show()
+                        }
+
+                        Player.STATE_READY -> {
+                            _isPlaying.value = true
+                            Toast.makeText(context, "ready", Toast.LENGTH_SHORT).show()
+                        }
+
+                        Player.STATE_ENDED -> {
+                            Toast.makeText(context, "ended", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+
+                override fun onPlayerError(error: PlaybackException) {
+                    Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
+                    _mediaMetadataFlow.value=mediaMetadata
+                }
+
+                override fun onPlaylistMetadataChanged(mediaMetadata: MediaMetadata) {
+                    super.onPlaylistMetadataChanged(mediaMetadata)
+                    Toast.makeText(context, "MediaMetadataChanged", Toast.LENGTH_SHORT).show()
+                }
+            }
         )
     }
 
@@ -145,24 +188,11 @@ class PlayerDataSource(
     fun isPlaying(): Flow<Boolean> {
         return isPlaying
     }
-    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
-    fun  setTracks(items: List<MediaItem>) {
 
+    fun  setTracks(items: List<MediaItem>) {
         controller.setMediaItems(items)
-        controller.removeMediaItem(0)
-      /*  controller.prepare()
-        controller.seekToNext()
-        controller.seekToNextMediaItem()*/
-       // controller.seekToDefaultPosition(10)
-       // controller.seekToDefaultPosition(0)
-      /*  controller.seekTo(5,0)
-        controller.play()
-        controller.pause()*/
-      /* controller.seekTo(0,50000)
-        controller.play()
-        controller.pause()
-        controller.seekTo(0,0)*/
     }
+
 
     fun subscribeCurrentMediaMetadata(): Flow<MediaMetadata> {
         return mediaMetadataFlow
