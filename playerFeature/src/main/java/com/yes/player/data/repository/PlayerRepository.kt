@@ -2,8 +2,7 @@ package com.yes.player.data.repository
 
 import com.yes.core.repository.dataSource.PlayerDataSource
 import com.yes.player.data.mapper.Mapper
-import com.yes.player.domain.model.DurationCounter
-import com.yes.player.domain.model.MediaInfo
+import com.yes.player.domain.model.PlayerState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -43,8 +42,8 @@ class PlayerRepository(
         }
 
     }
-    fun subscribeCurrentTrackInfo(): Flow<MediaInfo> {
-        return playerDataSource.subscribeCurrentMediaMetadata().map {
+    fun subscribeCurrentTrackInfo(): Flow<PlayerState> {
+        return playerDataSource.subscribeCurrentPlayerData().map {
                 mapper.map(it)
             }
     }

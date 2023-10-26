@@ -1,14 +1,14 @@
 package com.yes.player.data.mapper
 
 
-import androidx.media3.common.MediaMetadata
-import com.yes.core.repository.entity.PlayListEntity
+import com.yes.core.repository.entity.PlayListDataBaseEntity
+import com.yes.core.repository.entity.PlayerStateDataSourceEntity
 import com.yes.player.domain.model.DurationCounter
-import com.yes.player.domain.model.MediaInfo
+import com.yes.player.domain.model.PlayerState
 import com.yes.player.domain.model.Playlist
 
 class Mapper {
-    fun map(playlist: PlayListEntity): Playlist {
+    fun map(playlist: PlayListDataBaseEntity): Playlist {
         return Playlist(
             playlist.id ?: 0,
             playlist.name,
@@ -21,11 +21,12 @@ class Mapper {
         )
     }
 
-    fun map(metadata: MediaMetadata): MediaInfo {
-        return MediaInfo(
-            metadata.albumTitle?.toString(),
-            metadata.artist?.toString(),
-            metadata.title?.toString()
+    fun map(playerStateDataSourceEntity: PlayerStateDataSourceEntity): PlayerState {
+        return PlayerState(
+            playerStateDataSourceEntity.mediaMetadata?.albumTitle?.toString(),
+            playerStateDataSourceEntity.mediaMetadata?.artist?.toString(),
+            playerStateDataSourceEntity.mediaMetadata?.title?.toString(),
+            playerStateDataSourceEntity.stateBuffering
         )
     }
 

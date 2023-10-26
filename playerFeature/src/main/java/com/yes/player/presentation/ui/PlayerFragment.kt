@@ -2,12 +2,13 @@ package com.yes.player.presentation.ui
 
 
 import android.os.Bundle
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
-import android.view.animation.LinearInterpolator
-import android.view.animation.TranslateAnimation
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,9 +18,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.yes.core.presentation.BaseViewModel
 import com.yes.player.databinding.PlayerBinding
-import com.yes.player.presentation.model.InfoUI
 import com.yes.player.presentation.contract.PlayerContract
+import com.yes.player.presentation.model.PlayerStateUI
 import com.yes.player.presentation.vm.PlayerViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -78,13 +80,15 @@ class PlayerFragment(
 
     private fun setUpView() {
         //////////////
-        val textView = binder.trackTitle
+
 
 // Устанавливаем фокус, чтобы текст начал прокручиваться
       /*  textView.isFocusable = true
         textView.isFocusableInTouchMode = true
         textView.requestFocus()*/
-        textView.isSelected = true
+        binder.trackTitle.isSelected = true
+        binder.playListName.isSelected=true
+
 /*
 // Создаем анимацию смещения текста
         val animation = TranslateAnimation(
@@ -129,7 +133,11 @@ class PlayerFragment(
         }
     }
 
-    private fun dataLoaded(info: InfoUI) {
+    private fun dataLoaded(info: PlayerStateUI) {
+        binder.durationCounter.gravity= Gravity.CENTER_HORIZONTAL
+        binder.durationCounter.gravity= Gravity.CENTER_VERTICAL
+
+        showBuffering()
         info.playListName?.let {  binder.playListName.text = info.playListName}
         info.trackTitle?.let {
             binder.trackTitle.text = info.trackTitle}
@@ -138,12 +146,45 @@ class PlayerFragment(
     }
 
     private fun idleView() {
+
     }
 
 
 
     private fun showError(message: Int) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showBuffering(){
+
+        binder.durationCounter.gravity= Gravity.LEFT
+        binder.durationCounter.gravity= Gravity.CENTER_VERTICAL
+        val initialText = resources.getString(com.yes.coreui.R.string.buffering)
+        val dots = "..."
+        val animationDuration = 500L // Длительность анимации в миллисекундах
+
+        val animation = AlphaAnimation(1.0f, 1.0f).apply {
+            duration = animationDuration / 2
+            repeatCount = Animation.INFINITE
+            repeatMode = Animation.REVERSE
+        }
+
+        fun animateText() = lifecycleScope.launch {
+            var dotCount = 0
+            while (true) {
+                val text = dots.substring(0, dotCount) + " ".repeat(dots.length - dotCount)
+                binder.durationCounter.text = initialText+text
+                binder.durationCounter.setTextSize(
+                    TypedValue.COMPLEX_UNIT_PX,
+                    resources.getDimension(com.yes.coreui.R.dimen.font_size_small)
+                )
+                dotCount = (dotCount + 1) % (dots.length + 1)
+                delay(animationDuration)
+            }
+        }
+
+        binder.durationCounter.startAnimation(animation)
+        animateText()
     }
 
     class Dependency(

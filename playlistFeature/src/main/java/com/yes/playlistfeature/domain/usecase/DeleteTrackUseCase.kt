@@ -2,7 +2,6 @@ package com.yes.playlistfeature.domain.usecase
 
 import com.yes.core.domain.models.DomainResult
 import com.yes.core.domain.useCase.UseCase
-import com.yes.core.repository.entity.TrackEntity
 import com.yes.playlistfeature.data.repository.PlayListRepositoryImpl
 import com.yes.playlistfeature.domain.entity.Track
 import com.yes.playlistfeature.domain.repository.SettingsRepository
@@ -10,7 +9,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import com.yes.playlistfeature.domain.usecase.DeleteTrackUseCase.Params
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.last
 
 class DeleteTrackUseCase(
     dispatcher: CoroutineDispatcher,

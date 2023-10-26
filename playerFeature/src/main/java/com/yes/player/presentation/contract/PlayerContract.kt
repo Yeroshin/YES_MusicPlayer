@@ -3,7 +3,7 @@ package com.yes.player.presentation.contract
 import com.yes.core.presentation.UiEffect
 import com.yes.core.presentation.UiEvent
 import com.yes.core.presentation.UiState
-import com.yes.player.presentation.model.InfoUI
+import com.yes.player.presentation.model.PlayerStateUI
 
 class PlayerContract {
 
@@ -21,7 +21,7 @@ class PlayerContract {
 
 
     sealed class PlayerState {
-        data class Success(val info: InfoUI):PlayerState()
+        data class Success(val info: PlayerStateUI):PlayerState()
         data object Idle : PlayerState()
     }
 

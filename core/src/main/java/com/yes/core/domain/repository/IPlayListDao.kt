@@ -5,8 +5,8 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.yes.core.repository.entity.PlayListEntity
-import com.yes.core.repository.entity.TrackEntity
+import com.yes.core.repository.entity.PlayListDataBaseEntity
+import com.yes.core.repository.entity.PlayListDataBaseTrackEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,33 +14,33 @@ interface IPlayListDao {
     @Query("SELECT COUNT(*) FROM playlists")
     fun getPlaylistCount(): Int
     @Insert
-    fun savePlaylist(playlist: PlayListEntity): Long
+    fun savePlaylist(playlist: PlayListDataBaseEntity): Long
 
     @Query("SELECT * FROM playlists WHERE id =:id")
-    fun getPlaylist(id: Long): PlayListEntity
+    fun getPlaylist(id: Long): PlayListDataBaseEntity
 
     @Query("SELECT * FROM playlists")
-    fun subscribePlaylists(): Flow<List<PlayListEntity>>
+    fun subscribePlaylists(): Flow<List<PlayListDataBaseEntity>>
 
     /*  @Update
       fun updatePlaylist(playlist: PlayList)*/
     @Delete
-    fun deletePlaylist(playListEntity: PlayListEntity):Int
+    fun deletePlaylist(playListDataBaseEntity: PlayListDataBaseEntity):Int
 
 
     @Insert
-    fun saveTracks(trackEntities: List<TrackEntity>): List<Long>
+    fun saveTracks(trackEntities: List<PlayListDataBaseTrackEntity>): List<Long>
 
     @Query("SELECT * FROM tracks WHERE playlistId =:playlistName")
-    fun getTracks(playlistName: String): List<TrackEntity>
+    fun getTracks(playlistName: String): List<PlayListDataBaseTrackEntity>
 
     @Query("SELECT * FROM tracks WHERE playlistId =:id")
-    fun subscribeTracksWithPlaylistId(id: Long):Flow< List<TrackEntity>>
+    fun subscribeTracksWithPlaylistId(id: Long):Flow< List<PlayListDataBaseTrackEntity>>
 
     @Delete
-    fun deleteTrack(trackEntity: TrackEntity):Int
+    fun deleteTrack(playListDataBaseTrackEntity: PlayListDataBaseTrackEntity):Int
     @Update
-    fun updateTrack(trackEntity: TrackEntity):Int
+    fun updateTrack(playListDataBaseTrackEntity: PlayListDataBaseTrackEntity):Int
 
     @Query("DELETE FROM tracks WHERE playlistId = :playlistId")
     fun deleteTracksByPlaylistId(playlistId: Long)

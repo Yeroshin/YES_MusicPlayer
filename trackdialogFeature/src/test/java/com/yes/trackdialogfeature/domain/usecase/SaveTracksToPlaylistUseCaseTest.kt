@@ -7,7 +7,7 @@ import com.yes.trackdialogfeature.data.repository.MediaRepositoryImpl
 import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase.Params
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.core.repository.entity.TrackEntity
+import com.yes.core.repository.entity.PlayListDataBaseTrackEntity
 import com.yes.core.domain.models.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
 import com.yes.trackdialogfeature.domain.repository.IMenuRepository
@@ -56,9 +56,9 @@ class SaveTracksToPlaylistUseCaseTest {
     fun run(
         params: Params?,
         expected: DomainResult<List<Long>>,
-        audioItems: List<TrackEntity>?,
+        audioItems: List<PlayListDataBaseTrackEntity>?,
         primaryItem: Item?,
-        savedAudio: List<TrackEntity>
+        savedAudio: List<PlayListDataBaseTrackEntity>
     ) = runTest {
         every {
             settingsRepository.getCurrentPlayListId()
@@ -123,7 +123,7 @@ class SaveTracksToPlaylistUseCaseTest {
                     null,
                     null,
                     listOf(
-                        TrackEntity(
+                        PlayListDataBaseTrackEntity(
                         playlistName = SettingsFixtures.getPlayListName(),
                         title = UiFixtures.getNetworkTrack().name,
                         uri = UiFixtures.getNetworkTrack().name,

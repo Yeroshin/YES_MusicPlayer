@@ -3,7 +3,7 @@ package com.yes.trackdialogfeature.data.mapper
 
 
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
-import com.yes.core.repository.entity.TrackEntity
+import com.yes.core.repository.entity.PlayListDataBaseTrackEntity
 import com.yes.core.repository.entity.MediaDataStoreEntity
 
 class MediaRepositoryMapper {
@@ -15,8 +15,8 @@ class MediaRepositoryMapper {
             false
         )
     }
-    fun mapToTrack(entity: MediaDataStoreEntity): TrackEntity {
-        return TrackEntity(
+    fun mapToTrack(entity: MediaDataStoreEntity): PlayListDataBaseTrackEntity {
+        return PlayListDataBaseTrackEntity(
             null,
             0,
             entity.artist,

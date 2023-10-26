@@ -38,7 +38,7 @@
     <string name="selectPlaylist">выберите плейлист для загрузки</string>
     <string name="InternalStorage">Internal Storage</string>
     <string name="SDCard">SD Card</string>
-    <string name="buffering">буферизация...</string>
+    <string name="buffering">буферизация</string>
     <string name="networkUnavailable">сеть не доступна</string>
     <string name="pleaseRateThisApp">Пожалуйста оцените это приложение</string>
     <string name="alreadyRated">уже оценил</string>

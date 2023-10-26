@@ -1,14 +1,14 @@
 package com.yes.playlistfeature.data.mapper
 
 
-import com.yes.core.repository.entity.TrackEntity
+import com.yes.core.repository.entity.PlayListDataBaseTrackEntity
 import com.yes.playlistfeature.domain.entity.Track
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 
 
 class Mapper {
-    fun map(track: TrackEntity): Track {
+    fun map(track: PlayListDataBaseTrackEntity): Track {
         return Track(
             track.id ?: 0,
             track.playlistId,
@@ -22,8 +22,8 @@ class Mapper {
         )
     }
 
-    fun map(track: Track): TrackEntity {
-        return TrackEntity(
+    fun map(track: Track): PlayListDataBaseTrackEntity {
+        return PlayListDataBaseTrackEntity(
             track.id,
             track.playlistId,
             track.artist,
@@ -41,6 +41,7 @@ class Mapper {
              .setAlbumTitle(item.album)
              .setArtist(item.artist)
              .setTitle(item.title)
+
              .build()
 
         return MediaItem.Builder()

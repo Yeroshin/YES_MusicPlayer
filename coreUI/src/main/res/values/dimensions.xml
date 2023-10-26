@@ -3,7 +3,8 @@
     <dimen name="font_size_regular">14sp</dimen>
     <dimen name="font_size_large">18sp</dimen>
     <dimen name="font_size_coloss">22sp</dimen>
-    <dimen name="font_size_small">9sp</dimen>
+    <dimen name="font_size_small">12sp</dimen>
+    <item  name="letter_spacing_small" format="float" type="dimen">0.04</item>
 
     <dimen name="button_height_regular">40dp</dimen>
     <dimen name="button_height_small">36dp</dimen>

@@ -3,7 +3,7 @@ package com.yes.core.repository.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 @Entity(tableName = "tracks")
-data class TrackEntity(
+data class PlayListDataBaseTrackEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long?=null,
     val playlistId: Long,

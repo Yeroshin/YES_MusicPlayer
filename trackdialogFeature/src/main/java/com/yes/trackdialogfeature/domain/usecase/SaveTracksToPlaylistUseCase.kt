@@ -5,14 +5,12 @@ import com.yes.core.domain.repository.IPlayListDao
 import com.yes.trackdialogfeature.domain.repository.SettingsRepository
 import com.yes.core.domain.models.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
-import com.yes.core.repository.entity.TrackEntity
+import com.yes.core.repository.entity.PlayListDataBaseTrackEntity
 import com.yes.core.domain.useCase.UseCase
 import com.yes.trackdialogfeature.domain.repository.IMenuRepository
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase.Params
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.last
 
 class SaveTracksToPlaylistUseCase(
     dispatcher: CoroutineDispatcher,
@@ -22,7 +20,7 @@ class SaveTracksToPlaylistUseCase(
     private val menuRepository: IMenuRepository
 ) : UseCase<Params, Boolean>(dispatcher) {
     override suspend fun run(params: Params?): DomainResult<Boolean> {
-        val trackEntities = mutableListOf<TrackEntity>()
+        val trackEntities = mutableListOf<PlayListDataBaseTrackEntity>()
         val playListId = settingsRepository.subscribeCurrentPlayListId().first()
         var lastPosition = playListRepository
             .subscribeTracksWithPlaylistId(playListId)
@@ -38,7 +36,7 @@ class SaveTracksToPlaylistUseCase(
             if (isNetworkPath(mediaItem.name)) {
                 lastPosition++
                 trackEntities.add(
-                    TrackEntity(
+                    PlayListDataBaseTrackEntity(
                         playlistId = playListId,
                         title = mediaItem.name,
                         uri = mediaItem.name,

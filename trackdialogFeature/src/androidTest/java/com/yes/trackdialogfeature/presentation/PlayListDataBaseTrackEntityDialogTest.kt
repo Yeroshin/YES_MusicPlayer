@@ -18,7 +18,7 @@ import org.junit.Before
 import org.junit.Test
 
 
-class TrackEntityDialogTest {
+class PlayListDataBaseTrackEntityDialogTest {
 
     class TestViewModel : BaseViewModel<TrackDialogContract.Event,
             TrackDialogContract.State,

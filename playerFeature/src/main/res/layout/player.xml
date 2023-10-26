@@ -124,16 +124,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
+
                 android:background="@drawable/border_right"
 
                 android:fontFamily="@font/a_lcdnova_allfont_ru"
                 android:gravity="center_horizontal|center_vertical"
+                android:letterSpacing="@dimen/letter_spacing_small"
                 android:lines="1"
                 android:maxLines="1"
-                android:singleLine="false"
+
                 android:text="00:00"
                 android:textColor="@color/black"
-                android:textSize="@dimen/font_size_coloss" />
+                android:textSize="@dimen/font_size_coloss"
+                tools:text="BUFFERING..." />
 
             <SeekBar
                 android:id="@+id/seekBar"

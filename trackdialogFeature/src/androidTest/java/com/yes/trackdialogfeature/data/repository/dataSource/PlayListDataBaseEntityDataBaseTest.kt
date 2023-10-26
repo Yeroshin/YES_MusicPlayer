@@ -3,10 +3,10 @@ package com.yes.trackdialogfeature.data.repository.dataSource
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.yes.core.repository.entity.PlayListEntity
+import com.yes.core.repository.entity.PlayListDataBaseEntity
 
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.core.repository.entity.TrackEntity
+import com.yes.core.repository.entity.PlayListDataBaseTrackEntity
 import com.yes.core.repository.dataSource.PlayListDataBase
 import junit.framework.TestCase.assertEquals
 
@@ -17,7 +17,7 @@ import org.junit.runner.RunWith
 
 
 @RunWith(AndroidJUnit4::class)
-class PlayListEntityDataBaseTest {
+class PlayListDataBaseEntityDataBaseTest {
     private lateinit var userDao: IPlayListDao
     private lateinit var db: PlayListDataBase
 
@@ -37,7 +37,7 @@ class PlayListEntityDataBaseTest {
 
     @Test
     fun writeAndReadPlayList() {
-        val playlist = PlayListEntity(
+        val playlist = PlayListDataBaseEntity(
             null,
             "Default",
             0,
@@ -51,14 +51,14 @@ class PlayListEntityDataBaseTest {
     @Test
     fun writeAndReadTracks() {
 
-        val playlist = PlayListEntity(
+        val playlist = PlayListDataBaseEntity(
             null,
             "Default",
             0,
             0
         )
         val trackEntities = listOf(
-            TrackEntity(
+            PlayListDataBaseTrackEntity(
                 null,
                 playlist.name,
                 "Dire Straits",

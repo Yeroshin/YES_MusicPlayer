@@ -1,26 +1,27 @@
 package com.yes.player.presentation.mapper
 
 import com.yes.player.domain.model.DurationCounter
-import com.yes.player.domain.model.MediaInfo
+import com.yes.player.domain.model.PlayerState
 import com.yes.player.domain.model.Playlist
-import com.yes.player.presentation.model.InfoUI
+import com.yes.player.presentation.model.PlayerStateUI
 
 class MapperUI {
-    fun map(durationCounter: DurationCounter): InfoUI{
-        return InfoUI(
+    fun map(durationCounter: DurationCounter): PlayerStateUI{
+        return PlayerStateUI(
             durationCounter = formatTime(durationCounter.data)
         )
     }
-    fun map(playlist: Playlist): InfoUI{
-        return InfoUI(
+    fun map(playlist: Playlist): PlayerStateUI{
+        return PlayerStateUI(
             playListName = playlist.name
 
         )
     }
-    fun map(mediaInfo: MediaInfo): InfoUI{
-        return InfoUI(
-            trackTitle = mediaInfo.artist?.let { artist ->
-                artist+mediaInfo.title?.let { " - $it" } } ?: mediaInfo.title
+    fun map(playerState: PlayerState): PlayerStateUI{
+        return PlayerStateUI(
+            trackTitle = playerState.artist?.let { artist ->
+                artist+playerState.title?.let { " - $it" } } ?: playerState.title,
+            stateBuffering = playerState.stateBuffering
         )
     }
     private fun formatTime(milliseconds: Long): String {
