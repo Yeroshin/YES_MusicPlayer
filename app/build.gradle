@@ -1,16 +1,9 @@
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-   // id 'kotlin-kapt'
-    alias(libs.plugins.kotlinKapt)
-  //  alias(libs.plugins.devtoolsKsp)
-//    id "com.google.devtools.ksp"
-}
-/*plugins {
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
-    id("com.google.devtools.ksp")
-}*/
+    alias(libs.plugins.kotlinKapt)
+    alias(libs.plugins.devtoolsKsp)
+}
 android {
     compileSdk 33
 
@@ -50,7 +43,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    dynamicFeatures = []
+
     namespace 'com.yes.musicplayer'
 }
 
@@ -95,9 +88,10 @@ dependencies {
     // JetPack
 
     //Dagger/////////////////////
-
     implementation libs.dagger
+    androidTestImplementation libs.dagger
     kapt libs.dagger.compiler
+    kaptAndroidTest libs.dagger.compiler
     //  kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0" //ImportantSHIT!!!
     //tmp
     // debugImplementation "androidx.test:monitor:1.6.1"

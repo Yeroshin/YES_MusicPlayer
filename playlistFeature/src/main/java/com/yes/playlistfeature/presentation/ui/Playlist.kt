@@ -18,15 +18,22 @@ import com.yes.core.presentation.BaseViewModel
 import com.yes.core.presentation.ItemTouchHelperCallback
 import com.yes.playlistfeature.R
 import com.yes.playlistfeature.databinding.PlaylistBinding
+import com.yes.playlistfeature.di.component.PlaylistComponent
 import com.yes.playlistfeature.presentation.contract.PlaylistContract
 import com.yes.playlistfeature.presentation.model.TrackUI
 import com.yes.playlistfeature.presentation.vm.PlaylistViewModel
 import kotlinx.coroutines.launch
 
 
-class Playlist(
-    dependency: Dependency
-) : Fragment() {
+class Playlist: Fragment() {
+    interface DependencyResolver {
+        fun getPlaylistComponent(): PlaylistComponent
+    }
+    private val dependency: Dependency by lazy {
+        (requireActivity().application as DependencyResolver)
+            .getPlaylistComponent()
+            .getDependency()
+    }
     interface MediaChooserManager {
         fun showMediaDialog()
     }
@@ -40,16 +47,13 @@ class Playlist(
     }
 
     private lateinit var binding: ViewBinding
-    private val binder by lazy {
-        binding as PlaylistBinding
-    }
+    private val binder = binding as PlaylistBinding
 
-    private val mediaChooserManager: MediaChooserManager by lazy {
-        activity as MediaChooserManager
-    }
-    private val playlistManager: PlaylistManager by lazy {
-        activity as PlaylistManager
-    }
+
+    private val mediaChooserManager = activity as MediaChooserManager
+
+    private val playlistManager= activity as PlaylistManager
+
 
     private val viewModel: BaseViewModel<PlaylistContract.Event,
             PlaylistContract.State,

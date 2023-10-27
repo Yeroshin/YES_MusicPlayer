@@ -70,22 +70,11 @@ class PlayerDataSource(
             object : Player.Listener {
 
                 override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-                    // Toast.makeText(context, "MediaItemTransition", Toast.LENGTH_SHORT).show()
                    if(controller.duration!=TIME_UNSET){
                        _mediaMetadataFlow.value = PlayerStateDataSourceEntity(
                            duration = controller.duration
                        )
                    }
-                }
-
-                override fun onTimelineChanged(timeline: Timeline, reason: Int) {
-                    super.onTimelineChanged(timeline, reason)
-                }
-
-                override fun onTracksChanged(tracks: Tracks) {
-                    val tmp = controller.duration
-
-                    Toast.makeText(context, "TracksChanged", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onPlaybackStateChanged(playbackState: Int) {
@@ -106,7 +95,7 @@ class PlayerDataSource(
                         }
 
                         Player.STATE_ENDED -> {
-                            Toast.makeText(context, "ended", Toast.LENGTH_SHORT).show()
+
                         }
                     }
                 }
@@ -139,6 +128,9 @@ class PlayerDataSource(
     fun play() {
         controller.play()
     }
+    fun seek(position:Long){
+        controller.seekTo(position)
+    }
 
     fun pause() {
         controller.pause()
@@ -148,11 +140,9 @@ class PlayerDataSource(
         return controller.currentPosition
     }
 
-
     fun setTracks(items: List<MediaItem>) {
         controller.setMediaItems(items)
     }
-
 
     fun subscribeCurrentPlayerData(): Flow<PlayerStateDataSourceEntity> {
         return mediaMetadataFlow

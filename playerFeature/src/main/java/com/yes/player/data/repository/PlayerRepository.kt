@@ -30,6 +30,9 @@ class PlayerRepository(
     fun seekPrevious() {
         playerDataSource.seekToPrevious()
     }
+    fun seek(position:Long){
+        playerDataSource.seek(position)
+    }
 
     fun isPlaying(): Boolean {
         return playerDataSource.isPlaying.value

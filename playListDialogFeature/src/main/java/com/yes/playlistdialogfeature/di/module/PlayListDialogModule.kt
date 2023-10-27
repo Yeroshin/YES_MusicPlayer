@@ -2,8 +2,7 @@ package com.yes.playlistdialogfeature.di.module
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.lifecycle.ViewModelProvider
-import com.yes.core.di.IoDispatcher
+import com.yes.core.di.module.IoDispatcher
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.playlistdialogfeature.data.mapper.Mapper
@@ -19,7 +18,6 @@ import com.yes.playlistdialogfeature.presentation.vm.PlayListDialogViewModel
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 
 
 @Module

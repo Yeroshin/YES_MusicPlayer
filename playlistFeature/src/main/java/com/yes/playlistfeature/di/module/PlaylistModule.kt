@@ -1,8 +1,8 @@
 package com.yes.playlistfeature.di.module
 
 
-import com.yes.core.di.IoDispatcher
-import com.yes.core.di.MainDispatcher
+import com.yes.core.di.module.IoDispatcher
+import com.yes.core.di.module.MainDispatcher
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.repository.dataSource.PlayerDataSource
 import com.yes.core.repository.dataSource.SettingsDataStore
@@ -23,7 +23,7 @@ import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
-class PlayListModule {
+class PlaylistModule {
     @Provides
     fun providesSettingsRepository(
         dataStore: SettingsDataStore

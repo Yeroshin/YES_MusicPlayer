@@ -15,14 +15,21 @@ import com.yes.core.presentation.BaseDialog
 import com.yes.core.presentation.BaseViewModel
 import com.yes.playlistdialogfeature.R
 import com.yes.playlistdialogfeature.databinding.PlaylistDialogBinding
+import com.yes.playlistdialogfeature.di.component.PlayListDialogComponent
 import com.yes.playlistdialogfeature.presentation.contract.PlayListDialogContract
 import com.yes.playlistdialogfeature.presentation.model.ItemUi
 import com.yes.playlistdialogfeature.presentation.vm.PlayListDialogViewModel
 import kotlinx.coroutines.launch
 
-class PlayListDialog(
-    dependency: Dependency
-): BaseDialog(),SwipeToDeleteCallback.Callback{
+class PlayListDialog: BaseDialog(),SwipeToDeleteCallback.Callback{
+    interface DependencyResolver {
+        fun getPlayListDialogComponent(): PlayListDialogComponent
+    }
+    private val dependency: Dependency by lazy {
+        (requireActivity().application as DependencyResolver)
+            .getPlayListDialogComponent()
+            .getDependency()
+    }
     override val layout = R.layout.playlist_dialog
     private val adapter = PlayListDialogAdapter()
     private val binder by lazy {

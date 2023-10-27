@@ -1,7 +1,7 @@
 package com.yes.player.di.module
 
-import com.yes.core.di.IoDispatcher
-import com.yes.core.di.MainDispatcher
+import com.yes.core.di.module.IoDispatcher
+import com.yes.core.di.module.MainDispatcher
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.repository.dataSource.PlayerDataSource
 import com.yes.core.repository.dataSource.SettingsDataStore
@@ -12,6 +12,7 @@ import com.yes.player.data.repository.SettingsRepositoryImpl
 import com.yes.player.domain.usecase.PlayUseCase
 import com.yes.player.domain.usecase.SeekToNextUseCase
 import com.yes.player.domain.usecase.SeekToPreviousUseCase
+import com.yes.player.domain.usecase.SeekUseCase
 import com.yes.player.domain.usecase.SubscribeCurrentPlaylistUseCase
 import com.yes.player.domain.usecase.SubscribePlayerStateUseCase
 import com.yes.player.domain.usecase.SubscribeDurationCounterUseCase
@@ -142,7 +143,8 @@ class PlayerModule {
         seekToNextUseCase: SeekToNextUseCase,
         seekToPreviousUseCase: SeekToPreviousUseCase,
         subscribeCurrentPlaylistUseCase: SubscribeCurrentPlaylistUseCase,
-        subscribePlayerStateUseCase: SubscribePlayerStateUseCase
+        subscribePlayerStateUseCase: SubscribePlayerStateUseCase,
+        seekUseCase: SeekUseCase
     ): PlayerViewModel.Factory {
         return PlayerViewModel.Factory(
             mapperUI,
@@ -151,7 +153,8 @@ class PlayerModule {
             seekToNextUseCase,
             seekToPreviousUseCase,
             subscribeCurrentPlaylistUseCase,
-            subscribePlayerStateUseCase
+            subscribePlayerStateUseCase,
+            seekUseCase
         )
     }
 

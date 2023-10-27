@@ -13,6 +13,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +22,7 @@ import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.viewbinding.ViewBinding
 import com.yes.core.presentation.BaseViewModel
 import com.yes.player.databinding.PlayerBinding
+import com.yes.player.di.components.PlayerFeatureComponent
 import com.yes.player.presentation.contract.PlayerContract
 import com.yes.player.presentation.model.PlayerStateUI
 import com.yes.player.presentation.vm.PlayerViewModel
@@ -30,12 +32,17 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class PlayerFragment(
-    dependency: Dependency
-) : Fragment() {
+class PlayerFragment: Fragment() {
+    interface DependencyResolver {
+        fun getPlayerFragmentComponent(): PlayerFeatureComponent
+    }
 
-
-    private lateinit var binding: ViewBinding
+    private val dependency: Dependency by lazy {
+        (requireActivity().application as DependencyResolver)
+            .getPlayerFragmentComponent()
+            .getDependency()
+    }
+   private lateinit var binding: ViewBinding
     private val binder by lazy {
         binding as PlayerBinding
     }

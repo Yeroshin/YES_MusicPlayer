@@ -17,15 +17,22 @@ import com.yes.core.presentation.BaseViewModel
 import com.yes.core.presentation.BaseDialog
 import com.yes.trackdialogfeature.R
 import com.yes.trackdialogfeature.databinding.TrackDialogBinding
+import com.yes.trackdialogfeature.di.component.TrackDialogComponent
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.vm.TrackDialogViewModel
 import kotlinx.coroutines.launch
 
 
-class TrackDialog(
-    dependency: Dependency
-) : BaseDialog() {
+class TrackDialog : BaseDialog() {
+    interface DependencyResolver {
+        fun getTrackDialogComponent(): TrackDialogComponent
+    }
+    private val dependency: Dependency by lazy {
+        (requireActivity().application as DependencyResolver)
+            .getTrackDialogComponent()
+            .getDependency()
+    }
     private val binder by lazy {
         binding as TrackDialogBinding
     }

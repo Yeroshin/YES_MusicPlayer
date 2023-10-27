@@ -31,13 +31,10 @@ class MainActivity :
     interface DependencyResolver {
         fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent
     }
-
-    private val myApplication: DependencyResolver by lazy {
-        application as DependencyResolver
-    }
     private lateinit var binding: ActivityMainBinding
+    private val dependencyResolver= application as DependencyResolver
     private val mainActivityComponent: MainActivityComponent by lazy {
-        myApplication.getMainActivityComponent(this)
+        dependencyResolver.getMainActivityComponent(this)
     }
 
     private val fragmentAdapter: FragmentStateAdapter by lazy {
@@ -151,18 +148,14 @@ class MainActivity :
     }
 
     class MainActivityFragmentFactory(
-        private val trackDialogDependency: TrackDialog.Dependency,
-        private val playListDialogDependency: PlayListDialog.Dependency,
-        private val playlistDependency:Playlist.Dependency,
-        private val playerDependency:PlayerFragment.Dependency
+
         ) : FragmentFactory() {
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
             return when (loadFragmentClass(classLoader, className)) {
-                PlayListDialog::class.java -> PlayListDialog(playListDialogDependency)
-                TrackDialog::class.java -> TrackDialog(trackDialogDependency)
-                PlayerFragment::class.java -> PlayerFragment(playerDependency)
-                Playlist::class.java -> Playlist(playlistDependency)
-
+                PlayListDialog::class.java -> PlayListDialog()
+                TrackDialog::class.java -> TrackDialog()
+                Playlist::class.java -> Playlist()
+                PlayerFragment::class.java -> PlayerFragment()
                 else -> super.instantiate(classLoader, className)
             }
         }
