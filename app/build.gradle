@@ -1,12 +1,11 @@
 plugins {
-    alias(libs.plugins.androidLibrary)
+    id 'com.android.application'
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinKapt)
     alias(libs.plugins.devtoolsKsp)
 }
 android {
     compileSdk 33
-
 
 
     defaultConfig {
@@ -37,7 +36,7 @@ android {
     kotlinOptions {
         jvmTarget = '11'
     }
-    dataBinding{
+    dataBinding {
         enabled = true
     }
     buildFeatures {
@@ -56,14 +55,11 @@ dependencies {
     implementation project(path: ':playListDialogFeature')
     //tmp
     implementation project(path: ':shared-test')
-    //core
-   // implementation 'androidx.core:core-ktx:1.9.0'
+
     implementation 'androidx.appcompat:appcompat:1.6.1'
 
     implementation 'com.google.android.material:material:1.8.0'
 
-
-    // implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
 
     //Test
@@ -71,31 +67,16 @@ dependencies {
     androidTestImplementation libs.androidx.test.ext.junit
     androidTestImplementation libs.espresso.core
 
-    //DO NOT TOUCH - GOOGLE BUG HERE!!!
-    debugImplementation("androidx.fragment:fragment-testing-manifest:1.6.0-alpha04")
-    androidTestImplementation("androidx.fragment:fragment-testing:1.6.0-alpha04")
 
 
-/*
-   def fragment_version = "1.5.0"
-    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
-*/
-    //Navigation/////////////////
-    /* def nav_version = "2.5.3"
-      implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-      implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-  */
-    // JetPack
 
     //Dagger/////////////////////
     implementation libs.dagger
     androidTestImplementation libs.dagger
     kapt libs.dagger.compiler
     kaptAndroidTest libs.dagger.compiler
-    //  kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0" //ImportantSHIT!!!
-    //tmp
-    // debugImplementation "androidx.test:monitor:1.6.1"
-//room
+
+    //room
     implementation libs.androidx.room.runtime
     kapt libs.androidx.room.compiler
 
@@ -108,4 +89,7 @@ dependencies {
     implementation libs.androidx.media3.exoplayer
     implementation libs.androidx.media3.exoplayer.dash
     implementation libs.androidx.media3.ui
+    //fragment
+    debugImplementation libs.androidx.fragment.testing
+    implementation libs.androidx.fragment.ktx
 }

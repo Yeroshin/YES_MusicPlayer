@@ -14,6 +14,7 @@ import com.yes.core.repository.dataSource.SettingsSharedPreferences
 import com.yes.core.repository.dataSource.PlayListDataBase
 import com.yes.core.repository.dataSource.PlayerDataSource
 import com.yes.core.repository.dataSource.SettingsDataStore
+import com.yes.core.util.EspressoIdlingResource
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
@@ -25,7 +26,10 @@ private const val USER_PREFERENCES = "user_preferences"
 class DataModule(
     private val context: Context
 ) {
-
+    @Provides
+    fun providesEspressoIdlingResource(): EspressoIdlingResource? {
+        return null
+    }
     @IoDispatcher
     @Provides
     fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
@@ -42,47 +46,22 @@ class DataModule(
     fun providesDatabase(
         context: Context
     ): PlayListDataBase {
-      /*  return Room.databaseBuilder(
-            context,
-            PlayListDataBase::class.java,
-            "your_database_name"
-        )
-            .addCallback(object : RoomDatabase.Callback() {
-                override fun onCreate(db: SupportSQLiteDatabase) {
-                    super.onCreate(db)
-                    // Добавление записи при первом создании базы данных
-                    // Например:
-                    val myDao = db.playListDao()
-                     val playlist = Playlist(1, "Your playlist name")
-                     playListDao.insert(playlist)
-                }
-            })
-            .build()*/
-        /* return Room.inMemoryDatabaseBuilder(
-             context,
-             PlayListDataBase::class.java,
-         ).build()*/
         return PlayListDataBase .getInstance(context)
     }
-
-
     @Provides
     fun providesPlayListDao(
         dataBase: PlayListDataBase
     ): IPlayListDao {
         return dataBase.playListDao()
     }
-
-
-    @Provides
+  /*PlaylistModule  @Provides
     fun providesSettingsSharedPreferences(
         context: Context
     ): SettingsSharedPreferences {
         return SettingsSharedPreferences(
             context
         )
-    }
-
+    }*/
     @Provides
     fun provideDataStore(context: Context): DataStore<Preferences> {
         return PreferenceDataStoreFactory.create(

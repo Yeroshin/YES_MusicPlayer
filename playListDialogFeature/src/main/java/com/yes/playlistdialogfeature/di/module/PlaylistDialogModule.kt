@@ -21,7 +21,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 
 
 @Module
-class PlayListDialogModule {
+class PlaylistDialogModule {
     @Provides
     fun providesPlayListDialogDependency(factory: PlayListDialogViewModel.Factory): PlayListDialog.Dependency {
         return PlayListDialog.Dependency(

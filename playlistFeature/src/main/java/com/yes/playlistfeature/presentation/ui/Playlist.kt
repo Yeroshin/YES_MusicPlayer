@@ -45,13 +45,12 @@ class Playlist: Fragment() {
     interface PlaylistManager {
         fun showPlaylistDialog()
     }
-
     private lateinit var binding: ViewBinding
-    private val binder = binding as PlaylistBinding
-
+    private val binder by lazy {
+        binding as PlaylistBinding
+    }
 
     private val mediaChooserManager = activity as MediaChooserManager
-
     private val playlistManager= activity as PlaylistManager
 
 

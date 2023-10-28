@@ -14,10 +14,13 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
+import androidx.viewbinding.ViewBinding
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
+import com.yes.musicplayer.YESApplication
 import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.MainActivityComponent
+import com.yes.player.databinding.PlayerBinding
 import com.yes.player.presentation.ui.PlayerFragment
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
 import com.yes.playlistfeature.presentation.ui.Playlist
@@ -31,9 +34,14 @@ class MainActivity :
     interface DependencyResolver {
         fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent
     }
-    private lateinit var binding: ActivityMainBinding
-    private val dependencyResolver= application as DependencyResolver
-    private val mainActivityComponent: MainActivityComponent by lazy {
+    private lateinit var binding: ViewBinding
+    private val binder by lazy {
+        binding as ActivityMainBinding
+    }
+    private val dependencyResolver by lazy {
+        application  as DependencyResolver
+    }
+    private val mainActivityComponent by lazy {
         dependencyResolver.getMainActivityComponent(this)
     }
 
@@ -41,22 +49,15 @@ class MainActivity :
         mainActivityComponent.getFragmentAdapter()
     }
 
-    /*private val playerFragment: Fragment by lazy {
-        mainActivityComponent.getPlayerFragment()
-    }*/
     private val fragmentFactory: FragmentFactory by lazy {
         mainActivityComponent.getFragmentFactory()
     }
 
-    /*  private val trackDialogDependency: TrackDialog.Dependency by lazy {
-          mainActivityComponent.getTrackDialogDependency()
-      }*/
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        supportFragmentManager.fragmentFactory = fragmentFactory
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        supportFragmentManager.fragmentFactory = fragmentFactory
         val view = binding.root
         setContentView(view)
 
@@ -126,8 +127,8 @@ class MainActivity :
     }
 
     private fun setFragments() {
-        binding.viewPager.adapter = fragmentAdapter
-        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+        binder .viewPager.adapter = fragmentAdapter
+        TabLayoutMediator(binder .tabs,binder.viewPager) { tab, position ->
             run {
                 when (position) {
                     0 -> tab.text = getString(com.yes.coreui.R.string.playList)

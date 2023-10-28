@@ -67,5 +67,15 @@ dependencies {
     implementation libs.androidx.media3.exoplayer
     implementation libs.androidx.media3.exoplayer.dash
     implementation libs.androidx.media3.ui
+    //Espresso
+    androidTestImplementation libs.androidx.espresso.contrib
+    androidTestImplementation libs.espresso.core
+    implementation libs.espresso.idling.resource
+    androidTestImplementation libs.androidx.runner
+    androidTestImplementation libs.androidx.rules
+    //Preferences DataStore
+    implementation libs.androidx.datastore.preferences
+    androidTestImplementation libs.androidx.datastore.preferences.core
+    androidTestImplementation libs.androidx.preference.ktx
 
 }

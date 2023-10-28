@@ -10,7 +10,6 @@ import dagger.Component
 
 
 @Component(
-    dependencies=[PlayerFeatureComponent::class],
    modules = [
         MainActivityModule::class,
       /*  PlayListModule::class,
@@ -29,5 +28,5 @@ interface MainActivityComponent {
    /* fun getTrackDialogFeatureDependency(): TrackDialog.Dependency
     fun getPlayListDialogFeatureDependency(): PlayListDialog.Dependency
     fun getPlaylistFeatureDependency(): Playlist.Dependency*/
-    fun getPlayerDependency(): PlayerFragment.Dependency
+  //  fun getPlayerDependency(): PlayerFragment.Dependency
 }

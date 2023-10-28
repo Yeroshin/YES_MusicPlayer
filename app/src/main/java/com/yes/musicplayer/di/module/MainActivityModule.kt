@@ -39,21 +39,18 @@ internal class MainActivityModule(
        /* trackDialogDependency: TrackDialog.Dependency,
         playListDialogDependency: PlayListDialog.Dependency,
         playlistDependency:Playlist.Dependency,*/
-        playerDependency:PlayerFragment.Dependency
+       // playerDependency:PlayerFragment.Dependency
     ): FragmentFactory {
         return MainActivity.MainActivityFragmentFactory(
            /* trackDialogDependency,
             playListDialogDependency,
             playlistDependency,*/
-            playerDependency
+          //  playerDependency
         )
     }
 
 
-    @Provides
-    fun providesEspressoIdlingResource(): EspressoIdlingResource? {
-        return null
-    }
+
     @Provides
     fun provideFragmentAdapter(
         fragmentFactory: FragmentFactory

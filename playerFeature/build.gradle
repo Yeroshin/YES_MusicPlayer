@@ -66,4 +66,18 @@ dependencies {
     androidTestImplementation libs.dagger
     kapt libs.dagger.compiler
     kaptAndroidTest libs.dagger.compiler
+    //Preferences DataStore
+    implementation libs.androidx.datastore.preferences
+    androidTestImplementation libs.androidx.datastore.preferences.core
+    androidTestImplementation libs.androidx.preference.ktx
+    //room
+    implementation libs.androidx.room.runtime
+    kapt libs.androidx.room.compiler
+    implementation libs.androidx.room.ktx
+    //Espresso
+    androidTestImplementation libs.androidx.espresso.contrib
+    androidTestImplementation libs.espresso.core
+    implementation libs.espresso.idling.resource
+    androidTestImplementation libs.androidx.runner
+    androidTestImplementation libs.androidx.rules
 }
