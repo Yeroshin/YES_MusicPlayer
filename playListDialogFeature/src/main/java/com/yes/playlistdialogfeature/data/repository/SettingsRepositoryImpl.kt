@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.yes.core.repository.dataSource.SettingsDataStore
 import com.yes.playlistdialogfeature.data.repository.entity.UserPreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -15,25 +16,14 @@ import kotlinx.coroutines.flow.map
 import java.io.IOException
 
 class SettingsRepositoryImpl(
-    private val dataStore: DataStore<Preferences>
+    private val settings: SettingsDataStore
 ) {
-    private object PreferencesKeys {
-        val CURRENT_PLAYLIST_ID = longPreferencesKey("currentPlaylistId")
+
+    fun subscribeCurrentPlaylistId(): Flow<Long> {
+        return settings.subscribeCurrentPlaylistId()
     }
-    fun subscribeCurrentPlaylistId(): Flow<Long> =
-        dataStore.data
-            .map { preferences ->
-                preferences[PreferencesKeys.CURRENT_PLAYLIST_ID] ?: 0
-            }
-    private fun mapUserPreferences(preferences: Preferences): UserPreferences {
-        val currentPlaylistId = preferences[PreferencesKeys.CURRENT_PLAYLIST_ID] ?: 0
-        return UserPreferences(currentPlaylistId)
-    }
+
     suspend fun updateCurrentPlaylistId(currentPlaylistId: Long) {
-        dataStore.edit { preferences ->
-            preferences[PreferencesKeys.CURRENT_PLAYLIST_ID] = currentPlaylistId
-        }
+        settings.setCurrentPlaylistId(currentPlaylistId)
     }
-
-
 }

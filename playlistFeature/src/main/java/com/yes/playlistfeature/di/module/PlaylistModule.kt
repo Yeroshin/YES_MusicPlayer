@@ -1,6 +1,8 @@
 package com.yes.playlistfeature.di.module
 
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import com.yes.core.di.module.IoDispatcher
 import com.yes.core.di.module.MainDispatcher
 import com.yes.core.domain.repository.IPlayListDao
@@ -24,6 +26,14 @@ import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 class PlaylistModule {
+   /* @Provides
+    fun providesSettingsDataStore(
+        dataStore: DataStore<Preferences>
+    ): SettingsDataStore {
+        return SettingsDataStore(
+            dataStore
+        )
+    }*/
     @Provides
     fun providesSettingsRepository(
         dataStore: SettingsDataStore

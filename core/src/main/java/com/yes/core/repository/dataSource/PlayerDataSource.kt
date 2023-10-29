@@ -46,7 +46,9 @@ class PlayerDataSource(
             )
                 .buildAsync()
         controllerFuture.addListener(
-            { setController(controllerFuture.get()) },
+            {
+                setController(controllerFuture.get())
+            },
             MoreExecutors.directExecutor()
         )
         //////////////////

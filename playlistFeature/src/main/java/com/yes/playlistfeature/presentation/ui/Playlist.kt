@@ -29,10 +29,12 @@ class Playlist: Fragment() {
     interface DependencyResolver {
         fun getPlaylistComponent(): PlaylistComponent
     }
-    private val dependency: Dependency by lazy {
+    private val component by lazy {
         (requireActivity().application as DependencyResolver)
             .getPlaylistComponent()
-            .getDependency()
+    }
+    private val dependency: Dependency by lazy {
+        component.getDependency()
     }
     interface MediaChooserManager {
         fun showMediaDialog()
@@ -50,33 +52,33 @@ class Playlist: Fragment() {
         binding as PlaylistBinding
     }
 
-    private val mediaChooserManager = activity as MediaChooserManager
-    private val playlistManager= activity as PlaylistManager
-
+    private val mediaChooserManager by lazy{
+        activity as MediaChooserManager
+    }
+    private val playlistManager by lazy{
+        activity as PlaylistManager
+    }
 
     private val viewModel: BaseViewModel<PlaylistContract.Event,
             PlaylistContract.State,
             PlaylistContract.Effect> by viewModels {
         dependency.factory
     }
-    private val adapter =dependency.adapter
+    private val adapter by lazy {
+        dependency.adapter
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        // Inflate the layout for this fragment
         binding = PlaylistBinding.inflate(inflater)
-
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
         setupView()
     }
-
     private fun observeViewModel() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -97,7 +99,6 @@ class Playlist: Fragment() {
             }
         }
     }
-
     private fun setupView() {
         binder.btnMedia.setOnClickListener {
             mediaChooserManager.showMediaDialog()

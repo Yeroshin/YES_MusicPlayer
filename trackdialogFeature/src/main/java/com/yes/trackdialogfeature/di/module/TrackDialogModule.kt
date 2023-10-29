@@ -1,5 +1,7 @@
 package com.yes.trackdialogfeature.di.module
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import com.yes.core.di.module.IoDispatcher
 import com.yes.core.repository.data.dataSource.MediaDataStore
 import com.yes.core.util.EspressoIdlingResource
@@ -32,8 +34,6 @@ class TrackDialogModule {
             factory
         )
     }
-
-
 
     @Provides
     fun providesMenuRepositoryMapper(): MenuRepositoryMapper {
@@ -84,7 +84,14 @@ class TrackDialogModule {
             mediaRepository,
         )
     }
-
+   /* @Provides
+    fun providesSettingsDataStore(
+        dataStore: DataStore<Preferences>
+    ): SettingsDataStore {
+        return SettingsDataStore(
+            dataStore
+        )
+    }*/
     @Provides
     fun providesSettingsRepository(
         settings: SettingsDataStore

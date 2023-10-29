@@ -6,11 +6,13 @@ import com.yes.trackdialogfeature.di.TrackDialogScope
 import com.yes.trackdialogfeature.di.module.TrackDialogModule
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 import dagger.Component
+import javax.inject.Singleton
 
 @Component(
+    dependencies = [CoreComponent::class],
     modules = [
         TrackDialogModule::class,
-        DataModule::class
+      //  DataModule::class
     ]
 )
 @TrackDialogScope

@@ -28,10 +28,12 @@ class TrackDialog : BaseDialog() {
     interface DependencyResolver {
         fun getTrackDialogComponent(): TrackDialogComponent
     }
-    private val dependency: Dependency by lazy {
+    private val component by lazy {
         (requireActivity().application as DependencyResolver)
             .getTrackDialogComponent()
-            .getDependency()
+    }
+    private val dependency: Dependency by lazy {
+        component.getDependency()
     }
     private val binder by lazy {
         binding as TrackDialogBinding

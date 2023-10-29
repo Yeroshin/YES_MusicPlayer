@@ -12,11 +12,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class MusicService: MediaSessionService() {
-    private val mediaSession: MediaSession by lazy {
-        MediaSession.Builder(this, player).build()
-    }
     private val player by lazy {
         ExoPlayer.Builder(this).build()
+    }
+    private val mediaSession: MediaSession by lazy {
+        MediaSession.Builder(this, player).build()
     }
     override fun onGetSession(
         controllerInfo: MediaSession.ControllerInfo

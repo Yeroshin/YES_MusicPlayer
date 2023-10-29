@@ -24,7 +24,7 @@ import javax.inject.Singleton
     ]
 )
 interface CoreComponent {
-  /*  fun providesEspressoIdlingResource(): EspressoIdlingResource?
+    fun providesEspressoIdlingResource(): EspressoIdlingResource?
     @IoDispatcher
     fun providesIoDispatcher(): CoroutineDispatcher
     @MainDispatcher
@@ -36,5 +36,5 @@ interface CoreComponent {
     fun provideDataStore(): DataStore<Preferences>
     fun providesSettingsDataStore(): SettingsDataStore
     fun providesPlayerDataSource(): PlayerDataSource
-    fun providesMediaDataStore(): MediaDataStore*/
+    fun providesMediaDataStore(): MediaDataStore
 }

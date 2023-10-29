@@ -2,6 +2,7 @@ package com.yes.musicplayer
 
 import android.app.Application
 import androidx.fragment.app.FragmentActivity
+import com.yes.core.di.component.DaggerCoreComponent
 import com.yes.core.di.module.DataModule
 import com.yes.musicplayer.di.components.DaggerMainActivityComponent
 
@@ -29,34 +30,36 @@ class YESApplication : Application(),
     TrackDialog.DependencyResolver {
 
     private val dataModule = DataModule(this)
+    private val coreComponent=DaggerCoreComponent.builder()
+        .dataModule(dataModule)
+        .build()
     override fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent {
-        return  DaggerMainActivityComponent
-            .builder()
+        return  DaggerMainActivityComponent.builder()
             .mainActivityModule(MainActivityModule(activity))
             .build()
     }
 
     override fun getPlayerFragmentComponent(): PlayerFeatureComponent {
         return DaggerPlayerFeatureComponent.builder()
-            .dataModule(dataModule)
+            .coreComponent(coreComponent)
             .build()
     }
 
     override fun getPlayListDialogComponent(): PlayListDialogComponent {
         return DaggerPlayListDialogComponent.builder()
-            .dataModule(dataModule)
+            .coreComponent(coreComponent)
             .build()
     }
 
     override fun getPlaylistComponent(): PlaylistComponent {
         return DaggerPlaylistComponent.builder()
-            .dataModule(dataModule)
+            .coreComponent(coreComponent)
             .build()
     }
 
     override fun getTrackDialogComponent(): TrackDialogComponent {
         return DaggerTrackDialogComponent.builder()
-            .dataModule(dataModule)
+            .coreComponent(coreComponent)
             .build()
     }
 }

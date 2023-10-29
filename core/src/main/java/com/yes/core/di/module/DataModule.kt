@@ -18,7 +18,9 @@ import com.yes.core.util.EspressoIdlingResource
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import javax.inject.Qualifier
 import javax.inject.Singleton
 private const val USER_PREFERENCES = "user_preferences"
@@ -63,15 +65,18 @@ class DataModule(
         )
     }*/
     @Provides
+    @Singleton
     fun provideDataStore(context: Context): DataStore<Preferences> {
+
         return PreferenceDataStoreFactory.create(
             corruptionHandler = ReplaceFileCorruptionHandler(
                 produceNewData = { emptyPreferences() }
             ),
          //   migrations = listOf(SharedPreferencesMigration(context,USER_PREFERENCES)),
-          //  scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
+           // scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
             produceFile = { context.preferencesDataStoreFile(USER_PREFERENCES) }
         )
+
     }
     @Provides
     fun providesSettingsDataStore(

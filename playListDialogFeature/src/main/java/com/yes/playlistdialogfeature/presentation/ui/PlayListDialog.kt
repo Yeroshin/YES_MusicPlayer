@@ -25,10 +25,12 @@ class PlayListDialog: BaseDialog(),SwipeToDeleteCallback.Callback{
     interface DependencyResolver {
         fun getPlayListDialogComponent(): PlayListDialogComponent
     }
-    private val dependency: Dependency by lazy {
+    private val component by lazy {
         (requireActivity().application as DependencyResolver)
             .getPlayListDialogComponent()
-            .getDependency()
+    }
+    private val dependency: Dependency by lazy {
+        component.getDependency()
     }
     override val layout = R.layout.playlist_dialog
     private val adapter = PlayListDialogAdapter()

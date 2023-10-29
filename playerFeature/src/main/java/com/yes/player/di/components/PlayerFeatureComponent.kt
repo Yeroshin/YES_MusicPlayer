@@ -8,12 +8,14 @@ import com.yes.player.di.module.UseCaseModule
 import com.yes.player.presentation.ui.PlayerFragment
 import com.yes.player.presentation.vm.PlayerViewModel
 import dagger.Component
+import javax.inject.Singleton
 
 @Component(
+    dependencies = [CoreComponent::class],
     modules = [
         PlayerModule::class,
         UseCaseModule::class,
-        DataModule::class
+      //  DataModule::class
     ]
 )
 @PlayerScope

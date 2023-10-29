@@ -6,11 +6,13 @@ import com.yes.playlistfeature.di.PlaylistScope
 import com.yes.playlistfeature.di.module.PlaylistModule
 import com.yes.playlistfeature.presentation.ui.Playlist
 import dagger.Component
+import javax.inject.Singleton
 
 @Component(
+    dependencies = [CoreComponent::class],
     modules = [
         PlaylistModule::class,
-        DataModule::class
+     //   DataModule::class
     ]
 )
 @PlaylistScope
