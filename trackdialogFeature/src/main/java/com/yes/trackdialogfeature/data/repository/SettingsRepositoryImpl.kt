@@ -1,7 +1,7 @@
 package com.yes.trackdialogfeature.data.repository
 
 
-import com.yes.core.repository.dataSource.SettingsDataStore
+import com.yes.core.data.dataSource.SettingsDataStore
 import com.yes.trackdialogfeature.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 

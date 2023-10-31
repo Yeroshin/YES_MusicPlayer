@@ -1,4 +1,4 @@
-package com.yes.core.repository.entity
+package com.yes.core.data.entity
 
 data class MediaDataStoreEntity(
     val title:String,

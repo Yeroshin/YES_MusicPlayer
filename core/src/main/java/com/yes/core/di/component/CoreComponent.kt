@@ -7,11 +7,10 @@ import com.yes.core.di.module.DataModule
 import com.yes.core.di.module.IoDispatcher
 import com.yes.core.di.module.MainDispatcher
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.core.repository.data.dataSource.MediaDataStore
-import com.yes.core.repository.dataSource.PlayListDataBase
-import com.yes.core.repository.dataSource.PlayerDataSource
-import com.yes.core.repository.dataSource.SettingsDataStore
-import com.yes.core.repository.dataSource.SettingsSharedPreferences
+import com.yes.core.data.data.dataSource.MediaDataStore
+import com.yes.core.data.dataSource.PlayListDataBase
+import com.yes.core.data.dataSource.PlayerDataSource
+import com.yes.core.data.dataSource.SettingsDataStore
 import com.yes.core.util.EspressoIdlingResource
 import dagger.Component
 import kotlinx.coroutines.CoroutineDispatcher

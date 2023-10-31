@@ -1,7 +1,7 @@
 package com.yes.trackdialogfeature.data.dataSource
 
 import com.example.shared_test.UiFixtures
-import com.yes.core.repository.entity.PlayListDataBaseTrackEntity
+import com.yes.core.data.entity.PlayListDataBaseTrackEntity
 
 object PlayListDAOFixtures {
     private val selectedItem= UiFixtures.getSelectedArtistIndex()

@@ -92,33 +92,7 @@ class PlayerFragment : Fragment() {
     }
 
     private fun setUpView() {
-        //////////////
 
-
-// Устанавливаем фокус, чтобы текст начал прокручиваться
-        /*  textView.isFocusable = true
-          textView.isFocusableInTouchMode = true
-          textView.requestFocus()*/
-        binder.trackTitle.isSelected = true
-        binder.playListName.isSelected = true
-
-        /*
-        // Создаем анимацию смещения текста
-                val animation = TranslateAnimation(
-                    Animation.RELATIVE_TO_SELF, 1f,
-                    Animation.RELATIVE_TO_SELF, 0f,
-                    Animation.RELATIVE_TO_SELF, 0f,
-                    Animation.RELATIVE_TO_SELF, 0f
-                )
-
-        // Настраиваем параметры анимации
-                animation.duration = 10000 // Длительность анимации (10 секунд)
-                animation.repeatCount = Animation.INFINITE // Бесконечное повторение
-                animation.interpolator = LinearInterpolator() // Линейный интерполятор
-
-        // Запускаем анимацию
-                textView.startAnimation(animation)*/
-        ///////////////
         binder.btnPlay.setOnClickListener {
             viewModel.setEvent(PlayerContract.Event.OnPlay)
         }
@@ -130,15 +104,17 @@ class PlayerFragment : Fragment() {
         }
         binder.seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                viewModel.setEvent(PlayerContract.Event.OnSeek(progress))
+                if(fromUser){
+                    viewModel.setEvent(PlayerContract.Event.OnSeek(progress))
+                }
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
-                TODO("Not yet implemented")
+
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
-                TODO("Not yet implemented")
+
             }
         }
         )

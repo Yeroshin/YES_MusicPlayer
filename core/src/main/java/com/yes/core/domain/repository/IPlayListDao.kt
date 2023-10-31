@@ -5,8 +5,8 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.yes.core.repository.entity.PlayListDataBaseEntity
-import com.yes.core.repository.entity.PlayListDataBaseTrackEntity
+import com.yes.core.data.entity.PlayListDataBaseEntity
+import com.yes.core.data.entity.PlayListDataBaseTrackEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

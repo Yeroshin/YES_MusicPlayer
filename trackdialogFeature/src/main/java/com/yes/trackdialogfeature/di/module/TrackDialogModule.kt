@@ -1,9 +1,7 @@
 package com.yes.trackdialogfeature.di.module
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import com.yes.core.di.module.IoDispatcher
-import com.yes.core.repository.data.dataSource.MediaDataStore
+import com.yes.core.data.data.dataSource.MediaDataStore
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
 import com.yes.trackdialogfeature.data.mapper.MenuRepositoryMapper
@@ -13,7 +11,7 @@ import com.yes.trackdialogfeature.data.repository.SettingsRepositoryImpl
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.core.repository.dataSource.SettingsDataStore
+import com.yes.core.data.dataSource.SettingsDataStore
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase
 import com.yes.trackdialogfeature.presentation.mapper.UiMapper

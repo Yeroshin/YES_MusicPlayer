@@ -1,11 +1,11 @@
-package com.yes.core.repository.data.dataSource
+package com.yes.core.data.data.dataSource
 
 import android.content.Context
 import android.database.Cursor
 import android.os.Build
 import android.provider.MediaStore
 
-import com.yes.core.repository.entity.MediaDataStoreEntity
+import com.yes.core.data.entity.MediaDataStoreEntity
 
 
 class MediaDataStore(private val context: Context) {

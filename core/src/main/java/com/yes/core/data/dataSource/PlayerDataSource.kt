@@ -1,48 +1,50 @@
-package com.yes.core.repository.dataSource
+package com.yes.core.data.dataSource
 
 import android.content.ComponentName
 import android.content.Context
+import android.media.audiofx.Visualizer
 import android.widget.Toast
 import androidx.media3.common.C.TIME_UNSET
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
-import androidx.media3.common.Timeline
-import androidx.media3.common.Tracks
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
+import com.yes.core.data.entity.PlayerStateDataSourceEntity
+import com.yes.core.data.factory.VisualizerFactory
 import com.yes.core.presentation.MusicService
-import com.yes.core.repository.entity.PlayerStateDataSourceEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 
 class PlayerDataSource(
-    private val context: Context
+    private val context: Context,
+    private val visualizerFactory: VisualizerFactory
 ) {
     private lateinit var controllerFuture: ListenableFuture<MediaController>
-    private val controller: MediaController
-        get() = controllerFuture.get()
+    private val controller = controllerFuture.get()
 
     init {
         initializeController()
     }
 
+    private val sessionToken = SessionToken(
+        context,
+        ComponentName(
+            context,
+            MusicService::class.java
+        )
+    )
+
     private fun initializeController() {
         controllerFuture =
             MediaController.Builder(
                 context,
-                SessionToken(
-                    context,
-                    ComponentName(
-                        context,
-                        MusicService::class.java
-                    )
-                )
+                sessionToken
             )
                 .buildAsync()
         controllerFuture.addListener(
@@ -57,8 +59,7 @@ class PlayerDataSource(
     }
 
     private val _isPlaying = MutableStateFlow(false)
-    val isPlaying: StateFlow<Boolean>
-        get() = _isPlaying
+    val isPlaying: StateFlow<Boolean> = _isPlaying
 
     private val _mediaMetadataFlow: MutableStateFlow<PlayerStateDataSourceEntity> =
         MutableStateFlow(
@@ -72,11 +73,11 @@ class PlayerDataSource(
             object : Player.Listener {
 
                 override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-                   if(controller.duration!=TIME_UNSET){
-                       _mediaMetadataFlow.value = PlayerStateDataSourceEntity(
-                           duration = controller.duration
-                       )
-                   }
+                    if (controller.duration != TIME_UNSET) {
+                        _mediaMetadataFlow.value = PlayerStateDataSourceEntity(
+                            duration = controller.duration
+                        )
+                    }
                 }
 
                 override fun onPlaybackStateChanged(playbackState: Int) {
@@ -115,6 +116,31 @@ class PlayerDataSource(
                         mediaMetadata = mediaMetadata
                     )
                 }
+
+                @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+                override fun onAudioSessionIdChanged(audioSessionId: Int) {
+                    visualizerFactory.createVisualizer(audioSessionId).setDataCaptureListener(
+                        object : Visualizer.OnDataCaptureListener {
+                            override fun onWaveFormDataCapture(
+                                visualizer: Visualizer?,
+                                waveform: ByteArray?,
+                                samplingRate: Int
+                            ) {
+
+                            }
+
+                            override fun onFftDataCapture(
+                                visualizer: Visualizer?,
+                                fft: ByteArray?,
+                                samplingRate: Int
+                            ) {
+
+                            }
+                        },
+                        Visualizer.getMaxCaptureRate() / 2, true, false
+                    )
+
+                }
             }
         )
     }
@@ -124,13 +150,19 @@ class PlayerDataSource(
     }
 
     fun seekToNext() {
+
         controller.seekToNextMediaItem()
+    }
+
+    fun getDuration(): Long {
+        return controller.duration
     }
 
     fun play() {
         controller.play()
     }
-    fun seek(position:Long){
+
+    fun seek(position: Long) {
         controller.seekTo(position)
     }
 
@@ -150,5 +182,8 @@ class PlayerDataSource(
         return mediaMetadataFlow
     }
 
+    fun getAudioSessionId() {
+        controller.connectedToken
+    }
 
 }

@@ -1,8 +1,8 @@
 package com.yes.player.data.mapper
 
 
-import com.yes.core.repository.entity.PlayListDataBaseEntity
-import com.yes.core.repository.entity.PlayerStateDataSourceEntity
+import com.yes.core.data.entity.PlayListDataBaseEntity
+import com.yes.core.data.entity.PlayerStateDataSourceEntity
 import com.yes.player.domain.model.DurationCounter
 import com.yes.player.domain.model.PlayerState
 import com.yes.player.domain.model.Playlist

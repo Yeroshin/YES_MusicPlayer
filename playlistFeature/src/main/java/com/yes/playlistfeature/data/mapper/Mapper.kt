@@ -1,7 +1,7 @@
 package com.yes.playlistfeature.data.mapper
 
 
-import com.yes.core.repository.entity.PlayListDataBaseTrackEntity
+import com.yes.core.data.entity.PlayListDataBaseTrackEntity
 import com.yes.playlistfeature.domain.entity.Track
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata

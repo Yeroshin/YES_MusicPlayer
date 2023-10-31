@@ -1,8 +1,8 @@
 package com.yes.trackdialogfeature.data.mapper
 
 
-import com.yes.core.repository.entity.PlayListDataBaseTrackEntity
-import com.yes.core.repository.entity.MediaDataStoreEntity
+import com.yes.core.data.entity.PlayListDataBaseTrackEntity
+import com.yes.core.data.entity.MediaDataStoreEntity
 
 class PlayListDaoMapper {
     fun map(track: MediaDataStoreEntity): PlayListDataBaseTrackEntity {

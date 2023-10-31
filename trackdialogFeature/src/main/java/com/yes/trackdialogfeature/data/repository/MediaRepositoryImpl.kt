@@ -3,8 +3,8 @@ package com.yes.trackdialogfeature.data.repository
 import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
 
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
-import com.yes.core.repository.entity.PlayListDataBaseTrackEntity
-import com.yes.core.repository.data.dataSource.MediaDataStore
+import com.yes.core.data.entity.PlayListDataBaseTrackEntity
+import com.yes.core.data.data.dataSource.MediaDataStore
 
 class MediaRepositoryImpl(
     private val mediaDataStore: MediaDataStore,

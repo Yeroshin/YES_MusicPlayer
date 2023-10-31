@@ -1,9 +1,14 @@
 package com.yes.musicplayer
 
 import android.app.Application
+import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import com.yes.core.di.component.DaggerCoreComponent
+import com.yes.core.di.component.DaggerMusicServiceComponent
+import com.yes.core.di.component.MusicServiceComponent
 import com.yes.core.di.module.DataModule
+import com.yes.core.di.module.MusicServiceModule
+import com.yes.core.presentation.MusicService
 import com.yes.musicplayer.di.components.DaggerMainActivityComponent
 
 import com.yes.musicplayer.di.components.MainActivityComponent
@@ -27,7 +32,8 @@ class YESApplication : Application(),
     PlayerFragment.DependencyResolver,
     PlayListDialog.DependencyResolver,
     Playlist.DependencyResolver,
-    TrackDialog.DependencyResolver {
+    TrackDialog.DependencyResolver,
+MusicService.DependencyResolver{
 
     private val dataModule = DataModule(this)
     private val coreComponent=DaggerCoreComponent.builder()
@@ -60,6 +66,12 @@ class YESApplication : Application(),
     override fun getTrackDialogComponent(): TrackDialogComponent {
         return DaggerTrackDialogComponent.builder()
             .coreComponent(coreComponent)
+            .build()
+    }
+
+    override fun getMusicServiceComponent(context: Context): MusicServiceComponent {
+        return DaggerMusicServiceComponent.builder()
+            .musicServiceModule(MusicServiceModule(context))
             .build()
     }
 }

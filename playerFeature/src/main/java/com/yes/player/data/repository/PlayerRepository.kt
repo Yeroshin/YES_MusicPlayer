@@ -1,13 +1,11 @@
 package com.yes.player.data.repository
 
-import com.yes.core.repository.dataSource.PlayerDataSource
+import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.player.data.mapper.Mapper
 import com.yes.player.domain.model.PlayerState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.map
 
 
@@ -58,5 +56,6 @@ class PlayerRepository(
             mapper.map(it)
         }
     }
+
 
 }

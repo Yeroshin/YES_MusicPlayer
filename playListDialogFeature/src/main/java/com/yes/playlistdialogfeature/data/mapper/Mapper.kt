@@ -1,6 +1,6 @@
 package com.yes.playlistdialogfeature.data.mapper
 
-import com.yes.core.repository.entity.PlayListDataBaseEntity
+import com.yes.core.data.entity.PlayListDataBaseEntity
 import com.yes.playlistdialogfeature.domain.entity.Item
 
 class Mapper {

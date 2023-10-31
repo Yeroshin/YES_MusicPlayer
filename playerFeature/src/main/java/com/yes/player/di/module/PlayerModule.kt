@@ -1,12 +1,9 @@
 package com.yes.player.di.module
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import com.yes.core.di.module.IoDispatcher
-import com.yes.core.di.module.MainDispatcher
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.core.repository.dataSource.PlayerDataSource
-import com.yes.core.repository.dataSource.SettingsDataStore
+import com.yes.core.data.dataSource.PlayerDataSource
+import com.yes.core.data.dataSource.SettingsDataStore
+import com.yes.core.data.factory.VisualizerFactory
 import com.yes.player.data.mapper.Mapper
 import com.yes.player.data.repository.PlayerRepository
 import com.yes.player.data.repository.PlaylistRepositoryImpl
@@ -23,18 +20,17 @@ import com.yes.player.presentation.ui.PlayerFragment
 import com.yes.player.presentation.vm.PlayerViewModel
 import dagger.Module
 import dagger.Provides
-import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 class PlayerModule {
-  /*  @Provides
-    fun providesSettingsDataStore(
-        dataStore: DataStore<Preferences>
-    ): SettingsDataStore {
-        return SettingsDataStore(
-            dataStore
-        )
-    }*/
+    /*  @Provides
+      fun providesSettingsDataStore(
+          dataStore: DataStore<Preferences>
+      ): SettingsDataStore {
+          return SettingsDataStore(
+              dataStore
+          )
+      }*/
     @Provides
     fun providesSettingsRepository(
         dataStore: SettingsDataStore
@@ -63,17 +59,6 @@ class PlayerModule {
 
 
     @Provides
-    fun providesSubscribeDurationCounterUseCase(
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-        playerRepository: PlayerRepository
-    ): SubscribeDurationCounterUseCase {
-        return SubscribeDurationCounterUseCase(
-            dispatcher,
-            playerRepository
-        )
-    }
-
-    @Provides
     fun providesPlayerRepository(
         playerDataSource: PlayerDataSource,
         mapper: Mapper
@@ -84,66 +69,14 @@ class PlayerModule {
         )
     }
 
-    @Provides
-    fun providesPlayUseCase(
-        @MainDispatcher dispatcher: CoroutineDispatcher,
-        playerRepository: PlayerRepository
-    ): PlayUseCase {
-        return PlayUseCase(
-            dispatcher,
-            playerRepository
-        )
-    }
 
     @Provides
     fun providesMapperUI(): MapperUI {
         return MapperUI()
     }
 
-    @Provides
-    fun providesSeekToNextUseCase(
-        @MainDispatcher dispatcher: CoroutineDispatcher,
-        playerRepository: PlayerRepository
-    ): SeekToNextUseCase {
-        return SeekToNextUseCase(
-            dispatcher,
-            playerRepository
-        )
-    }
 
-    @Provides
-    fun providesSeekToPreviousUseCase(
-        @MainDispatcher dispatcher: CoroutineDispatcher,
-        playerRepository: PlayerRepository
-    ): SeekToPreviousUseCase {
-        return SeekToPreviousUseCase(
-            dispatcher,
-            playerRepository
-        )
-    }
 
-    @Provides
-    fun providesSubscribeCurrentPlaylistUseCase(
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-        playListRepositoryImpl: PlaylistRepositoryImpl,
-        settingsRepository: SettingsRepositoryImpl
-    ): SubscribeCurrentPlaylistUseCase {
-        return SubscribeCurrentPlaylistUseCase(
-            dispatcher,
-            playListRepositoryImpl,
-            settingsRepository
-        )
-    }
-    @Provides
-    fun providesSubscribeCurrentTrackInfoUseCase(
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-        playerRepository: PlayerRepository
-    ): SubscribePlayerStateUseCase {
-        return SubscribePlayerStateUseCase(
-            dispatcher,
-            playerRepository
-        )
-    }
 
     @Provides
     fun providesPlayerViewModelFactory(

@@ -1,13 +1,11 @@
 package com.yes.playlistfeature.di.module
 
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import com.yes.core.di.module.IoDispatcher
 import com.yes.core.di.module.MainDispatcher
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.core.repository.dataSource.PlayerDataSource
-import com.yes.core.repository.dataSource.SettingsDataStore
+import com.yes.core.data.dataSource.PlayerDataSource
+import com.yes.core.data.dataSource.SettingsDataStore
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.playlistfeature.data.mapper.Mapper
 import com.yes.playlistfeature.data.repository.PlayListRepositoryImpl

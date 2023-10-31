@@ -1,4 +1,4 @@
-package com.yes.core.repository.dataSource
+package com.yes.core.data.dataSource
 
 import android.content.Context
 import androidx.room.Database
@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.core.repository.entity.PlayListDataBaseEntity
-import com.yes.core.repository.entity.PlayListDataBaseTrackEntity
+import com.yes.core.data.entity.PlayListDataBaseEntity
+import com.yes.core.data.entity.PlayListDataBaseTrackEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

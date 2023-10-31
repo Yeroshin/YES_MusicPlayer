@@ -17,7 +17,7 @@ import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.yes.core.repository.entity.PlayListDataBaseTrackEntity
+import com.yes.core.data.entity.PlayListDataBaseTrackEntity
 import com.yes.core.domain.repository.IPlayListDao
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Description

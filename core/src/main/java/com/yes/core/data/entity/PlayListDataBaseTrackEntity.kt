@@ -1,4 +1,4 @@
-package com.yes.core.repository.entity
+package com.yes.core.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

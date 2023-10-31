@@ -3,11 +3,11 @@ package com.yes.trackdialogfeature.data.repository.dataSource
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.yes.core.repository.entity.PlayListDataBaseEntity
+import com.yes.core.data.entity.PlayListDataBaseEntity
 
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.core.repository.entity.PlayListDataBaseTrackEntity
-import com.yes.core.repository.dataSource.PlayListDataBase
+import com.yes.core.data.entity.PlayListDataBaseTrackEntity
+import com.yes.core.data.dataSource.PlayListDataBase
 import junit.framework.TestCase.assertEquals
 
 import org.junit.After

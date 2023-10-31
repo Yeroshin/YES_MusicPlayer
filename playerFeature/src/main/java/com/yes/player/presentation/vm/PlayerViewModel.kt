@@ -29,32 +29,34 @@ class PlayerViewModel(
 ) : BaseViewModel<Event, State, Effect>() {
 
     init {
-       subscribeDurationCounter()
+        subscribeDurationCounter()
         subscribeCurrentPlaylist()
         subscribeCurrentTrack()
     }
-private fun subscribeCurrentTrack(){
-    viewModelScope.launch {
 
-        when (val result = subscribePlayerStateUseCase()) {
-            is DomainResult.Success -> {
-                result.data.collect {
-                    setState {
-                        copy(
-                            playerState = PlayerState.Success(
-                                mapperUI.map(it)
+    private fun subscribeCurrentTrack() {
+        viewModelScope.launch {
+
+            when (val result = subscribePlayerStateUseCase()) {
+                is DomainResult.Success -> {
+                    result.data.collect {
+                        setState {
+                            copy(
+                                playerState = PlayerState.Success(
+                                    mapperUI.map(it)
+                                )
                             )
-                        )
+                        }
                     }
                 }
-            }
 
-            is DomainResult.Error -> setEffect {
-                Effect.UnknownException
+                is DomainResult.Error -> setEffect {
+                    Effect.UnknownException
+                }
             }
         }
     }
-}
+
     private fun subscribeCurrentPlaylist() {
         viewModelScope.launch {
 
@@ -126,7 +128,8 @@ private fun subscribeCurrentTrack(){
             }
         }
     }
-    private fun seek(position:Int){
+
+    private fun seek(position: Int) {
         viewModelScope.launch {
             val result = seekUseCase(
                 SeekUseCase.Params(

@@ -14,9 +14,7 @@ class SeekUseCase (
         params?.let {
             playerRepository.seek(it.position)
             return DomainResult.Success(Unit)
-        }?:return DomainResult.Error(DomainResult.UnknownException)
-
-
+        } ?:return DomainResult.Error(DomainResult.UnknownException)
     }
     data class Params(val position:Long)
 }

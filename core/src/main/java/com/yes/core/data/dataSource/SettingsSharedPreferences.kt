@@ -1,4 +1,4 @@
-package com.yes.core.repository.dataSource
+package com.yes.core.data.dataSource
 
 
 import android.content.Context

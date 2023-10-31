@@ -2,8 +2,8 @@ package com.yes.trackdialogfeature.data.mapper
 
 import com.yes.trackdialogfeature.data.dataSource.MediaDataStoreFixtures
 import com.yes.trackdialogfeature.data.dataSource.PlayListDAOFixtures
-import com.yes.core.repository.entity.PlayListDataBaseTrackEntity
-import com.yes.core.repository.entity.MediaDataStoreEntity
+import com.yes.core.data.entity.PlayListDataBaseTrackEntity
+import com.yes.core.data.entity.MediaDataStoreEntity
 import io.mockk.MockKAnnotations
 import org.junit.Assert.*
 import org.junit.jupiter.api.BeforeEach
