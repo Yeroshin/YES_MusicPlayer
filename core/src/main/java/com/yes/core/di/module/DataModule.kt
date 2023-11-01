@@ -98,7 +98,7 @@ class DataModule(
     fun provideVisualizerFactory(): VisualizerFactory {
         return  VisualizerFactory()
     }
-}
+
 
     @Provides
     fun providesMediaDataStore(

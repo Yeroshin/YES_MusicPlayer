@@ -9,9 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
+import android.widget.FrameLayout
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -19,16 +23,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.yes.core.presentation.BaseViewModel
+import com.yes.player.R
 import com.yes.player.databinding.PlayerBinding
 import com.yes.player.di.components.PlayerFeatureComponent
 import com.yes.player.presentation.contract.PlayerContract
 import com.yes.player.presentation.model.PlayerStateUI
+import com.yes.player.presentation.ui.theme.ComposeContent
 import com.yes.player.presentation.vm.PlayerViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
+import androidx.compose.material.Text
 
 class PlayerFragment : Fragment() {
     interface DependencyResolver {
@@ -60,7 +66,11 @@ class PlayerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = PlayerBinding.inflate(inflater, container, false)
-
+        //migration
+        binder.composeView.setContent {
+            ComposeContent()
+        }
+        ///////////////////////
         return binder.root
     }
 
@@ -212,4 +222,10 @@ class PlayerFragment : Fragment() {
     class Dependency(
         val factory: PlayerViewModel.Factory,
     )
+}
+
+@Preview
+@Composable
+fun Visualizer(){
+    Text(text="hello world")
 }
