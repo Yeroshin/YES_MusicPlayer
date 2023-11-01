@@ -28,13 +28,13 @@ import com.yes.player.databinding.PlayerBinding
 import com.yes.player.di.components.PlayerFeatureComponent
 import com.yes.player.presentation.contract.PlayerContract
 import com.yes.player.presentation.model.PlayerStateUI
-import com.yes.player.presentation.ui.theme.ComposeContent
 import com.yes.player.presentation.vm.PlayerViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.material.Text
+import com.yes.player.presentation.ui.theme.EqualizerView
 
 class PlayerFragment : Fragment() {
     interface DependencyResolver {
@@ -68,7 +68,13 @@ class PlayerFragment : Fragment() {
         binding = PlayerBinding.inflate(inflater, container, false)
         //migration
         binder.composeView.setContent {
-            ComposeContent()
+            /*    EqualizerView(
+            80,
+                40,
+                 60,
+                20,
+                90
+                )*/
         }
         ///////////////////////
         return binder.root
@@ -114,7 +120,7 @@ class PlayerFragment : Fragment() {
         }
         binder.seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                if(fromUser){
+                if (fromUser) {
                     viewModel.setEvent(PlayerContract.Event.OnSeek(progress))
                 }
             }
@@ -226,6 +232,6 @@ class PlayerFragment : Fragment() {
 
 @Preview
 @Composable
-fun Visualizer(){
-    Text(text="hello world")
+fun Visualizer() {
+    Text(text = "hello world")
 }

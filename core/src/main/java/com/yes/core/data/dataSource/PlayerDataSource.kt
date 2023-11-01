@@ -25,14 +25,17 @@ class PlayerDataSource(
     private val context: Context,
     private val visualizerFactory: VisualizerFactory
 ) {
-    private lateinit var controllerFuture: ListenableFuture<MediaController>
-    private val controller: MediaController
-        get() = controllerFuture.get()
-
-    init {
-        initializeController()
+    private val  controllerFuture by lazy {
+            MediaController.Builder(
+                context,
+                sessionToken
+            )
+                .buildAsync()
     }
-
+    private val controller by lazy {
+        controllerFuture.get()
+    }
+       // get() = controllerFuture.get()
     private val sessionToken = SessionToken(
         context,
         ComponentName(
@@ -40,23 +43,17 @@ class PlayerDataSource(
             MusicService::class.java
         )
     )
+    init {
+        initializeController()
+    }
+
+
 
     private fun initializeController() {
-        controllerFuture =
-            MediaController.Builder(
-                context,
-                SessionToken(
-                    context,
-                    ComponentName(
-                        context,
-                        MusicService::class.java
-                    )
-                )
-            )
-                .buildAsync()
+
         controllerFuture.addListener(
             {
-                setController(controllerFuture.get())
+                setController(controller)
             },
             MoreExecutors.directExecutor()
         )
