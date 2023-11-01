@@ -26,7 +26,8 @@ class PlayerDataSource(
     private val visualizerFactory: VisualizerFactory
 ) {
     private lateinit var controllerFuture: ListenableFuture<MediaController>
-    private lateinit var controller:MediaController
+    private val controller: MediaController
+        get() = controllerFuture.get()
 
     init {
         initializeController()
@@ -44,10 +45,15 @@ class PlayerDataSource(
         controllerFuture =
             MediaController.Builder(
                 context,
-                sessionToken
+                SessionToken(
+                    context,
+                    ComponentName(
+                        context,
+                        MusicService::class.java
+                    )
+                )
             )
                 .buildAsync()
-        controller= controllerFuture.get()
         controllerFuture.addListener(
             {
                 setController(controllerFuture.get())
