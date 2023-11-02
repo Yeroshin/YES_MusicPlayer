@@ -11,10 +11,13 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.ui.Alignment
 
 @Preview
 @Composable
@@ -51,10 +54,11 @@ fun EqualizerView() {
         repeat(columnCount) { columnIndex ->
             Column(
                 modifier = Modifier.fillMaxHeight(),
-                verticalArrangement = Arrangement.spacedBy(columnSpacing)
+                verticalArrangement = Arrangement.Bottom
             ) {
                 val count = ((values[ columnIndex] * maxHeightCount) / maxValue).toInt()
                 repeat(count) { heightIndex ->
+                    Spacer(modifier = Modifier.height(columnSpacing))
                     Box(
                         modifier = Modifier
                             .size(squareSize)
