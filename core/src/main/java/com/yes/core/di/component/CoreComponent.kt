@@ -3,6 +3,8 @@ package com.yes.core.di.component
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.session.MediaSession
 import com.yes.core.di.module.DataModule
 import com.yes.core.di.module.IoDispatcher
 import com.yes.core.di.module.MainDispatcher

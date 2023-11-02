@@ -25,12 +25,10 @@ class UseCaseModule {
     @Provides
     fun providesSubscribeVisualizerUseCase(
         @MainDispatcher dispatcher: CoroutineDispatcher,
-         playerRepository: PlayerRepository,
          visualizerRepository: VisualizerRepository
     ): SubscribeVisualizerUseCase {
         return SubscribeVisualizerUseCase(
             dispatcher,
-            playerRepository,
             visualizerRepository
         )
     }

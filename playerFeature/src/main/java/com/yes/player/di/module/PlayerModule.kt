@@ -1,5 +1,6 @@
 package com.yes.player.di.module
 
+import android.media.audiofx.Visualizer
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.core.data.dataSource.SettingsDataStore
@@ -25,24 +26,13 @@ import dagger.Provides
 
 @Module
 class PlayerModule {
-    /*  @Provides
-      fun providesSettingsDataStore(
-          dataStore: DataStore<Preferences>
-      ): SettingsDataStore {
-          return SettingsDataStore(
-              dataStore
-          )
-      }*/
-    @Provides
-    fun providesVisualizerFactory(): VisualizerFactory{
-        return VisualizerFactory()
-    }
+
     @Provides
     fun providesVisualizerRepository(
-        visualizerFactory: VisualizerFactory
+        visualizer: Visualizer
     ): VisualizerRepository {
         return VisualizerRepository(
-            visualizerFactory
+            visualizer
         )
     }
 
@@ -103,8 +93,7 @@ class PlayerModule {
         subscribeCurrentPlaylistUseCase: SubscribeCurrentPlaylistUseCase,
         subscribePlayerStateUseCase: SubscribePlayerStateUseCase,
         seekUseCase: SeekUseCase,
-       subscribeVisualizerUseCase: SubscribeVisualizerUseCase
-
+       subscribeVisualizerUseCase: SubscribeVisualizerUseCase,
     ): PlayerViewModel.Factory {
         return PlayerViewModel.Factory(
             mapperUI,
@@ -115,7 +104,7 @@ class PlayerModule {
             subscribeCurrentPlaylistUseCase,
             subscribePlayerStateUseCase,
             seekUseCase,
-            subscribeVisualizerUseCase
+            subscribeVisualizerUseCase,
         )
     }
 

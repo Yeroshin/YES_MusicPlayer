@@ -3,9 +3,11 @@ package com.yes.musicplayer
 import android.app.Application
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
+import com.yes.core.di.component.DaggerAudioSessionIdComponent
 import com.yes.core.di.component.DaggerCoreComponent
 import com.yes.core.di.component.DaggerMusicServiceComponent
 import com.yes.core.di.component.MusicServiceComponent
+import com.yes.core.di.module.AudioSessionIdModule
 import com.yes.core.di.module.DataModule
 import com.yes.core.di.module.MusicServiceModule
 import com.yes.core.presentation.MusicService
@@ -33,20 +35,26 @@ class YESApplication : Application(),
     PlayListDialog.DependencyResolver,
     Playlist.DependencyResolver,
     TrackDialog.DependencyResolver,
-MusicService.DependencyResolver{
+    MusicService.DependencyResolver {
 
-    private val dataModule = DataModule(this)
-    private val coreComponent=DaggerCoreComponent.builder()
-        .dataModule(dataModule)
-        .build()
+    private val dataModule by lazy {
+        DataModule(this)
+    }
+    private val coreComponent by lazy {
+        DaggerCoreComponent.builder()
+            .dataModule(dataModule)
+            .build()
+    }
+
     override fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent {
-        return  DaggerMainActivityComponent.builder()
+        return DaggerMainActivityComponent.builder()
             .mainActivityModule(MainActivityModule(activity))
             .build()
     }
 
     override fun getPlayerFragmentComponent(): PlayerFeatureComponent {
         return DaggerPlayerFeatureComponent.builder()
+            .audioSessionIdComponent(audioSessionIdComponent)
             .coreComponent(coreComponent)
             .build()
     }
@@ -69,9 +77,21 @@ MusicService.DependencyResolver{
             .build()
     }
 
+    private val musicServiceModule by lazy {
+        MusicServiceModule()
+    }
+    private val audioSessionIdComponent by lazy {
+        DaggerAudioSessionIdComponent.builder()
+            .audioSessionIdModule(AudioSessionIdModule())
+            .dataModule(dataModule)
+            .build()
+    }
+
     override fun getMusicServiceComponent(context: Context): MusicServiceComponent {
         return DaggerMusicServiceComponent.builder()
-            .musicServiceModule(MusicServiceModule(context))
+            .coreComponent(coreComponent)
+            .musicServiceModule(musicServiceModule)
+            .audioSessionIdComponent(audioSessionIdComponent)
             .build()
     }
 }

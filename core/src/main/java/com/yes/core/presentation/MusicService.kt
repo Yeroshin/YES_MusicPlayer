@@ -37,4 +37,7 @@ class MusicService : MediaSessionService() {
         controllerInfo: MediaSession.ControllerInfo
     ): MediaSession = mediaSession
 
+    override fun onCreate() {
+        super.onCreate()
+    }
 }

@@ -118,12 +118,7 @@ class PlayerDataSource(
                     )
                 }
 
-                @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
-                override fun onAudioSessionIdChanged(audioSessionId: Int) {
-                    _mediaSessionIdFlow.value=audioSessionId
 
-
-                }
             }
         )
     }

@@ -13,15 +13,12 @@ import kotlinx.coroutines.flow.map
 
 class SubscribeVisualizerUseCase(
     dispatcher: CoroutineDispatcher,
-    private val playerRepository: PlayerRepository,
     private val visualizerRepository: VisualizerRepository
-) : UseCase<Any, Flow<ByteArray?>>(dispatcher) {
-    override suspend fun run(params: Any?): DomainResult<Flow<ByteArray?>> {
+) : UseCase<Unit?, Flow<ByteArray?>>(dispatcher) {
+    override suspend fun run(params: Unit?): DomainResult<Flow<ByteArray?>> {
         return DomainResult.Success(
-            playerRepository.subscribeAudioSessionId()
-                .flatMapConcat {audioSessionId->
-                visualizerRepository.subscribeVisualizer(audioSessionId)
-            }
+            visualizerRepository.subscribeVisualizer()
         )
     }
 }
+

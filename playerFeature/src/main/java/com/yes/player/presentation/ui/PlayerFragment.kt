@@ -227,5 +227,6 @@ class PlayerFragment : Fragment() {
 
     class Dependency(
         val factory: PlayerViewModel.Factory,
+
     )
 }

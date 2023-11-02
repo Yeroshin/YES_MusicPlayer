@@ -1,6 +1,7 @@
 package com.yes.player.presentation.vm
 
 
+import android.media.audiofx.Visualizer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -28,7 +29,7 @@ class PlayerViewModel(
     private val subscribeCurrentPlaylistUseCase: SubscribeCurrentPlaylistUseCase,
     private val subscribePlayerStateUseCase: SubscribePlayerStateUseCase,
     private val seekUseCase: SeekUseCase,
-    private val subscribeVisualizerUseCase: SubscribeVisualizerUseCase
+    private val subscribeVisualizerUseCase: SubscribeVisualizerUseCase,
 ) : BaseViewModel<Event, State, Effect>() {
 
     init {
@@ -37,17 +38,20 @@ class PlayerViewModel(
         subscribeCurrentTrack()
         subscribeVisualizer()
     }
-    private fun subscribeVisualizer(){
+
+    private fun subscribeVisualizer() {
         viewModelScope.launch {
 
-            when (val result = subscribeVisualizerUseCase()) {
+            when (
+                val result = subscribeVisualizerUseCase()
+            ) {
                 is DomainResult.Success -> {
                     result.data.collect {
                         setState {
                             copy(
                                 playerState = PlayerState.Success(
                                     PlayerStateUI(
-                                        visualizerData= emptyList()
+                                        visualizerData = emptyList()
                                     )
                                 )
                             )
@@ -218,7 +222,7 @@ class PlayerViewModel(
         private val subscribeCurrentPlaylistUseCase: SubscribeCurrentPlaylistUseCase,
         private val subscribePlayerStateUseCase: SubscribePlayerStateUseCase,
         private val seekUseCase: SeekUseCase,
-        private val subscribeVisualizerUseCase: SubscribeVisualizerUseCase
+        private val subscribeVisualizerUseCase: SubscribeVisualizerUseCase,
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
@@ -231,7 +235,7 @@ class PlayerViewModel(
                 subscribeCurrentPlaylistUseCase,
                 subscribePlayerStateUseCase,
                 seekUseCase,
-                subscribeVisualizerUseCase
+                subscribeVisualizerUseCase,
             ) as T
         }
     }
