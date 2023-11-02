@@ -13,8 +13,10 @@ import com.yes.player.domain.usecase.SeekUseCase
 import com.yes.player.domain.usecase.SubscribeCurrentPlaylistUseCase
 import com.yes.player.domain.usecase.SubscribePlayerStateUseCase
 import com.yes.player.domain.usecase.SubscribeDurationCounterUseCase
+import com.yes.player.domain.usecase.SubscribeVisualizerUseCase
 import com.yes.player.presentation.contract.PlayerContract.*
 import com.yes.player.presentation.mapper.MapperUI
+import com.yes.player.presentation.model.PlayerStateUI
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
@@ -25,13 +27,39 @@ class PlayerViewModel(
     private val seekToPreviousUseCase: SeekToPreviousUseCase,
     private val subscribeCurrentPlaylistUseCase: SubscribeCurrentPlaylistUseCase,
     private val subscribePlayerStateUseCase: SubscribePlayerStateUseCase,
-    private val seekUseCase: SeekUseCase
+    private val seekUseCase: SeekUseCase,
+    private val subscribeVisualizerUseCase: SubscribeVisualizerUseCase
 ) : BaseViewModel<Event, State, Effect>() {
 
     init {
         subscribeDurationCounter()
         subscribeCurrentPlaylist()
         subscribeCurrentTrack()
+        subscribeVisualizer()
+    }
+    private fun subscribeVisualizer(){
+        viewModelScope.launch {
+
+            when (val result = subscribeVisualizerUseCase()) {
+                is DomainResult.Success -> {
+                    result.data.collect {
+                        setState {
+                            copy(
+                                playerState = PlayerState.Success(
+                                    PlayerStateUI(
+                                        visualizerData= emptyList()
+                                    )
+                                )
+                            )
+                        }
+                    }
+                }
+
+                is DomainResult.Error -> setEffect {
+                    Effect.UnknownException
+                }
+            }
+        }
     }
 
     private fun subscribeCurrentTrack() {
@@ -189,7 +217,8 @@ class PlayerViewModel(
         private val seekToPreviousUseCase: SeekToPreviousUseCase,
         private val subscribeCurrentPlaylistUseCase: SubscribeCurrentPlaylistUseCase,
         private val subscribePlayerStateUseCase: SubscribePlayerStateUseCase,
-        private val seekUseCase: SeekUseCase
+        private val seekUseCase: SeekUseCase,
+        private val subscribeVisualizerUseCase: SubscribeVisualizerUseCase
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
@@ -201,7 +230,8 @@ class PlayerViewModel(
                 seekToPreviousUseCase,
                 subscribeCurrentPlaylistUseCase,
                 subscribePlayerStateUseCase,
-                seekUseCase
+                seekUseCase,
+                subscribeVisualizerUseCase
             ) as T
         }
     }

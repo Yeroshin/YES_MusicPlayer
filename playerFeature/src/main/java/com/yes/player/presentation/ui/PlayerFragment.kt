@@ -229,9 +229,3 @@ class PlayerFragment : Fragment() {
         val factory: PlayerViewModel.Factory,
     )
 }
-
-@Preview
-@Composable
-fun Visualizer() {
-    Text(text = "hello world")
-}

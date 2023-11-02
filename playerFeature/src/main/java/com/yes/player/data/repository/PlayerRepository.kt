@@ -28,7 +28,8 @@ class PlayerRepository(
     fun seekPrevious() {
         playerDataSource.seekToPrevious()
     }
-    fun seek(position:Long){
+
+    fun seek(position: Long) {
         playerDataSource.seek(position)
     }
 
@@ -57,5 +58,7 @@ class PlayerRepository(
         }
     }
 
-
+    fun subscribeAudioSessionId(): Flow<Int> {
+        return playerDataSource.subscribeAudioSessionId()
+    }
 }

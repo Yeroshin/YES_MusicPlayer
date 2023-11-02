@@ -2,7 +2,6 @@ package com.yes.core.data.dataSource
 
 import android.content.ComponentName
 import android.content.Context
-import android.media.audiofx.Visualizer
 import android.widget.Toast
 import androidx.media3.common.C.TIME_UNSET
 import androidx.media3.common.MediaItem
@@ -11,10 +10,8 @@ import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
-import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 import com.yes.core.data.entity.PlayerStateDataSourceEntity
-import com.yes.core.data.factory.VisualizerFactory
 import com.yes.core.presentation.MusicService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +20,6 @@ import kotlinx.coroutines.flow.StateFlow
 
 class PlayerDataSource(
     private val context: Context,
-    private val visualizerFactory: VisualizerFactory
 ) {
     private val  controllerFuture by lazy {
             MediaController.Builder(
@@ -70,7 +66,8 @@ class PlayerDataSource(
             PlayerStateDataSourceEntity()
         )
     private val mediaMetadataFlow: StateFlow<PlayerStateDataSourceEntity> = _mediaMetadataFlow
-
+    private val _mediaSessionIdFlow=MutableStateFlow(0)
+    private val mediaSessionIdFlow: StateFlow<Int> = _mediaSessionIdFlow
 
     private fun setController(controller: MediaController) {
         controller.addListener(
@@ -123,26 +120,8 @@ class PlayerDataSource(
 
                 @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
                 override fun onAudioSessionIdChanged(audioSessionId: Int) {
-                    visualizerFactory.createVisualizer(audioSessionId).setDataCaptureListener(
-                        object : Visualizer.OnDataCaptureListener {
-                            override fun onWaveFormDataCapture(
-                                visualizer: Visualizer?,
-                                waveform: ByteArray?,
-                                samplingRate: Int
-                            ) {
+                    _mediaSessionIdFlow.value=audioSessionId
 
-                            }
-
-                            override fun onFftDataCapture(
-                                visualizer: Visualizer?,
-                                fft: ByteArray?,
-                                samplingRate: Int
-                            ) {
-
-                            }
-                        },
-                        Visualizer.getMaxCaptureRate() / 2, true, false
-                    )
 
                 }
             }
@@ -186,8 +165,8 @@ class PlayerDataSource(
         return mediaMetadataFlow
     }
 
-    fun getAudioSessionId() {
-        controller.connectedToken
+    fun subscribeAudioSessionId():Flow<Int> {
+        return mediaSessionIdFlow
     }
 
 }

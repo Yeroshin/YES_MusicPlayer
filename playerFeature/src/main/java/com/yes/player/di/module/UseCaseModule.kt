@@ -2,9 +2,11 @@ package com.yes.player.di.module
 
 import com.yes.core.di.module.IoDispatcher
 import com.yes.core.di.module.MainDispatcher
+import com.yes.player.data.factory.VisualizerFactory
 import com.yes.player.data.repository.PlayerRepository
 import com.yes.player.data.repository.PlaylistRepositoryImpl
 import com.yes.player.data.repository.SettingsRepositoryImpl
+import com.yes.player.data.repository.VisualizerRepository
 import com.yes.player.domain.usecase.PlayUseCase
 import com.yes.player.domain.usecase.SeekToNextUseCase
 import com.yes.player.domain.usecase.SeekToPreviousUseCase
@@ -12,12 +14,27 @@ import com.yes.player.domain.usecase.SeekUseCase
 import com.yes.player.domain.usecase.SubscribeCurrentPlaylistUseCase
 import com.yes.player.domain.usecase.SubscribeDurationCounterUseCase
 import com.yes.player.domain.usecase.SubscribePlayerStateUseCase
+import com.yes.player.domain.usecase.SubscribeVisualizerUseCase
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 class UseCaseModule {
+
+    @Provides
+    fun providesSubscribeVisualizerUseCase(
+        @MainDispatcher dispatcher: CoroutineDispatcher,
+         playerRepository: PlayerRepository,
+         visualizerRepository: VisualizerRepository
+    ): SubscribeVisualizerUseCase {
+        return SubscribeVisualizerUseCase(
+            dispatcher,
+            playerRepository,
+            visualizerRepository
+        )
+    }
+
     @Provides
     fun providesSeekUseCase(
         @MainDispatcher dispatcher: CoroutineDispatcher,

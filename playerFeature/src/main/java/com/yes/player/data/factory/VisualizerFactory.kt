@@ -1,4 +1,4 @@
-package com.yes.core.data.factory
+package com.yes.player.data.factory
 
 import android.media.audiofx.Visualizer
 

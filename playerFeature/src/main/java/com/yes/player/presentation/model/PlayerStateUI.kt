@@ -7,5 +7,6 @@ data class PlayerStateUI(
     val duration:String?=null,
     val durationInt:Int?=null,
     val stateBuffering:Boolean=false,
-    val progress:Int?=null
+    val progress:Int?=null,
+    val visualizerData:List<Int>?=null
 )

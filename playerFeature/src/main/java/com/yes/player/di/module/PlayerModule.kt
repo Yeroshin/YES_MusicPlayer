@@ -3,11 +3,12 @@ package com.yes.player.di.module
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.core.data.dataSource.SettingsDataStore
-import com.yes.core.data.factory.VisualizerFactory
+import com.yes.player.data.factory.VisualizerFactory
 import com.yes.player.data.mapper.Mapper
 import com.yes.player.data.repository.PlayerRepository
 import com.yes.player.data.repository.PlaylistRepositoryImpl
 import com.yes.player.data.repository.SettingsRepositoryImpl
+import com.yes.player.data.repository.VisualizerRepository
 import com.yes.player.domain.usecase.PlayUseCase
 import com.yes.player.domain.usecase.SeekToNextUseCase
 import com.yes.player.domain.usecase.SeekToPreviousUseCase
@@ -15,6 +16,7 @@ import com.yes.player.domain.usecase.SeekUseCase
 import com.yes.player.domain.usecase.SubscribeCurrentPlaylistUseCase
 import com.yes.player.domain.usecase.SubscribePlayerStateUseCase
 import com.yes.player.domain.usecase.SubscribeDurationCounterUseCase
+import com.yes.player.domain.usecase.SubscribeVisualizerUseCase
 import com.yes.player.presentation.mapper.MapperUI
 import com.yes.player.presentation.ui.PlayerFragment
 import com.yes.player.presentation.vm.PlayerViewModel
@@ -31,6 +33,19 @@ class PlayerModule {
               dataStore
           )
       }*/
+    @Provides
+    fun providesVisualizerFactory(): VisualizerFactory{
+        return VisualizerFactory()
+    }
+    @Provides
+    fun providesVisualizerRepository(
+        visualizerFactory: VisualizerFactory
+    ): VisualizerRepository {
+        return VisualizerRepository(
+            visualizerFactory
+        )
+    }
+
     @Provides
     fun providesSettingsRepository(
         dataStore: SettingsDataStore
@@ -87,7 +102,9 @@ class PlayerModule {
         seekToPreviousUseCase: SeekToPreviousUseCase,
         subscribeCurrentPlaylistUseCase: SubscribeCurrentPlaylistUseCase,
         subscribePlayerStateUseCase: SubscribePlayerStateUseCase,
-        seekUseCase: SeekUseCase
+        seekUseCase: SeekUseCase,
+       subscribeVisualizerUseCase: SubscribeVisualizerUseCase
+
     ): PlayerViewModel.Factory {
         return PlayerViewModel.Factory(
             mapperUI,
@@ -97,7 +114,8 @@ class PlayerModule {
             seekToPreviousUseCase,
             subscribeCurrentPlaylistUseCase,
             subscribePlayerStateUseCase,
-            seekUseCase
+            seekUseCase,
+            subscribeVisualizerUseCase
         )
     }
 
