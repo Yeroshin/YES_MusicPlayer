@@ -36,14 +36,16 @@ class PlayerViewModel(
         subscribeDurationCounter()
         subscribeCurrentPlaylist()
         subscribeCurrentTrack()
-        subscribeVisualizer()
+       // subscribeVisualizer()
     }
 
     private fun subscribeVisualizer() {
         viewModelScope.launch {
 
             when (
-                val result = subscribeVisualizerUseCase()
+                val result = subscribeVisualizerUseCase(
+
+                )
             ) {
                 is DomainResult.Success -> {
                     result.data.collect {
@@ -179,6 +181,7 @@ class PlayerViewModel(
 
     private fun play() {
         viewModelScope.launch {
+          //  subscribeVisualizerUseCase()//tmp!
             val result = playUseCase()
             when (result) {
                 is DomainResult.Success -> {}
