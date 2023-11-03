@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class VisualizerRepository(
-    private val visualizer:Visualizer
+   // private val visualizer:Visualizer
 ) {
     private val _fft = MutableStateFlow<ByteArray?>(
         byteArrayOf(0x48, 101, 108, 108, 111)
@@ -35,11 +35,11 @@ class VisualizerRepository(
         }
     }
     init {
-        visualizer.scalingMode = SCALING_MODE_NORMALIZED
+       /* visualizer.scalingMode = SCALING_MODE_NORMALIZED
         visualizer.measurementMode = MEASUREMENT_MODE_PEAK_RMS
         visualizer.captureSize = Visualizer.getCaptureSizeRange()[1]
         visualizer.setDataCaptureListener(
-            captureListener,Visualizer.getMaxCaptureRate() / 2, false, true)
+            captureListener,Visualizer.getMaxCaptureRate() / 2, false, true)*/
            /* object : Visualizer.OnDataCaptureListener {
                 override fun onWaveFormDataCapture(
                     visualizer: Visualizer?,
@@ -63,7 +63,7 @@ class VisualizerRepository(
 
 
     fun subscribeVisualizer(): Flow<ByteArray?> {
-        visualizer.enabled = true
+      //  visualizer.enabled = true
 
         return fftB
     }

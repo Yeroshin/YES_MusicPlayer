@@ -21,17 +21,6 @@ import kotlinx.coroutines.flow.StateFlow
 class PlayerDataSource(
     private val context: Context,
 ) {
-    private val  controllerFuture by lazy {
-            MediaController.Builder(
-                context,
-                sessionToken
-            )
-                .buildAsync()
-    }
-    private val controller by lazy {
-        controllerFuture.get()
-    }
-       // get() = controllerFuture.get()
     private val sessionToken = SessionToken(
         context,
         ComponentName(
@@ -39,6 +28,18 @@ class PlayerDataSource(
             MusicService::class.java
         )
     )
+    private val  controllerFuture by lazy {
+            MediaController.Builder(
+                context,
+                sessionToken
+            )
+                .buildAsync()
+    }
+    private val controller: MediaController by lazy {
+        controllerFuture.get()
+    }
+
+
     init {
         initializeController()
     }
@@ -49,7 +50,7 @@ class PlayerDataSource(
 
         controllerFuture.addListener(
             {
-                setController(controller)
+                setController()
             },
             MoreExecutors.directExecutor()
         )
@@ -69,7 +70,7 @@ class PlayerDataSource(
     private val _mediaSessionIdFlow=MutableStateFlow(0)
     private val mediaSessionIdFlow: StateFlow<Int> = _mediaSessionIdFlow
 
-    private fun setController(controller: MediaController) {
+    private fun setController() {
         controller.addListener(
             object : Player.Listener {
 
@@ -128,7 +129,6 @@ class PlayerDataSource(
     }
 
     fun seekToNext() {
-
         controller.seekToNextMediaItem()
     }
 

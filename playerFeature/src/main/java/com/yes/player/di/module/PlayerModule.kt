@@ -29,10 +29,10 @@ class PlayerModule {
 
     @Provides
     fun providesVisualizerRepository(
-        visualizer: Visualizer
+       // visualizer: Visualizer
     ): VisualizerRepository {
         return VisualizerRepository(
-            visualizer
+        //    visualizer
         )
     }
 

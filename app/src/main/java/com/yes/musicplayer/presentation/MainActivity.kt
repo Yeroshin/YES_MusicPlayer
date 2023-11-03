@@ -7,6 +7,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -56,12 +57,10 @@ class MainActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        supportFragmentManager.fragmentFactory = fragmentFactory
-        val view = binding.root
-        setContentView(view)
-
         checkPermissions()
+
+
+
 
     }
 
@@ -74,14 +73,21 @@ class MainActivity :
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
-        val perm = info!!.requestedPermissions
-        val permissionsDenied: ArrayList<String?> = ArrayList()
-        val list: MutableList<String> = ArrayList()
 
-        list.add(Manifest.permission.RECORD_AUDIO)
-        list.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-        list.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        val permissions = list.toTypedArray()
+        val permissionsDenied = mutableListOf<String>()
+        val permissions = info?.requestedPermissions
+            ?:return
+        ////////////////////
+        permissions.forEach {
+            packageManager.getPermissionInfo(it, PackageManager.GET_META_DATA)
+        }
+        val dangerousPermissions= mutableListOf<String>()
+        for(i in permissions.indices){
+            val tmp= packageManager.getPermissionInfo(permissions[i], PackageManager.GET_META_DATA)
+            Toast.makeText(this, "error Permissions", Toast.LENGTH_LONG).show()
+        }
+
+        //////////////////
         for (i in permissions.indices) {
             if (ContextCompat.checkSelfPermission(
                     this,
@@ -100,7 +106,7 @@ class MainActivity :
         }
         if (permissionsDenied.size > 0) {
             val permissionsArray = permissionsDenied.toTypedArray()
-            ActivityCompat.requestPermissions((this as Activity), permissionsArray, 1)
+            ActivityCompat.requestPermissions((this as Activity), permissionsDenied.toTypedArray(), 1)
         } else {
             setFragments()
         }
@@ -110,23 +116,34 @@ class MainActivity :
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
-        permissions: Array<String>, grantResults: IntArray
+        permissions: Array<String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         var granted = 0
+        val notGranted= mutableListOf<String>()
         for (i in grantResults.indices) {
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                 granted++
+            }else{
+              notGranted.add(permissions[i])
             }
         }
         if (granted != grantResults.size) {
-            finish()
+            Toast.makeText(this, "error Permissions", Toast.LENGTH_LONG).show()
+            ActivityCompat.requestPermissions((this as Activity), notGranted.toTypedArray(), 1)
+
+          //  finish()//show explain why you need permission
         } else {
-            setFragments() //show explain why you need permission
+            setFragments()
         }
     }
 
     private fun setFragments() {
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        supportFragmentManager.fragmentFactory = fragmentFactory
+        val view = binding.root
+        setContentView(view)
         binder .viewPager.adapter = fragmentAdapter
         TabLayoutMediator(binder .tabs,binder.viewPager) { tab, position ->
             run {
