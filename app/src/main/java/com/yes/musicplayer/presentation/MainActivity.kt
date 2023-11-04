@@ -5,9 +5,12 @@ import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.content.pm.PermissionInfo
+import android.os.Build
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -35,12 +38,13 @@ class MainActivity :
     interface DependencyResolver {
         fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent
     }
+
     private lateinit var binding: ViewBinding
     private val binder by lazy {
         binding as ActivityMainBinding
     }
     private val dependencyResolver by lazy {
-        application  as DependencyResolver
+        application as DependencyResolver
     }
     private val mainActivityComponent by lazy {
         dependencyResolver.getMainActivityComponent(this)
@@ -60,56 +64,82 @@ class MainActivity :
         checkPermissions()
 
 
-
-
     }
 
     private fun checkPermissions() {
 
         /////////////////////
-        var info: PackageInfo? = null
-        try {
-            info = packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
-        }
 
-        val permissionsDenied = mutableListOf<String>()
-        val permissions = info?.requestedPermissions
-            ?:return
-        ////////////////////
-        permissions.forEach {
-            packageManager.getPermissionInfo(it, PackageManager.GET_META_DATA)
-        }
-        val dangerousPermissions= mutableListOf<String>()
-        for(i in permissions.indices){
-            val tmp= packageManager.getPermissionInfo(permissions[i], PackageManager.GET_META_DATA)
-            Toast.makeText(this, "error Permissions", Toast.LENGTH_LONG).show()
-        }
 
-        //////////////////
-        for (i in permissions.indices) {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    permissions[i]
-                ) == PackageManager.PERMISSION_DENIED
-            ) {
-                permissionsDenied.add(permissions[i])
-                if (ActivityCompat.shouldShowRequestPermissionRationale(
-                        (this as Activity),
-                        permissions[i]
-                    )
-                ) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
+        } else {
+            packageManager.getPackageInfo(
+                packageName, PackageManager.PackageInfoFlags.of(
+                    PackageManager.GET_PERMISSIONS.toLong()
+                )
+            )
 
+        }?.requestedPermissions?.filter { permission ->
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    packageManager.getPermissionInfo(
+                        permission,
+                        PackageManager.GET_META_DATA
+                    ).protection == PermissionInfo.PROTECTION_DANGEROUS
+                } else {
+                    packageManager.getPermissionInfo(
+                        permission,
+                        PackageManager.GET_META_DATA
+                    ).protectionLevel == PermissionInfo.PROTECTION_DANGEROUS
                 }
+            } catch (e: Exception) {
+                return@filter false
+            }
+        }?.filter { dangerousPermission ->
+            ContextCompat.checkSelfPermission(
+                this,
+                dangerousPermission
+            ) == PackageManager.PERMISSION_DENIED
+        }?.let {
+            if (it.isNotEmpty()) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, it[0])) {
+                    Toast.makeText(this, "Grant all needed permissions!!!", Toast.LENGTH_LONG)
+                        .show()
+                    ActivityCompat.requestPermissions((this as Activity), it.toTypedArray(), 1)
+                } else {
+                    ActivityCompat.requestPermissions((this as Activity), it.toTypedArray(), 1)
+                }
+            } else {
+                setFragments()
             }
         }
-        if (permissionsDenied.size > 0) {
-            val permissionsArray = permissionsDenied.toTypedArray()
-            ActivityCompat.requestPermissions((this as Activity), permissionsDenied.toTypedArray(), 1)
-        } else {
-            setFragments()
-        }
+
+
+        ////////////////////
+
+        /*  for (i in permissions.indices) {
+              if (ContextCompat.checkSelfPermission(
+                      this,
+                      permissions[i]
+                  ) == PackageManager.PERMISSION_DENIED
+              ) {
+                  permissionsDenied.add(permissions[i])
+                  if (ActivityCompat.shouldShowRequestPermissionRationale(
+                          (this as Activity),
+                          permissions[i]
+                      )
+                  ) {
+
+                  }
+              }
+          }
+          if (permissionsDenied.size > 0) {
+              val permissionsArray = permissionsDenied.toTypedArray()
+              ActivityCompat.requestPermissions((this as Activity), permissionsDenied.toTypedArray(), 1)
+          } else {
+              setFragments()
+          }*/
 
     }
 
@@ -120,23 +150,50 @@ class MainActivity :
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        var granted = 0
-        val notGranted= mutableListOf<String>()
-        for (i in grantResults.indices) {
-            if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                granted++
-            }else{
-              notGranted.add(permissions[i])
+        permissions.filterIndexed { index, _ ->
+            grantResults[index] == PackageManager.PERMISSION_DENIED
+        }.let {
+            if (it.isNotEmpty()) {
+                Toast.makeText(
+                    this,
+                    "Player is unavailable because the feature requires a permission that the you has denied.",
+                    Toast.LENGTH_LONG
+                ).show()
+                // checkPermissions()
+            } else {
+                setFragments()
             }
-        }
-        if (granted != grantResults.size) {
-            Toast.makeText(this, "error Permissions", Toast.LENGTH_LONG).show()
-            ActivityCompat.requestPermissions((this as Activity), notGranted.toTypedArray(), 1)
 
-          //  finish()//show explain why you need permission
-        } else {
+            // checkPermissions()
+        } ?: {
             setFragments()
+            Toast.makeText(this, "Permissions GRANTED", Toast.LENGTH_LONG).show()
         }
+        ////////////////
+        /*  val deniedResults=permissions.filterIndexed { index, _ ->
+              grantResults[index] == PackageManager.PERMISSION_DENIED
+          }
+          ActivityCompat.requestPermissions(this, deniedResults.toTypedArray(), 0)*/
+        ////////////////
+
+
+        /*   var granted = 0
+           val notGranted= mutableListOf<String>()
+           for (i in grantResults.indices) {
+               if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                   granted++
+               }else{
+                 notGranted.add(permissions[i])
+               }
+           }
+           if (granted != grantResults.size) {
+               Toast.makeText(this, "error Permissions", Toast.LENGTH_LONG).show()
+               ActivityCompat.requestPermissions((this as Activity), notGranted.toTypedArray(), 1)
+
+             //  finish()//show explain why you need permission
+           } else {
+               setFragments()
+           }*/
     }
 
     private fun setFragments() {
@@ -144,8 +201,8 @@ class MainActivity :
         supportFragmentManager.fragmentFactory = fragmentFactory
         val view = binding.root
         setContentView(view)
-        binder .viewPager.adapter = fragmentAdapter
-        TabLayoutMediator(binder .tabs,binder.viewPager) { tab, position ->
+        binder.viewPager.adapter = fragmentAdapter
+        TabLayoutMediator(binder.tabs, binder.viewPager) { tab, position ->
             run {
                 when (position) {
                     0 -> tab.text = getString(com.yes.coreui.R.string.playList)
@@ -155,19 +212,19 @@ class MainActivity :
             }
         }.attach()
 
-      /*  val playerFragment = supportFragmentManager.fragmentFactory.instantiate(
-            classLoader,
-            PlayerFragment::class.java.name
-        )*/
-      /*  supportFragmentManager.commit {
-            setReorderingAllowed(true)
-            add<PlayerFragment>(R.id.player_controls)
-        }*/
+        /*  val playerFragment = supportFragmentManager.fragmentFactory.instantiate(
+              classLoader,
+              PlayerFragment::class.java.name
+          )*/
+        /*  supportFragmentManager.commit {
+              setReorderingAllowed(true)
+              add<PlayerFragment>(R.id.player_controls)
+          }*/
     }
 
     class MainActivityFragmentFactory(
 
-        ) : FragmentFactory() {
+    ) : FragmentFactory() {
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
             return when (loadFragmentClass(classLoader, className)) {
                 PlayListDialog::class.java -> PlayListDialog()
