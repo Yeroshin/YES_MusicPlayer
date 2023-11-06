@@ -5,12 +5,14 @@ import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.content.pm.PermissionGroupInfo
 import android.content.pm.PermissionInfo
 import android.os.Build
 
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -66,6 +68,7 @@ class MainActivity :
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun checkPermissions() {
 
         /////////////////////
@@ -81,6 +84,12 @@ class MainActivity :
             )
 
         }?.requestedPermissions?.filter { permission ->
+            val maxSdkVersion = packageManager.getPackageInfo(
+                packageName, PackageManager.PackageInfoFlags.of(
+                    PackageManager.GET_PERMISSIONS.toLong()
+                )
+            ).requestedPermissionsFlags
+          //  val isDangerous = permissionInfoGroup.protectionLevel  PermissionInfo.PROTECTION_DANGEROUS != 0
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     packageManager.getPermissionInfo(
