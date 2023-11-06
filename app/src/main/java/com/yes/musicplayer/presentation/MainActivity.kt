@@ -68,12 +68,8 @@ class MainActivity :
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+
     private fun checkPermissions() {
-
-        /////////////////////
-
-
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
         } else {
@@ -82,14 +78,7 @@ class MainActivity :
                     PackageManager.GET_PERMISSIONS.toLong()
                 )
             )
-
         }?.requestedPermissions?.filter { permission ->
-            val maxSdkVersion = packageManager.getPackageInfo(
-                packageName, PackageManager.PackageInfoFlags.of(
-                    PackageManager.GET_PERMISSIONS.toLong()
-                )
-            ).requestedPermissionsFlags
-          //  val isDangerous = permissionInfoGroup.protectionLevel  PermissionInfo.PROTECTION_DANGEROUS != 0
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     packageManager.getPermissionInfo(
@@ -123,33 +112,6 @@ class MainActivity :
                 setFragments()
             }
         }
-
-
-        ////////////////////
-
-        /*  for (i in permissions.indices) {
-              if (ContextCompat.checkSelfPermission(
-                      this,
-                      permissions[i]
-                  ) == PackageManager.PERMISSION_DENIED
-              ) {
-                  permissionsDenied.add(permissions[i])
-                  if (ActivityCompat.shouldShowRequestPermissionRationale(
-                          (this as Activity),
-                          permissions[i]
-                      )
-                  ) {
-
-                  }
-              }
-          }
-          if (permissionsDenied.size > 0) {
-              val permissionsArray = permissionsDenied.toTypedArray()
-              ActivityCompat.requestPermissions((this as Activity), permissionsDenied.toTypedArray(), 1)
-          } else {
-              setFragments()
-          }*/
-
     }
 
 
