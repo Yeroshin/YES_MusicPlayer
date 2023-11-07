@@ -34,7 +34,7 @@ abstract class PlayListDataBase : RoomDatabase() {
             private val applicationScope = CoroutineScope(Job())
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
-               // db.execSQL("INSERT INTO play_list_table (name, description, date_created) VALUES ('default playlist', 'Default playlist description', '2022-01-01');")
+                // db.execSQL("INSERT INTO play_list_table (name, description, date_created) VALUES ('default playlist', 'Default playlist description', '2022-01-01');")
                 applicationScope.launch(Dispatchers.IO) {
                     val inst = INSTANCE
                     inst?.playListDao()?.let {
@@ -71,16 +71,25 @@ abstract class PlayListDataBase : RoomDatabase() {
         fun getInstance(context: Context): PlayListDataBase {
             return INSTANCE
                 ?: synchronized(this) {
-                Room.databaseBuilder(
-                    context,
-                    PlayListDataBase::class.java,
-                    "my_database"
-                )
-                    .addCallback(callback)
-                    .build().also {
-                        INSTANCE = it
-                    }
-            }
+                    Room.databaseBuilder(
+                        context,
+                        PlayListDataBase::class.java,
+                        "my_database"
+                    )
+//TODO write an article about the right way to prepopulate database
+                        .build().also {
+                            val applicationScope = CoroutineScope(Job())
+                            applicationScope.launch(Dispatchers.IO) {
+                                val playListDao = it.playListDao()
+                                val defaultPlaylist = PlayListDataBaseEntity(
+                                    null,
+                                    "default playlist",
+                                )
+                                playListDao.savePlaylist(defaultPlaylist)
+                                INSTANCE = it
+                            }
+                        }
+                }
         }
     }
 }
