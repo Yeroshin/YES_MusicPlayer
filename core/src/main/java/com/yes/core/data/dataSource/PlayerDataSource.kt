@@ -16,6 +16,8 @@ import com.yes.core.presentation.MusicService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.io.File
+import java.net.URI
 
 
 class PlayerDataSource(
@@ -154,6 +156,14 @@ class PlayerDataSource(
 
     fun setTracks(items: List<MediaItem>) {
         controller.setMediaItems(items)
+        val t=controller.getMediaItemAt(0)
+        val tm=t.requestMetadata
+        val tnp=tm.mediaUri
+        val tmp=tnp
+        val file = File(tnp?.path)
+        if (file.exists()) {
+            Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun subscribeCurrentPlayerData(): Flow<PlayerStateDataSourceEntity> {

@@ -2,6 +2,7 @@ package com.yes.core.data.factory
 
 import android.content.Context
 import android.os.Handler
+import android.util.Log
 import androidx.media3.common.audio.AudioProcessor
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.Renderer
@@ -13,12 +14,34 @@ import androidx.media3.exoplayer.audio.MediaCodecAudioRenderer
 import androidx.media3.exoplayer.audio.TeeAudioProcessor
 import androidx.media3.exoplayer.drm.DrmSessionManager
 import androidx.media3.exoplayer.mediacodec.MediaCodecSelector
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import java.nio.ByteBuffer
 import java.util.ArrayList
 
 @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
-class RendererFactory(context: Context, var listener: TeeAudioProcessor.AudioBufferSink) :
+class RendererFactory(context: Context) :
     DefaultRenderersFactory(context) {
+    private val audioBufferSink=object : TeeAudioProcessor.AudioBufferSink {
+        override fun flush(sampleRateHz: Int, channelCount: Int, encoding: Int) {
+            Log.d(": ", "waveformbytearray is not null.");
 
+        }
+
+        override fun handleBuffer(buffer: ByteBuffer) {
+            _byteBuffer.value=buffer.array()
+            Log.d(": ", "waveformbytearray is not null.");
+
+        }
+
+    }
+   // byteArrayOf(0x48, 101, 108, 108, 111)
+    private val _byteBuffer = MutableStateFlow(byteArrayOf(0x48, 101, 108, 108, 111))
+    private val byteBuffer: StateFlow<ByteArray> = _byteBuffer
+fun subscribeByteBuffer(): Flow<ByteArray> {
+    return byteBuffer
+}
     override fun buildAudioRenderers(
         context: Context,
         extensionRendererMode: Int,
@@ -31,7 +54,7 @@ class RendererFactory(context: Context, var listener: TeeAudioProcessor.AudioBuf
     ) {
 
         val audioProcessor = Array<AudioProcessor>(1) {
-            TeeAudioProcessor(listener)
+            TeeAudioProcessor(audioBufferSink)
         }
         out.add(
             MediaCodecAudioRenderer(

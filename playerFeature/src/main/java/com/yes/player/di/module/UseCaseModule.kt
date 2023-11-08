@@ -2,7 +2,6 @@ package com.yes.player.di.module
 
 import com.yes.core.di.module.IoDispatcher
 import com.yes.core.di.module.MainDispatcher
-import com.yes.player.data.factory.VisualizerFactory
 import com.yes.player.data.repository.PlayerRepository
 import com.yes.player.data.repository.PlaylistRepositoryImpl
 import com.yes.player.data.repository.SettingsRepositoryImpl

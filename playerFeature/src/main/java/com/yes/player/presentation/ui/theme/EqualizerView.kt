@@ -21,12 +21,12 @@ import androidx.compose.ui.Alignment
 
 @Preview
 @Composable
-fun EqualizerView() {
-    val value1 = 100
-    val value2 = 40
-    val value3 = 25
-    val value4 = 20
-    val value5 = 60
+fun EqualizerView(value1:Int ,
+                  value2:Int ,
+                  value3:Int ,
+                  value4:Int ,
+                  value5:Int ) {
+
     val values = listOf(
         value1,
         value2,

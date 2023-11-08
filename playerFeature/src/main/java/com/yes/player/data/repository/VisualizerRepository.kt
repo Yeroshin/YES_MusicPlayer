@@ -1,23 +1,17 @@
 package com.yes.player.data.repository
 
-import android.media.audiofx.Visualizer
-import android.media.audiofx.Visualizer.MEASUREMENT_MODE_PEAK_RMS
-import android.media.audiofx.Visualizer.SCALING_MODE_NORMALIZED
-import android.util.Log
-import android.widget.Toast
-import com.yes.player.data.factory.VisualizerFactory
+import com.yes.core.data.factory.RendererFactory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import java.nio.ByteBuffer
 
 class VisualizerRepository(
-   // private val visualizer:Visualizer
+   private val rendererFactory: RendererFactory
 ) {
-    private val _fft = MutableStateFlow<ByteArray?>(
-        byteArrayOf(0x48, 101, 108, 108, 111)
-    )
-    private val fftB: StateFlow<ByteArray?> = _fft
-    private val captureListener = object : Visualizer.OnDataCaptureListener {
+
+  /*  private val captureListener = object : Visualizer.OnDataCaptureListener {
         override fun onWaveFormDataCapture(
             visualizer: Visualizer?,
             waveform: ByteArray?,
@@ -33,7 +27,7 @@ class VisualizerRepository(
         ) {
             _fft.value = fft
         }
-    }
+    }*/
     init {
        /* visualizer.scalingMode = SCALING_MODE_NORMALIZED
         visualizer.measurementMode = MEASUREMENT_MODE_PEAK_RMS
@@ -62,10 +56,8 @@ class VisualizerRepository(
     }
 
 
-    fun subscribeVisualizer(): Flow<ByteArray?> {
-      //  visualizer.enabled = true
-
-        return fftB
+    fun subscribeVisualizer(): Flow<ByteArray> {
+      return rendererFactory.subscribeByteBuffer()
     }
 }
 // Online radio:

@@ -22,37 +22,22 @@ class MusicServiceModule {
     ): MediaSession {
         return MediaSession.Builder(context, player).build()
     }
-
+    @Provides
+    fun providesRendererFactory(
+        context: Context,
+    ): RendererFactory {
+        return RendererFactory(context)
+    }
 
    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
    @Provides
-   fun   providesExoPlayer(
+   fun  providesExoPlayer(
        context: Context,
-       audioSessionId:Int
+       rendererFactory:RendererFactory
    ): ExoPlayer {
-       val rendererFactory = RendererFactory(context, object : TeeAudioProcessor.AudioBufferSink {
-           override fun flush(sampleRateHz: Int, channelCount: Int, encoding: Int) {
-               Log.d(": ", "waveformbytearray is not null.");
-
-           }
-
-           override fun handleBuffer(buffer: ByteBuffer) {
-               // Apply fft &
-               // pass the buffer data to your visualizer.
-               Log.d(": ", "waveformbytearray is not null.");
-
-           }
-
-       })
-
-      /* return ExoPlayer.Builder(context)
-           .setRenderersFactory(rendererFactory)
-           .build()*/
-       val p= ExoPlayer.Builder(context)
+       return  ExoPlayer.Builder(context)
            .setRenderersFactory(rendererFactory)
            .build()
-
-       return p
    }
     @Provides
     fun providesDependency(

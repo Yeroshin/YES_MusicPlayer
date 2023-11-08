@@ -41,11 +41,8 @@ class PlayerViewModel(
 
     private fun subscribeVisualizer() {
         viewModelScope.launch {
-
             when (
-                val result = subscribeVisualizerUseCase(
-
-                )
+                val result = subscribeVisualizerUseCase()
             ) {
                 is DomainResult.Success -> {
                     result.data.collect {
@@ -60,7 +57,6 @@ class PlayerViewModel(
                         }
                     }
                 }
-
                 is DomainResult.Error -> setEffect {
                     Effect.UnknownException
                 }
