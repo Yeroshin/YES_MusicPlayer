@@ -22,11 +22,30 @@ class MusicServiceModule {
     ): MediaSession {
         return MediaSession.Builder(context, player).build()
     }
+    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+    @Provides
+    fun providesTeeAudioProcessorAudioBufferSink(
+    ): TeeAudioProcessor.AudioBufferSink {
+        return object : TeeAudioProcessor.AudioBufferSink {
+            override fun flush(sampleRateHz: Int, channelCount: Int, encoding: Int) {
+                Log.d(": ", "waveformbytearray is not null.");
+
+            }
+
+            override fun handleBuffer(buffer: ByteBuffer) {
+              //  _byteBuffer.value=buffer.array()
+                Log.d(": ", "waveformbytearray is not null.");
+
+            }
+
+        }
+    }
     @Provides
     fun providesRendererFactory(
         context: Context,
+        audioBufferSink : TeeAudioProcessor.AudioBufferSink
     ): RendererFactory {
-        return RendererFactory(context)
+        return RendererFactory(context,audioBufferSink)
     }
 
    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
@@ -36,7 +55,7 @@ class MusicServiceModule {
        rendererFactory:RendererFactory
    ): ExoPlayer {
        return  ExoPlayer.Builder(context)
-           .setRenderersFactory(rendererFactory)
+          .setRenderersFactory(rendererFactory)
            .build()
    }
     @Provides

@@ -21,9 +21,9 @@ import java.nio.ByteBuffer
 import java.util.ArrayList
 
 @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
-class RendererFactory(context: Context) :
+class RendererFactory(context: Context, private val audioBufferSink : TeeAudioProcessor.AudioBufferSink ) :
     DefaultRenderersFactory(context) {
-    private val audioBufferSink=object : TeeAudioProcessor.AudioBufferSink {
+   /* private val audioBufferSink=object : TeeAudioProcessor.AudioBufferSink {
         override fun flush(sampleRateHz: Int, channelCount: Int, encoding: Int) {
             Log.d(": ", "waveformbytearray is not null.");
 
@@ -35,7 +35,7 @@ class RendererFactory(context: Context) :
 
         }
 
-    }
+    }*/
    // byteArrayOf(0x48, 101, 108, 108, 111)
     private val _byteBuffer = MutableStateFlow(byteArrayOf(0x48, 101, 108, 108, 111))
     private val byteBuffer: StateFlow<ByteArray> = _byteBuffer
@@ -63,7 +63,8 @@ fun subscribeByteBuffer(): Flow<ByteArray> {
                 enableDecoderFallback,
                 eventHandler,
                 eventListener,
-                DefaultAudioSink.Builder().setAudioCapabilities(AudioCapabilities.getCapabilities(context))
+                DefaultAudioSink.Builder(context)
+                  //  .setAudioCapabilities(AudioCapabilities.getCapabilities(context))
                     .setAudioProcessors(audioProcessor)
                     .build()
             )

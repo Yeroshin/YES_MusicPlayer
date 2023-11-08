@@ -2,6 +2,7 @@ package com.yes.playlistfeature.data.mapper
 
 
 import android.net.Uri
+import android.provider.MediaStore
 import com.yes.core.data.entity.PlayListDataBaseTrackEntity
 import com.yes.playlistfeature.domain.entity.Track
 import androidx.media3.common.MediaItem
@@ -43,11 +44,9 @@ class Mapper {
              .setAlbumTitle(item.album)
              .setArtist(item.artist)
              .setTitle(item.title)
-
              .build()
-        val uri=Uri.fromFile( File(item.uri))
         return MediaItem.Builder()
-            .setUri(uri)
+            .setUri(item.uri)
             .setMediaMetadata(mediaMetadata)
             .build()
     }

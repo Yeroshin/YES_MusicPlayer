@@ -2,6 +2,7 @@ package com.yes.core.data.dataSource
 
 import android.content.ComponentName
 import android.content.Context
+import android.net.Uri
 import android.widget.Toast
 import androidx.media3.common.C.TIME_UNSET
 import androidx.media3.common.MediaItem
@@ -17,7 +18,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.io.File
-import java.net.URI
 
 
 class PlayerDataSource(
@@ -112,7 +112,7 @@ class PlayerDataSource(
                 }
 
                 override fun onPlayerError(error: PlaybackException) {
-                    Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "player error", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
@@ -156,14 +156,6 @@ class PlayerDataSource(
 
     fun setTracks(items: List<MediaItem>) {
         controller.setMediaItems(items)
-        val t=controller.getMediaItemAt(0)
-        val tm=t.requestMetadata
-        val tnp=tm.mediaUri
-        val tmp=tnp
-        val file = File(tnp?.path)
-        if (file.exists()) {
-            Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
-        }
     }
 
     fun subscribeCurrentPlayerData(): Flow<PlayerStateDataSourceEntity> {

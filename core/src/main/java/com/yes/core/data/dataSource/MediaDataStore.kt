@@ -2,10 +2,12 @@ package com.yes.core.data.data.dataSource
 
 import android.content.Context
 import android.database.Cursor
+import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 
 import com.yes.core.data.entity.MediaDataStoreEntity
+import java.io.File
 
 
 class MediaDataStore(private val context: Context) {
@@ -30,6 +32,7 @@ class MediaDataStore(private val context: Context) {
         val sortOrder = "${MediaStore.Audio.Media.DISPLAY_NAME} ASC"
         /////////////////////////
         val projection = arrayOf(
+            MediaStore.Audio.AudioColumns._ID,
             MediaStore.Audio.Media.TITLE,
             MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.ALBUM,
@@ -55,7 +58,7 @@ class MediaDataStore(private val context: Context) {
             val dataColumnIndex = cursor.getColumnIndex(MediaStore.Audio.Media.DATA)
             val sizeColumnIndex = cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)
             while (cursor.moveToNext()) {
-                audioList.add(
+               audioList.add(
                     MediaDataStoreEntity(
                         cursor.getString(titleColumnIndex),
                         cursor.getString(artistColumnIndex),

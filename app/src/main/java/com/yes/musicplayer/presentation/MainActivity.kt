@@ -136,9 +136,6 @@ class MainActivity :
             }
 
             // checkPermissions()
-        } ?: {
-            setFragments()
-            Toast.makeText(this, "Permissions GRANTED", Toast.LENGTH_LONG).show()
         }
         ////////////////
         /*  val deniedResults=permissions.filterIndexed { index, _ ->
