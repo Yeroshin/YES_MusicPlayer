@@ -2,13 +2,10 @@ package com.yes.player.data.repository
 
 import com.yes.core.data.factory.RendererFactory
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
-import java.nio.ByteBuffer
 
 class VisualizerRepository(
-   private val rendererFactory: RendererFactory
+  private val rendererFactory:RendererFactory
 ) {
 
   /*  private val captureListener = object : Visualizer.OnDataCaptureListener {
@@ -56,8 +53,8 @@ class VisualizerRepository(
     }
 
 
-    fun subscribeVisualizer(): Flow<ByteArray> {
-      return rendererFactory.subscribeByteBuffer()
+    fun subscribeVisualizer(): Flow<ByteArray?> {
+      return rendererFactory.subscribeByteBuffer().map { it?.array() }
     }
 }
 // Online radio:

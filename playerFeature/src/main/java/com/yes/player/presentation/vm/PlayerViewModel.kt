@@ -36,7 +36,7 @@ class PlayerViewModel(
         subscribeDurationCounter()
         subscribeCurrentPlaylist()
         subscribeCurrentTrack()
-       // subscribeVisualizer()
+        subscribeVisualizer()
     }
 
     private fun subscribeVisualizer() {

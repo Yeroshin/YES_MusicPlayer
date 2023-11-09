@@ -3,45 +3,79 @@ package com.yes.core.data.factory
 import android.content.Context
 import android.os.Handler
 import android.util.Log
-import androidx.media3.common.audio.AudioProcessor
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.Renderer
-import androidx.media3.exoplayer.audio.AudioCapabilities
 import androidx.media3.exoplayer.audio.AudioRendererEventListener
 import androidx.media3.exoplayer.audio.AudioSink
 import androidx.media3.exoplayer.audio.DefaultAudioSink
 import androidx.media3.exoplayer.audio.MediaCodecAudioRenderer
 import androidx.media3.exoplayer.audio.TeeAudioProcessor
-import androidx.media3.exoplayer.drm.DrmSessionManager
 import androidx.media3.exoplayer.mediacodec.MediaCodecSelector
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import java.io.IOException
 import java.nio.ByteBuffer
-import java.util.ArrayList
 
 @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
-class RendererFactory(context: Context, private val audioBufferSink : TeeAudioProcessor.AudioBufferSink ) :
-    DefaultRenderersFactory(context) {
-   /* private val audioBufferSink=object : TeeAudioProcessor.AudioBufferSink {
+class RendererFactory(
+    context: Context,
+) : DefaultRenderersFactory(context) {
+
+    // byteArrayOf(0x48, 101, 108, 108, 111)
+    private val _byteBuffer = MutableStateFlow<ByteBuffer?>(null)
+    private val byteBuffer: StateFlow<ByteBuffer?> = _byteBuffer
+    fun subscribeByteBuffer(): Flow<ByteBuffer?> {
+        return byteBuffer
+    }
+
+    private val _byteArray = MutableStateFlow(byteArrayOf())
+    private val byteArray: StateFlow<ByteArray?> = _byteArray
+    fun subscribeByteArray(): Flow<ByteArray?> {
+        return byteArray
+    }
+    private var scratchBuffer: ByteArray=byteArrayOf()
+    private val audioBufferSink = object : TeeAudioProcessor.AudioBufferSink {
         override fun flush(sampleRateHz: Int, channelCount: Int, encoding: Int) {
             Log.d(": ", "waveformbytearray is not null.");
 
         }
 
         override fun handleBuffer(buffer: ByteBuffer) {
-            _byteBuffer.value=buffer.array()
-            Log.d(": ", "waveformbytearray is not null.");
+
+            try {
+                val bufferCopy = buffer.duplicate()
+                val bufferSize = buffer.remaining()
+                val byteArray = ByteArray(bufferSize)
+                bufferCopy.get(byteArray)
+                CoroutineScope(Dispatchers.IO).launch {
+                    _byteArray.value=byteArray
+                }
+            } catch (e: IOException) {
+                Log.e(
+                    "WavFileAudioBu",
+                    "Error writing data",
+                    e
+                )
+            } catch (
+                e: IllegalStateException
+            ) {
+                Log.e(
+                    "WavFileAudioBu",
+                    "Error writing data",
+                    e
+                )
+            }
+
 
         }
 
-    }*/
-   // byteArrayOf(0x48, 101, 108, 108, 111)
-    private val _byteBuffer = MutableStateFlow(byteArrayOf(0x48, 101, 108, 108, 111))
-    private val byteBuffer: StateFlow<ByteArray> = _byteBuffer
-fun subscribeByteBuffer(): Flow<ByteArray> {
-    return byteBuffer
-}
+    }
+
+
     override fun buildAudioRenderers(
         context: Context,
         extensionRendererMode: Int,
@@ -53,9 +87,9 @@ fun subscribeByteBuffer(): Flow<ByteArray> {
         out: ArrayList<Renderer>
     ) {
 
-        val audioProcessor = Array<AudioProcessor>(1) {
+        val audioProcessor = arrayOf(
             TeeAudioProcessor(audioBufferSink)
-        }
+        )
         out.add(
             MediaCodecAudioRenderer(
                 context,
@@ -64,7 +98,7 @@ fun subscribeByteBuffer(): Flow<ByteArray> {
                 eventHandler,
                 eventListener,
                 DefaultAudioSink.Builder(context)
-                  //  .setAudioCapabilities(AudioCapabilities.getCapabilities(context))
+                    //  .setAudioCapabilities(AudioCapabilities.getCapabilities(context))
                     .setAudioProcessors(audioProcessor)
                     .build()
             )
