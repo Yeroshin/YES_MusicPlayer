@@ -1,60 +1,76 @@
 package com.yes.player.data.repository
 
+import android.util.Log
 import com.yes.core.data.factory.RendererFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 class VisualizerRepository(
-  private val rendererFactory:RendererFactory
+    private val rendererFactory: RendererFactory
 ) {
 
-  /*  private val captureListener = object : Visualizer.OnDataCaptureListener {
-        override fun onWaveFormDataCapture(
-            visualizer: Visualizer?,
-            waveform: ByteArray?,
-            samplingRate: Int
-        ) {
-            Log.d(": ", "waveformbytearray is not null.");
-        }
+    /*  private val captureListener = object : Visualizer.OnDataCaptureListener {
+          override fun onWaveFormDataCapture(
+              visualizer: Visualizer?,
+              waveform: ByteArray?,
+              samplingRate: Int
+          ) {
+              Log.d(": ", "waveformbytearray is not null.");
+          }
 
-        override fun onFftDataCapture(
-            visualizer: Visualizer?,
-            fft: ByteArray?,
-            samplingRate: Int
-        ) {
-            _fft.value = fft
-        }
-    }*/
+          override fun onFftDataCapture(
+              visualizer: Visualizer?,
+              fft: ByteArray?,
+              samplingRate: Int
+          ) {
+              _fft.value = fft
+          }
+      }*/
     init {
-       /* visualizer.scalingMode = SCALING_MODE_NORMALIZED
-        visualizer.measurementMode = MEASUREMENT_MODE_PEAK_RMS
-        visualizer.captureSize = Visualizer.getCaptureSizeRange()[1]
-        visualizer.setDataCaptureListener(
-            captureListener,Visualizer.getMaxCaptureRate() / 2, false, true)*/
-           /* object : Visualizer.OnDataCaptureListener {
-                override fun onWaveFormDataCapture(
-                    visualizer: Visualizer?,
-                    waveform: ByteArray?,
-                    samplingRate: Int
-                ) {
-                    Log.d(": ", "waveformbytearray is not null.");
-                }
+        /* visualizer.scalingMode = SCALING_MODE_NORMALIZED
+         visualizer.measurementMode = MEASUREMENT_MODE_PEAK_RMS
+         visualizer.captureSize = Visualizer.getCaptureSizeRange()[1]
+         visualizer.setDataCaptureListener(
+             captureListener,Visualizer.getMaxCaptureRate() / 2, false, true)*/
+        /* object : Visualizer.OnDataCaptureListener {
+             override fun onWaveFormDataCapture(
+                 visualizer: Visualizer?,
+                 waveform: ByteArray?,
+                 samplingRate: Int
+             ) {
+                 Log.d(": ", "waveformbytearray is not null.");
+             }
 
-                override fun onFftDataCapture(
-                    visualizer: Visualizer?,
-                    fft: ByteArray?,
-                    samplingRate: Int
-                ) {
-                    _fft.value = fft
-                }
-            },
-            Visualizer.getMaxCaptureRate() / 2, false, true
-        )*/
+             override fun onFftDataCapture(
+                 visualizer: Visualizer?,
+                 fft: ByteArray?,
+                 samplingRate: Int
+             ) {
+                 _fft.value = fft
+             }
+         },
+         Visualizer.getMaxCaptureRate() / 2, false, true
+     )*/
     }
 
+    private val collectorScope = CoroutineScope(Dispatchers.Default)
+     fun subscribeVisualizer(): Flow<ByteArray?> {
+         collectorScope.launch {
+            rendererFactory._tmp.collect {
+                Log.d(": ", "waveformbytearray is not null.");
 
-    fun subscribeVisualizer(): Flow<ByteArray?> {
-      return rendererFactory.subscribeByteBuffer().map { it?.array() }
+
+            }
+
+        }
+        return rendererFactory.subscribeByteBuffer()
+            .map {
+                it?.array()
+            }
+
     }
 }
 // Online radio:

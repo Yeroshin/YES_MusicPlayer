@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.nio.ByteBuffer
+import kotlin.random.Random
 
 @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 class RendererFactory(
@@ -32,12 +33,15 @@ class RendererFactory(
         return byteBuffer
     }
 
-    private val _byteArray = MutableStateFlow(byteArrayOf())
+    private val _byteArray = MutableStateFlow<ByteArray?>(null)
     private val byteArray: StateFlow<ByteArray?> = _byteArray
     fun subscribeByteArray(): Flow<ByteArray?> {
         return byteArray
     }
-    private var scratchBuffer: ByteArray=byteArrayOf()
+
+     val _tmp = MutableStateFlow<Int>(0)
+    val tmp: StateFlow<Int> = _tmp
+    private val emitterScope = CoroutineScope(Dispatchers.Default)
     private val audioBufferSink = object : TeeAudioProcessor.AudioBufferSink {
         override fun flush(sampleRateHz: Int, channelCount: Int, encoding: Int) {
             Log.d(": ", "waveformbytearray is not null.");
@@ -47,13 +51,37 @@ class RendererFactory(
         override fun handleBuffer(buffer: ByteBuffer) {
 
             try {
-                val bufferCopy = buffer.duplicate()
-                val bufferSize = buffer.remaining()
-                val byteArray = ByteArray(bufferSize)
-                bufferCopy.get(byteArray)
-                CoroutineScope(Dispatchers.IO).launch {
-                    _byteArray.value=byteArray
+                /*  val bufferCopy = buffer.duplicate()
+                  val bufferSize = buffer.remaining()
+                  val byteArray = ByteArray(bufferSize)
+                  bufferCopy.get(byteArray)
+                  CoroutineScope(Dispatchers.IO).launch {
+                      _byteArray.value=byteArray
+                  }*/
+                /////////////
+                /*  val bufferCopy = ByteBuffer.allocate(buffer.remaining())
+                  bufferCopy.put(buffer)
+                  bufferCopy.flip()
+                  CoroutineScope(Dispatchers.Main).launch {
+                      _byteArray.emit(bufferCopy.array())
+                  }*/
+                /////////////
+                /////////////
+                val bufferCopy = ByteBuffer.allocate(buffer.remaining())
+                bufferCopy.put(buffer)
+                bufferCopy.flip()
+                _tmp.value = Random.nextInt(10)
+                emitterScope.launch {
+                    val randomBuffer = ByteBuffer.allocate(1024)
+                    val randomBytes = ByteArray(1024)
+                    Random.nextBytes(randomBytes)
+                    randomBuffer.put(randomBytes)
+                    randomBuffer.flip()
+                    _byteBuffer.value = randomBuffer
+                    _tmp.emit(Random.nextInt(10))
+                    _tmp.value=Random.nextInt(10)
                 }
+                /////////////
             } catch (e: IOException) {
                 Log.e(
                     "WavFileAudioBu",
