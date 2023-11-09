@@ -4,9 +4,13 @@ import android.util.Log
 import com.yes.core.data.factory.RendererFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class VisualizerRepository(
     private val rendererFactory: RendererFactory
@@ -56,22 +60,21 @@ class VisualizerRepository(
      )*/
     }
 
-    private val collectorScope = CoroutineScope(Dispatchers.Default)
-     fun subscribeVisualizer(): Flow<ByteArray?> {
-         collectorScope.launch {
-            rendererFactory._tmp.collect {
-                Log.d(": ", "waveformbytearray is not null.");
-
-
-            }
-
-        }
+  fun subscribeVisualizer(): Flow<ByteArray?> {
         return rendererFactory.subscribeByteBuffer()
             .map {
                 it?.array()
             }
 
     }
+
+
+
+
+
+
+
+
 }
 // Online radio:
 //val uri = Uri.parse("http://listen.livestreamingservice.com/181-xsoundtrax_128k.mp3")

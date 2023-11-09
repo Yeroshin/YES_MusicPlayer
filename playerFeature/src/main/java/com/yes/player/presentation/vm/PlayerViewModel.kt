@@ -1,7 +1,6 @@
 package com.yes.player.presentation.vm
 
 
-import android.media.audiofx.Visualizer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -235,6 +234,7 @@ class PlayerViewModel(
                 subscribePlayerStateUseCase,
                 seekUseCase,
                 subscribeVisualizerUseCase,
+
             ) as T
         }
     }

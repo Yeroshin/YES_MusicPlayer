@@ -13,6 +13,7 @@ import androidx.media3.exoplayer.audio.TeeAudioProcessor
 import androidx.media3.exoplayer.mediacodec.MediaCodecSelector
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,7 +27,7 @@ class RendererFactory(
     context: Context,
 ) : DefaultRenderersFactory(context) {
 
-    // byteArrayOf(0x48, 101, 108, 108, 111)
+
     private val _byteBuffer = MutableStateFlow<ByteBuffer?>(null)
     private val byteBuffer: StateFlow<ByteBuffer?> = _byteBuffer
     fun subscribeByteBuffer(): Flow<ByteBuffer?> {
@@ -38,17 +39,20 @@ class RendererFactory(
     fun subscribeByteArray(): Flow<ByteArray?> {
         return byteArray
     }
-
-     val _tmp = MutableStateFlow<Int>(0)
-    val tmp: StateFlow<Int> = _tmp
     private val emitterScope = CoroutineScope(Dispatchers.Default)
+
+
+
+
     private val audioBufferSink = object : TeeAudioProcessor.AudioBufferSink {
+
         override fun flush(sampleRateHz: Int, channelCount: Int, encoding: Int) {
             Log.d(": ", "waveformbytearray is not null.");
 
         }
 
         override fun handleBuffer(buffer: ByteBuffer) {
+
 
             try {
                 /*  val bufferCopy = buffer.duplicate()
@@ -70,7 +74,7 @@ class RendererFactory(
                 val bufferCopy = ByteBuffer.allocate(buffer.remaining())
                 bufferCopy.put(buffer)
                 bufferCopy.flip()
-                _tmp.value = Random.nextInt(10)
+
                 emitterScope.launch {
                     val randomBuffer = ByteBuffer.allocate(1024)
                     val randomBytes = ByteArray(1024)
@@ -78,9 +82,8 @@ class RendererFactory(
                     randomBuffer.put(randomBytes)
                     randomBuffer.flip()
                     _byteBuffer.value = randomBuffer
-                    _tmp.emit(Random.nextInt(10))
-                    _tmp.value=Random.nextInt(10)
-                }
+
+                 }
                 /////////////
             } catch (e: IOException) {
                 Log.e(

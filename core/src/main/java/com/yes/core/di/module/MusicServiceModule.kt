@@ -20,13 +20,7 @@ class MusicServiceModule {
         return MediaSession.Builder(context, player).build()
     }
 
-    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
-    @Provides
-    fun providesRendererFactory(
-        context: Context
-    ): RendererFactory {
-        return RendererFactory(context)
-    }
+
 
    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
    @Provides

@@ -11,7 +11,7 @@ import javax.inject.Singleton
 @Component(
     dependencies = [
         CoreComponent::class,
-    AudioSessionIdComponent::class
+        AudioSessionIdComponent::class
     ],
     modules = [
         MusicServiceModule::class,

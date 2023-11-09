@@ -93,6 +93,8 @@ class PlayerModule {
         subscribePlayerStateUseCase: SubscribePlayerStateUseCase,
         seekUseCase: SeekUseCase,
        subscribeVisualizerUseCase: SubscribeVisualizerUseCase,
+
+
     ): PlayerViewModel.Factory {
         return PlayerViewModel.Factory(
             mapperUI,
@@ -104,6 +106,7 @@ class PlayerModule {
             subscribePlayerStateUseCase,
             seekUseCase,
             subscribeVisualizerUseCase,
+
         )
     }
 

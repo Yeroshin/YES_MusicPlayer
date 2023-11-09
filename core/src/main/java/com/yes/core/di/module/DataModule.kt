@@ -15,6 +15,7 @@ import com.yes.core.data.data.dataSource.MediaDataStore
 import com.yes.core.data.dataSource.PlayListDataBase
 import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.core.data.dataSource.SettingsDataStore
+import com.yes.core.data.factory.RendererFactory
 import com.yes.core.util.EspressoIdlingResource
 import dagger.Module
 import dagger.Provides
@@ -104,7 +105,14 @@ class DataModule(
             context
         )
     }
-
+    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+    @Provides
+    @Singleton
+    fun providesRendererFactory(
+        context: Context
+    ): RendererFactory {
+        return RendererFactory(context)
+    }
 
 }
 @Retention(AnnotationRetention.BINARY)

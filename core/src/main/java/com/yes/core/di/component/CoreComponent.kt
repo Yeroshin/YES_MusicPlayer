@@ -13,6 +13,7 @@ import com.yes.core.data.data.dataSource.MediaDataStore
 import com.yes.core.data.dataSource.PlayListDataBase
 import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.core.data.dataSource.SettingsDataStore
+import com.yes.core.data.factory.RendererFactory
 import com.yes.core.util.EspressoIdlingResource
 import dagger.Component
 import kotlinx.coroutines.CoroutineDispatcher
@@ -38,4 +39,5 @@ interface CoreComponent {
     fun providesSettingsDataStore(): SettingsDataStore
     fun providesPlayerDataSource(): PlayerDataSource
     fun providesMediaDataStore(): MediaDataStore
+    fun providesRendererFactory(): RendererFactory
 }
