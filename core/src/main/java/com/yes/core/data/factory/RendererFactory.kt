@@ -34,12 +34,12 @@ class RendererFactory(
         return byteBuffer
     }
 
-    private val _byteArray = MutableStateFlow<ByteArray?>(null)
+   /* private val _byteArray = MutableStateFlow<ByteArray?>(null)
     private val byteArray: StateFlow<ByteArray?> = _byteArray
     fun subscribeByteArray(): Flow<ByteArray?> {
         return byteArray
-    }
-    private val emitterScope = CoroutineScope(Dispatchers.Default)
+    }*/
+   // private val emitterScope = CoroutineScope(Dispatchers.Default)
 
 
 
@@ -52,58 +52,11 @@ class RendererFactory(
         }
 
         override fun handleBuffer(buffer: ByteBuffer) {
-
-
-            try {
-                /*  val bufferCopy = buffer.duplicate()
-                  val bufferSize = buffer.remaining()
-                  val byteArray = ByteArray(bufferSize)
-                  bufferCopy.get(byteArray)
-                  CoroutineScope(Dispatchers.IO).launch {
-                      _byteArray.value=byteArray
-                  }*/
-                /////////////
-                /*  val bufferCopy = ByteBuffer.allocate(buffer.remaining())
-                  bufferCopy.put(buffer)
-                  bufferCopy.flip()
-                  CoroutineScope(Dispatchers.Main).launch {
-                      _byteArray.emit(bufferCopy.array())
-                  }*/
-                /////////////
-                /////////////
                 val bufferCopy = ByteBuffer.allocate(buffer.remaining())
                 bufferCopy.put(buffer)
                 bufferCopy.flip()
-
-                emitterScope.launch {
-                    val randomBuffer = ByteBuffer.allocate(1024)
-                    val randomBytes = ByteArray(1024)
-                    Random.nextBytes(randomBytes)
-                    randomBuffer.put(randomBytes)
-                    randomBuffer.flip()
-                    _byteBuffer.value = randomBuffer
-
-                 }
-                /////////////
-            } catch (e: IOException) {
-                Log.e(
-                    "WavFileAudioBu",
-                    "Error writing data",
-                    e
-                )
-            } catch (
-                e: IllegalStateException
-            ) {
-                Log.e(
-                    "WavFileAudioBu",
-                    "Error writing data",
-                    e
-                )
-            }
-
-
+                _byteBuffer.value=bufferCopy
         }
-
     }
 
 

@@ -45,8 +45,12 @@ class Mapper {
              .setArtist(item.artist)
              .setTitle(item.title)
              .build()
-        return MediaItem.Builder()
+       /* return MediaItem.Builder()
             .setUri(item.uri)
+            .setMediaMetadata(mediaMetadata)
+            .build()*/
+        return MediaItem.Builder()
+            .setUri("https://www.mediacollege.com/audio/tone/files/10kHz_44100Hz_16bit_05sec.mp3")
             .setMediaMetadata(mediaMetadata)
             .build()
     }

@@ -49,7 +49,7 @@ class PlayerViewModel(
                             copy(
                                 playerState = PlayerState.Success(
                                     PlayerStateUI(
-                                        visualizerData = emptyList()
+                                        visualizerData = mapperUI.map(it)
                                     )
                                 )
                             )

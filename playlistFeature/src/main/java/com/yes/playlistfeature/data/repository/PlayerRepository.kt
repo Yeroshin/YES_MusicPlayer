@@ -12,12 +12,6 @@ class PlayerRepository(
     private val playerDataSource: PlayerDataSource
 ) {
     fun setTracks(tracks: List<Track>) {
-        val file = File(tracks[0].uri)
-        if (file.exists()) {
-            Log.i("","")
-           
-        }
-       // playerDataSource.clearTracks()
         playerDataSource.setTracks(
             tracks.map {
                 mapper.mapToMediaItem(it)

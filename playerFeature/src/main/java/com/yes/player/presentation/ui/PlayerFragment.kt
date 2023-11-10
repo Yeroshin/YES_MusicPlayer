@@ -67,15 +67,7 @@ class PlayerFragment : Fragment() {
     ): View {
         binding = PlayerBinding.inflate(inflater, container, false)
         //migration
-        binder.composeView.setContent {
-            /*    EqualizerView(
-            80,
-                40,
-                 60,
-                20,
-                90
-                )*/
-        }
+
         ///////////////////////
         return binder.root
     }
@@ -172,6 +164,13 @@ class PlayerFragment : Fragment() {
             }
             playerState.durationInt?.let {
                 binder.seekBar.max = playerState.durationInt
+            }
+            playerState.visualizerData?.let {
+                binder.composeView.setContent {
+                    EqualizerView(
+                        playerState.visualizerData
+                    )
+                }
             }
         }
 
