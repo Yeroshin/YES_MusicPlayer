@@ -1,22 +1,18 @@
 package com.yes.player.data.repository
 
+import android.media.audiofx.Visualizer
+import android.media.audiofx.Visualizer.MEASUREMENT_MODE_PEAK_RMS
+import android.media.audiofx.Visualizer.SCALING_MODE_NORMALIZED
 import android.util.Log
-import com.yes.core.data.factory.RendererFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 class VisualizerRepository(
-    private val rendererFactory: RendererFactory
+    visualizer: Visualizer
 ) {
 
-    /*  private val captureListener = object : Visualizer.OnDataCaptureListener {
+      private val captureListener = object : Visualizer.OnDataCaptureListener {
           override fun onWaveFormDataCapture(
               visualizer: Visualizer?,
               waveform: ByteArray?,
@@ -30,16 +26,16 @@ class VisualizerRepository(
               fft: ByteArray?,
               samplingRate: Int
           ) {
-              _fft.value = fft
+              _byteArray.value = fft
           }
-      }*/
+      }
     init {
-        /* visualizer.scalingMode = SCALING_MODE_NORMALIZED
+         visualizer.scalingMode = SCALING_MODE_NORMALIZED
          visualizer.measurementMode = MEASUREMENT_MODE_PEAK_RMS
          visualizer.captureSize = Visualizer.getCaptureSizeRange()[1]
          visualizer.setDataCaptureListener(
-             captureListener,Visualizer.getMaxCaptureRate() / 2, false, true)*/
-        /* object : Visualizer.OnDataCaptureListener {
+            // captureListener,Visualizer.getMaxCaptureRate() / 2, false, true)
+         object : Visualizer.OnDataCaptureListener {
              override fun onWaveFormDataCapture(
                  visualizer: Visualizer?,
                  waveform: ByteArray?,
@@ -53,19 +49,16 @@ class VisualizerRepository(
                  fft: ByteArray?,
                  samplingRate: Int
              ) {
-                 _fft.value = fft
+                 _byteArray.value = fft
              }
          },
          Visualizer.getMaxCaptureRate() / 2, false, true
-     )*/
+     )
     }
-
+    private val _byteArray = MutableStateFlow<ByteArray?>(null)
+    private val byteArray: StateFlow<ByteArray?> = _byteArray
   fun subscribeVisualizer(): Flow<ByteArray?> {
-        return rendererFactory.subscribeByteBuffer()
-            .map {
-                it?.array()
-            }
-
+        return byteArray
     }
 
 

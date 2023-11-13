@@ -1,9 +1,9 @@
 package com.yes.player.di.module
 
+import android.media.audiofx.Visualizer
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.core.data.dataSource.SettingsDataStore
-import com.yes.core.data.factory.RendererFactory
 import com.yes.player.data.mapper.Mapper
 import com.yes.player.data.repository.PlayerRepository
 import com.yes.player.data.repository.PlaylistRepositoryImpl
@@ -28,10 +28,10 @@ class PlayerModule {
 
     @Provides
     fun providesVisualizerRepository(
-        rendererFactory: RendererFactory
+        visualizer: Visualizer
     ): VisualizerRepository {
         return VisualizerRepository(
-            rendererFactory
+            visualizer
         )
     }
 
