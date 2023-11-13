@@ -5,6 +5,7 @@ import com.yes.core.domain.useCase.UseCase
 import com.yes.player.data.repository.VisualizerRepository
 import com.yes.player.domain.model.VisualizerData
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlin.math.abs
@@ -16,7 +17,7 @@ class SubscribeVisualizerUseCase(
     private val visualizerRepository: VisualizerRepository
 ) : UseCase<Unit?, Flow<VisualizerData>>(dispatcher) {
     override suspend fun run(params: Unit?): DomainResult<Flow<VisualizerData>> {
-        val sampleRate = 44100
+        val sampleRate = 44100000/2000
         return DomainResult.Success(
             visualizerRepository.subscribeVisualizer().map { fft ->
                 fft?.let {

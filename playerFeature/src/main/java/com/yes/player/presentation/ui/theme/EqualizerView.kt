@@ -14,8 +14,36 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
-
+import androidx.compose.ui.tooling.preview.Preview
+@Preview
+@Composable
+fun EqualizerViewPreview() {
+    val value1 = 10F
+    val value2 = 20F
+    val value3 =30F
+    val value4 = 40F
+    val value5 = 50F
+    val values = listOf(
+        10F,
+        20F,
+        30F,
+        40F,
+        50F,
+        60F,
+        70F,
+        80F,
+        90F,
+        100F
+    )
+    EqualizerView(values)
+}
 
 @Composable
 fun EqualizerView(values:List<Float> ) {
@@ -28,32 +56,17 @@ fun EqualizerView(values:List<Float> ) {
         70 to 30F,
     )*/
 
-    /*val value1 = 80
-    val value2 = 40
-    val value3 =25
-    val value4 = 20
-    val value5 = 2
-    val values = listOf(
-        value1,
-        value2,
-        value3,
-        value4,
-        value5,
-    )*/
+
     val columnCount = values.size
+    val maxValue = 100F
 
-    val maxValue = 500
+    var screenWidth by remember { mutableStateOf(400.dp) }
+    var screenHeight by remember { mutableStateOf(500.dp) }
 
-/*    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-*/
-    var screenWidth = 472.dp
-    var screenHeight = 206.dp
+    var squareSize by remember { mutableStateOf(16.dp) }
+    var columnSpacing by remember { mutableStateOf(2.dp) }
+    var maxHeightCount by remember { mutableIntStateOf(25) }
 
-    var squareSize = 16.dp
-    var columnSpacing = 2.dp
-
-    var maxHeightCount = 25
 
 //////////////
 
@@ -61,11 +74,10 @@ fun EqualizerView(values:List<Float> ) {
     Box(
         modifier = Modifier
 
-            .background(Color.Blue)
+            .background(Color.LightGray)
             .onGloballyPositioned { coordinates ->
-                 screenWidth = coordinates.size.height.dp
-                 screenHeight = coordinates.size.width.dp
-                ///////////////
+                screenWidth = coordinates.size.width.dp
+                screenHeight = coordinates.size.height.dp
                 squareSize = (screenWidth / columnCount)
                 columnSpacing = squareSize / 8
                 squareSize -= columnSpacing
@@ -76,18 +88,18 @@ fun EqualizerView(values:List<Float> ) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(columnSpacing)
         ) {
-            repeat(columnCount) { columnIndex ->
+            values.forEachIndexed { _, value ->
                 Column(
                     modifier = Modifier.fillMaxHeight(),
                     verticalArrangement = Arrangement.Bottom
                 ) {
-                    val count = ((values[ columnIndex] * maxHeightCount) / maxValue).toInt()
-                    repeat(count) { heightIndex ->
+                    val count = ((value * maxHeightCount) / maxValue).toInt()
+                    repeat(count) {
                         Spacer(modifier = Modifier.height(columnSpacing))
                         Box(
                             modifier = Modifier
                                 .size(squareSize)
-                                .background(Color.White)
+                                .background(Color.Black)
                         )
                     }
                 }

@@ -35,7 +35,7 @@ class PlayerViewModel(
         subscribeDurationCounter()
         subscribeCurrentPlaylist()
         subscribeCurrentTrack()
-        subscribeVisualizer()
+        //subscribeVisualizer()
     }
 
     private fun subscribeVisualizer() {
@@ -179,7 +179,9 @@ class PlayerViewModel(
           //  subscribeVisualizerUseCase()//tmp!
             val result = playUseCase()
             when (result) {
-                is DomainResult.Success -> {}
+                is DomainResult.Success -> {
+                    subscribeVisualizer()
+                }
                 is DomainResult.Error -> setEffect {
                     Effect.UnknownException
                 }
