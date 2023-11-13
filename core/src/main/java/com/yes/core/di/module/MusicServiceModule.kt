@@ -20,12 +20,7 @@ class MusicServiceModule {
     ): MediaSession {
         return MediaSession.Builder(context, player).build()
     }
-    @Provides
-    fun providesVisualizer(
-        audioSessionId: Int
-    ): Visualizer {
-        return Visualizer(audioSessionId)
-    }
+
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     @Provides
     fun  providesExoPlayer(

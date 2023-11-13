@@ -30,6 +30,7 @@ class VisualizerRepository(
           }
       }
     init {
+
          visualizer.scalingMode = SCALING_MODE_NORMALIZED
          visualizer.measurementMode = MEASUREMENT_MODE_PEAK_RMS
          visualizer.captureSize = Visualizer.getCaptureSizeRange()[1]
@@ -54,6 +55,10 @@ class VisualizerRepository(
          },
          Visualizer.getMaxCaptureRate() / 2, false, true
      )
+        if (!visualizer.enabled){
+            visualizer.enabled = true
+        }
+
     }
     private val _byteArray = MutableStateFlow<ByteArray?>(null)
     private val byteArray: StateFlow<ByteArray?> = _byteArray

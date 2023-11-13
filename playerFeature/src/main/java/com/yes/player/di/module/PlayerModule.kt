@@ -25,7 +25,12 @@ import dagger.Provides
 
 @Module
 class PlayerModule {
-
+    @Provides
+    fun providesVisualizer(
+        audioSessionId: Int
+    ): Visualizer {
+        return Visualizer(audioSessionId)
+    }
     @Provides
     fun providesVisualizerRepository(
         visualizer: Visualizer

@@ -17,7 +17,7 @@ import dagger.Component
     modules = [
         PlayerModule::class,
         UseCaseModule::class,
-        MusicServiceModule::class
+
     ]
 )
 @PlayerScope
