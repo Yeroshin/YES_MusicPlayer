@@ -13,9 +13,19 @@ import android.widget.FrameLayout
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.EmptyBuildDrawCacheParams.density
+
+
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -33,8 +43,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import androidx.compose.material.Text
-import com.yes.player.presentation.ui.theme.EqualizerView
+import com.yes.player.presentation.ui.theme.AdaptiveGrid
+import com.yes.player.presentation.ui.theme.DimensionSubcomposeLayout
+
+import com.yes.player.presentation.ui.theme.content
+
 
 class PlayerFragment : Fragment() {
     interface DependencyResolver {
@@ -167,8 +180,16 @@ class PlayerFragment : Fragment() {
             }
             playerState.visualizerData?.let {
                 binder.composeView.setContent {
-                    EqualizerView(
+                 /* AdaptiveGrid(playerState.visualizerData)*/
+                   /* EqualizerView(
                         playerState.visualizerData
+                    )*/
+                    DimensionSubcomposeLayout(
+                        mainContent = { content() },
+                        dependentContent = { size: Size ->
+                            val dpSize = density.run {size.toDpSize() }
+                            Box(Modifier.size(dpSize).border(3.dp, Color.Green))
+                        }
                     )
                 }
             }

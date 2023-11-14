@@ -11,57 +11,178 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.layout.Measurable
+import androidx.compose.ui.layout.Placeable
+
+
+import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.layout.SubcomposeLayout
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.IntSize
+
+
 @Preview
 @Composable
 fun EqualizerViewPreview() {
-    val value1 = 10F
-    val value2 = 20F
-    val value3 =30F
-    val value4 = 40F
-    val value5 = 50F
-    val values = listOf(
-        10F,
-        20F,
-        30F,
-        40F,
-        50F,
-        60F,
-        70F,
-        80F,
-        90F,
-        100F
+
+    val values = doubleArrayOf(
+        10.0,
+        20.0,
+        30.0,
+        40.0,
+        50.0,
+        60.0,
+        70.0,
+        80.0,
+        90.0,
+        20.0
     )
-    EqualizerView(values)
+    //  EqualizerView(values)
+}/*
+@Composable
+fun AdaptiveGrid(values: DoubleArray, numColumns: Int) {
+    val cellSize = (MaterialTheme.typography.body1.fontSize * 1.5).dp
+    val numRows = (values.size + numColumns - 1) / numColumns
+    LazyColumn(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        items((0 until numRows)) { rowIndex ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(cellSize / 8)
+            ) {
+                for (colIndex in 0 until numColumns) {
+                    val valueIndex = rowIndex * numColumns + colIndex
+                    if (valueIndex < values.size) {
+                        val value = values[valueIndex]
+                        val cellColor = if (value > 0.0) Color.Black else Color.White
+                        Spacer(
+                            modifier = Modifier
+                                .size(cellSize)
+                                .background(color = cellColor)
+                        )
+                    } else {
+                        Spacer(modifier = Modifier.size(cellSize)) // Пустая ячейка
+                    }
+                }
+            }
+        }
+    }
+}*/
+
+@Composable
+fun AdaptiveGrid(values: DoubleArray) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        items(values.toList()) { value ->
+            val cellColor = if (value > 0.0) Color.Black else Color.White
+            val cellSize = 50.dp // Задаем размер ячейки
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(cellSize)
+                    .padding(vertical = 4.dp)
+                    .background(color = cellColor)
+            )
+        }
+    }
 }
 
 @Composable
-fun EqualizerView(values:List<Float> ) {
-  /*  val map= mapOf(
-        20 to 20F,
-        30 to 80F,
-        40 to 50F,
-        50 to 60F,
-        60 to 70F,
-        70 to 30F,
-    )*/
+fun AdaptiveGrid(values: List<Double>) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        items(values) { value ->
+            val cellColor = if (value > 0.0) Color.Black else Color.White
+            val cellSize = 50.dp // Задаем размер ячейки
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(cellSize)
+                    .padding(vertical = 4.dp)
+                    .background(color = cellColor)
+            )
+        }
+    }
+}
 
+/*
+@Composable
+fun EqualizerView(values: DoubleArray) {
+    val maxValue = 1.0
+
+    SubcomposeLayout { constraints ->
+        val placeables = values.map { item ->
+            val countBlack = ((item * constraints.maxHeight) / maxValue).toInt()
+            val countWhite = constraints.maxHeight - countBlack
+
+            layout(constraints.maxWidth, constraints.maxHeight) {
+                var yPosition = 0
+                repeat(countWhite) {
+                    val placeable = subcompose {
+                        Box(
+                            Modifier
+                                .fillMaxWidth()
+                                .height(1.dp)
+                                .background(Color.White)
+                        )
+                    }.first().measure(constraints)
+                    placeable.placeRelative(0, yPosition)
+                    yPosition += placeable.height
+                }
+                repeat(countBlack) {
+                    val placeable = subcompose {
+                        Box(
+                            Modifier
+                                .fillMaxWidth()
+                                .height(1.dp)
+                                .background(Color.Black)
+                        )
+                    }.first().measure(constraints)
+                    placeable.placeRelative(0, yPosition)
+                    yPosition += placeable.height
+                }
+            }
+        }
+
+        layout(constraints.maxWidth, constraints.maxHeight) {
+            var xPosition = 0
+            placeables.forEach { placeable ->
+                placeable.measure(constraints)
+                placeable.placeRelative(xPosition, 0)
+                xPosition += placeable.width
+            }
+        }
+    }
+}*/
+@Composable
+fun EqualizerVie(values: DoubleArray) {
+    val localDensity = LocalDensity.current
 
     val columnCount = values.size
-    val maxValue = 100F
+    val maxValue = 1
 
     var screenWidth by remember { mutableStateOf(400.dp) }
-    var screenHeight by remember { mutableStateOf(500.dp) }
+    var screenHeight by remember { mutableStateOf(200.dp) }
 
     var squareSize by remember { mutableStateOf(16.dp) }
     var columnSpacing by remember { mutableStateOf(2.dp) }
@@ -76,8 +197,8 @@ fun EqualizerView(values:List<Float> ) {
 
             .background(Color.LightGray)
             .onGloballyPositioned { coordinates ->
-                screenWidth = coordinates.size.width.dp
-                screenHeight = coordinates.size.height.dp
+                screenWidth = with(localDensity) { coordinates.size.width.toDp() }
+                screenHeight = with(localDensity) { coordinates.size.height.toDp() }
                 squareSize = (screenWidth / columnCount)
                 columnSpacing = squareSize / 8
                 squareSize -= columnSpacing
@@ -88,13 +209,22 @@ fun EqualizerView(values:List<Float> ) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(columnSpacing)
         ) {
-            values.forEachIndexed { _, value ->
+            values.forEachIndexed { index, value ->
                 Column(
                     modifier = Modifier.fillMaxHeight(),
                     verticalArrangement = Arrangement.Bottom
                 ) {
-                    val count = ((value * maxHeightCount) / maxValue).toInt()
-                    repeat(count) {
+                    val countBlack = ((value * maxHeightCount) / maxValue).toInt()
+                    val countWhite = maxHeightCount - countBlack
+                    repeat(countWhite) {
+                        Spacer(modifier = Modifier.height(columnSpacing))
+                        Box(
+                            modifier = Modifier
+                                .size(squareSize)
+                                .background(Color.Gray)
+                        )
+                    }
+                    repeat(countBlack) {
                         Spacer(modifier = Modifier.height(columnSpacing))
                         Box(
                             modifier = Modifier
@@ -102,10 +232,99 @@ fun EqualizerView(values:List<Float> ) {
                                 .background(Color.Black)
                         )
                     }
+
                 }
             }
         }
     }
 
 
+}
+
+@Composable
+fun DimensionSubcomposeLayout(
+    modifier: Modifier = Modifier,
+    placeMainContent: Boolean = true,
+    mainContent: @Composable () -> Unit,
+    dependentContent: @Composable (Size) -> Unit
+) {
+    SubcomposeLayout(
+        modifier = modifier
+    ) { constraints: Constraints ->
+
+        // Subcompose(compose only a section) main content and get Placeable
+        val mainPlaceables: List<Placeable> = subcompose(SlotsEnum.Main, mainContent)
+            .map {
+                it.measure(constraints.copy(minWidth = 0, minHeight = 0))
+            }
+
+        // Get max width and height of main component
+        var maxWidth = 0
+        var maxHeight = 0
+
+        mainPlaceables.forEach { placeable: Placeable ->
+            maxWidth += placeable.width
+            maxHeight = placeable.height
+        }
+
+        val dependentPlaceables: List<Placeable> = subcompose(SlotsEnum.Dependent) {
+            dependentContent(Size(maxWidth.toFloat(), maxHeight.toFloat()))
+        }
+            .map { measurable: Measurable ->
+                measurable.measure(constraints)
+            }
+
+
+        layout(maxWidth, maxHeight) {
+
+            if (placeMainContent) {
+                mainPlaceables.forEach { placeable: Placeable ->
+                    placeable.placeRelative(0, 0)
+                }
+            }
+
+            dependentPlaceables.forEach { placeable: Placeable ->
+                placeable.placeRelative(0, 0)
+            }
+        }
+    }
+}
+
+@Composable
+fun content() {
+    Box(
+        modifier = Modifier
+            .size(200.dp)
+            .background(Color.Red)
+    )
+}
+
+enum class SlotsEnum { Main, Dependent }
+
+@Composable
+fun DimensionLayout(
+    modifier: Modifier = Modifier,
+    placeMainContent: Boolean = true,
+    mainContent: @Composable () -> Unit,
+    dependentContent: @Composable (IntSize) -> Unit
+) {
+    SubcomposeLayout { constraints ->
+        val mainPlaceables = subcompose(SlotsEnum.Main, mainContent).map {
+            it.measure(constraints)
+        }
+        val maxSize = mainPlaceables.fold(IntSize.Zero) { currentMax, placeable ->
+            IntSize(
+                width = maxOf(currentMax.width, placeable.width),
+                height = maxOf(currentMax.height, placeable.height)
+            )
+        }
+        layout(maxSize.width, maxSize.height) {
+            mainPlaceables.forEach { it.placeRelative(0, 0) }
+            subcompose(SlotsEnum.Dependent) {
+                dependentContent(maxSize)
+            }.forEach {
+                it.measure(constraints).placeRelative(0, 0)
+            }
+        }
+    }
 }

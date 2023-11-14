@@ -18,31 +18,24 @@ class VisualizerRepository(
 ) {
     private val _byteArray = MutableStateFlow<ByteArray?>(null)
     private val byteArray: StateFlow<ByteArray?> = _byteArray
-      private val captureListener = object : Visualizer.OnDataCaptureListener {
-          override fun onWaveFormDataCapture(
-              visualizer: Visualizer?,
-              waveform: ByteArray?,
-              samplingRate: Int
-          ) {
-              Log.d(": ", "waveformbytearray is not null.");
-          }
+    private val captureListener = object : Visualizer.OnDataCaptureListener {
+        override fun onWaveFormDataCapture(
+            visualizer: Visualizer?,
+            waveform: ByteArray?,
+            samplingRate: Int
+        ) {
+            Log.d(": ", "waveformbytearray is not null.");
+        }
 
-          override fun onFftDataCapture(
-              visualizer: Visualizer?,
-              fft: ByteArray?,
-              samplingRate: Int
-          ) {
+        override fun onFftDataCapture(
+            visualizer: Visualizer?,
+            fft: ByteArray?,
+            samplingRate: Int
+        ) {
+            _byteArray.value = fft?.clone()
+        }
+    }
 
-             // _byteArray.value = fft
-             /* val random = Random.Default
-              val byteArray = ByteArray(1024) // создание массива байтов заданного размера
-
-              random.nextBytes(byteArray)*/
-
-                  _byteArray.value = fft?.clone()
-
-          }
-      }
     init {
         visualizer.scalingMode = SCALING_MODE_NORMALIZED
         visualizer.measurementMode = MEASUREMENT_MODE_PEAK_RMS
@@ -53,30 +46,24 @@ class VisualizerRepository(
             false,
             true
         )
-      /*  val job = CoroutineScope(Dispatchers.Default).launch {
-            while (true) {
-                delay(1000) // ждем 1 секунду
-                 byteArray.value = visualizer.getFft() // отправляем новое значение в StateFlow
-            }
-        }*/
+        /*  val job = CoroutineScope(Dispatchers.Default).launch {
+              while (true) {
+                  delay(1000) // ждем 1 секунду
+                   byteArray.value = visualizer.getFft() // отправляем новое значение в StateFlow
+              }
+          }*/
 
     }
 
-  fun subscribeVisualizer(): Flow<ByteArray?> {
+    fun subscribeVisualizer(): Flow<ByteArray?> {
 
 
-      if (!visualizer.enabled){
-          visualizer.enabled = true
-      }
+        if (!visualizer.enabled) {
+            visualizer.enabled = true
+        }
 
         return byteArray
     }
-
-
-
-
-
-
 
 
 }
