@@ -38,13 +38,20 @@ class MapperUI {
         }
         return normalizedAmplitudes
     }
-    private fun convertToLogScale(powerValues: DoubleArray): DoubleArray {
-        val maxPower = powerValues.maxOrNull() ?: 1.0 // Значение по умолчанию, если массив пустой
-        val minNonZeroPower = powerValues.filter { it > 0.0 }.minOrNull() ?: maxPower
-        val scaleFactor = if (maxPower.isInfinite()) 0.0 else 1.0 / ln(maxPower / minNonZeroPower)
-        return powerValues.map { if (it.isInfinite()) 0.0 else ln(it / minNonZeroPower) * scaleFactor }.toDoubleArray()
+    private fun convertToLogScale(powerValues: FloatArray): FloatArray {
+        val maxPower = powerValues.maxOrNull() ?: 1F // Значение по умолчанию, если массив пустой
+        val minNonZeroPower = powerValues.filter { it > 0F }.minOrNull() ?: maxPower
+        val scaleFactor = 1F / ln(maxPower / minNonZeroPower)
+        return powerValues.map { power ->
+            val logValue = ln(power / minNonZeroPower) * scaleFactor
+            if (logValue.isNaN() || logValue.isInfinite()) {
+                0F // Заменяем NaN или Infinity на 0 или другое значение по вашему выбору
+            } else {
+                logValue
+            }
+        }.toFloatArray()
     }
-    fun map(visualizerData: VisualizerData): DoubleArray{
+    fun map(visualizerData: VisualizerData): FloatArray{
        /* val targetFrequencies = floatArrayOf(
             20f, 40f, 80f, 160f, 315f, 630f, 1250f, 2500f, 5000f, 10000f, 20000f
         )*/
@@ -52,9 +59,9 @@ class MapperUI {
             31F, 62F, 125F, 250F, 500F, 1000F, 2000F, 4000F, 8000F, 16000F,
         )
         val frequencies = doubleArrayOf(31.0, 62.0, 125.0, 250.0, 500.0, 1000.0, 2000.0, 4000.0, 8000.0, 16000.0)
-        val valuesForFrequencies = DoubleArray(frequencies.size)
+        val valuesForFrequencies = FloatArray(frequencies.size)
         for (i in frequencies.indices) {
-            val index = (frequencies[i] / 44100.0 * visualizerData.magnitudes.size).toInt()
+            val index = (frequencies[i] / visualizerData.samplingRate * visualizerData.magnitudes.size).toInt()
             valuesForFrequencies[i] = visualizerData.magnitudes[index]
         }
         return convertToLogScale(valuesForFrequencies)

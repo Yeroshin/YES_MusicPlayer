@@ -51,28 +51,29 @@ class SubscribeVisualizerUseCase(
     override suspend fun run(params: Unit?): DomainResult<Flow<VisualizerData>> {
        // val sampleRate = 44100000/2000
         return DomainResult.Success(
-            visualizerRepository.subscribeVisualizer().map { fft ->
-                fft?.let {
+            visualizerRepository.subscribeVisualizer().map { visualizerEntity ->
+                visualizerEntity.fft?.let {
                    /* val magnitudes=calculateAmplitudes(
                         convertToComplexArray(fft)
                     )*/
 
-                    val n: Int = fft.size
-                    val magnitudes = DoubleArray(n / 2 + 1)
-                    val phases = DoubleArray(n / 2 + 1)
-                    magnitudes[0] = abs(fft[0].toDouble())  // DC
+                    val n: Int = visualizerEntity.fft.size
+                    val magnitudes = FloatArray(n / 2 + 1)
+                    val phases = FloatArray(n / 2 + 1)
+                    magnitudes[0] = abs(visualizerEntity.fft[0].toFloat())  // DC
 
-                    magnitudes[n / 2] = abs(fft[1].toDouble()) // Nyquist
+                    magnitudes[n / 2] = abs(visualizerEntity.fft[1].toFloat()) // Nyquist
 
-                    phases[0] = 0.also { phases[n / 2] = 0.0 }.toDouble()
+                    phases[0] = 0.also { phases[n / 2] = 0F }.toFloat()
                     for (k in 1 until n / 2) {
                         val i = k * 2
-                        magnitudes[k] = hypot(fft[i].toDouble(), fft[i + 1].toDouble())
+                        magnitudes[k] = hypot(visualizerEntity.fft[i].toFloat(), visualizerEntity.fft[i + 1].toFloat())
                     }
 
 
                     VisualizerData(
                         magnitudes=magnitudes,
+                        samplingRate = visualizerEntity.samplingRate
                     )
                 }?: VisualizerData()
             }

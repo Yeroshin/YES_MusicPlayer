@@ -2,6 +2,8 @@ package com.yes.player.presentation.ui.theme
 
 
 import android.content.Context
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -301,9 +304,9 @@ enum class SlotsEnum { Main, Dependent }
 
 @Composable
 fun DimensionLayout(
-    values: DoubleArray,
+    values: FloatArray,
     mainContent: @Composable () -> Unit,
-    dependentContent: @Composable (IntSize,DoubleArray) -> Unit
+    dependentContent: @Composable (IntSize, FloatArray) -> Unit
 ) {
     SubcomposeLayout { constraints ->
 
@@ -317,51 +320,69 @@ fun DimensionLayout(
             )
         }
         layout(maxSize.width, maxSize.height) {
-        //    mainPlaceables.forEach { it.placeRelative(0, 0) }
+            //    mainPlaceables.forEach { it.placeRelative(0, 0) }
             subcompose(SlotsEnum.Dependent) {
-                dependentContent(maxSize,values)
+                dependentContent(maxSize, values)
             }.forEach {
                 it.measure(constraints).placeRelative(0, 0)
             }
         }
     }
 }
+
 @Composable
 fun MainContent() {
-      Box(
-          modifier = Modifier
-              .fillMaxSize()
-              .background(Color.Blue)
-      )
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Blue)
+    )
 }
+
 @Preview
 @Composable
 fun PreviewContent() {
-    val frequencies = doubleArrayOf(0.5,0.1,0.2,0.7,0.8,0.6,0.4)
+    val frequencies = floatArrayOf(0F, 0F, 0F, 0F, 0F, 0F, 0F)
     DimensionLayout(
-        values=frequencies,
+        values = frequencies,
         mainContent = { MainContent() },
-        dependentContent = {
-            size, values -> DependentContent(size, values)  } // Передаем DependentContent в качестве dependentContent
+        dependentContent = { size, values ->
+            DependentContent(
+                size,
+                values
+            )
+        } // Передаем DependentContent в качестве dependentContent
     )
 
 }
+
 @Composable
-fun DependentContent(maxSize: IntSize,values: DoubleArray) {
+fun DependentContent(maxSize: IntSize, values: FloatArray) {
+    val animatedValues = remember { mutableStateOf(values) }
+
+    animatedValues.value.forEachIndexed { index, value ->
+        animatedValues.value[index] = animateFloatAsState(
+            targetValue = values[index],
+            animationSpec = tween(
+                durationMillis = 300
+            ), label = ""
+        ).value
+    }
+
 
     val columnCount = values.size
     val maxValue = 1
-     val screenWidth = maxSize.width.pxToDp()
-     val screenHeight = maxSize.height.pxToDp()
-     var squareSize = (screenWidth / columnCount)
-     val columnSpacing = squareSize / 8
-      squareSize -= columnSpacing
-     val maxHeightCount = (screenHeight / (squareSize + columnSpacing)).toInt()
+    val screenWidth = maxSize.width.pxToDp()
+    val screenHeight = maxSize.height.pxToDp()
+    var squareSize = (screenWidth / columnCount)
+    val columnSpacing = squareSize / 8
+    squareSize -= columnSpacing
+    val maxHeightCount = (screenHeight / (squareSize + columnSpacing)).toInt()
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(columnSpacing)
     ) {
-        values.forEach{  value ->
+        animatedValues.value.forEach { value ->
             Column(
                 modifier = Modifier.fillMaxHeight(),
                 verticalArrangement = Arrangement.Bottom
@@ -384,11 +405,9 @@ fun DependentContent(maxSize: IntSize,values: DoubleArray) {
                             .background(Color.Black)
                     )
                 }
-
             }
         }
     }
-
 }
 
 @Composable

@@ -16,8 +16,8 @@ import kotlin.random.Random
 class VisualizerRepository(
     private val visualizer: Visualizer
 ) {
-    private val _byteArray = MutableStateFlow<ByteArray?>(null)
-    private val byteArray: StateFlow<ByteArray?> = _byteArray
+    private val _visualizerEntity = MutableStateFlow<VisualizerEntity>(VisualizerEntity())
+    private val visualizerEntity: StateFlow<VisualizerEntity> = _visualizerEntity
     private val captureListener = object : Visualizer.OnDataCaptureListener {
         override fun onWaveFormDataCapture(
             visualizer: Visualizer?,
@@ -32,7 +32,10 @@ class VisualizerRepository(
             fft: ByteArray?,
             samplingRate: Int
         ) {
-            _byteArray.value = fft?.clone()
+            _visualizerEntity.value = VisualizerEntity(
+                fft?.clone(),
+                samplingRate/1000
+            )
         }
     }
 
@@ -55,17 +58,19 @@ class VisualizerRepository(
 
     }
 
-    fun subscribeVisualizer(): Flow<ByteArray?> {
+    fun subscribeVisualizer(): Flow<VisualizerEntity> {
 
 
         if (!visualizer.enabled) {
             visualizer.enabled = true
         }
 
-        return byteArray
+        return visualizerEntity
     }
-
-
+    data class VisualizerEntity(
+        val fft: ByteArray?=null,
+        val samplingRate: Int=0
+    )
 }
 // Online radio:
 //val uri = Uri.parse("http://listen.livestreamingservice.com/181-xsoundtrax_128k.mp3")
