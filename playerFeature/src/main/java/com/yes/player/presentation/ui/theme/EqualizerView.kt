@@ -394,7 +394,7 @@ fun DependentContent(maxSize: IntSize, values: FloatArray) {
                     Box(
                         modifier = Modifier
                             .size(squareSize)
-                            .background(Color.Gray)
+                            .background(Color.Transparent)
                     )
                 }
                 repeat(countBlack) {
