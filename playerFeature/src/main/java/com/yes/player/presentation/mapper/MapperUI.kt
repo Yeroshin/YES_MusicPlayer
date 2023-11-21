@@ -38,11 +38,11 @@ class MapperUI {
         }
         return normalizedAmplitudes
     }
-    fun convertToLogScale(powerValues: DoubleArray): DoubleArray {
+    private fun convertToLogScale(powerValues: DoubleArray): DoubleArray {
         val maxPower = powerValues.maxOrNull() ?: 1.0 // Значение по умолчанию, если массив пустой
         val minNonZeroPower = powerValues.filter { it > 0.0 }.minOrNull() ?: maxPower
-        val scaleFactor = 1.0 / ln(maxPower / minNonZeroPower)
-        return powerValues.map { ln(it / minNonZeroPower) * scaleFactor }.toDoubleArray()
+        val scaleFactor = if (maxPower.isInfinite()) 0.0 else 1.0 / ln(maxPower / minNonZeroPower)
+        return powerValues.map { if (it.isInfinite()) 0.0 else ln(it / minNonZeroPower) * scaleFactor }.toDoubleArray()
     }
     fun map(visualizerData: VisualizerData): DoubleArray{
        /* val targetFrequencies = floatArrayOf(

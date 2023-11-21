@@ -9,23 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
-import android.widget.FrameLayout
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.EmptyBuildDrawCacheParams.density
-
-
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -33,7 +19,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.yes.core.presentation.BaseViewModel
-import com.yes.player.R
 import com.yes.player.databinding.PlayerBinding
 import com.yes.player.di.components.PlayerFeatureComponent
 import com.yes.player.presentation.contract.PlayerContract
@@ -43,10 +28,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import com.yes.player.presentation.ui.theme.AdaptiveGrid
-import com.yes.player.presentation.ui.theme.DimensionSubcomposeLayout
+import com.yes.player.presentation.ui.theme.DependentContent
+import com.yes.player.presentation.ui.theme.DimensionLayout
+import com.yes.player.presentation.ui.theme.MainContent
 
-import com.yes.player.presentation.ui.theme.content
 
 
 class PlayerFragment : Fragment() {
@@ -184,12 +169,10 @@ class PlayerFragment : Fragment() {
                    /* EqualizerView(
                         playerState.visualizerData
                     )*/
-                    DimensionSubcomposeLayout(
-                        mainContent = { content() },
-                        dependentContent = { size: Size ->
-                            val dpSize = density.run {size.toDpSize() }
-                            Box(Modifier.size(dpSize).border(3.dp, Color.Green))
-                        }
+                    DimensionLayout(
+                        values = playerState.visualizerData,
+                        mainContent = { MainContent() },
+                        dependentContent = { maxSize,values -> DependentContent(maxSize,values) } // Передаем DependentContent в качестве dependentContent
                     )
                 }
             }
