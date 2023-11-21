@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
 import com.yes.core.presentation.BaseViewModel
 import com.yes.core.presentation.ItemTouchHelperCallback
-import com.yes.playlistfeature.R
 import com.yes.playlistfeature.databinding.PlaylistBinding
 import com.yes.playlistfeature.di.component.PlaylistComponent
 import com.yes.playlistfeature.presentation.contract.PlaylistContract
@@ -25,10 +24,11 @@ import com.yes.playlistfeature.presentation.vm.PlaylistViewModel
 import kotlinx.coroutines.launch
 
 
-class Playlist: Fragment() {
+class Playlist : Fragment() {
     interface DependencyResolver {
         fun getPlaylistComponent(): PlaylistComponent
     }
+
     private val component by lazy {
         (requireActivity().application as DependencyResolver)
             .getPlaylistComponent()
@@ -36,26 +36,25 @@ class Playlist: Fragment() {
     private val dependency: Dependency by lazy {
         component.getDependency()
     }
+
     interface MediaChooserManager {
         fun showMediaDialog()
     }
 
-    interface PlayModeSelector {
-        fun switchMode()
-    }
 
     interface PlaylistManager {
         fun showPlaylistDialog()
     }
+
     private lateinit var binding: ViewBinding
     private val binder by lazy {
         binding as PlaylistBinding
     }
 
-    private val mediaChooserManager by lazy{
+    private val mediaChooserManager by lazy {
         activity as MediaChooserManager
     }
-    private val playlistManager by lazy{
+    private val playlistManager by lazy {
         activity as PlaylistManager
     }
 
@@ -67,6 +66,7 @@ class Playlist: Fragment() {
     private val adapter by lazy {
         dependency.adapter
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -74,11 +74,13 @@ class Playlist: Fragment() {
         binding = PlaylistBinding.inflate(inflater)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
         setupView()
     }
+
     private fun observeViewModel() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -99,6 +101,7 @@ class Playlist: Fragment() {
             }
         }
     }
+
     private fun setupView() {
         binder.btnMedia.setOnClickListener {
             mediaChooserManager.showMediaDialog()
@@ -106,8 +109,12 @@ class Playlist: Fragment() {
         binder.btnPlaylist.setOnClickListener {
             playlistManager.showPlaylistDialog()
         }
+        binder.btnMode.setOnClickListener {
+            viewModel.setEvent(PlaylistContract.Event.OnModeChange)
+        }
+
 ///////////////
-        val deleteIconDrawable = ContextCompat.getDrawable(requireContext(), com.yes.coreui.R.drawable.trash_can_outline)
+
         val itemTouchHelperCallback = ItemTouchHelperCallback(
             enableSwipeToDelete = true,
             enableDragAndDrop = true,
@@ -126,7 +133,10 @@ class Playlist: Fragment() {
                 adapter.moveItem(fromPosition, toPosition)
                 true
             },
-            deleteIconDrawable = deleteIconDrawable
+            deleteIconDrawable = ContextCompat.getDrawable(
+                requireContext(),
+                com.yes.coreui.R.drawable.trash_can_outline
+            )
         )
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
@@ -144,9 +154,15 @@ class Playlist: Fragment() {
     private fun renderUiState(state: PlaylistContract.State) {
         when (state.playlistState) {
             is PlaylistContract.PlaylistState.Success -> {
-                dataLoaded(
-                    state.playlistState.tracks,
-                )
+                state.playlistState.mode?.let {
+                    setMode(it)
+                }
+                state.playlistState.tracks?.let {
+                    setItemsToAdapter(
+                        state.playlistState.tracks
+                    )
+                }
+
             }
 
             is PlaylistContract.PlaylistState.Loading -> {
@@ -159,11 +175,17 @@ class Playlist: Fragment() {
 
         }
     }
-    private fun dataLoaded(tracks: List<TrackUI>) {
-        adapter.setItems(tracks)
-      /*  binder.recyclerViewContainer.progressBar.visibility = View.GONE
-        binder.recyclerViewContainer.disableView.visibility = View.GONE*/
+
+    private fun setMode(imageLevel: Int) {
+        binder.btnMode.setImageLevel(imageLevel)
     }
+
+    private fun setItemsToAdapter(tracks: List<TrackUI>) {
+        adapter.setItems(tracks)
+        /*  binder.recyclerViewContainer.progressBar.visibility = View.GONE
+          binder.recyclerViewContainer.disableView.visibility = View.GONE*/
+    }
+
     private fun idleView() {
         // binder.recyclerViewContainer.dialogTitle.text = ""
         /*  binder.recyclerViewContainer.progressBar.visibility = View.GONE

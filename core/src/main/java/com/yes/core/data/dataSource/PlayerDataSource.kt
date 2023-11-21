@@ -125,6 +125,18 @@ class PlayerDataSource(
             }
         )
     }
+    fun setRepeatMode(mode:Int){
+        controller.repeatMode=mode
+    }
+    fun getRepeatMode():Int{
+        return controller.repeatMode
+    }
+    fun setShuffleMode(mode:Boolean){
+        controller.shuffleModeEnabled=mode
+    }
+    fun getShuffleMode():Boolean{
+        return controller.shuffleModeEnabled
+    }
 
     fun seekToPrevious() {
         controller.seekToPreviousMediaItem()

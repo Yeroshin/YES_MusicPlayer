@@ -1,9 +1,17 @@
 package com.yes.playlistfeature.presentation.mapper
 
+import com.yes.playlistfeature.domain.entity.Mode
 import com.yes.playlistfeature.domain.entity.Track
 import com.yes.playlistfeature.presentation.model.TrackUI
 
 class MapperUI {
+    fun map(mode: Mode):Int{
+        return when(mode){
+            Mode.SequentialMode -> 1
+            Mode.ShuffleMode->2
+            Mode.RepeatMode -> 3
+        }
+    }
     fun map(track: Track): TrackUI {
         return TrackUI(
             track.id,
@@ -42,5 +50,6 @@ class MapperUI {
             else -> String.format("%.2f GB", sizeInBytes.toFloat() / gigaByte)
         }
     }
+
 
 }

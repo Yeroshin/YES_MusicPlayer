@@ -21,6 +21,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 @Module
 class UseCaseModule {
 
+
     @Provides
     fun providesSubscribeVisualizerUseCase(
         @MainDispatcher dispatcher: CoroutineDispatcher,

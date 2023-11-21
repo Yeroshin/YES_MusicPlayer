@@ -12,6 +12,7 @@ import com.yes.playlistfeature.data.repository.PlayListRepositoryImpl
 import com.yes.playlistfeature.data.repository.PlayerRepository
 import com.yes.playlistfeature.data.repository.SettingsRepositoryImpl
 import com.yes.playlistfeature.domain.usecase.DeleteTrackUseCase
+import com.yes.playlistfeature.domain.usecase.SetModeUseCase
 import com.yes.playlistfeature.domain.usecase.SetTracksToPlayerPlaylistUseCase
 import com.yes.playlistfeature.domain.usecase.SubscribeCurrentPlaylistTracksUseCase
 import com.yes.playlistfeature.presentation.mapper.MapperUI
@@ -109,20 +110,31 @@ class PlaylistModule {
         )
     }
     @Provides
+    fun providesSetModeUseCase(
+        @MainDispatcher dispatcher: CoroutineDispatcher,
+        playerRepository: PlayerRepository,
+    ): SetModeUseCase {
+        return SetModeUseCase(
+            dispatcher,
+            playerRepository
+        )
+    }
+    @Provides
     fun providesPlaylistViewModelFactory(
         espressoIdlingResource: EspressoIdlingResource?,
         subscribeCurrentPlaylistTracksUseCase: SubscribeCurrentPlaylistTracksUseCase,
         mapperUI: MapperUI,
         deleteTrackUseCase: DeleteTrackUseCase,
-        setTracksToPlayerPlaylistUseCase: SetTracksToPlayerPlaylistUseCase
-
+        setTracksToPlayerPlaylistUseCase: SetTracksToPlayerPlaylistUseCase,
+        setModeUseCase:SetModeUseCase
     ): PlaylistViewModel.Factory {
         return PlaylistViewModel.Factory(
             espressoIdlingResource,
             subscribeCurrentPlaylistTracksUseCase,
             mapperUI,
             deleteTrackUseCase,
-            setTracksToPlayerPlaylistUseCase
+            setTracksToPlayerPlaylistUseCase,
+            setModeUseCase
         )
     }
 
