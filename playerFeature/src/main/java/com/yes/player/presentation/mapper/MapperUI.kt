@@ -40,7 +40,10 @@ class MapperUI {
     fun map(visualizerData: VisualizerData): FloatArray{
 
         //val frequencies = floatArrayOf(31f, 62f, 125f, 250f, 500f, 1000f, 2000f, 4000f, 8000f, 16000f)
-        val frequencies = floatArrayOf(20f, 50f, 80f, 125f, 200f, 315f, 500f, 800f, 1000f, 1250f,2000f,3150f,5000f,8000f,2500f,16000f)
+                // val frequencies = floatArrayOf(20f, 50f, 80f, 125f, 200f, 315f, 500f, 800f, 1000f, 1250f,2000f,3150f,5000f,8000f,11200f,16000f)
+                val frequencies = floatArrayOf(63f, 87f, 125f, 175f, 250f, 350f, 500f, 700f, 1000f, 1250f,2000f,2800f,4000f,5600f,8000f,11200f)
+        // val frequencies = floatArrayOf(31f, 63f, 87f, 125f, 175f, 250f, 350f, 500f, 700f, 1000f, 1400f,2000f,2800f,4000f,5600f,8000f,11200f,16000f)//aimp
+
         val valuesForFrequencies = FloatArray(frequencies.size)
         for (i in frequencies.indices) {
             val index = (frequencies[i] / visualizerData.samplingRate * visualizerData.magnitudes.size).toInt()
