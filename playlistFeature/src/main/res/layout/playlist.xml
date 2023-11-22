@@ -13,15 +13,20 @@
         android:layout_weight="1"
         android:background="@drawable/display">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/playList"
+       <!--<androidx.recyclerview.widget.RecyclerView-->
+           <!-- android:id="@+id/playList"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_margin="2dp"-->
+            <!--android:background="#000000"-->
+            <!--android:scrollbars="vertical"-->
+            <!--tools:itemCount="10"-->
+            <!--tools:listitem="@layout/item_track" />-->
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/PlaylistScreen"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="2dp"
-            android:background="#000000"
-            android:scrollbars="vertical"
-            tools:itemCount="10"
-            tools:listitem="@layout/item_track" />
+            tools:ignore="ExtraText" />
 
     </FrameLayout>
 

@@ -33,13 +33,14 @@ import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 
 
-@Preview
+@Preview(showBackground = true, device = Devices.PIXEL_4)
 @Composable
 fun EqualizerViewPreview() {
 
@@ -339,10 +340,10 @@ fun MainContent() {
     )
 }
 
-@Preview
+@Preview( device = Devices.PIXEL_4)
 @Composable
 fun PreviewContent() {
-    val frequencies = floatArrayOf(0F, 0F, 0F, 0F, 0F, 0F, 0F)
+    val frequencies = floatArrayOf(0.2F, 0.4F, 0.7F, 0.5F, 0.9F, 1F, 0.8F)
     DimensionLayout(
         values = frequencies,
         mainContent = { MainContent() },

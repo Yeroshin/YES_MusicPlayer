@@ -72,6 +72,9 @@ class Playlist : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = PlaylistBinding.inflate(inflater)
+        binder.PlaylistScreen.setContent {
+            PlaylistScreen()
+        }
         return binding.root
     }
 
@@ -140,13 +143,13 @@ class Playlist : Fragment() {
         )
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
-        itemTouchHelper.attachToRecyclerView(
+      /*  itemTouchHelper.attachToRecyclerView(
             binder.playList
         )
         ///////////////
         val layoutManager = LinearLayoutManager(context)
         binder.playList.layoutManager = layoutManager
-        binder.playList.adapter = adapter
+        binder.playList.adapter = adapter*/
 
 
     }
