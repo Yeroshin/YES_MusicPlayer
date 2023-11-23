@@ -2,6 +2,26 @@ package com.yes.playlistfeature.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+
+val tint =Color(0xffA3B3CE)
+val brandedColor =Color(0xff222329)
+val brandedLight =Color(0xff5d5d5d)
+val brandedDark =Color(0xff242424)
+val textGray =Color(0xff939292)
+val transparent =Color(0x00000000)
+
+val black =Color(0xff000000)
+val white =Color(0xffffffff)
+val light =Color(0xff48484e)
+val green =Color(0xff4CAF50)
+
+val buttonStartColor =Color(0xff222228)
+val buttonCenterColor =Color(0xff1c1c22)
+val buttonEndColor =Color(0xff353539)
+val buttonStartColorPressed =Color(0xff151419)
+val buttonCenterColorPressed =Color(0xff111115)
+val buttonEndColorPressed =Color(0xff1f1f25)
+
 val md_theme_light_primary = Color(0xFF825500)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
 val md_theme_light_primaryContainer = Color(0xFFFFDDB3)
@@ -66,3 +86,4 @@ val md_theme_dark_scrim = Color(0xFF000000)
 
 
 val seed = Color(0xFF825500)
+

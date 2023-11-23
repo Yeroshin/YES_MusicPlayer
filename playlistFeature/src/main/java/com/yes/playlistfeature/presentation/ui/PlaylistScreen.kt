@@ -38,7 +38,7 @@ import com.yes.playlistfeature.presentation.contract.PlaylistContract
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.yes.playlistfeature.presentation.model.TrackUI
 import com.yes.playlistfeature.presentation.ui.theme.AppTheme
-import com.yes.playlistfeature.presentation.ui.theme.CustomTheme
+import com.yes.playlistfeature.presentation.ui.theme.YESTheme
 
 interface DependencyResolver {
     fun getPlaylistComponent(): PlaylistComponent
@@ -134,36 +134,42 @@ fun ItemTrack(index: Int, data: TrackUI, modifier: Modifier = Modifier) {
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        Color.White,
-                        Color.Black
+                        YESTheme.colors.light,
+                        YESTheme.colors.black
                     )
                 )
             )
             .padding( 0.dp,1.dp,0.dp,2.dp),
 
-        color= MaterialTheme.colorScheme.primary
+        color= YESTheme.colors.brandedColor
 
 
     ) {
-        Row(modifier.fillMaxWidth()) {
+        Row(
+            modifier.fillMaxWidth()
+        ) {
 
             Text(
-
+                style=YESTheme.typography.colossus,
+                color = YESTheme.colors.textGray,
                 text = index.toString()
             )
             Column {
                 Row(modifier.fillMaxWidth()) {
                     Text(
-                        color = CustomTheme.colors.primaryText,
+                        color = YESTheme.colors.textGray,
                         text = data.title
                     )
                     Text(
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = YESTheme.colors.textGray,
                         text = data.duration
                     )
                 }
 
-                Text(text = data.info)
+                Text(
+                    color = YESTheme.colors.textGray,
+                    text = data.info
+                )
             }
         }
 

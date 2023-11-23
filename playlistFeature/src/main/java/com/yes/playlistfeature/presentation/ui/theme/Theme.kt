@@ -1,131 +1,134 @@
 package com.yes.playlistfeature.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
-private val LightColors = lightColorScheme(
-    primary = md_theme_light_primary,
-    onPrimary = md_theme_light_onPrimary,
-    primaryContainer = md_theme_light_primaryContainer,
-    onPrimaryContainer = md_theme_light_onPrimaryContainer,
-    secondary = md_theme_light_secondary,
-    onSecondary = md_theme_light_onSecondary,
-    secondaryContainer = md_theme_light_secondaryContainer,
-    onSecondaryContainer = md_theme_light_onSecondaryContainer,
-    tertiary = md_theme_light_tertiary,
-    onTertiary = md_theme_light_onTertiary,
-    tertiaryContainer = md_theme_light_tertiaryContainer,
-    onTertiaryContainer = md_theme_light_onTertiaryContainer,
-    error = md_theme_light_error,
-    errorContainer = md_theme_light_errorContainer,
-    onError = md_theme_light_onError,
-    onErrorContainer = md_theme_light_onErrorContainer,
-    background = md_theme_light_background,
-    onBackground = md_theme_light_onBackground,
-    surface = md_theme_light_surface,
-    onSurface = md_theme_light_onSurface,
-    surfaceVariant = md_theme_light_surfaceVariant,
-    onSurfaceVariant = md_theme_light_onSurfaceVariant,
-    outline = md_theme_light_outline,
-    inverseOnSurface = md_theme_light_inverseOnSurface,
-    inverseSurface = md_theme_light_inverseSurface,
-    inversePrimary = md_theme_light_inversePrimary,
-    surfaceTint = md_theme_light_surfaceTint,
-    outlineVariant = md_theme_light_outlineVariant,
-    scrim = md_theme_light_scrim,
+data class YESSpacing(
+    val buttonHeightRegular: Dp = 40.dp,
+    val buttonHeightSmall: Dp = 36.dp,
+    val buttonWidthSmall: Dp = 80.dp,
+    val paddingSmall: Dp = 4.dp,
+    val paddingMedium: Dp = 16.dp,
+    val paddingLarge: Dp = 24.dp
 )
-
-
-private val DarkColors = darkColorScheme(
-    primary = md_theme_dark_primary,
-    onPrimary = md_theme_dark_onPrimary,
-    primaryContainer = md_theme_dark_primaryContainer,
-    onPrimaryContainer = md_theme_dark_onPrimaryContainer,
-    secondary = md_theme_dark_secondary,
-    onSecondary = md_theme_dark_onSecondary,
-    secondaryContainer = md_theme_dark_secondaryContainer,
-    onSecondaryContainer = md_theme_dark_onSecondaryContainer,
-    tertiary = md_theme_dark_tertiary,
-    onTertiary = md_theme_dark_onTertiary,
-    tertiaryContainer = md_theme_dark_tertiaryContainer,
-    onTertiaryContainer = md_theme_dark_onTertiaryContainer,
-    error = md_theme_dark_error,
-    errorContainer = md_theme_dark_errorContainer,
-    onError = md_theme_dark_onError,
-    onErrorContainer = md_theme_dark_onErrorContainer,
-    background = md_theme_dark_background,
-    onBackground = md_theme_dark_onBackground,
-    surface = md_theme_dark_surface,
-    onSurface = md_theme_dark_onSurface,
-    surfaceVariant = md_theme_dark_surfaceVariant,
-    onSurfaceVariant = md_theme_dark_onSurfaceVariant,
-    outline = md_theme_dark_outline,
-    inverseOnSurface = md_theme_dark_inverseOnSurface,
-    inverseSurface = md_theme_dark_inverseSurface,
-    inversePrimary = md_theme_dark_inversePrimary,
-    surfaceTint = md_theme_dark_surfaceTint,
-    outlineVariant = md_theme_dark_outlineVariant,
-    scrim = md_theme_dark_scrim,
+data class YESTypography(
+    val small: TextStyle,
+    val regular: TextStyle,
+    val large: TextStyle,
+    val colossus: TextStyle
 )
 
 data class YESColors(
-    val primaryText: Color,
-    val primaryBackground: Color,
-    val secondaryText: Color,
-    val secondaryBackground: Color,
-    val tintColor: Color,
-    val controlColor: Color,
-    val errorColor: Color
-)
+    val tint: Color,
+    val brandedColor: Color,
+    val brandedLight: Color,
+    val brandedDark: Color,
+    val textGray: Color,
+    val transparent: Color,
+
+    val black: Color,
+    val white: Color,
+    val light: Color,
+    val green: Color,
+
+    val buttonStartColor: Color,
+    val buttonCenterColor: Color,
+    val buttonEndColor: Color,
+    val buttonStartColorPressed: Color,
+    val buttonCenterColorPressed: Color,
+    val buttonEndColorPressed: Color,
+
+    )
 
 
 val LocalColors = staticCompositionLocalOf {
     YESColors(
-        primaryText = md_theme_light_primary,
-        primaryBackground = md_theme_light_background,
-        secondaryText = md_theme_light_secondary,
-        secondaryBackground = md_theme_light_onBackground,
-        tintColor = md_theme_light_tertiary,
-        controlColor = md_theme_light_surface,
-        errorColor = md_theme_light_onError
+        tint = Color.Unspecified,
+        brandedColor = Color.Unspecified,
+        brandedLight = Color.Unspecified,
+        brandedDark = Color.Unspecified,
+        textGray = Color.Unspecified,
+        transparent = Color.Unspecified,
+        black = Color.Unspecified,
+        white = Color.Unspecified,
+        light = Color.Unspecified,
+        green = Color.Unspecified,
+        buttonStartColor = Color.Unspecified,
+        buttonCenterColor = Color.Unspecified,
+        buttonEndColor = Color.Unspecified,
+        buttonStartColorPressed = Color.Unspecified,
+        buttonCenterColorPressed = Color.Unspecified,
+        buttonEndColorPressed = Color.Unspecified,
     )
 }
-
+val LocalTypography = staticCompositionLocalOf {
+    YESTypography(
+        small = TextStyle.Default,
+        regular = TextStyle.Default,
+        large = TextStyle.Default,
+        colossus = TextStyle.Default
+    )
+}
+val LocalSpacing =  staticCompositionLocalOf{ YESSpacing() }
+val themeColors = YESColors(
+    tint = tint,
+    brandedColor = brandedColor,
+    brandedLight = brandedLight,
+    brandedDark = brandedDark,
+    textGray = textGray,
+    transparent = transparent,
+    black = black,
+    white = white,
+    light = light,
+    green = green,
+    buttonStartColor = buttonStartColor,
+    buttonCenterColor = buttonCenterColor,
+    buttonEndColor = buttonEndColor,
+    buttonStartColorPressed = buttonStartColorPressed,
+    buttonCenterColorPressed = buttonCenterColorPressed,
+    buttonEndColorPressed = buttonEndColorPressed,
+)
+val themeTypography = YESTypography(
+    small = small,
+    regular = regular,
+    large = large,
+    colossus = colossus
+)
+val themeSpacing=YESSpacing()
 @Composable
 fun AppTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+    content: @Composable () -> Unit
 ) {
-    val yesStandardColors = YESColors(
-        primaryText = md_theme_light_primary,
-        primaryBackground = md_theme_light_background,
-        secondaryText = md_theme_light_secondary,
-        secondaryBackground = md_theme_light_onBackground,
-        tintColor = md_theme_light_tertiary,
-        controlColor = md_theme_light_surface,
-        errorColor = md_theme_light_onError
-    )
+
     val colors = if (!useDarkTheme) {
-        yesStandardColors
+        themeColors
     } else {
-        yesStandardColors
+        themeColors
     }
 
     CompositionLocalProvider(
-        LocalColors provides colors ,
+        LocalColors provides colors,
+        LocalTypography provides themeTypography,
+        LocalSpacing provides themeSpacing,
         content = content
     )
 }
-object CustomTheme {
+
+object YESTheme {
     val colors: YESColors
         @Composable
         get() = LocalColors.current
+    val typography: YESTypography
+        @Composable
+        get() = LocalTypography.current
 
 }
