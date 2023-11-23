@@ -1,4 +1,4 @@
-package com.yes.player.presentation.ui.theme
+package com.yes.player.presentation.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

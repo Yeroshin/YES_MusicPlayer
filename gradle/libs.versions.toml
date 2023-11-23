@@ -75,6 +75,7 @@ mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockkVersion
 navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation-fragment-ktx" }
 navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation-ui-ktx" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version = "1.1.2" }
 
 [plugins]
 androidLibrary = { id = 'com.android.library', version.ref = "androidGradlePlugin" }

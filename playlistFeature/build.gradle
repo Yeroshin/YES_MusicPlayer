@@ -51,6 +51,7 @@ dependencies {
     implementation libs.material
     //Dagger/////////////////////
     implementation libs.dagger
+
     androidTestImplementation libs.dagger
     kapt libs.dagger.compiler
     kaptAndroidTest libs.dagger.compiler
@@ -89,4 +90,5 @@ dependencies {
     implementation libs.androidx.material
     implementation libs.androidx.ui.tooling
     implementation libs.androidx.lifecycle.viewmodel.compose
+    implementation libs.androidx.material3
 }

@@ -28,10 +28,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import com.yes.player.presentation.ui.theme.DependentContent
-import com.yes.player.presentation.ui.theme.DimensionLayout
-import com.yes.player.presentation.ui.theme.MainContent
-
 
 
 class PlayerFragment : Fragment() {
