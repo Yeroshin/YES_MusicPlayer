@@ -1,27 +1,50 @@
 package com.yes.playlistfeature.presentation.ui.theme
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.lightColorScheme
-import androidx.compose.material3.darkColorScheme
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 data class YESSpacing(
-    val buttonHeightRegular: Dp = 40.dp,
-    val buttonHeightSmall: Dp = 36.dp,
-    val buttonWidthSmall: Dp = 80.dp,
-    val paddingSmall: Dp = 4.dp,
-    val paddingMedium: Dp = 16.dp,
-    val paddingLarge: Dp = 24.dp
+    val neumorphicSurface: Modifier = Modifier
+        .fillMaxWidth()
+        .background(
+            brush = Brush.verticalGradient(
+                colors = listOf(
+                    light,
+                    shadow
+                )
+            )
+        )
+        .padding(0.dp, 2.dp, 0.dp, 2.dp),
+    val twoLineListsContainer: Modifier = Modifier
+        .fillMaxWidth()
+        .padding(
+            start = 0.dp,
+            top = 8.dp,
+            end = 0.dp,
+            bottom = 8.dp
+        ),
+    val twoLineListsLeadingAvatar: Modifier = Modifier
+        .padding(16.dp, 0.dp, 16.dp, 0.dp),
+    val twoLineListsTrailingSupportText: Modifier = Modifier
+        .padding(16.dp, 0.dp, 16.dp, 0.dp),
 )
+
 data class YESTypography(
     val small: TextStyle,
     val regular: TextStyle,
+    val regularBold: TextStyle,
     val large: TextStyle,
     val colossus: TextStyle
 )
@@ -31,7 +54,7 @@ data class YESColors(
     val brandedColor: Color,
     val brandedLight: Color,
     val brandedDark: Color,
-    val textGray: Color,
+    val text: Color,
     val transparent: Color,
 
     val black: Color,
@@ -55,7 +78,7 @@ val LocalColors = staticCompositionLocalOf {
         brandedColor = Color.Unspecified,
         brandedLight = Color.Unspecified,
         brandedDark = Color.Unspecified,
-        textGray = Color.Unspecified,
+        text = Color.Unspecified,
         transparent = Color.Unspecified,
         black = Color.Unspecified,
         white = Color.Unspecified,
@@ -73,19 +96,20 @@ val LocalTypography = staticCompositionLocalOf {
     YESTypography(
         small = TextStyle.Default,
         regular = TextStyle.Default,
+        regularBold = TextStyle.Default,
         large = TextStyle.Default,
         colossus = TextStyle.Default
     )
 }
-val LocalSpacing =  staticCompositionLocalOf{ YESSpacing() }
+val LocalSpacing = staticCompositionLocalOf { YESSpacing() }
 val themeColors = YESColors(
     tint = tint,
     brandedColor = brandedColor,
     brandedLight = brandedLight,
     brandedDark = brandedDark,
-    textGray = textGray,
+    text = textGray,
     transparent = transparent,
-    black = black,
+    black = shadow,
     white = white,
     light = light,
     green = green,
@@ -99,10 +123,12 @@ val themeColors = YESColors(
 val themeTypography = YESTypography(
     small = small,
     regular = regular,
+    regularBold = regularBold,
     large = large,
     colossus = colossus
 )
-val themeSpacing=YESSpacing()
+val themeSpacing = YESSpacing()
+
 @Composable
 fun AppTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
@@ -130,5 +156,8 @@ object YESTheme {
     val typography: YESTypography
         @Composable
         get() = LocalTypography.current
+    val spacing: YESSpacing
+        @Composable
+        get() = LocalSpacing.current
 
 }

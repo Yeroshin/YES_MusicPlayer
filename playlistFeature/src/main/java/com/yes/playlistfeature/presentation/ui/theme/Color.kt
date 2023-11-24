@@ -10,7 +10,7 @@ val brandedDark =Color(0xff242424)
 val textGray =Color(0xff939292)
 val transparent =Color(0x00000000)
 
-val black =Color(0xff000000)
+val shadow =Color(0xff000000)
 val white =Color(0xffffffff)
 val light =Color(0xff48484e)
 val green =Color(0xff4CAF50)

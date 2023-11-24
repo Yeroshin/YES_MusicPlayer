@@ -1,35 +1,22 @@
 package com.yes.playlistfeature.presentation.ui
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yes.core.presentation.BaseViewModel
@@ -127,52 +114,38 @@ fun PlaylistColumn(uiState: List<TrackUI>) {
 }
 
 @Composable
-fun ItemTrack(index: Int, data: TrackUI, modifier: Modifier = Modifier) {
+fun ItemTrack(index: Int, data: TrackUI) {
     Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        YESTheme.colors.light,
-                        YESTheme.colors.black
-                    )
-                )
-            )
-            .padding( 0.dp,1.dp,0.dp,2.dp),
-
-        color= YESTheme.colors.brandedColor
-
-
+        modifier = YESTheme.spacing.neumorphicSurface,
+        color = YESTheme.colors.brandedColor
     ) {
         Row(
-            modifier.fillMaxWidth()
+            modifier=YESTheme.spacing.twoLineListsContainer,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-
             Text(
-                style=YESTheme.typography.colossus,
-                color = YESTheme.colors.textGray,
-                text = index.toString()
+                modifier = YESTheme.spacing.twoLineListsLeadingAvatar,
+                style = YESTheme.typography.colossus,
+                text = index.toString(),
             )
-            Column {
-                Row(modifier.fillMaxWidth()) {
-                    Text(
-                        color = YESTheme.colors.textGray,
-                        text = data.title
-                    )
-                    Text(
-                        color = YESTheme.colors.textGray,
-                        text = data.duration
-                    )
-                }
-
+            Column(
+                modifier = Modifier.weight(1F,true),
+            ) {
                 Text(
-                    color = YESTheme.colors.textGray,
+                    style = YESTheme.typography.regularBold,
+                    text = data.title
+                )
+                Text(
+                    style = YESTheme.typography.regular,
                     text = data.info
                 )
             }
+            Text(
+                modifier = YESTheme.spacing.twoLineListsTrailingSupportText,
+                style = YESTheme.typography.regular,
+                text = data.duration
+            )
         }
-
     }
 }
 
