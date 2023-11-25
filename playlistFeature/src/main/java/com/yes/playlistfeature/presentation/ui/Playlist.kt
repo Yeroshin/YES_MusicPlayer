@@ -20,6 +20,7 @@ import com.yes.playlistfeature.databinding.PlaylistBinding
 import com.yes.playlistfeature.di.component.PlaylistComponent
 import com.yes.playlistfeature.presentation.contract.PlaylistContract
 import com.yes.playlistfeature.presentation.model.TrackUI
+import com.yes.playlistfeature.presentation.ui.theme.AppTheme
 import com.yes.playlistfeature.presentation.vm.PlaylistViewModel
 import kotlinx.coroutines.launch
 
@@ -73,14 +74,16 @@ class Playlist : Fragment() {
     ): View {
         binding = PlaylistBinding.inflate(inflater)
         binder.PlaylistScreen.setContent {
-            PlaylistScreen()
+            AppTheme {
+                PlaylistScreen()
+            }
         }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeViewModel()
+      //  observeViewModel()
         setupView()
     }
 
@@ -160,11 +163,11 @@ class Playlist : Fragment() {
                 state.playlistState.mode?.let {
                     setMode(it)
                 }
-                state.playlistState.tracks?.let {
+              /*  state.playlistState.tracks?.let {
                     setItemsToAdapter(
                         state.playlistState.tracks
                     )
-                }
+                }*/
 
             }
 
