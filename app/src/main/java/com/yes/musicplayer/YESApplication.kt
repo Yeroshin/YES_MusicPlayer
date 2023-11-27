@@ -24,7 +24,6 @@ import com.yes.playlistdialogfeature.di.component.PlayListDialogComponent
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
 import com.yes.playlistfeature.di.component.DaggerPlaylistComponent
 import com.yes.playlistfeature.di.component.PlaylistComponent
-import com.yes.playlistfeature.presentation.ui.DependencyResolver
 import com.yes.playlistfeature.presentation.ui.Playlist
 import com.yes.trackdialogfeature.di.component.DaggerTrackDialogComponent
 import com.yes.trackdialogfeature.di.component.TrackDialogComponent
@@ -36,8 +35,8 @@ class YESApplication : Application(),
     PlayListDialog.DependencyResolver,
     Playlist.DependencyResolver,
     TrackDialog.DependencyResolver,
-    MusicService.DependencyResolver,
-    DependencyResolver {
+    MusicService.DependencyResolver
+     {
 
     private val dataModule by lazy {
         DataModule(this)

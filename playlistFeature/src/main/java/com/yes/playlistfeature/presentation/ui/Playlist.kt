@@ -20,7 +20,6 @@ import com.yes.playlistfeature.databinding.PlaylistBinding
 import com.yes.playlistfeature.di.component.PlaylistComponent
 import com.yes.playlistfeature.presentation.contract.PlaylistContract
 import com.yes.playlistfeature.presentation.model.TrackUI
-import com.yes.playlistfeature.presentation.ui.theme.AppTheme
 import com.yes.playlistfeature.presentation.vm.PlaylistViewModel
 import kotlinx.coroutines.launch
 
