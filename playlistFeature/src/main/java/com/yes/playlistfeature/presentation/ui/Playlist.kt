@@ -73,17 +73,12 @@ class Playlist : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = PlaylistBinding.inflate(inflater)
-        binder.PlaylistScreen.setContent {
-            AppTheme {
-                PlaylistScreen()
-            }
-        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-      //  observeViewModel()
+        observeViewModel()
         setupView()
     }
 
@@ -125,8 +120,6 @@ class Playlist : Fragment() {
             enableSwipeToDelete = true,
             enableDragAndDrop = true,
             onSwipeCallback = { position ->
-                // Обработка свайпа элемента
-                // Например, удаление элемента из списка
                 viewModel.setEvent(
                     PlaylistContract.Event.OnDeleteTrack(
                         adapter.getItem(position)
@@ -134,8 +127,6 @@ class Playlist : Fragment() {
                 )
             },
             onDragAndDropCallback = { fromPosition, toPosition ->
-                // Обработка перетаскивания элемента
-                // Например, изменение позиции элемента в списке
                 adapter.moveItem(fromPosition, toPosition)
                 true
             },
@@ -146,13 +137,13 @@ class Playlist : Fragment() {
         )
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
-      /*  itemTouchHelper.attachToRecyclerView(
+        itemTouchHelper.attachToRecyclerView(
             binder.playList
         )
         ///////////////
         val layoutManager = LinearLayoutManager(context)
         binder.playList.layoutManager = layoutManager
-        binder.playList.adapter = adapter*/
+        binder.playList.adapter = adapter
 
 
     }
@@ -163,11 +154,11 @@ class Playlist : Fragment() {
                 state.playlistState.mode?.let {
                     setMode(it)
                 }
-              /*  state.playlistState.tracks?.let {
+               state.playlistState.tracks?.let {
                     setItemsToAdapter(
                         state.playlistState.tracks
                     )
-                }*/
+                }
 
             }
 

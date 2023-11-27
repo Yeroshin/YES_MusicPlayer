@@ -197,7 +197,8 @@ fun PlaylistColumn(items: List<TrackUI>, onDelete: (index: TrackUI) -> Unit) {
                         val backgroundColor by animateColorAsState(
                             when (dismissState.targetValue) {
                                 DismissValue.DismissedToEnd -> Color.Red.copy(alpha = 0.8f)
-                                else -> Color.White
+                                DismissValue.Default -> Color.Transparent
+                                DismissValue.DismissedToStart -> Color.Transparent
                             }, label = ""
                         )
 
@@ -210,8 +211,8 @@ fun PlaylistColumn(items: List<TrackUI>, onDelete: (index: TrackUI) -> Unit) {
                         Box(
                             Modifier
                                 .fillMaxSize()
-                                .background(color = backgroundColor),
-                            //   .padding(end = 16.dp), // inner padding
+                                .background(color = backgroundColor)
+                               .padding(end = 16.dp), // inner padding
                             contentAlignment = Alignment.CenterStart // place the icon at the end (left)
                         ) {
                             Icon(
