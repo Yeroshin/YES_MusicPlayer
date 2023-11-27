@@ -9,7 +9,7 @@ class ItemTouchHelperCallback(
     private val enableSwipeToDelete: Boolean,
     private val enableDragAndDrop: Boolean,
     private val onSwipeCallback: (position: Int) -> Unit,
-    private val onDragAndDropCallback: (fromPosition: Int, toPosition: Int) -> Boolean,
+    private val onDragAndDropCallback: (fromPosition: Int, toPosition: Int) -> Unit,
     private val deleteIconDrawable: Drawable?
 ) : ItemTouchHelper.Callback() {
 
@@ -35,17 +35,24 @@ class ItemTouchHelperCallback(
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        val fromPosition = viewHolder.adapterPosition
-        val toPosition = target.adapterPosition
-        return onDragAndDropCallback.invoke(fromPosition, toPosition)
-    }
+        val fromPosition = viewHolder.bindingAdapterPosition
+        val toPosition = target.bindingAdapterPosition
 
+         onDragAndDropCallback.invoke(fromPosition, toPosition)
+        return true
+    }
+    override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+        if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
+            viewHolder?.itemView?.translationX = 20f // Сдвигаем элемент на 20 пикселей вправо
+        }
+        super.onSelectedChanged(viewHolder, actionState)
+    }
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        val position = viewHolder.adapterPosition
+        val position = viewHolder.bindingAdapterPosition
         onSwipeCallback.invoke(position)
     }
     override fun onChildDraw(
-        c: Canvas,
+        canvas: Canvas,
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
         dX: Float,
@@ -53,26 +60,27 @@ class ItemTouchHelperCallback(
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
-        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+        super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+        deleteIconDrawable?.let {
+            if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                val itemView = viewHolder.itemView
+                val deleteIconMargin = (itemView.height - deleteIconDrawable.intrinsicHeight) / 2
+                val deleteIconTop = itemView.top + deleteIconMargin
+                val deleteIconBottom = deleteIconTop + deleteIconDrawable.intrinsicHeight
 
-        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-            val itemView = viewHolder.itemView
-            val deleteIconMargin = (itemView.height - deleteIconDrawable!!.intrinsicHeight) / 2
-            val deleteIconTop = itemView.top + deleteIconMargin
-            val deleteIconBottom = deleteIconTop + deleteIconDrawable.intrinsicHeight
-
-            if (dX > 0) {
-                val deleteIconLeft = itemView.left + deleteIconMargin
-                val deleteIconRight = deleteIconLeft + deleteIconDrawable.intrinsicWidth
-                deleteIconDrawable.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
-            } else {
-                val deleteIconRight = itemView.right - deleteIconMargin
-                val deleteIconLeft = deleteIconRight - deleteIconDrawable.intrinsicWidth
-                deleteIconDrawable.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
+                if (dX > 0) {
+                    val deleteIconLeft = itemView.left + deleteIconMargin
+                    val deleteIconRight = deleteIconLeft + deleteIconDrawable.intrinsicWidth
+                    deleteIconDrawable.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
+                } else {
+                    val deleteIconRight = itemView.right - deleteIconMargin
+                    val deleteIconLeft = deleteIconRight - deleteIconDrawable.intrinsicWidth
+                    deleteIconDrawable.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
+                }
+                deleteIconDrawable.draw(canvas)
             }
-
-            deleteIconDrawable.draw(c)
         }
+
     }
 
 }

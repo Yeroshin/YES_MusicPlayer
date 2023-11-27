@@ -127,7 +127,6 @@ class Playlist : Fragment() {
             },
             onDragAndDropCallback = { fromPosition, toPosition ->
                 adapter.moveItem(fromPosition, toPosition)
-                true
             },
             deleteIconDrawable = ContextCompat.getDrawable(
                 requireContext(),
