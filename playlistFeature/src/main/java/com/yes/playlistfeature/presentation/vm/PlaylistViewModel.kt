@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.yes.core.domain.models.DomainResult
 import com.yes.core.presentation.BaseViewModel
 import com.yes.core.util.EspressoIdlingResource
+import com.yes.playlistfeature.domain.usecase.ChangeTracksPositionUseCase
 import com.yes.playlistfeature.domain.usecase.DeleteTrackUseCase
 import com.yes.playlistfeature.domain.usecase.SetModeUseCase
 import com.yes.playlistfeature.domain.usecase.SetTracksToPlayerPlaylistUseCase
@@ -24,7 +25,8 @@ class PlaylistViewModel(
     private val espressoIdlingResource: EspressoIdlingResource?,
     private val deleteTrackUseCase: DeleteTrackUseCase,
     private val setTracksToPlayerPlaylistUseCase: SetTracksToPlayerPlaylistUseCase,
-    private val setModeUseCase: SetModeUseCase
+    private val setModeUseCase: SetModeUseCase,
+    private val changeTracksPositionUseCase: ChangeTracksPositionUseCase
 ) : BaseViewModel<PlaylistContract.Event, State, Effect>() {
     init {
         subscribeTracks()
@@ -45,7 +47,22 @@ class PlaylistViewModel(
             is PlaylistContract.Event.OnModeChange -> {
                 setMode()
             }
+
+            is PlaylistContract.Event.OnMoveItemPosition -> {
+                moveItemPosition(event.fromPosition,event.toPosition)
+            }
         }
+    }
+    private fun moveItemPosition(fromPosition:Int,toPosition:Int){
+            viewModelScope.launch {
+                val result = changeTracksPositionUseCase(ChangeTracksPositionUseCase.Params(fromPosition,toPosition))
+                when(result){
+                    is DomainResult.Success -> {
+
+                    }
+                    is DomainResult.Error->{}
+                }
+            }
     }
     private fun setMode(){
         viewModelScope.launch {
@@ -134,7 +151,8 @@ class PlaylistViewModel(
         private val mapperUI: MapperUI,
         private val deleteTrackUseCase: DeleteTrackUseCase,
         private val setTracksToPlayerPlaylistUseCase: SetTracksToPlayerPlaylistUseCase,
-        private val setModeUseCase: SetModeUseCase
+        private val setModeUseCase: SetModeUseCase,
+        private val changeTracksPositionUseCase: ChangeTracksPositionUseCase
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
@@ -144,7 +162,8 @@ class PlaylistViewModel(
                 espressoIdlingResource,
                 deleteTrackUseCase,
                 setTracksToPlayerPlaylistUseCase,
-                setModeUseCase
+                setModeUseCase,
+                changeTracksPositionUseCase
                 ) as T
         }
     }

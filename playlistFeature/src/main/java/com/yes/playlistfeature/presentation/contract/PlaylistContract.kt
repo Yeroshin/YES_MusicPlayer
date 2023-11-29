@@ -7,6 +7,7 @@ import com.yes.playlistfeature.presentation.model.TrackUI
 
 class PlaylistContract {
     sealed class Event : UiEvent {
+        data class OnMoveItemPosition(val fromPosition:Int,val toPosition:Int): Event()
         data class OnDeleteTrack(val track:TrackUI) : Event()
         data object OnModeChange : Event()
     }

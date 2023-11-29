@@ -1,5 +1,9 @@
 package com.yes.playlistfeature.presentation.ui
 
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
+import android.graphics.PorterDuff
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -119,19 +123,32 @@ class Playlist : Fragment() {
             enableSwipeToDelete = true,
             enableDragAndDrop = true,
             onSwipeCallback = { position ->
+
                 viewModel.setEvent(
                     PlaylistContract.Event.OnDeleteTrack(
                         adapter.getItem(position)
                     )
                 )
+                adapter.removeItem(position)
             },
-            onDragAndDropCallback = { fromPosition, toPosition ->
+            onItemMove = { fromPosition, toPosition ->
                 adapter.moveItem(fromPosition, toPosition)
             },
             deleteIconDrawable = ContextCompat.getDrawable(
                 requireContext(),
-                com.yes.coreui.R.drawable.trash_can_outline
-            )
+                com.yes.coreui.R.drawable.trash_can_outline,
+
+            ),
+            deleteIconColor= if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                 requireContext().resources.getColor(com.yes.coreui.R.color.branded_light, null)
+            } else {
+                 requireContext().resources.getColor(com.yes.coreui.R.color.branded_light)
+            },
+            onDraggedItemDrop={from,to->
+                viewModel.setEvent(
+                    PlaylistContract.Event.OnMoveItemPosition(from,to)
+                )
+            }
         )
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)

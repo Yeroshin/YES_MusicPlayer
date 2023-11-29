@@ -26,6 +26,7 @@ class PlaylistAdapter :
 
     fun setItems(items: List<TrackUI>) {
         itemsList = items.toMutableList()
+         // notifyItemRangeChanged(0,items.size-1)
         notifyDataSetChanged()
     }
 
@@ -34,11 +35,12 @@ class PlaylistAdapter :
     }
 
     fun removeItem(position: Int) {
-
+        itemsList.removeAt(position)
+        notifyItemRemoved(position)
     }
 
     fun moveItem(fromPosition: Int, toPosition: Int) {
-        Collections.swap(itemsList, fromPosition, toPosition)
+        //  Collections.swap(itemsList, fromPosition, toPosition)
         notifyItemMoved(fromPosition, toPosition)
     }
 
@@ -66,15 +68,15 @@ class PlaylistAdapter :
             binding.root.setOnClickListener {
 
             }
-         /*   binding.root.setOnDragListener { v, e ->
-                when (e.action) {
-                    DragEvent.ACTION_DROP -> {
-                        Log.e("DragDrop Example", "Unknown action type received by View.OnDragListener.")
+            /*   binding.root.setOnDragListener { v, e ->
+                   when (e.action) {
+                       DragEvent.ACTION_DROP -> {
+                           Log.e("DragDrop Example", "Unknown action type received by View.OnDragListener.")
 
-                    }
-                }
-                true
-            }*/
+                       }
+                   }
+                   true
+               }*/
         }
     }
 }
