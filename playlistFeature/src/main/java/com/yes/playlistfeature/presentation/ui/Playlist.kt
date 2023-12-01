@@ -1,8 +1,5 @@
 package com.yes.playlistfeature.presentation.ui
 
-import android.graphics.BlendMode
-import android.graphics.BlendModeColorFilter
-import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -118,36 +115,40 @@ class Playlist : Fragment() {
         }
 
 ///////////////
+        val onSwipeCallback: (position: Int) -> Unit = { position ->
+            val deletedItem = adapter.getItem(position)
+          //  adapter.removeItem(position)
+            binder.playList.layoutManager?.removeViewAt(position)
+           viewModel.setEvent(
+                PlaylistContract.Event.OnDeleteTrack(
+                    deletedItem
+                )
+            )
 
+
+        }
+        val onItemMove:(fromPosition:Int, toPosition:Int) -> Unit={ fromPosition, toPosition ->
+            adapter.moveItem(fromPosition, toPosition)
+        }
+        val deleteIconColor=if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            requireContext().resources.getColor(com.yes.coreui.R.color.branded_light, null)
+        } else {
+            requireContext().resources.getColor(com.yes.coreui.R.color.branded_light)
+        }
         val itemTouchHelperCallback = ItemTouchHelperCallback(
             enableSwipeToDelete = true,
             enableDragAndDrop = true,
-            onSwipeCallback = { position ->
-
-                viewModel.setEvent(
-                    PlaylistContract.Event.OnDeleteTrack(
-                        adapter.getItem(position)
-                    )
-                )
-                adapter.removeItem(position)
-            },
-            onItemMove = { fromPosition, toPosition ->
-                adapter.moveItem(fromPosition, toPosition)
-            },
+            onSwipeCallback = onSwipeCallback,
+            onItemMove = onItemMove,
             deleteIconDrawable = ContextCompat.getDrawable(
                 requireContext(),
                 com.yes.coreui.R.drawable.trash_can_outline,
-
-            ),
-            deleteIconColor= if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                 requireContext().resources.getColor(com.yes.coreui.R.color.branded_light, null)
-            } else {
-                 requireContext().resources.getColor(com.yes.coreui.R.color.branded_light)
-            },
-            onDraggedItemDrop={from,to->
-                viewModel.setEvent(
-                    PlaylistContract.Event.OnMoveItemPosition(from,to)
-                )
+                ),
+            deleteIconColor = deleteIconColor,
+            onDraggedItemDrop = { from, to ->
+                /* viewModel.setEvent(
+                     PlaylistContract.Event.OnMoveItemPosition(from,to)
+                 )*/
             }
         )
 
@@ -156,9 +157,9 @@ class Playlist : Fragment() {
             binder.playList
         )
         ///////////////
-        val layoutManager = LinearLayoutManager(context)
-        binder.playList.layoutManager = layoutManager
+        binder.playList.layoutManager = LinearLayoutManager(context)
         binder.playList.adapter = adapter
+
 
 
     }
@@ -169,7 +170,7 @@ class Playlist : Fragment() {
                 state.playlistState.mode?.let {
                     setMode(it)
                 }
-               state.playlistState.tracks?.let {
+                state.playlistState.tracks?.let {
                     setItemsToAdapter(
                         state.playlistState.tracks
                     )

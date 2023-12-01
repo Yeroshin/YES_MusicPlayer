@@ -1,10 +1,7 @@
 package com.yes.playlistfeature.presentation.ui
 
-import android.util.Log
-import android.view.DragEvent
+
 import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yes.playlistfeature.databinding.ItemTrackBinding
@@ -14,7 +11,7 @@ import java.util.Collections
 
 class PlaylistAdapter :
     RecyclerView.Adapter<PlaylistAdapter.ViewHolder>() {
-    private var itemsList = mutableListOf<TrackUI>()
+    private val itemList = mutableListOf<TrackUI>()
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -24,32 +21,58 @@ class PlaylistAdapter :
         return ViewHolder(binding)
     }
 
+
     fun setItems(items: List<TrackUI>) {
-        itemsList = items.toMutableList()
-         // notifyItemRangeChanged(0,items.size-1)
+        // itemList=items
+      //  val size = itemList.size
+        itemList.clear()
+       // notifyItemRangeRemoved(0, size)
+        itemList.addAll(items)
+      //  notifyItemRangeInserted(0, items.size)
+         notifyDataSetChanged()
+//notifyItemRangeChanged(0,itemList.size)
+    }
+
+    fun clearItewms() {
+        itemList.clear()
         notifyDataSetChanged()
     }
 
     fun getItem(position: Int): TrackUI {
-        return itemsList[position]
+        return itemList[position]
     }
 
     fun removeItem(position: Int) {
-        itemsList.removeAt(position)
+        //  itemList.removeAt(position)
+        itemList.removeAt(position)
         notifyItemRemoved(position)
+        /*val size = itemList.size
+        itemList.clear()
+        notifyItemRangeRemoved(0, size)*/
+        //notifyDataSetChanged()
+        //  notifyItemRangeRemoved(0,itemList.size)
     }
 
     fun moveItem(fromPosition: Int, toPosition: Int) {
-        //  Collections.swap(itemsList, fromPosition, toPosition)
+        if (fromPosition < toPosition) {
+            for (i in fromPosition until toPosition) {
+                Collections.swap(itemList, i, i + 1)
+            }
+        } else {
+            for (i in fromPosition downTo toPosition + 1) {
+                Collections.swap(itemList, i, i - 1)
+            }
+        }
+        // Collections.swap(itemList, fromPosition, toPosition)
         notifyItemMoved(fromPosition, toPosition)
     }
 
     override fun onBindViewHolder(holder: PlaylistAdapter.ViewHolder, position: Int) {
-        holder.bind(position, itemsList[position])
+        holder.bind(position, itemList[position])
     }
 
     override fun getItemCount(): Int {
-        return itemsList.size
+        return itemList.size
     }
 
     inner class ViewHolder(private val binding: ItemTrackBinding) :
@@ -58,7 +81,7 @@ class PlaylistAdapter :
             position: Int,
             item: TrackUI,
         ) {
-
+val show=binding.root.isShown
             binding.root.isSelected = item.selected
             binding.root.isActivated = item.current
             binding.playlistTitle.text = item.title
@@ -68,15 +91,7 @@ class PlaylistAdapter :
             binding.root.setOnClickListener {
 
             }
-            /*   binding.root.setOnDragListener { v, e ->
-                   when (e.action) {
-                       DragEvent.ACTION_DROP -> {
-                           Log.e("DragDrop Example", "Unknown action type received by View.OnDragListener.")
 
-                       }
-                   }
-                   true
-               }*/
         }
     }
 }

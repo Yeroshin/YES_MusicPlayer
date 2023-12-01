@@ -27,7 +27,8 @@ class ItemTouchHelperCallback(
     }
 
     override fun isLongPressDragEnabled(): Boolean {
-        return enableDragAndDrop
+        //return enableDragAndDrop
+        return false
     }
 
     override fun getMovementFlags(
@@ -35,7 +36,7 @@ class ItemTouchHelperCallback(
         viewHolder: RecyclerView.ViewHolder
     ): Int {
         val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
-        val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+        val swipeFlags = ItemTouchHelper.RIGHT
         return makeMovementFlags(dragFlags, swipeFlags)
     }
 
@@ -52,9 +53,11 @@ class ItemTouchHelperCallback(
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         super.onSelectedChanged(viewHolder, actionState)
-        when (actionState) {
+      /*  when (actionState) {
             ItemTouchHelper.ACTION_STATE_DRAG -> {
-                viewHolder?.itemView?.translationX = 20f
+                viewHolder?.itemView?.let {
+                    it.x = it.x+it.height/2
+                }
                // viewHolder?.also { dragFromPosition = it.bindingAdapterPosition }
             }
 
@@ -65,7 +68,7 @@ class ItemTouchHelperCallback(
                     dragToPosition = -1
                 }
             }
-        }
+        }*/
     }
 
 
@@ -84,7 +87,7 @@ class ItemTouchHelperCallback(
         isCurrentlyActive: Boolean
     ) {
         super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-        deleteIconDrawable?.let {
+       /* deleteIconDrawable?.let {
             if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                 val itemView = viewHolder.itemView
                 val deleteIconMargin = (itemView.height - deleteIconDrawable.intrinsicHeight) / 2
@@ -119,7 +122,7 @@ class ItemTouchHelperCallback(
                 }
                 deleteIconDrawable.draw(canvas)
             }
-        }
+        }*/
 
     }
 
