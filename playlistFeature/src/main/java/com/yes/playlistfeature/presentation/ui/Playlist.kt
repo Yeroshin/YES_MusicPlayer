@@ -1,5 +1,6 @@
 package com.yes.playlistfeature.presentation.ui
 
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -130,21 +131,19 @@ class Playlist : Fragment() {
         val onItemMove:(fromPosition:Int, toPosition:Int) -> Unit={ fromPosition, toPosition ->
             adapter.moveItem(fromPosition, toPosition)
         }
-        val deleteIconColor=if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            requireContext().resources.getColor(com.yes.coreui.R.color.branded_light, null)
-        } else {
-            requireContext().resources.getColor(com.yes.coreui.R.color.branded_light)
-        }
+        val deleteIconDrawable=ContextCompat.getDrawable(requireContext(), com.yes.coreui.R.drawable.trash_can_outline,)
+        val deleteIconColor=ContextCompat.getColor(requireContext(),com.yes.coreui.R.color.tint)
+        val backgroundColor =ContextCompat.getColor(requireContext(),com.yes.coreui.R.color.button_centerColor_pressed)
+
+
         val itemTouchHelperCallback = ItemTouchHelperCallback(
             enableSwipeToDelete = true,
             enableDragAndDrop = true,
             onSwipeCallback = onSwipeCallback,
             onItemMove = onItemMove,
-            deleteIconDrawable = ContextCompat.getDrawable(
-                requireContext(),
-                com.yes.coreui.R.drawable.trash_can_outline,
-                ),
+            deleteIconDrawable = deleteIconDrawable,
             deleteIconColor = deleteIconColor,
+            backgroundColor = backgroundColor,
             onDraggedItemDrop = { from, to ->
                  viewModel.setEvent(
                      PlaylistContract.Event.OnMoveItemPosition(from,to)

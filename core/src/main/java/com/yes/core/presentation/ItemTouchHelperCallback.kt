@@ -3,7 +3,9 @@ package com.yes.core.presentation
 import android.graphics.BlendMode
 import android.graphics.BlendModeColorFilter
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.PorterDuff
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Log
@@ -19,10 +21,12 @@ class ItemTouchHelperCallback(
     private val onItemMove: (fromPosition: Int, toPosition: Int) -> Unit,
     private val deleteIconDrawable: Drawable?,
     private val deleteIconColor: Int,
+    backgroundColor:Int,
     private val onDraggedItemDrop: (fromPosition: Int, toPosition: Int) -> Unit
 ) : ItemTouchHelper.Callback() {
     private var dragFromPosition = -1
     private var dragToPosition = -1
+    val background = ColorDrawable(backgroundColor)
     override fun isItemViewSwipeEnabled(): Boolean {
         return enableSwipeToDelete
     }
@@ -87,11 +91,15 @@ class ItemTouchHelperCallback(
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
-        if (actionState === ItemTouchHelper.ACTION_STATE_SWIPE) {
-            val width = viewHolder.itemView.width.toFloat()
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            val itemView = viewHolder.itemView
+            background.setBounds(0, itemView.top, (itemView.left + dX).toInt(), itemView.bottom)
+            background.draw(canvas)
+
+           /* val width = itemView.width.toFloat()
             val alpha = 1.0f - abs(dX) / width
-            viewHolder.itemView.alpha = alpha
-            viewHolder.itemView.translationX = dX
+            itemView.alpha = alpha*/
+            itemView.translationX = dX
         } else {
             super.onChildDraw(
                 canvas, recyclerView, viewHolder, dX, dY,
@@ -104,12 +112,6 @@ class ItemTouchHelperCallback(
                 val deleteIconMargin = (itemView.height - deleteIconDrawable.intrinsicHeight) / 2
                 val deleteIconTop = itemView.top + deleteIconMargin
                 val deleteIconBottom = deleteIconTop + deleteIconDrawable.intrinsicHeight
-              /*  val background = colordrawable()
-                val backgroundcolor = color.parsecolor("#f44336")
-                background.color = backgroundcolor
-                background.setbounds(itemview.right + dx.toint(), itemview.top, itemview.right, itemview.bottom)
-                canvas.drawColor(Color.GRAY)
-                background.draw(c)*/
                 if (dX > 0) {
                     val deleteIconLeft = itemView.left + deleteIconMargin
                     val deleteIconRight = deleteIconLeft + deleteIconDrawable.intrinsicWidth
