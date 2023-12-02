@@ -9,5 +9,5 @@ data class Track(
     val duration: Long,
     val album:String,
     val size:Long,
-    var position:Int
+    val position:Int
 )

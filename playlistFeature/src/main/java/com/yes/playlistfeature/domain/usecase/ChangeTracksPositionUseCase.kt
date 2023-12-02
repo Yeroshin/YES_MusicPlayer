@@ -25,35 +25,31 @@ class ChangeTracksPositionUseCase(
                 .firstOrNull()
                 ?.sortedBy { it.position }
                 ?.toMutableList()
-                ?.let {
-                    val element = it.find { it.position == params.from } // Находим элемент, который нужно переместить
+                ?.let { items ->
+                    val element = items.find { it.position == params.from } // Находим элемент, который нужно переместить
                     if (element != null) {
-                        it.remove(element) // Удаляем элемент из текущей позиции
-                        it.add(params.to , element) // Добавляем элемент на новую позицию
-                        element.position = params.to
+                        items.remove(element) // Удаляем элемент из текущей позиции
+                        items.add(params.to , element) // Добавляем элемент на новую позицию
                         // Обновляем порядковые значения элементов
                         if (params.from < params.to) {
-                            for (i in params.from until params.to) {
-                                it[i].copy(position = i)
+                            for (i in params.from .. params.to) {
+                                items[i]= items[i].copy(position = i)
                             }
-                            it.subList(params.from , params.to)
+                            items.subList(params.from , params.to+1)
                                 .forEach{
                                     playListRepository.updateTrack(it)
                                 }
                         } else {
-                            for (i in params.to until params.from) {
-                                it[i].copy(position = i + 1)
+                            for (i in params.to .. params.from) {
+                                items[i]= items[i].copy(position = i)
                             }
-                            it.subList(params.to,params.from )
+                            items.subList(params.to,params.from+1 )
                                 .forEach{
                                     playListRepository.updateTrack(it)
                                 }
                         }
-                        // Устанавливаем новый порядковый номер перемещенному элементу
-
                     }
                 }
-
             DomainResult.Success(true)
         } ?: DomainResult.Error(DomainResult.UnknownException)
     }

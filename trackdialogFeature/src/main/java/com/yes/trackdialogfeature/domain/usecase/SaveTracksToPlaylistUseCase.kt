@@ -27,7 +27,7 @@ class SaveTracksToPlaylistUseCase(
             .first()
             .maxByOrNull {
                 it.position
-            }?.position ?: 0
+            }?.position ?: -1
 
         params?.items?.filter {
             it.selected

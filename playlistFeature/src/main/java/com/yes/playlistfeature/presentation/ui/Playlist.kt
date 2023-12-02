@@ -146,9 +146,9 @@ class Playlist : Fragment() {
                 ),
             deleteIconColor = deleteIconColor,
             onDraggedItemDrop = { from, to ->
-                /* viewModel.setEvent(
+                 viewModel.setEvent(
                      PlaylistContract.Event.OnMoveItemPosition(from,to)
-                 )*/
+                 )
             }
         )
 
@@ -194,7 +194,9 @@ class Playlist : Fragment() {
     }
 
     private fun setItemsToAdapter(tracks: List<TrackUI>) {
+        binder.playList.layoutManager?.removeAllViews()
         adapter.setItems(tracks)
+
         /*  binder.recyclerViewContainer.progressBar.visibility = View.GONE
           binder.recyclerViewContainer.disableView.visibility = View.GONE*/
     }

@@ -9,6 +9,7 @@ import android.os.Build
 import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import kotlin.math.abs
 
 
 class ItemTouchHelperCallback(
@@ -27,8 +28,7 @@ class ItemTouchHelperCallback(
     }
 
     override fun isLongPressDragEnabled(): Boolean {
-        //return enableDragAndDrop
-        return false
+        return enableDragAndDrop
     }
 
     override fun getMovementFlags(
@@ -45,7 +45,8 @@ class ItemTouchHelperCallback(
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        dragFromPosition = viewHolder.bindingAdapterPosition
+        viewHolder.itemView.elevation = 16F
+        val dragFromPosition = viewHolder.bindingAdapterPosition
         dragToPosition = target.bindingAdapterPosition
         onItemMove(dragFromPosition, dragToPosition)
         return true
@@ -53,12 +54,12 @@ class ItemTouchHelperCallback(
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         super.onSelectedChanged(viewHolder, actionState)
-      /*  when (actionState) {
+        when (actionState) {
             ItemTouchHelper.ACTION_STATE_DRAG -> {
+                dragFromPosition = viewHolder?.bindingAdapterPosition?:-1
                 viewHolder?.itemView?.let {
                     it.x = it.x+it.height/2
                 }
-               // viewHolder?.also { dragFromPosition = it.bindingAdapterPosition }
             }
 
             ItemTouchHelper.ACTION_STATE_IDLE -> {
@@ -68,7 +69,7 @@ class ItemTouchHelperCallback(
                     dragToPosition = -1
                 }
             }
-        }*/
+        }
     }
 
 
@@ -86,26 +87,32 @@ class ItemTouchHelperCallback(
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
-        super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-       /* deleteIconDrawable?.let {
+        if (actionState === ItemTouchHelper.ACTION_STATE_SWIPE) {
+            val width = viewHolder.itemView.width.toFloat()
+            val alpha = 1.0f - abs(dX) / width
+            viewHolder.itemView.alpha = alpha
+            viewHolder.itemView.translationX = dX
+        } else {
+            super.onChildDraw(
+                canvas, recyclerView, viewHolder, dX, dY,
+                actionState, isCurrentlyActive
+            )
+        }
+        deleteIconDrawable?.let {
             if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                 val itemView = viewHolder.itemView
                 val deleteIconMargin = (itemView.height - deleteIconDrawable.intrinsicHeight) / 2
                 val deleteIconTop = itemView.top + deleteIconMargin
                 val deleteIconBottom = deleteIconTop + deleteIconDrawable.intrinsicHeight
-
+              /*  val background = colordrawable()
+                val backgroundcolor = color.parsecolor("#f44336")
+                background.color = backgroundcolor
+                background.setbounds(itemview.right + dx.toint(), itemview.top, itemview.right, itemview.bottom)
+                canvas.drawColor(Color.GRAY)
+                background.draw(c)*/
                 if (dX > 0) {
                     val deleteIconLeft = itemView.left + deleteIconMargin
                     val deleteIconRight = deleteIconLeft + deleteIconDrawable.intrinsicWidth
-                    deleteIconDrawable.setBounds(
-                        deleteIconLeft,
-                        deleteIconTop,
-                        deleteIconRight,
-                        deleteIconBottom
-                    )
-                } else {
-                    val deleteIconRight = itemView.right - deleteIconMargin
-                    val deleteIconLeft = deleteIconRight - deleteIconDrawable.intrinsicWidth
                     deleteIconDrawable.setBounds(
                         deleteIconLeft,
                         deleteIconTop,
@@ -122,7 +129,7 @@ class ItemTouchHelperCallback(
                 }
                 deleteIconDrawable.draw(canvas)
             }
-        }*/
+        }
 
     }
 
