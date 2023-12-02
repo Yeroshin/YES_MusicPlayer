@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.last
 class DeletePlayListUseCase(
     dispatcher: CoroutineDispatcher,
     private val playListDialogRepositoryImpl: PlayListDialogRepositoryImpl,
-
+    private val settingsRepository: SettingsRepositoryImpl
 ) : UseCase<DeletePlayListUseCase.Params, Int>(dispatcher) {
 
 
@@ -23,12 +23,22 @@ class DeletePlayListUseCase(
 
 
                 playListDialogRepositoryImpl.subscribePlaylists()
-                    .first().let {
-                        if (it.size>1){
-                            return DomainResult.Success(
-                                playListDialogRepositoryImpl.deletePlaylist(
-                                    playlist.item
+                    .first().let {playlists->
+                        if (playlists.size>1){
+                            var currentPlaylistId=settingsRepository.subscribeCurrentPlaylistId()
+                                .first()
+                            playListDialogRepositoryImpl.deletePlaylist(
+                                playlist.item
+                            )
+                            if(playlist.item.id==currentPlaylistId){
+                                settingsRepository.updateCurrentPlaylistId(
+                                    playlists.filterNot {
+                                        it.id == currentPlaylistId
+                                    }.last().id
                                 )
+                            }
+                            return DomainResult.Success(
+                                currentPlaylistId.toInt()
                             )
                         }else{
                             return DomainResult.Error(PlaylistException.PlaylistsSizeLimit)

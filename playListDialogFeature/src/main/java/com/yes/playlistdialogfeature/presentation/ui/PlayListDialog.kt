@@ -115,6 +115,7 @@ class PlayListDialog: BaseDialog(),SwipeToDeleteCallback.Callback{
                     binder.playlistName.text.toString()
                 )
             )
+            binder.playlistName.text.clear()
         }
     }
     private fun observeViewModel() {

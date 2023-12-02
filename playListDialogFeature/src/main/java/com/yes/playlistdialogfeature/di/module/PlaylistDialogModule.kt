@@ -74,11 +74,14 @@ class PlaylistDialogModule {
     @Provides
     fun providesDeletePlayListUseCase(
         @IoDispatcher dispatcher: CoroutineDispatcher,
-        playListDialogRepositoryImpl: PlayListDialogRepositoryImpl
+        playListDialogRepositoryImpl: PlayListDialogRepositoryImpl,
+        settingsRepository: SettingsRepositoryImpl
+
     ): DeletePlayListUseCase {
         return DeletePlayListUseCase(
             dispatcher,
-            playListDialogRepositoryImpl
+            playListDialogRepositoryImpl,
+            settingsRepository
         )
     }
 
