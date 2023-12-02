@@ -117,10 +117,11 @@ class Playlist : Fragment() {
 
 ///////////////
         val onSwipeCallback: (position: Int) -> Unit = { position ->
+
+            //  adapter.removeItem(position)
             val deletedItem = adapter.getItem(position)
-          //  adapter.removeItem(position)
             binder.playList.layoutManager?.removeViewAt(position)
-           viewModel.setEvent(
+            viewModel.setEvent(
                 PlaylistContract.Event.OnDeleteTrack(
                     deletedItem
                 )
@@ -128,12 +129,18 @@ class Playlist : Fragment() {
 
 
         }
-        val onItemMove:(fromPosition:Int, toPosition:Int) -> Unit={ fromPosition, toPosition ->
+        val onItemMove: (fromPosition: Int, toPosition: Int) -> Unit = { fromPosition, toPosition ->
             adapter.moveItem(fromPosition, toPosition)
         }
-        val deleteIconDrawable=ContextCompat.getDrawable(requireContext(), com.yes.coreui.R.drawable.trash_can_outline,)
-        val deleteIconColor=ContextCompat.getColor(requireContext(),com.yes.coreui.R.color.tint)
-        val backgroundColor =ContextCompat.getColor(requireContext(),com.yes.coreui.R.color.button_centerColor_pressed)
+        val deleteIconDrawable = ContextCompat.getDrawable(
+            requireContext(),
+            com.yes.coreui.R.drawable.trash_can_outline,
+        )
+        val deleteIconColor = ContextCompat.getColor(requireContext(), com.yes.coreui.R.color.tint)
+        val backgroundColor = ContextCompat.getColor(
+            requireContext(),
+            com.yes.coreui.R.color.button_centerColor_pressed
+        )
 
 
         val itemTouchHelperCallback = ItemTouchHelperCallback(
@@ -145,9 +152,9 @@ class Playlist : Fragment() {
             deleteIconColor = deleteIconColor,
             backgroundColor = backgroundColor,
             onDraggedItemDrop = { from, to ->
-                 viewModel.setEvent(
-                     PlaylistContract.Event.OnMoveItemPosition(from,to)
-                 )
+                viewModel.setEvent(
+                    PlaylistContract.Event.OnMoveItemPosition(from, to)
+                )
             }
         )
 
@@ -158,7 +165,6 @@ class Playlist : Fragment() {
         ///////////////
         binder.playList.layoutManager = LinearLayoutManager(context)
         binder.playList.adapter = adapter
-
 
 
     }

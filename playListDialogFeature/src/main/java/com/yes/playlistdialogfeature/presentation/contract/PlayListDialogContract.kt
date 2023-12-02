@@ -24,6 +24,7 @@ class PlayListDialogContract {
 
     sealed class Effect : UiEffect {
         data object UnknownException : Effect()
+        data object PlaylistsSizeLimit: Effect()
     }
 
 }

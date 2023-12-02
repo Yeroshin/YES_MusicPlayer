@@ -58,6 +58,7 @@
     <string name="genres">genres</string>
     <string name="categories">categories</string>
     <string name="UnknownException">Unknown Exception</string>
+    <string name="PlaylistsSizeLimit">there must be at least one playlist</string>
     <string name="notification_channel">Now Playing</string>
     <string name="notification_channel_description">Shows what music is currently playing</string>
 

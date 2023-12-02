@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Log
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.abs
@@ -18,11 +19,11 @@ class ItemTouchHelperCallback(
     private val enableSwipeToDelete: Boolean,
     private val enableDragAndDrop: Boolean,
     private val onSwipeCallback: (position: Int) -> Unit,
-    private val onItemMove: (fromPosition: Int, toPosition: Int) -> Unit,
+    private val onItemMove: ((fromPosition: Int, toPosition: Int) -> Unit)?=null,
     private val deleteIconDrawable: Drawable?,
     private val deleteIconColor: Int,
     backgroundColor:Int,
-    private val onDraggedItemDrop: (fromPosition: Int, toPosition: Int) -> Unit
+    private val onDraggedItemDrop:( (fromPosition: Int, toPosition: Int) -> Unit)?=null
 ) : ItemTouchHelper.Callback() {
     private var dragFromPosition = -1
     private var dragToPosition = -1
@@ -49,11 +50,11 @@ class ItemTouchHelperCallback(
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        viewHolder.itemView.elevation = 16F
+
         val dragFromPosition = viewHolder.bindingAdapterPosition
         dragToPosition = target.bindingAdapterPosition
-        onItemMove(dragFromPosition, dragToPosition)
-        return true
+        onItemMove?.let { it(dragFromPosition, dragToPosition) }
+        return false
     }
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
@@ -62,13 +63,14 @@ class ItemTouchHelperCallback(
             ItemTouchHelper.ACTION_STATE_DRAG -> {
                 dragFromPosition = viewHolder?.bindingAdapterPosition?:-1
                 viewHolder?.itemView?.let {
-                    it.x = it.x+it.height/2
+                    it.scaleX = 1.2f
+                    it.scaleY = 1.2f
                 }
             }
-
             ItemTouchHelper.ACTION_STATE_IDLE -> {
+
                 if (dragFromPosition != -1 && dragToPosition != -1 && dragFromPosition != dragToPosition) {
-                    onDraggedItemDrop(dragFromPosition, dragToPosition)
+                    onDraggedItemDrop?.let { it(dragFromPosition, dragToPosition) }
                     dragFromPosition = -1
                     dragToPosition = -1
                 }
@@ -139,6 +141,10 @@ class ItemTouchHelperCallback(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
     ) {
+        viewHolder.itemView.let {
+            it.scaleX = 1f
+            it.scaleY = 1f
+        }
         val toPos = viewHolder.bindingAdapterPosition
         // onDraggedItemDrop(0, toPos)
         Log.e("DragDrop Example", "Unknown action type received by View.OnDragListener.")

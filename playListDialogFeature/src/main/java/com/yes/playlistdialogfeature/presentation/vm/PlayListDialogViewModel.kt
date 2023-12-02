@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.yes.core.domain.models.DomainResult
 import com.yes.core.presentation.BaseViewModel
 import com.yes.core.util.EspressoIdlingResource
+import com.yes.playlistdialogfeature.domain.entity.PlaylistException
 import com.yes.playlistdialogfeature.domain.usecase.AddPlayListUseCase
 import com.yes.playlistdialogfeature.domain.usecase.DeletePlayListUseCase
 import com.yes.playlistdialogfeature.domain.usecase.SetPlaylistUseCase
@@ -60,11 +61,31 @@ class PlayListDialogViewModel(
 
     private fun deletePlayList(item: ItemUi) {
         viewModelScope.launch {
-             deletePlayListUseCase(
+            val result = deletePlayListUseCase(
                 DeletePlayListUseCase.Params(
                     uiMapper.map(item)
                 )
             )
+            when (result) {
+                is DomainResult.Success -> {}
+
+                is DomainResult.Error -> {
+                    when (result.exception) {
+                        is DomainResult.UnknownException -> {
+                            setEffect {
+                                Effect.UnknownException
+                            }
+                        }
+
+                        is PlaylistException.PlaylistsSizeLimit -> {
+                            setEffect {
+                                Effect.PlaylistsSizeLimit
+                            }
+                        }
+                    }
+                }
+
+            }
         }
     }
 
@@ -121,7 +142,9 @@ class PlayListDialogViewModel(
                     dismiss()
                 }
 
-                is DomainResult.Error -> TODO()
+                is DomainResult.Error -> setEffect {
+                    Effect.UnknownException
+                }
             }
         }
     }

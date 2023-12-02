@@ -17,7 +17,10 @@ class SettingsDataStore(
     fun subscribeCurrentPlaylistId(): Flow<Long> =
         dataStore.data
             .map { preferences ->
-                preferences[PreferencesKeys.CURRENT_PLAYLIST_ID] ?: 1
+                preferences[PreferencesKeys.CURRENT_PLAYLIST_ID] ?:run{
+                    setCurrentPlaylistId(1)
+                    1
+                }
             }
 
 

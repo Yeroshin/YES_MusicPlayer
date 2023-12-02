@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yes.core.presentation.BaseDialog
 import com.yes.core.presentation.BaseViewModel
+import com.yes.core.presentation.ItemTouchHelperCallback
 import com.yes.playlistdialogfeature.R
 import com.yes.playlistdialogfeature.databinding.PlaylistDialogBinding
 import com.yes.playlistdialogfeature.di.component.PlayListDialogComponent
@@ -64,8 +66,35 @@ class PlayListDialog: BaseDialog(),SwipeToDeleteCallback.Callback{
 
         binder.recyclerViewContainer.recyclerView.layoutManager = layoutManager
         binder.recyclerViewContainer.recyclerView.adapter = adapter
-        val swipeToDeleteCallback = SwipeToDeleteCallback(this)
-        val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+     /*   val swipeToDeleteCallback = SwipeToDeleteCallback(this)*/
+        val onSwipeCallback: (position: Int) -> Unit = { position ->
+            binder.recyclerViewContainer.recyclerView.layoutManager?.removeViewAt(position)
+            viewModel.setEvent(
+                PlayListDialogContract.Event.OnDeletePlaylist(
+                    adapter.getItems()[position]
+                )
+            )
+
+
+        }
+        val deleteIconDrawable = ContextCompat.getDrawable(
+            requireContext(),
+            com.yes.coreui.R.drawable.trash_can_outline,
+        )
+        val deleteIconColor = ContextCompat.getColor(requireContext(), com.yes.coreui.R.color.tint)
+        val backgroundColor = ContextCompat.getColor(
+            requireContext(),
+            com.yes.coreui.R.color.button_centerColor_pressed
+        )
+        val itemTouchHelperCallback = ItemTouchHelperCallback(
+            enableSwipeToDelete = true,
+            enableDragAndDrop = false,
+            onSwipeCallback = onSwipeCallback,
+            deleteIconDrawable = deleteIconDrawable,
+            deleteIconColor = deleteIconColor,
+            backgroundColor = backgroundColor,
+        )
+        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(
             binder.recyclerViewContainer.recyclerView
         )
@@ -102,6 +131,10 @@ class PlayListDialog: BaseDialog(),SwipeToDeleteCallback.Callback{
                     when (it) {
                         is PlayListDialogContract.Effect.UnknownException -> {
                             showError(com.yes.coreui.R.string.UnknownException)
+                        }
+
+                        is PlayListDialogContract.Effect.PlaylistsSizeLimit -> {
+                            showError(com.yes.coreui.R.string.PlaylistsSizeLimit)
                         }
                     }
                 }
