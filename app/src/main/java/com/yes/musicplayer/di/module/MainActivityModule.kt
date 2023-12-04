@@ -1,20 +1,14 @@
 package com.yes.musicplayer.di.module
 
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.yes.core.util.EspressoIdlingResource
-import com.yes.musicplayer.presentation.MainActivity
+import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
 import com.yes.musicplayer.presentation.UniversalFragmentAdapter
-import com.yes.player.presentation.ui.PlayerFragment
-import com.yes.player.presentation.vm.PlayerViewModel
-import com.yes.playlistfeature.presentation.ui.Playlist
-import com.yes.trackdialogfeature.presentation.ui.TrackDialog
+import com.yes.playlistfeature.presentation.ui.PlaylistScreen
 
 import dagger.Module
 import dagger.Provides
-import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
 
 
 private const val USER_PREFERENCES = "user_preferences"
@@ -23,6 +17,12 @@ internal class MainActivityModule(
     private val activity: FragmentActivity
 ) {
 
+  /*  @Provides
+    fun provideFragmentActivity(
+        activity: FragmentActivity
+    ): FragmentActivity {
+        return activity
+    }*/
   /*  @Provides
     fun provideFragment(
         fragmentFactory: FragmentFactory
@@ -34,32 +34,30 @@ internal class MainActivityModule(
        // return PlayerFragment()
     }*/
     
-    @Provides
+   /* @Provides
     fun provideMainActivityFragmentFactory(
-       /* trackDialogDependency: TrackDialog.Dependency,
-        playListDialogDependency: PlayListDialog.Dependency,
-        playlistDependency:Playlist.Dependency,*/
-       // playerDependency:PlayerFragment.Dependency
+       activity: FragmentActivity
     ): FragmentFactory {
-        return MainActivity.MainActivityFragmentFactory(
+        return activity.supportFragmentManager.fragmentFactory
+       /* return MainActivity.MainActivityFragmentFactory(
            /* trackDialogDependency,
             playListDialogDependency,
             playlistDependency,*/
           //  playerDependency
-        )
-    }
+        )*/
+    }*/
 
 
 
-    @Provides
+   /* @Provides
     fun provideFragmentAdapter(
         fragmentFactory: FragmentFactory
     ): FragmentStateAdapter {
-
-
-        val fragmentsList = listOf( Playlist::class.java)
-
+        val fragmentsList = listOf(
+            PlaylistScreen::class.java,
+            AlarmsScreen::class.java
+        )
         return UniversalFragmentAdapter(activity, fragmentsList, fragmentFactory)
-    }
+    }*/
 
 }

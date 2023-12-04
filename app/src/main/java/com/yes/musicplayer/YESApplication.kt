@@ -24,7 +24,7 @@ import com.yes.playlistdialogfeature.di.component.PlayListDialogComponent
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
 import com.yes.playlistfeature.di.component.DaggerPlaylistComponent
 import com.yes.playlistfeature.di.component.PlaylistComponent
-import com.yes.playlistfeature.presentation.ui.Playlist
+import com.yes.playlistfeature.presentation.ui.PlaylistScreen
 import com.yes.trackdialogfeature.di.component.DaggerTrackDialogComponent
 import com.yes.trackdialogfeature.di.component.TrackDialogComponent
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
@@ -33,7 +33,7 @@ class YESApplication : Application(),
     MainActivity.DependencyResolver,
     PlayerFragment.DependencyResolver,
     PlayListDialog.DependencyResolver,
-    Playlist.DependencyResolver,
+    PlaylistScreen.DependencyResolver,
     TrackDialog.DependencyResolver,
     MusicService.DependencyResolver
      {

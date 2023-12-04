@@ -24,11 +24,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    packagingOptions {
+   /* packagingOptions {
         resources {
-            excludes += ['META-INF/LICENSE.md']
+            excludes += [
+                    'META-INF/LICENSE.md',
+                    'com/yes/alarmclockfeature/presentation/ui/DatePicker.java'
+            ]
         }
-    }
+    }*/
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
@@ -44,6 +47,7 @@ android {
     }
 
     namespace 'com.yes.musicplayer'
+
 }
 
 dependencies {
@@ -53,6 +57,7 @@ dependencies {
     implementation project(path: ':playerFeature')
     implementation project(path: ':trackdialogFeature')
     implementation project(path: ':playListDialogFeature')
+    implementation project(path: ':alarmClockFeature')
     //tmp
     implementation project(path: ':shared-test')
 

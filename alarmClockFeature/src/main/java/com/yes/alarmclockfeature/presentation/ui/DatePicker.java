@@ -1,4 +1,4 @@
-package com.musicplayer.alarmclock;
+package com.yes.alarmclockfeature.presentation.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import androidx.core.content.ContextCompat;
 
 import java.util.Calendar;
-
+/*
 public class DatePicker extends LinearLayout implements Observer{
     Context context;
     DataPickerView minuteDataPicker;
@@ -97,3 +97,4 @@ public class DatePicker extends LinearLayout implements Observer{
         hourDataPicker.moveBackward();
     }
 }
+*/

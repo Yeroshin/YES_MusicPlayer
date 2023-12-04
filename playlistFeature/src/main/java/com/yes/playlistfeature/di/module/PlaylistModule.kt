@@ -17,7 +17,7 @@ import com.yes.playlistfeature.domain.usecase.SetModeUseCase
 import com.yes.playlistfeature.domain.usecase.SetTracksToPlayerPlaylistUseCase
 import com.yes.playlistfeature.domain.usecase.SubscribeCurrentPlaylistTracksUseCase
 import com.yes.playlistfeature.presentation.mapper.MapperUI
-import com.yes.playlistfeature.presentation.ui.Playlist
+import com.yes.playlistfeature.presentation.ui.PlaylistScreen
 import com.yes.playlistfeature.presentation.ui.PlaylistAdapter
 import com.yes.playlistfeature.presentation.vm.PlaylistViewModel
 import dagger.Module
@@ -163,8 +163,8 @@ class PlaylistModule {
     fun providesPlayListDialogDependency(
         factory: PlaylistViewModel.Factory,
         adapter: PlaylistAdapter
-    ): Playlist.Dependency {
-        return Playlist.Dependency(
+    ): PlaylistScreen.Dependency {
+        return PlaylistScreen.Dependency(
             factory,
             adapter
         )

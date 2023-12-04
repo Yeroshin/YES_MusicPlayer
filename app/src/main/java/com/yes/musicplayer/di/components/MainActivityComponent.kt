@@ -23,8 +23,8 @@ import dagger.Component
 interface MainActivityComponent {
 
   //  fun getPlayerFragment(): Fragment
-    fun getFragmentAdapter(): FragmentStateAdapter
-    fun getFragmentFactory(): FragmentFactory
+   /* fun getFragmentAdapter(): FragmentStateAdapter
+    fun getFragmentFactory(): FragmentFactory*/
    /* fun getTrackDialogFeatureDependency(): TrackDialog.Dependency
     fun getPlayListDialogFeatureDependency(): PlayListDialog.Dependency
     fun getPlaylistFeatureDependency(): Playlist.Dependency*/

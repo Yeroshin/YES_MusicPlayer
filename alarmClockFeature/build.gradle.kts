@@ -1,3 +1,6 @@
+import com.android.build.api.dsl.Packaging
+import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
@@ -35,9 +38,23 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+
+    packaging {
+        resources {
+            excludes += listOf(
+                    "META-INF/LICENSE.md",
+                    "com/yes/alarmclockfeature/presentation/ui/DatePicker.java"
+                )
+
+        }
+    }
+
 }
 
 dependencies {
+    implementation(project( ":core"))
+    implementation(project (":coreUI"))
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)

@@ -1,18 +1,13 @@
 package com.yes.musicplayer.presentation
 
 
-import android.Manifest
 import android.app.Activity
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.content.pm.PermissionGroupInfo
 import android.content.pm.PermissionInfo
 import android.os.Build
 
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -23,20 +18,19 @@ import androidx.fragment.app.FragmentFactory
 import androidx.viewbinding.ViewBinding
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import com.yes.musicplayer.YESApplication
+import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
 import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.MainActivityComponent
-import com.yes.player.databinding.PlayerBinding
 import com.yes.player.presentation.ui.PlayerFragment
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
-import com.yes.playlistfeature.presentation.ui.Playlist
+import com.yes.playlistfeature.presentation.ui.PlaylistScreen
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 
 
 class MainActivity :
     AppCompatActivity(),
-    Playlist.MediaChooserManager,
-    Playlist.PlaylistManager {
+    PlaylistScreen.MediaChooserManager,
+    PlaylistScreen.PlaylistManager {
     interface DependencyResolver {
         fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent
     }
@@ -52,13 +46,13 @@ class MainActivity :
         dependencyResolver.getMainActivityComponent(this)
     }
 
-    private val fragmentAdapter: FragmentStateAdapter by lazy {
+  /*  private val fragmentAdapter: FragmentStateAdapter by lazy {
         mainActivityComponent.getFragmentAdapter()
     }
 
     private val fragmentFactory: FragmentFactory by lazy {
         mainActivityComponent.getFragmentFactory()
-    }
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -166,10 +160,15 @@ class MainActivity :
 
     private fun setFragments() {
         binding = ActivityMainBinding.inflate(layoutInflater)
-        supportFragmentManager.fragmentFactory = fragmentFactory
+       // supportFragmentManager.fragmentFactory = fragmentFactory
         val view = binding.root
         setContentView(view)
-        binder.viewPager.adapter = fragmentAdapter
+
+        val fragmentsList = listOf(
+            PlaylistScreen::class.java,
+            AlarmsScreen::class.java
+        )
+        binder.viewPager.adapter = UniversalFragmentAdapter(this, fragmentsList, supportFragmentManager.fragmentFactory)
         TabLayoutMediator(binder.tabs, binder.viewPager) { tab, position ->
             run {
                 when (position) {
@@ -197,7 +196,7 @@ class MainActivity :
             return when (loadFragmentClass(classLoader, className)) {
                 PlayListDialog::class.java -> PlayListDialog()
                 TrackDialog::class.java -> TrackDialog()
-                Playlist::class.java -> Playlist()
+                PlaylistScreen::class.java -> PlaylistScreen()
                 PlayerFragment::class.java -> PlayerFragment()
                 else -> super.instantiate(classLoader, className)
             }
@@ -206,10 +205,7 @@ class MainActivity :
 
 
     override fun showMediaDialog() {
-        (supportFragmentManager.fragmentFactory.instantiate(
-            classLoader,
-            TrackDialog::class.java.name
-        ) as DialogFragment).show(supportFragmentManager, null)
+        TrackDialog().show(supportFragmentManager, null)
 
     }
 

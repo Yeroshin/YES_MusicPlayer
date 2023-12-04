@@ -1,7 +1,5 @@
 package com.yes.playlistfeature.presentation.ui
 
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -26,7 +24,7 @@ import com.yes.playlistfeature.presentation.vm.PlaylistViewModel
 import kotlinx.coroutines.launch
 
 
-class Playlist : Fragment() {
+class PlaylistScreen : Fragment() {
     interface DependencyResolver {
         fun getPlaylistComponent(): PlaylistComponent
     }

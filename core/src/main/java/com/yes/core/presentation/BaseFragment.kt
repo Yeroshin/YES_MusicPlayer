@@ -17,7 +17,7 @@ abstract class BaseFragment: Fragment() {
     interface DependencyResolver {
         fun getComponent(): BaseComponent
     }
-    private lateinit var binding: ViewBinding
+    protected lateinit var binding: ViewBinding
     private val component by lazy {
         (requireActivity().application as DependencyResolver)
             .getComponent()
