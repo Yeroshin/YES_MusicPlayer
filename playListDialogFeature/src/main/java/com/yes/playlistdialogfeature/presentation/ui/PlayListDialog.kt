@@ -1,9 +1,12 @@
 package com.yes.playlistdialogfeature.presentation.ui
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -22,6 +25,7 @@ import com.yes.playlistdialogfeature.presentation.contract.PlayListDialogContrac
 import com.yes.playlistdialogfeature.presentation.model.ItemUi
 import com.yes.playlistdialogfeature.presentation.vm.PlayListDialogViewModel
 import kotlinx.coroutines.launch
+
 
 class PlayListDialog: BaseDialog(),SwipeToDeleteCallback.Callback{
     interface DependencyResolver {
@@ -115,8 +119,12 @@ class PlayListDialog: BaseDialog(),SwipeToDeleteCallback.Callback{
                     binder.playlistName.text.toString()
                 )
             )
-            binder.playlistName.text.clear()
+            hideKeyboardFrom(requireContext(), binder.playlistName)
         }
+    }
+    private fun hideKeyboardFrom(context: Context, view: View) {
+        val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
     private fun observeViewModel() {
         lifecycleScope.launch {

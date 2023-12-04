@@ -10,7 +10,7 @@ import com.yes.player.domain.model.Playlist
 class Mapper {
     fun map(playlist: PlayListDataBaseEntity): Playlist {
         return Playlist(
-            playlist.id ?: 0,
+            playlist.id ?: 1,
             playlist.name,
         )
     }

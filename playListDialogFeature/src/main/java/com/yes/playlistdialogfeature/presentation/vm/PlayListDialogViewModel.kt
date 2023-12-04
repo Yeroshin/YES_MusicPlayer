@@ -131,9 +131,10 @@ class PlayListDialogViewModel(
             }
             val playLists = setPlaylistUseCase(
                 SetPlaylistUseCase.Params(
-                    items.map {
+                   /* items.map {
                         uiMapper.map(it)
-                    }
+                    }*/
+                    uiMapper.map(items)
                 )
             )
             espressoIdlingResource?.decrement()

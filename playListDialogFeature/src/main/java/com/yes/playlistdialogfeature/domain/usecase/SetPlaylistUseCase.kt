@@ -11,11 +11,15 @@ class SetPlaylistUseCase(
     private val settingsRepository: SettingsRepositoryImpl
 ) : UseCase<SetPlaylistUseCase.Params, Long>(dispatcher) {
     override suspend fun run(params: Params?): DomainResult<Long> {
-        val item=params?.items?.find { it.current }
-        settingsRepository.updateCurrentPlaylistId(
-            item?.id?:0
-        )
-        return DomainResult.Success(0)
+
+        params?.items?.find { it.current }?.let {
+            settingsRepository.updateCurrentPlaylistId(
+                it.id
+            )
+            return DomainResult.Success(1)
+        }?: run {
+            return DomainResult.Error(DomainResult.UnknownException)
+        }
     }
     data class Params(val items: List<Item>)
 

@@ -21,9 +21,9 @@ class SubscribePlayListsUseCase(
             combine(
                 settingsRepository.subscribeCurrentPlaylistId(),
                 playListDialogRepositoryImpl.subscribePlaylists()
-            ) { id, playLists ->
+            ) { currentPlaylistId, playLists ->
                 playLists.map { item ->
-                    if (item.id == id) {
+                    if (item.id == currentPlaylistId) {
                         item.current = true
                     }
                     item

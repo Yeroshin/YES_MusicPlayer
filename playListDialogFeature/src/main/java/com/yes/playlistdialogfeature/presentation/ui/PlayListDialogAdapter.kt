@@ -38,7 +38,6 @@ class PlayListDialogAdapter:
             position: Int,
             item: ItemUi,
         ) {
-
             binding.root.isSelected = item.selected
             binding.root.isActivated = item.current
             binding.playlistTitle.text = item.name
