@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="7dp"
+    tools:context="com.musicplayer.alarmclock.AlarmFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/display">
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="#050505"
+                android:visibility="gone" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/alarmsList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="12dp"
+                android:background="#000000" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/button_space"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/add_alarm_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginBottom="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_single"
+                android:tint="#A3B3CE"
+                app:srcCompat="@drawable/alarm_plus" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
