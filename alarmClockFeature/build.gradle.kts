@@ -43,9 +43,9 @@ android {
     packaging {
         resources {
             excludes += listOf(
-                    "META-INF/LICENSE.md",
-                    "com/yes/alarmclockfeature/presentation/ui/DatePicker.java"
-                )
+                "META-INF/LICENSE.md",
+                "com/yes/alarmclockfeature/presentation/ui/DatePicker.java"
+            )
 
         }
     }
@@ -53,13 +53,19 @@ android {
 }
 
 dependencies {
-    implementation(project( ":core"))
-    implementation(project (":coreUI"))
+    implementation(project(":core"))
+    implementation(project(":coreUI"))
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    //viewModel
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.fragment.ktx)
+    //Dagger/////////////////////
+    implementation(libs.dagger)
+    androidTestImplementation(libs.dagger)
+    kapt(libs.dagger.compiler)
+    kaptAndroidTest(libs.dagger.compiler)
 }

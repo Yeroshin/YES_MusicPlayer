@@ -9,19 +9,27 @@ import com.yes.core.presentation.BaseFragment
 import com.yes.core.presentation.UiState
 
 class AlarmsScreen: BaseFragment() {
+    interface DependencyResolver:BaseFragment.DependencyResolver
+    private val binder by lazy {
+        binding as AlarmsListScreenBinding
+    }
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): ViewBinding {
         return AlarmsListScreenBinding.inflate(inflater)
     }
 
     override fun setupView() {
-
+        binder.alarmsList.adapter= AlarmsScreenAdapter()
+        binder.addAlarmButton.setOnClickListener {
+            AlarmClockDialog().show(childFragmentManager,null)
+        }
     }
 
     override fun renderUiState(state: UiState) {
-        TODO("Not yet implemented")
+
     }
 
     override fun showEffect() {
         TODO("Not yet implemented")
     }
+
 }

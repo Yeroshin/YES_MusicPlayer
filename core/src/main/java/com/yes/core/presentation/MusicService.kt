@@ -1,6 +1,7 @@
 package com.yes.core.presentation
 
 import android.content.Context
+import android.content.Intent
 import androidx.fragment.app.FragmentActivity
 import androidx.media3.common.Player
 import androidx.media3.common.Tracks
@@ -36,5 +37,14 @@ class MusicService : MediaSessionService() {
     override fun onGetSession(
         controllerInfo: MediaSession.ControllerInfo
     ): MediaSession = mediaSession
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        when (intent?.action) {
 
+            "PLAY_MUSIC" -> {
+                // Здесь запускаем воспроизведение музыки
+            }
+            // Другие обработки команд
+        }
+        return super.onStartCommand(intent, flags, startId)
+    }
 }

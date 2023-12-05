@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!--<com.musicplayer.alarmclock.DatePicker
+        <!--<com.yes.alarmclockfeature.presentation.ui.DataPickerView
             android:id="@+id/datePicker"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

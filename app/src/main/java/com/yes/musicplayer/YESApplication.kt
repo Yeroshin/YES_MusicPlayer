@@ -3,6 +3,9 @@ package com.yes.musicplayer
 import android.app.Application
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
+import com.yes.alarmclockfeature.di.components.DaggerAlarmClockComponent
+import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
+import com.yes.core.di.component.BaseComponent
 import com.yes.core.di.component.DaggerAudioSessionIdComponent
 import com.yes.core.di.component.DaggerCoreComponent
 import com.yes.core.di.component.DaggerMusicServiceComponent
@@ -10,6 +13,7 @@ import com.yes.core.di.component.MusicServiceComponent
 import com.yes.core.di.module.AudioSessionIdModule
 import com.yes.core.di.module.DataModule
 import com.yes.core.di.module.MusicServiceModule
+import com.yes.core.presentation.BaseFragment
 import com.yes.core.presentation.MusicService
 import com.yes.musicplayer.di.components.DaggerMainActivityComponent
 
@@ -35,8 +39,8 @@ class YESApplication : Application(),
     PlayListDialog.DependencyResolver,
     PlaylistScreen.DependencyResolver,
     TrackDialog.DependencyResolver,
-    MusicService.DependencyResolver
-     {
+    MusicService.DependencyResolver,
+    AlarmsScreen.DependencyResolver {
 
     private val dataModule by lazy {
         DataModule(this)
@@ -93,6 +97,11 @@ class YESApplication : Application(),
             .coreComponent(coreComponent)
             .musicServiceModule(musicServiceModule)
             .audioSessionIdComponent(audioSessionIdComponent)
+            .build()
+    }
+
+    override fun getComponent(): BaseComponent {
+        return DaggerAlarmClockComponent.builder()
             .build()
     }
 }

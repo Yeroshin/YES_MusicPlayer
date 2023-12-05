@@ -48,8 +48,8 @@ public class DataPickerView extends View {
   ArrayList numbersArray;
   boolean up;
   boolean down;
-  Observer observer;
-    void registerObserver(Observer observer){
+  com.yes.alarmclockfeature.presentation.ui.Observer observer;
+    void registerObserver(com.yes.alarmclockfeature.presentation.ui.Observer observer){
         this.observer=observer;
     }
     void init(int[] numbers,int startIndex){
