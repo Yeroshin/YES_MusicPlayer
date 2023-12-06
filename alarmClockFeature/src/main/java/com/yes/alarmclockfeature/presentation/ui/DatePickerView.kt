@@ -16,7 +16,12 @@ interface Observer {
     fun onStartIndex()
 }
 
-class DataPickerView : View {
+class DataPickerView(
+    context: Context,
+    val numbersArray: ArrayList<Any?>,
+    val onEndIndex:()->Unit,
+    val onStartIndex:()->Unit
+) : View(context) {
     var canvasW = 0
     var canvasH = 0
     var position = 0
@@ -40,7 +45,7 @@ class DataPickerView : View {
     var currentValue: String? = null
     var previousIndex = 0
     var startIndex = 0
-    var numbersArray: ArrayList<*>? = null
+   // var numbersArray: ArrayList<*>? = null
     var up = false
     var down = false
     var observer: Observer? = null
@@ -55,17 +60,6 @@ class DataPickerView : View {
             this.numbers[i] = String.format("%1$02d", numbers[i])
         }
     }
-
-    constructor(context: Context?) : super(context) {
-        numbersArray = ArrayList<Any?>()
-    }
-
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(
-        context,
-        attrs,
-        defStyle
-    )
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         canvasW = w

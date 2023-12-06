@@ -2,6 +2,7 @@ package com.yes.alarmclockfeature.presentation.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment.STYLE_NO_FRAME
 import androidx.viewbinding.ViewBinding
 import com.yes.alarmclockfeature.databinding.AlarmsListScreenBinding
 
@@ -18,10 +19,12 @@ class AlarmsScreen: BaseFragment() {
     }
 
     override fun setupView() {
+
         binder.alarmsList.adapter= AlarmsScreenAdapter()
         binder.addAlarmButton.setOnClickListener {
             AlarmClockDialog().show(childFragmentManager,null)
         }
+
     }
 
     override fun renderUiState(state: UiState) {

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="7dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@drawable/panel_flat"
         android:gravity="center_horizontal|center_vertical"
         android:orientation="vertical"
@@ -17,11 +18,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!--<com.yes.alarmclockfeature.presentation.ui.DataPickerView
+        <!-- <com.yes.alarmclockfeature.presentation.ui.DataPickerView
             android:id="@+id/datePicker"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"/>-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/datepicker"
+            android:layout_width="80dp"
+            android:layout_height="60dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -125,7 +131,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_left"
                 android:padding="2dp"
-                android:tint="#A3B3CE"
+
                 app:srcCompat="@drawable/window_close" />
 
             <ImageButton
@@ -139,9 +145,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_right"
                 android:padding="2dp"
-                android:tint="#A3B3CE"
+
                 app:srcCompat="@drawable/check" />
         </LinearLayout>
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
