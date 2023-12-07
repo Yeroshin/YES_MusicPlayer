@@ -23,11 +23,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"/>-->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/datepicker"
-            android:layout_width="80dp"
-            android:layout_height="60dp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/datepicker"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="#FF0000" />
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="top"
+                android:alpha="0.8"
+                android:scaleType="centerCrop"
+                android:src="@drawable/gradient_background" />
+        </FrameLayout>
 
         <TextView
             android:layout_width="match_parent"

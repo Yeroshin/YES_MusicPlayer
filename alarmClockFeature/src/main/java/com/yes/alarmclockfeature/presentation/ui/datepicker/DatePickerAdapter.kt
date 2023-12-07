@@ -6,23 +6,40 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.yes.alarmclockfeature.R
-import com.yes.alarmclockfeature.presentation.model.AlarmClockUI
+import java.util.Collections
 
-class DatePickerAdapter : RecyclerView.Adapter<DatePickerAdapter.ViewHolder>(){
-    private val items= mutableListOf<String>()
+
+class DatePickerAdapter(
+    private val onListEnded: (count: Int) -> Unit
+) : RecyclerView.Adapter<DatePickerAdapter.ViewHolder>() {
+
+    private var items = mutableListOf<String>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-       /* val binding = DatePickerItemBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)*/
+        /* val binding = DatePickerItemBinding
+             .inflate(LayoutInflater.from(parent.context), parent, false)*/
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.date_picker_item, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.date_picker_item, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position])
+        //////////////
+
+        // holder.bind(items[position % items.size])
+        if (position == items.size || position == 0) {
+            onListEnded(items.size)
+            holder.bind(items[items.size/2])
+        }else{
+            holder.bind(items[position])
+        }
+        /////////////
+
     }
+
     fun setItems(items: List<String>) {
         this.items.clear()
+        this.items.addAll(items)
         this.items.addAll(items)
         notifyDataSetChanged()
     }

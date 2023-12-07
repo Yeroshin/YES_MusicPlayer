@@ -2,6 +2,9 @@ package com.yes.alarmclockfeature.presentation.ui
 
 import android.content.Context
 import android.content.res.Resources.Theme
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
@@ -13,6 +16,7 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.yes.alarmclockfeature.R
 import com.yes.alarmclockfeature.databinding.AlarmSetScreenBinding
@@ -25,7 +29,17 @@ class AlarmClockDialog: DialogFragment() {
         binding as AlarmSetScreenBinding
     }
     private val adapter by lazy {
-        DatePickerAdapter()
+        DatePickerAdapter(
+            onListEnded= {count->
+                binder.datepicker.scrollToPosition(count /2)
+            }
+        )
+    }
+    private val scrollList= object :()->Unit{
+        override fun invoke() {
+            binder.datepicker.scrollToPosition(adapter.itemCount /2)
+        }
+
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +60,7 @@ class AlarmClockDialog: DialogFragment() {
         setDialogSize()
 
     }
-    fun setDialogSize(){
+    private fun setDialogSize(){
         dialog?.window?.attributes?.dimAmount= 0.6f
         dialog?.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
 
@@ -72,7 +86,9 @@ class AlarmClockDialog: DialogFragment() {
 
         setupView()
     }
+
     private fun setupView(){
+
         binder.datepicker.layoutManager = LinearLayoutManager(context)
         binder.datepicker.adapter=adapter
         val values = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
@@ -80,5 +96,27 @@ class AlarmClockDialog: DialogFragment() {
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(binder.datepicker)
 
+       // binder.datepicker.scrollToPosition(adapter.itemCount /2)
+    }
+    class DimmedItemDecoration(private val dimColor: Int, private val dimHeight: Int) : RecyclerView.ItemDecoration() {
+
+        override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+            super.onDraw(c, parent, state)
+
+            val left = parent.paddingLeft
+            val right = parent.width - parent.paddingRight
+
+            for (i in 0 until parent.childCount) {
+                val child = parent.getChildAt(i)
+                val params = child.layoutParams as RecyclerView.LayoutParams
+
+                val top = child.bottom + params.bottomMargin
+                val bottom = top + dimHeight
+
+                val paint = Paint()
+                paint.color = dimColor
+                c.drawRect(left.toFloat(), top.toFloat(), right.toFloat(), bottom.toFloat(), paint)
+            }
+        }
     }
 }
