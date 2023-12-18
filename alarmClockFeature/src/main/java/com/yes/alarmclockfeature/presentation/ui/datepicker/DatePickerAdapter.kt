@@ -25,16 +25,20 @@ class DatePickerAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         //////////////
+        holder.bind(items[position])
 
         // holder.bind(items[position % items.size])
-        if (position == items.size || position == 0) {
+       /* if (position == items.size || position == 0) {
             onListEnded(items.size)
             holder.bind(items[items.size/2])
         }else{
             holder.bind(items[position])
-        }
+        }*/
         /////////////
 
+    }
+    fun getItem(position:Int):String{
+        return items[position]
     }
 
     fun setItems(items: List<String>) {
