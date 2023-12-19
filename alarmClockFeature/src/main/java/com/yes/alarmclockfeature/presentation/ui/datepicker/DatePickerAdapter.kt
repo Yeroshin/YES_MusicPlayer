@@ -13,7 +13,7 @@ class DatePickerAdapter(
     private val onListEnded: (count: Int) -> Unit
 ) : RecyclerView.Adapter<DatePickerAdapter.ViewHolder>() {
 
-    private var items = mutableListOf<String>()
+    private var items = mutableListOf<Int>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         /* val binding = DatePickerItemBinding
              .inflate(LayoutInflater.from(parent.context), parent, false)*/
@@ -24,24 +24,13 @@ class DatePickerAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        //////////////
         holder.bind(items[position])
-
-        // holder.bind(items[position % items.size])
-       /* if (position == items.size || position == 0) {
-            onListEnded(items.size)
-            holder.bind(items[items.size/2])
-        }else{
-            holder.bind(items[position])
-        }*/
-        /////////////
-
     }
-    fun getItem(position:Int):String{
+    fun getItem(position:Int):Int{
         return items[position]
     }
 
-    fun setItems(items: List<String>) {
+    fun setItems(items: List<Int>) {
         this.items.clear()
         this.items.addAll(items)
         this.items.addAll(items)
@@ -55,8 +44,8 @@ class DatePickerAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textView: TextView = itemView.findViewById(R.id.text)
 
-        fun bind(value: String) {
-            textView.text = value
+        fun bind(value: Int) {
+            textView.text = value.toString()
         }
     }
 }
