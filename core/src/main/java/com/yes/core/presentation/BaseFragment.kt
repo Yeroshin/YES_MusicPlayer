@@ -25,7 +25,7 @@ abstract class BaseFragment: Fragment() {
     private val dependency: BaseDependency by lazy {
         component.getDependency()
     }
-    private val viewModel: BaseViewModel<UiEvent,
+    protected val viewModel: BaseViewModel<UiEvent,
             UiState,
             UiEffect> by viewModels {
         dependency.viewModelFactory

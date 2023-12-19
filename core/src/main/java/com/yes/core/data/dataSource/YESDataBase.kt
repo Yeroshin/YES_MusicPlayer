@@ -4,37 +4,37 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
+import com.yes.core.data.entity.AlarmDataBaseEntity
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.entity.PlayListDataBaseEntity
 import com.yes.core.data.entity.PlayListDataBaseTrackEntity
+import com.yes.core.domain.repository.IAlarmDao
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 
 @Database(
-    entities = [PlayListDataBaseEntity::class, PlayListDataBaseTrackEntity::class],
+    entities = [
+        PlayListDataBaseEntity::class,
+        PlayListDataBaseTrackEntity::class,
+        AlarmDataBaseEntity::class
+    ],
     version = 1
 )
-abstract class PlayListDataBase : RoomDatabase() {
-
+abstract class YESDataBase : RoomDatabase() {
+    abstract fun alarmDao():IAlarmDao
     abstract fun playListDao(): IPlayListDao
 
     companion object {
 
-        private var INSTANCE: PlayListDataBase? = null
-        fun getInstance(context: Context): PlayListDataBase {
+        private var INSTANCE: YESDataBase? = null
+        fun getInstance(context: Context): YESDataBase {
             return INSTANCE ?: run {
                 Room.databaseBuilder(
                     context,
-                    PlayListDataBase::class.java,
+                    YESDataBase::class.java,
                     "my_database"
                 )
 //TODO write an article about the right way to prepopulate database

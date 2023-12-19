@@ -7,7 +7,7 @@ import com.yes.core.data.entity.PlayListDataBaseEntity
 
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.entity.PlayListDataBaseTrackEntity
-import com.yes.core.data.dataSource.PlayListDataBase
+import com.yes.core.data.dataSource.YESDataBase
 import junit.framework.TestCase.assertEquals
 
 import org.junit.After
@@ -17,15 +17,15 @@ import org.junit.runner.RunWith
 
 
 @RunWith(AndroidJUnit4::class)
-class PlayListDataBaseEntityDataBaseTest {
+class YESDataBaseEntityDataBaseTest {
     private lateinit var userDao: IPlayListDao
-    private lateinit var db: PlayListDataBase
+    private lateinit var db: YESDataBase
 
     @Before
     fun createDb() {
         db = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
-            PlayListDataBase::class.java
+            YESDataBase::class.java
         ).build()
         userDao = db.playListDao()
     }

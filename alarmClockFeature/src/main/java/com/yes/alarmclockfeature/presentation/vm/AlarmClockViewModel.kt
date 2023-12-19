@@ -2,10 +2,19 @@ package com.yes.alarmclockfeature.presentation.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import com.yes.alarmclockfeature.domain.usecase.AddAlarmUseCase
 import com.yes.alarmclockfeature.presentation.contract.AlarmClockContract
+import com.yes.alarmclockfeature.presentation.mapper.MapperUI
+import com.yes.alarmclockfeature.presentation.ui.datepicker.DatePickerManager
+import com.yes.core.domain.models.DomainResult
 import com.yes.core.presentation.BaseViewModel
+import kotlinx.coroutines.launch
 
-class AlarmClockViewModel:BaseViewModel<AlarmClockContract.Event, AlarmClockContract.State, AlarmClockContract.Effect>() {
+class AlarmClockViewModel(
+    private val mapper: MapperUI,
+    private val addAlarmUseCase: AddAlarmUseCase
+) : BaseViewModel<AlarmClockContract.Event, AlarmClockContract.State, AlarmClockContract.Effect>() {
     override fun createInitialState(): AlarmClockContract.State {
         return AlarmClockContract.State(
             AlarmClockContract.AlarmClockState.Idle
@@ -13,12 +22,35 @@ class AlarmClockViewModel:BaseViewModel<AlarmClockContract.Event, AlarmClockCont
     }
 
     override fun handleEvent(event: AlarmClockContract.Event) {
-        TODO("Not yet implemented")
+        when (event) {
+            is AlarmClockContract.Event.OnAddAlarm -> {
+                addAlarm(event.date, event.repeating)
+            }
+        }
     }
-    class Factory() : ViewModelProvider.Factory {
+
+    private fun addAlarm(date: DatePickerManager.Time, repeating: Map<String, Boolean>) {
+        viewModelScope.launch {
+            val result = addAlarmUseCase(
+                mapper.map(date, repeating)
+            )
+            when (result) {
+                is DomainResult.Success -> {}
+                is DomainResult.Error -> {}
+            }
+        }
+    }
+
+    class Factory(
+        private val mapper: MapperUI,
+        private val addAlarmUseCase: AddAlarmUseCase
+    ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
-            return AlarmClockViewModel() as T
+            return AlarmClockViewModel(
+                mapper,
+                addAlarmUseCase
+            ) as T
         }
     }
 }

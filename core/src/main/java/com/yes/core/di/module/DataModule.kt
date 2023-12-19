@@ -8,14 +8,13 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.session.MediaSession
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.data.dataSource.MediaDataStore
-import com.yes.core.data.dataSource.PlayListDataBase
+import com.yes.core.data.dataSource.YESDataBase
 import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.core.data.dataSource.SettingsDataStore
 import com.yes.core.data.factory.RendererFactory
+import com.yes.core.domain.repository.IAlarmDao
 import com.yes.core.util.EspressoIdlingResource
 import dagger.Module
 import dagger.Provides
@@ -47,14 +46,20 @@ class DataModule(
     @Provides
     fun providesDatabase(
         context: Context
-    ): PlayListDataBase {
-        return PlayListDataBase .getInstance(context)
+    ): YESDataBase {
+        return YESDataBase .getInstance(context)
     }
     @Provides
     fun providesPlayListDao(
-        dataBase: PlayListDataBase
+        dataBase: YESDataBase
     ): IPlayListDao {
         return dataBase.playListDao()
+    }
+    @Provides
+    fun providesAlarmDao(
+        dataBase: YESDataBase
+    ): IAlarmDao {
+        return dataBase.alarmDao()
     }
   /*PlaylistModule  @Provides
     fun providesSettingsSharedPreferences(

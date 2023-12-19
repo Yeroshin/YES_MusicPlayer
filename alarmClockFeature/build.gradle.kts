@@ -68,4 +68,9 @@ dependencies {
     androidTestImplementation(libs.dagger)
     kapt(libs.dagger.compiler)
     kaptAndroidTest(libs.dagger.compiler)
+    //Preferences DataStore
+    implementation(libs.androidx.datastore.preferences)
+    androidTestImplementation(libs.androidx.datastore.preferences.core)
+    androidTestImplementation(libs.androidx.preference.ktx)
+
 }

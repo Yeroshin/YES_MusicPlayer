@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.data.dataSource.MediaDataStore
 import com.yes.core.data.dataSource.SettingsSharedPreferences
-import com.yes.core.data.dataSource.PlayListDataBase
+import com.yes.core.data.dataSource.YESDataBase
 import dagger.Module
 import dagger.Provides
 
@@ -30,10 +30,10 @@ class TestAppModule(
     @Singleton
     fun providesDatabase(
         context: Context
-    ): PlayListDataBase {
+    ): YESDataBase {
         return Room.inMemoryDatabaseBuilder(
             context.applicationContext,
-            PlayListDataBase::class.java,
+            YESDataBase::class.java,
         )
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
@@ -48,7 +48,7 @@ class TestAppModule(
     @Singleton
     @Provides
     fun providesPlayListDao(
-        dataBase: PlayListDataBase
+        dataBase: YESDataBase
     ): IPlayListDao {
         return dataBase.playListDao()
     }

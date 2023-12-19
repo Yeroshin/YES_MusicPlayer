@@ -5,7 +5,7 @@ import androidx.room.Room
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.data.dataSource.MediaDataStore
 import com.yes.core.data.dataSource.SettingsSharedPreferences
-import com.yes.core.data.dataSource.PlayListDataBase
+import com.yes.core.data.dataSource.YESDataBase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -23,16 +23,16 @@ class TestAppModule(
     @Singleton
     fun providesDatabase(
         context: Context
-    ): PlayListDataBase {
+    ): YESDataBase {
         return Room.inMemoryDatabaseBuilder(
             context,
-            PlayListDataBase::class.java,
+            YESDataBase::class.java,
         ).build()
     }
     @Singleton
     @Provides
     fun providesPlayListDao(
-        dataBase: PlayListDataBase
+        dataBase: YESDataBase
     ): IPlayListDao {
         return dataBase.playListDao()
     }

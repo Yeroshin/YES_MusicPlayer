@@ -10,7 +10,7 @@ import java.util.Collections
 
 
 class DatePickerAdapter(
-    private val onListEnded: (count: Int) -> Unit
+
 ) : RecyclerView.Adapter<DatePickerAdapter.ViewHolder>() {
 
     private var items = mutableListOf<Int>()
@@ -26,7 +26,8 @@ class DatePickerAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
     }
-    fun getItem(position:Int):Int{
+
+    fun getItem(position: Int): Int {
         return items[position]
     }
 

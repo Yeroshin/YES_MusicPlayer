@@ -1,13 +1,17 @@
 package com.yes.alarmclockfeature.presentation.contract
 
-import com.yes.alarmclockfeature.presentation.model.AlarmClockUI
+import com.yes.alarmclockfeature.presentation.model.AlarmItemUI
+import com.yes.alarmclockfeature.presentation.ui.datepicker.DatePickerManager
 import com.yes.core.presentation.UiEffect
 import com.yes.core.presentation.UiEvent
 import com.yes.core.presentation.UiState
 
 class AlarmClockContract {
     sealed class Event : UiEvent {
-       // data class OnSeek(val position:Int) : Event()
+        data class OnAddAlarm(
+            val date: DatePickerManager.Time,
+            val repeating:Map<String,Boolean>
+        ) : Event()
 
     }
 
@@ -17,7 +21,7 @@ class AlarmClockContract {
 
 
     sealed class AlarmClockState {
-        data class Success(val info: AlarmClockUI):AlarmClockState()
+        data class Success(val info: AlarmItemUI):AlarmClockState()
         data object Idle : AlarmClockState()
     }
 

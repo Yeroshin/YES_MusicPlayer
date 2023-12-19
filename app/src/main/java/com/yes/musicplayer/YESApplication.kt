@@ -3,6 +3,7 @@ package com.yes.musicplayer
 import android.app.Application
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
+import com.yes.alarmclockfeature.di.components.AlarmClockComponent
 import com.yes.alarmclockfeature.di.components.DaggerAlarmClockComponent
 import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
 import com.yes.core.di.component.BaseComponent
@@ -100,8 +101,9 @@ class YESApplication : Application(),
             .build()
     }
 
-    override fun getComponent(): BaseComponent {
+    override fun getComponent(): AlarmClockComponent {
         return DaggerAlarmClockComponent.builder()
+            .coreComponent(coreComponent)
             .build()
     }
 }

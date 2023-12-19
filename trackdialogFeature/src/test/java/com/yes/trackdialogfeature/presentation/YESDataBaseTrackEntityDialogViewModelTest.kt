@@ -32,7 +32,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import java.util.*
 
 @ExtendWith(MockKExtension::class)
-class PlayListDataBaseTrackEntityDialogViewModelTest {
+class YESDataBaseTrackEntityDialogViewModelTest {
 
     private val getMenuUseCase: GetMenuUseCase = mockk()
     private val saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase = mockk()

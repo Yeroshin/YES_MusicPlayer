@@ -10,7 +10,7 @@ import com.yes.core.presentation.BaseFragment
 import dagger.Component
 
 @Component(
-    dependencies = [],
+    dependencies = [CoreComponent::class],
     modules = [
         AlarmClockModule::class,
     ]

@@ -2,7 +2,7 @@ package com.yes.trackdialogfeature
 
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.trackdialogfeature.domain.repository.SettingsRepository
-import com.yes.trackdialogfeature.presentation.PlayListDataBaseTrackEntityDialogTest
+import com.yes.trackdialogfeature.presentation.YESDataBaseTrackEntityDialogTest
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import junit.framework.TestCase.assertEquals
@@ -77,7 +77,7 @@ class TrackDialogRobot() : BaseTestRobot() {
         position,
     )
     fun setEventToViewModel(state: TrackDialogContract.TrackDialogState,
-                            viewModel: PlayListDataBaseTrackEntityDialogTest.TestViewModel
+                            viewModel: YESDataBaseTrackEntityDialogTest.TestViewModel
     ){
         viewModel.pushEvent (
            state

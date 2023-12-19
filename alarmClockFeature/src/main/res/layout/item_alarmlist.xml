@@ -18,7 +18,7 @@
             android:padding="5dp">
 
             <TextView
-                android:id="@+id/song_title"
+                android:id="@+id/alarm_time"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
 
@@ -26,7 +26,6 @@
 
                 android:scrollHorizontally="true"
                 android:text="00:00"
-                android:textAlignment="center"
                 android:textColor="#918F8F"
                 android:textStyle="bold"
                 app:autoSizeMaxTextSize="25sp"
