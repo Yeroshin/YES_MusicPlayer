@@ -27,10 +27,12 @@ class MapperUI {
             alarm.enabled
         )
     }
+
     fun map(alarm: Alarm): AlarmUI {
         return AlarmUI(
             alarm.id,
-            alarm.timeHour.toString() + ":" + alarm.timeMinute.toString(),
+            String.format("%02d:%02d",  alarm.timeHour, alarm.timeMinute),
+           // alarm.timeHour.toString() + ":" + alarm.timeMinute.toString(),
             "alarm.timeMinute: Int",
             alarm.daysOfWeek,
             alarm.enabled

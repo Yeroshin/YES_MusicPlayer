@@ -1,7 +1,10 @@
 package com.yes.alarmclockfeature.di.module
 
+import android.content.Context
+import com.yes.alarmclockfeature.data.dataSource.AlarmDataSource
 import com.yes.alarmclockfeature.data.mapper.Mapper
 import com.yes.alarmclockfeature.data.repository.AlarmListRepository
+import com.yes.alarmclockfeature.data.repository.AlarmManagerRepository
 import com.yes.alarmclockfeature.domain.usecase.AddAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.DeleteAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.SetAlarmUseCase
@@ -41,11 +44,13 @@ class AlarmClockModule {
     @Provides
     fun providesAddAlarmUseCase(
         @IoDispatcher dispatcher: CoroutineDispatcher,
-        alarmListRepository: AlarmListRepository
+        alarmListRepository: AlarmListRepository,
+        alarmManagerRepository: AlarmManagerRepository
     ): AddAlarmUseCase {
         return AddAlarmUseCase(
             dispatcher,
-            alarmListRepository
+            alarmListRepository,
+            alarmManagerRepository
         )
     }
 
@@ -59,6 +64,7 @@ class AlarmClockModule {
             alarmListRepository
         )
     }
+
     @Provides
     fun providesDeleteAlarmUseCase(
         @IoDispatcher dispatcher: CoroutineDispatcher,
@@ -70,15 +76,34 @@ class AlarmClockModule {
         )
     }
     @Provides
+    fun providesAlarmDataSource(
+        context: Context
+    ): AlarmDataSource {
+        return AlarmDataSource(
+            context
+        )
+    }
+    @Provides
+    fun providesAlarmManagerRepository(
+        alarmDataSource: AlarmDataSource
+    ): AlarmManagerRepository {
+        return AlarmManagerRepository(
+            alarmDataSource
+        )
+    }
+    @Provides
     fun providesSetAlarmUseCase(
         @IoDispatcher dispatcher: CoroutineDispatcher,
-        alarmListRepository: AlarmListRepository
+        alarmListRepository: AlarmListRepository,
+        alarmManagerRepository: AlarmManagerRepository
     ): SetAlarmUseCase {
         return SetAlarmUseCase(
             dispatcher,
-            alarmListRepository
+            alarmListRepository,
+            alarmManagerRepository,
         )
     }
+
     @Provides
     fun providesAlarmClockViewModelFactory(
         mapper: MapperUI,

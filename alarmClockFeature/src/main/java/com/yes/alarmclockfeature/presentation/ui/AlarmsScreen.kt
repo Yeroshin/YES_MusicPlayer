@@ -91,7 +91,7 @@ class AlarmsScreen : BaseFragment() {
             binder.alarmsList
         )
         val snapHelper=LinearSnapHelper()
-       snapHelper.attachToRecyclerView(binder.alarmsList)
+      // snapHelper.attachToRecyclerView(binder.alarmsList)
         binder.alarmsList.layoutManager = LinearLayoutManager(context)
         binder.alarmsList.adapter = adapter
         binder.addAlarmButton.setOnClickListener {
