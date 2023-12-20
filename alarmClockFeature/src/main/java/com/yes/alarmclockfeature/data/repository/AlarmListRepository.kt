@@ -22,4 +22,14 @@ class AlarmListRepository(
             }
         }
     }
+    fun deleteAlarm(alarm: Alarm):Int{
+        return alarmDao.deleteAlarm(
+            mapper.map(alarm)
+        )
+    }
+    fun setAlarm(alarm: Alarm):Int{
+        return alarmDao.updateAlarm(
+            mapper.map(alarm)
+        )
+    }
 }

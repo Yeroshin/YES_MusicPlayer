@@ -9,14 +9,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.CheckBox
+import android.widget.ToggleButton
 import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
 import com.yes.alarmclockfeature.databinding.AlarmSetScreenBinding
+import com.yes.alarmclockfeature.presentation.model.DayOfWeek
 import com.yes.alarmclockfeature.presentation.ui.datepicker.DatePickerManager
 
 
 class AlarmClockDialog(
-    private val onOk: (date: DatePickerManager.Time,repeating:Map<String,Boolean>) -> Unit,
+    private val onOk: (date: DatePickerManager.Time,selectedDays:Set<DayOfWeek>) -> Unit,
     private val onCancel: () -> Unit
 ) : DialogFragment() {
     private lateinit var binding: ViewBinding
@@ -83,9 +86,33 @@ class AlarmClockDialog(
     private fun setupView() {
        datePickerManager.setupView()
         binder.okButton.setOnClickListener {
+            val checkBoxes: List<ToggleButton> = listOf(
+                binder.sun,
+                binder.mon,
+                binder.tue,
+                binder.wed,
+                binder.thu,
+                binder.fri,
+                binder.sat
+            )
+            val selectedDays: MutableSet<DayOfWeek> = mutableSetOf()
+            for ((index, checkBox) in checkBoxes.withIndex()) {
+                if (checkBox.isSelected) {
+                    when (index) {
+                        0 -> selectedDays.add(DayOfWeek.SUNDAY)
+                        1 -> selectedDays.add(DayOfWeek.MONDAY)
+                        2 -> selectedDays.add(DayOfWeek.TUESDAY)
+                        3 -> selectedDays.add(DayOfWeek.WEDNESDAY)
+                        4 -> selectedDays.add(DayOfWeek.THURSDAY)
+                        5 -> selectedDays.add(DayOfWeek.FRIDAY)
+                        6 -> selectedDays.add(DayOfWeek.SATURDAY)
+                    }
+                }
+            }
             onOk.invoke(
                 datePickerManager.getTime(),
-                mapOf(
+                selectedDays
+               /* mapOf(
                     "sun" to binder.sun.isChecked,
                     "mon" to binder.mon.isChecked,
                     "tue" to binder.tue.isChecked,
@@ -93,7 +120,7 @@ class AlarmClockDialog(
                     "thu" to binder.thu.isChecked,
                     "fri" to binder.fri.isChecked,
                     "sat" to binder.sat.isChecked,
-                )
+                )*/
             )
         }
         binder.cancelButton.setOnClickListener {

@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yes.alarmclockfeature.databinding.ItemAlarmlistBinding
-import com.yes.alarmclockfeature.presentation.model.AlarmItemUI
+import com.yes.alarmclockfeature.presentation.model.AlarmUI
 import java.util.Collections
 
 class AlarmsScreenAdapter :
     RecyclerView.Adapter<AlarmsScreenAdapter.ViewHolder>() {
-    private val itemList = mutableListOf<AlarmItemUI>()
+    private val itemList = mutableListOf<AlarmUI>()
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -19,13 +19,13 @@ class AlarmsScreenAdapter :
         return ViewHolder(binding)
     }
 
-    fun setItems(items: List<AlarmItemUI>) {
+    fun setItems(items: List<AlarmUI>) {
         itemList.clear()
         itemList.addAll(items)
         notifyDataSetChanged()
     }
 
-    fun getItem(position: Int): AlarmItemUI {
+    fun getItem(position: Int): AlarmUI {
         return itemList[position]
     }
 
@@ -54,9 +54,9 @@ class AlarmsScreenAdapter :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             position: Int,
-            item: AlarmItemUI,
+            item: AlarmUI,
         ) {
-
+            binding.alarmTime.text = item.alarmTime
 
         }
     }

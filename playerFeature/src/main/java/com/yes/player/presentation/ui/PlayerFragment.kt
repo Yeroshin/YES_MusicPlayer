@@ -127,7 +127,7 @@ class PlayerFragment : Fragment() {
         when (state.playerState) {
             is PlayerContract.PlayerState.Success -> {
                 dataLoaded(
-                    state.playerState.info,
+                    state.playerState.info
                 )
             }
 

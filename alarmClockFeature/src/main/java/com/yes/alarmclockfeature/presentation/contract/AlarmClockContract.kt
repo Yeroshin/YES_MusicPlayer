@@ -1,6 +1,7 @@
 package com.yes.alarmclockfeature.presentation.contract
 
-import com.yes.alarmclockfeature.presentation.model.AlarmItemUI
+import com.yes.alarmclockfeature.presentation.model.AlarmUI
+import com.yes.alarmclockfeature.presentation.model.DayOfWeek
 import com.yes.alarmclockfeature.presentation.ui.datepicker.DatePickerManager
 import com.yes.core.presentation.UiEffect
 import com.yes.core.presentation.UiEvent
@@ -10,7 +11,13 @@ class AlarmClockContract {
     sealed class Event : UiEvent {
         data class OnAddAlarm(
             val date: DatePickerManager.Time,
-            val repeating:Map<String,Boolean>
+            val selectedDays:Set<DayOfWeek>
+        ) : Event()
+        data class OnDeleteAlarm(
+            val alarm:AlarmUI
+        ) : Event()
+        data class OnSetAlarm(
+            val alarm:AlarmUI
         ) : Event()
 
     }
@@ -21,7 +28,7 @@ class AlarmClockContract {
 
 
     sealed class AlarmClockState {
-        data class Success(val info: AlarmItemUI):AlarmClockState()
+        data class Success(val items: List<AlarmUI>):AlarmClockState()
         data object Idle : AlarmClockState()
     }
 
