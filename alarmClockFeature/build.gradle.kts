@@ -72,5 +72,10 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     androidTestImplementation(libs.androidx.datastore.preferences.core)
     androidTestImplementation(libs.androidx.preference.ktx)
+    //  implementation libs.media3//tmp
+    implementation(libs.androidx.media3.session)
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.exoplayer.dash)
+    implementation(libs.androidx.media3.ui)
 
 }

@@ -47,7 +47,7 @@
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
-        <receiver android:name=".YESBroadcastReceiver" android:exported="false">
+        <receiver android:name="com.yes.alarmclockfeature.presentation.ui.YESBroadcastReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="YES_PLAY_BROADCAST" />
             </intent-filter>

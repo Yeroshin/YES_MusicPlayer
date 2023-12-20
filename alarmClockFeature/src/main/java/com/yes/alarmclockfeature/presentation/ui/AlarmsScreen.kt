@@ -1,5 +1,8 @@
 package com.yes.alarmclockfeature.presentation.ui
 
+import android.content.Intent
+import android.os.Build
+import android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -50,6 +53,10 @@ class AlarmsScreen : BaseFragment() {
 
     private var alarmClockDialog: AlarmClockDialog? = null
     override fun setupView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            startActivity(Intent(ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
+        }
+
         val onSwipeCallback: (position: Int) -> Unit = { position ->
             val deletedItem = adapter.getItem(position)
             binder.alarmsList.layoutManager?.removeViewAt(position)

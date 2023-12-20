@@ -6,7 +6,9 @@ import androidx.fragment.app.FragmentActivity
 import com.yes.alarmclockfeature.di.components.AlarmClockComponent
 import com.yes.alarmclockfeature.di.components.DaggerAlarmClockComponent
 import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
+import com.yes.alarmclockfeature.presentation.ui.YESBroadcastReceiver
 import com.yes.core.di.component.BaseComponent
+import com.yes.core.di.component.CoreComponent
 import com.yes.core.di.component.DaggerAudioSessionIdComponent
 import com.yes.core.di.component.DaggerCoreComponent
 import com.yes.core.di.component.DaggerMusicServiceComponent
@@ -41,15 +43,19 @@ class YESApplication : Application(),
     PlaylistScreen.DependencyResolver,
     TrackDialog.DependencyResolver,
     MusicService.DependencyResolver,
-    AlarmsScreen.DependencyResolver {
+    AlarmsScreen.DependencyResolver,
+YESBroadcastReceiver.YESBroadcastDependency{
 
     private val dataModule by lazy {
         DataModule(this)
     }
-    private val coreComponent by lazy {
+     private val coreComponent by lazy {
         DaggerCoreComponent.builder()
             .dataModule(dataModule)
             .build()
+    }
+    override fun getMyCoreComponent(): CoreComponent {
+        return coreComponent
     }
 
     override fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent {
