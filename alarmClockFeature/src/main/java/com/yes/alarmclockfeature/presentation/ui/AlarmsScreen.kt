@@ -14,6 +14,7 @@ import com.yes.alarmclockfeature.databinding.AlarmsListScreenBinding
 import com.yes.alarmclockfeature.presentation.contract.AlarmClockContract
 import com.yes.alarmclockfeature.presentation.contract.AlarmClockContract.*
 import com.yes.alarmclockfeature.presentation.model.AlarmUI
+import com.yes.core.data.dataSource.PlayerDataSource
 
 import com.yes.core.presentation.BaseFragment
 import com.yes.core.presentation.ItemTouchHelperCallback
@@ -54,7 +55,7 @@ class AlarmsScreen : BaseFragment() {
     private var alarmClockDialog: AlarmClockDialog? = null
     override fun setupView() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            startActivity(Intent(ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
+           // startActivity(Intent(ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
         }
 
         val onSwipeCallback: (position: Int) -> Unit = { position ->

@@ -6,8 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.getSystemService
 import com.yes.alarmclockfeature.presentation.ui.YESBroadcastReceiver
 import java.util.Calendar
 
@@ -52,6 +50,22 @@ private val context: Context
             val next=alarmManager?.nextAlarmClock
             Log.d("alarm","loaded!")
         }
+
+        ///////////////////////
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),alarmIntent);
+            alarmManager?.setAlarmClock(
+                AlarmManager.AlarmClockInfo(
+                    calendar.timeInMillis,
+                    pendingIntent
+                ), pendingIntent
+            )
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            alarmManager?.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+        } else {
+            alarmManager?.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+        }
+        ///////////////////////
 
     }
 }

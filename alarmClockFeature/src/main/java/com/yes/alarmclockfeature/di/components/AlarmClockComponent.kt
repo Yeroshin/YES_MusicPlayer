@@ -2,6 +2,7 @@ package com.yes.alarmclockfeature.di.components
 
 import com.yes.alarmclockfeature.di.AlarmClockScope
 import com.yes.alarmclockfeature.di.module.AlarmClockModule
+import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.core.di.component.AudioSessionIdComponent
 import com.yes.core.di.component.BaseComponent
 import com.yes.core.di.component.CoreComponent
@@ -16,6 +17,8 @@ import dagger.Component
     ]
 )
 @AlarmClockScope
-interface AlarmClockComponent:BaseComponent
+interface AlarmClockComponent:BaseComponent{
+    fun getPlayerDataSource(): PlayerDataSource
+}
 
 

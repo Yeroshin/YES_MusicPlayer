@@ -43,8 +43,8 @@ class YESApplication : Application(),
     PlaylistScreen.DependencyResolver,
     TrackDialog.DependencyResolver,
     MusicService.DependencyResolver,
-    AlarmsScreen.DependencyResolver,
-YESBroadcastReceiver.YESBroadcastDependency{
+    AlarmsScreen.DependencyResolver
+{
 
     private val dataModule by lazy {
         DataModule(this)
@@ -53,9 +53,6 @@ YESBroadcastReceiver.YESBroadcastDependency{
         DaggerCoreComponent.builder()
             .dataModule(dataModule)
             .build()
-    }
-    override fun getMyCoreComponent(): CoreComponent {
-        return coreComponent
     }
 
     override fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent {

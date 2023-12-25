@@ -16,6 +16,7 @@ import androidx.viewbinding.ViewBinding
 import com.yes.alarmclockfeature.databinding.AlarmSetScreenBinding
 import com.yes.alarmclockfeature.presentation.model.DayOfWeek
 import com.yes.alarmclockfeature.presentation.ui.datepicker.DatePickerManager
+import java.util.Calendar
 
 
 class AlarmClockDialog(
@@ -84,6 +85,10 @@ class AlarmClockDialog(
 
 
     private fun setupView() {
+        ///////////////////
+        val calendar = Calendar.getInstance()
+        val hour=calendar.get(Calendar.HOUR)
+        ///////////////////
        datePickerManager.setupView()
         binder.okButton.setOnClickListener {
             val checkBoxes: List<ToggleButton> = listOf(

@@ -3,6 +3,7 @@ package com.yes.core.data.dataSource
 import android.content.ComponentName
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.media3.common.C.TIME_UNSET
 import androidx.media3.common.MediaItem
@@ -23,6 +24,13 @@ import java.io.File
 class PlayerDataSource(
     private val context: Context,
 ) {
+    interface MediaControllerListener {
+        fun onMediaControllerReady(controller: MediaController)
+    }
+    private var mediaControllerListener: MediaControllerListener? = null
+    fun setMediaControllerListener(listener: MediaControllerListener) {
+        mediaControllerListener = listener
+    }
     private val sessionToken = SessionToken(
         context,
         ComponentName(
@@ -34,8 +42,7 @@ class PlayerDataSource(
             MediaController.Builder(
                 context,
                 sessionToken
-            )
-                .buildAsync()
+            ).buildAsync()
     }
     private val controller: MediaController by lazy {
         controllerFuture.get()
@@ -52,6 +59,8 @@ class PlayerDataSource(
 
         controllerFuture.addListener(
             {
+                val controller = controllerFuture.get()
+                mediaControllerListener?.onMediaControllerReady(controller)
                 setController()
             },
             MoreExecutors.directExecutor()
@@ -151,6 +160,7 @@ class PlayerDataSource(
     }
 
     fun play() {
+        Log.d("alarm","playing!")
         controller.play()
     }
 

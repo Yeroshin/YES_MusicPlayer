@@ -2,6 +2,7 @@ package com.yes.core.presentation
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.media3.common.Player
 import androidx.media3.common.Tracks
@@ -35,9 +36,14 @@ class MusicService : MediaSessionService() {
     }
 
     override fun onGetSession(
+
         controllerInfo: MediaSession.ControllerInfo
-    ): MediaSession = mediaSession
+    ): MediaSession  {
+        Log.d("alarm","MusicService!")
+        return mediaSession
+    }
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
         when (intent?.action) {
 
             "PLAY_MUSIC" -> {

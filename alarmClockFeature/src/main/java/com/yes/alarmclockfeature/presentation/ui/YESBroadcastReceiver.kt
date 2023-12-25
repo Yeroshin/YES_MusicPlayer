@@ -9,16 +9,31 @@ import android.content.Intent
 import android.util.Log
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import androidx.media3.session.MediaController
+import com.yes.alarmclockfeature.di.components.AlarmClockComponent
+import com.yes.core.data.dataSource.PlayerDataSource
+import com.yes.core.di.component.BaseComponent
 import com.yes.core.di.component.CoreComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class YESBroadcastReceiver  : BroadcastReceiver() {
-    interface YESBroadcastDependency{
-        fun getMyCoreComponent(): CoreComponent
+class YESBroadcastReceiver : BroadcastReceiver(), PlayerDataSource.MediaControllerListener {
+    lateinit var component: BaseComponent
+    val player by lazy {
+        (component as AlarmClockComponent).getPlayerDataSource()
     }
     override fun onReceive(context: Context, intent: Intent) {
+        Log.d("alarm","YESBroadcastReceiver!")
+        component=(context.applicationContext as AlarmsScreen.DependencyResolver).getComponent()
+
+        player.setMediaControllerListener(this)
+
         Log.d("alarm","fired!")
-        val component =(context.applicationContext as YESBroadcastDependency).getMyCoreComponent()
-        val player=component.providesPlayerDataSource()
+    }
+
+    override fun onMediaControllerReady(controller: MediaController) {
         val mediaMetadata = MediaMetadata.Builder()
             .setAlbumTitle("item.album")
             .setArtist("item.artist")
@@ -32,6 +47,5 @@ class YESBroadcastReceiver  : BroadcastReceiver() {
         )
         player.setTracks(items)
         player.play()
-        Log.d("alarm","fired!")
     }
 }
