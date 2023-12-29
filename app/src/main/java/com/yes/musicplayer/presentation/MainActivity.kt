@@ -1,7 +1,12 @@
 package com.yes.musicplayer.presentation
 
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PermissionInfo
 import android.os.Build
@@ -19,12 +24,14 @@ import androidx.viewbinding.ViewBinding
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
+import com.yes.alarmclockfeature.presentation.ui.YESBroadcastReceiver
 import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.MainActivityComponent
 import com.yes.player.presentation.ui.PlayerFragment
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
 import com.yes.playlistfeature.presentation.ui.PlaylistScreen
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
+import java.util.Calendar
 
 
 class MainActivity :
@@ -46,13 +53,14 @@ class MainActivity :
         dependencyResolver.getMainActivityComponent(this)
     }
 
-  /*  private val fragmentAdapter: FragmentStateAdapter by lazy {
-        mainActivityComponent.getFragmentAdapter()
-    }
+    /*  private val fragmentAdapter: FragmentStateAdapter by lazy {
+          mainActivityComponent.getFragmentAdapter()
+      }
 
-    private val fragmentFactory: FragmentFactory by lazy {
-        mainActivityComponent.getFragmentFactory()
-    }*/
+      private val fragmentFactory: FragmentFactory by lazy {
+          mainActivityComponent.getFragmentFactory()
+      }*/
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -159,8 +167,9 @@ class MainActivity :
     }
 
     private fun setFragments() {
+
         binding = ActivityMainBinding.inflate(layoutInflater)
-       // supportFragmentManager.fragmentFactory = fragmentFactory
+        // supportFragmentManager.fragmentFactory = fragmentFactory
         val view = binding.root
         setContentView(view)
 
@@ -168,7 +177,8 @@ class MainActivity :
             PlaylistScreen::class.java,
             AlarmsScreen::class.java
         )
-        binder.viewPager.adapter = UniversalFragmentAdapter(this, fragmentsList, supportFragmentManager.fragmentFactory)
+        binder.viewPager.adapter =
+            UniversalFragmentAdapter(this, fragmentsList, supportFragmentManager.fragmentFactory)
         TabLayoutMediator(binder.tabs, binder.viewPager) { tab, position ->
             run {
                 when (position) {
@@ -187,6 +197,7 @@ class MainActivity :
               setReorderingAllowed(true)
               add<PlayerFragment>(R.id.player_controls)
           }*/
+
     }
 
     class MainActivityFragmentFactory(
@@ -203,10 +214,27 @@ class MainActivity :
         }
     }
 
-
+    @SuppressLint("ScheduleExactAlarm")
     override fun showMediaDialog() {
-        TrackDialog().show(supportFragmentManager, null)
+       // TrackDialog().show(supportFragmentManager, null)
+////////////////////
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmIntent = Intent(this, MainActivity::class.java)
+        alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val pendingIntent = PendingIntent
+            .getActivity(this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val calendar = Calendar.getInstance()
 
+        val sec = calendar.get(Calendar.SECOND)
+
+        calendar.set(Calendar.SECOND, sec + 10)
+        alarmManager.setAlarmClock(
+            AlarmManager.AlarmClockInfo(
+                calendar.timeInMillis,
+                pendingIntent
+            ), pendingIntent
+        )
+        ////////////////////
     }
 
     override fun showPlaylistDialog() {

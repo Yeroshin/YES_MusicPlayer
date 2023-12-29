@@ -7,6 +7,7 @@ import android.content.Intent
 
 
 import android.util.Log
+import android.widget.Toast
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.session.MediaController
@@ -20,20 +21,28 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class YESBroadcastReceiver : BroadcastReceiver(), PlayerDataSource.MediaControllerListener {
-    lateinit var component: BaseComponent
-    val player by lazy {
+    private lateinit var component: BaseComponent
+    private val player by lazy {
         (component as AlarmClockComponent).getPlayerDataSource()
     }
+    private lateinit var context: Context
     override fun onReceive(context: Context, intent: Intent) {
+        this.context=context
         Log.d("alarm","YESBroadcastReceiver!")
         component=(context.applicationContext as AlarmsScreen.DependencyResolver).getComponent()
 
         player.setMediaControllerListener(this)
 
+
+        Toast.makeText(context, "Don't panic but your time is up!!!!.",
+            Toast.LENGTH_LONG).show();
         Log.d("alarm","fired!")
+       println("YESBroadcastReceiver!")
     }
 
     override fun onMediaControllerReady(controller: MediaController) {
+        Toast.makeText(context, "STARTING service!!!!.",
+            Toast.LENGTH_LONG).show();
         val mediaMetadata = MediaMetadata.Builder()
             .setAlbumTitle("item.album")
             .setArtist("item.artist")
@@ -41,7 +50,7 @@ class YESBroadcastReceiver : BroadcastReceiver(), PlayerDataSource.MediaControll
             .build()
         val items= listOf(
             MediaItem.Builder()
-                .setUri("https://www.mediacollege.com/audio/tone/files/10kHz_44100Hz_16bit_05sec.mp3")
+                .setUri("https://maximum.hostingradio.ru/maximum96.aacp")
                 .setMediaMetadata(mediaMetadata)
                 .build()
         )
