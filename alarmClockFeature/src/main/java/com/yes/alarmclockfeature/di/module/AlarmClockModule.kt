@@ -5,14 +5,23 @@ import com.yes.alarmclockfeature.data.dataSource.AlarmDataSource
 import com.yes.alarmclockfeature.data.mapper.Mapper
 import com.yes.alarmclockfeature.data.repository.AlarmListRepository
 import com.yes.alarmclockfeature.data.repository.AlarmManagerRepository
+import com.yes.alarmclockfeature.data.repository.PlayListRepositoryImpl
+import com.yes.alarmclockfeature.data.repository.PlayerRepository
+import com.yes.alarmclockfeature.data.repository.SettingsRepositoryImpl
 import com.yes.alarmclockfeature.domain.usecase.AddAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.DeleteAlarmUseCase
+import com.yes.alarmclockfeature.domain.usecase.GetCurrentPlaylistTracksUseCase
 import com.yes.alarmclockfeature.domain.usecase.SetAlarmUseCase
+import com.yes.alarmclockfeature.domain.usecase.SetTracksToPlayerPlaylistUseCase
 import com.yes.alarmclockfeature.domain.usecase.SubscribeAlarmsUseCase
 import com.yes.alarmclockfeature.presentation.mapper.MapperUI
 import com.yes.alarmclockfeature.presentation.vm.AlarmClockViewModel
+import com.yes.core.data.dataSource.PlayerDataSource
+import com.yes.core.data.dataSource.SettingsDataStore
 import com.yes.core.di.module.IoDispatcher
+import com.yes.core.di.module.MainDispatcher
 import com.yes.core.domain.repository.IAlarmDao
+import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.presentation.BaseDependency
 import dagger.Module
 import dagger.Provides
@@ -20,6 +29,58 @@ import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 class AlarmClockModule {
+    @Provides
+    fun providesPlayerRepository(
+        mapper:Mapper,
+        playerDataSource: PlayerDataSource
+    ): PlayerRepository {
+        return PlayerRepository(
+            mapper,
+            playerDataSource
+        )
+    }
+    @Provides
+    fun providesSetTracksToPlayerPlaylistUseCase(
+        @MainDispatcher dispatcher: CoroutineDispatcher,
+        playerRepository: PlayerRepository,
+    ): SetTracksToPlayerPlaylistUseCase {
+        return SetTracksToPlayerPlaylistUseCase(
+            dispatcher,
+            playerRepository
+        )
+    }
+
+    @Provides
+    fun providesSettingsRepository(
+        dataStore: SettingsDataStore
+    ): SettingsRepositoryImpl {
+        return SettingsRepositoryImpl(
+            dataStore
+        )
+    }
+    @Provides
+    fun providesPlayListRepository(
+        mapper: Mapper,
+        playListDao: IPlayListDao,
+    ): PlayListRepositoryImpl {
+        return PlayListRepositoryImpl(
+            mapper,
+            playListDao,
+        )
+    }
+    @Provides
+    fun providesGetCurrentPlaylistTracksUseCase(
+        @IoDispatcher dispatcher: CoroutineDispatcher,
+        playListRepositoryImpl: PlayListRepositoryImpl,
+        settingsRepository: SettingsRepositoryImpl
+    ): GetCurrentPlaylistTracksUseCase {
+        return GetCurrentPlaylistTracksUseCase(
+            dispatcher,
+            playListRepositoryImpl,
+            settingsRepository
+        )
+    }
+
     @Provides
     fun providesMapperUI(): MapperUI {
         return MapperUI()
@@ -75,6 +136,7 @@ class AlarmClockModule {
             alarmListRepository
         )
     }
+
     @Provides
     fun providesAlarmDataSource(
         context: Context
@@ -83,6 +145,7 @@ class AlarmClockModule {
             context
         )
     }
+
     @Provides
     fun providesAlarmManagerRepository(
         alarmDataSource: AlarmDataSource
@@ -91,6 +154,7 @@ class AlarmClockModule {
             alarmDataSource
         )
     }
+
     @Provides
     fun providesSetAlarmUseCase(
         @IoDispatcher dispatcher: CoroutineDispatcher,

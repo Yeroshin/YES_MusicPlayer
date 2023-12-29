@@ -1,11 +1,53 @@
 package com.yes.alarmclockfeature.data.mapper
 
 import android.widget.ToggleButton
+import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
 import com.yes.alarmclockfeature.domain.model.Alarm
+import com.yes.alarmclockfeature.domain.model.Track
 import com.yes.alarmclockfeature.presentation.model.DayOfWeek
 import com.yes.core.data.entity.AlarmDataBaseEntity
+import com.yes.core.data.entity.PlayListDataBaseTrackEntity
 
 class Mapper {
+    fun map(track: PlayListDataBaseTrackEntity): Track {
+        return Track(
+            track.id ?: 0,
+            track.playlistId,
+            track.artist,
+            track.title,
+            track.uri,
+            track.duration,
+            track.album,
+            track.size,
+            track.position
+        )
+    }
+
+    fun map(track: Track): PlayListDataBaseTrackEntity {
+        return PlayListDataBaseTrackEntity(
+            track.id,
+            track.playlistId,
+            track.artist,
+            track.title,
+            track.uri,
+            track.duration,
+            track.album,
+            track.size,
+            track.position
+        )
+    }
+    fun mapToMediaItem(item: Track): MediaItem {
+        val mediaMetadata = MediaMetadata.Builder()
+            .setAlbumTitle(item.album)
+            .setArtist(item.artist)
+            .setTitle(item.title)
+            .build()
+        return MediaItem.Builder()
+            .setUri(item.uri)
+            .setMediaMetadata(mediaMetadata)
+            .build()
+    }
     fun map(alarm: Alarm): AlarmDataBaseEntity {
 
 

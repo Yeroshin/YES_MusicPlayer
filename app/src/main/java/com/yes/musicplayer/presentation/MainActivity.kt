@@ -216,25 +216,7 @@ class MainActivity :
 
     @SuppressLint("ScheduleExactAlarm")
     override fun showMediaDialog() {
-       // TrackDialog().show(supportFragmentManager, null)
-////////////////////
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val alarmIntent = Intent(this, MainActivity::class.java)
-        alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        val pendingIntent = PendingIntent
-            .getActivity(this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-        val calendar = Calendar.getInstance()
-
-        val sec = calendar.get(Calendar.SECOND)
-
-        calendar.set(Calendar.SECOND, sec + 10)
-        alarmManager.setAlarmClock(
-            AlarmManager.AlarmClockInfo(
-                calendar.timeInMillis,
-                pendingIntent
-            ), pendingIntent
-        )
-        ////////////////////
+        TrackDialog().show(supportFragmentManager, null)
     }
 
     override fun showPlaylistDialog() {
