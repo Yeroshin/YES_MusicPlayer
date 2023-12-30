@@ -23,7 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class YESBroadcastReceiver : BroadcastReceiver() {
+class YESBroadcastReceiver : BroadcastReceiver(),PlayerDataSource.MediaControllerListener {
     private lateinit var component: BaseComponent
 
     private val getCurrentPlaylistTracksUseCase by lazy {
@@ -32,23 +32,28 @@ class YESBroadcastReceiver : BroadcastReceiver() {
     private val setTracksToPlayerPlaylistUseCase by lazy {
         (component as AlarmClockComponent).getSetTracksToPlayerPlaylistUseCase()
     }
-
+    private lateinit var context: Context
     override fun onReceive(context: Context, intent: Intent) {
-
+        this.context=context
         component=(context.applicationContext as AlarmsScreen.DependencyResolver).getComponent()
+        Toast.makeText(context, "player ", Toast.LENGTH_SHORT).show()
+
         CoroutineScope(Dispatchers.Main).launch {
 
             val result = getCurrentPlaylistTracksUseCase()
             when (result) {
                 is DomainResult.Success -> {
-                        setTracksToPlayerPlaylistUseCase(
-                            SetTracksToPlayerPlaylistUseCase.Params(
-                                result.data
-                            )
+                    setTracksToPlayerPlaylistUseCase(
+                        SetTracksToPlayerPlaylistUseCase.Params(
+                            result.data
                         )
-                    }
+                    )
+                }
                 is DomainResult.Error -> TODO()
             }
         }
+    }
+    override fun onMediaControllerReady(controller: MediaController) {
+
     }
 }

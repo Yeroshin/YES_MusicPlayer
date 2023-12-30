@@ -14,6 +14,7 @@ class SetTracksToPlayerPlaylistUseCase (
     override suspend fun run(params: Params?): DomainResult<Unit> {
         return params?.let {
             playerRepository.setTracks(params.tracks)
+            playerRepository.play()
             DomainResult.Success(Unit)
         }?: DomainResult.Error(DomainResult.UnknownException)
 

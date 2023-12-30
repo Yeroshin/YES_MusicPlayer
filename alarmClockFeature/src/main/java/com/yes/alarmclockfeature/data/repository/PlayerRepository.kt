@@ -20,6 +20,9 @@ class PlayerRepository(
             }
         )
     }
+    fun play() {
+        playerDataSource.play()
+    }
 
     fun getRepeatMode(): Boolean {
         return playerDataSource.getRepeatMode() != REPEAT_MODE_OFF

@@ -92,6 +92,7 @@ class DataModule(
         )
     }
     @Provides
+    @Singleton
     fun providesPlayerDataSource(
         context: Context,
     ): PlayerDataSource {

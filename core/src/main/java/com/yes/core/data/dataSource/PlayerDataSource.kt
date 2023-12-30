@@ -2,8 +2,6 @@ package com.yes.core.data.dataSource
 
 import android.content.ComponentName
 import android.content.Context
-import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.media3.common.C.TIME_UNSET
 import androidx.media3.common.MediaItem
@@ -18,7 +16,7 @@ import com.yes.core.presentation.MusicService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.io.File
+
 
 
 class PlayerDataSource(
@@ -26,6 +24,11 @@ class PlayerDataSource(
 ) {
     interface MediaControllerListener {
         fun onMediaControllerReady(controller: MediaController)
+    }
+    private val commandQueue: MutableList<QueuedCommand> = mutableListOf()
+    sealed class QueuedCommand{
+        data object Play:QueuedCommand()
+        data class SetTracks(val items: List<MediaItem>):QueuedCommand()
     }
     private var mediaControllerListener: MediaControllerListener? = null
     fun setMediaControllerListener(listener: MediaControllerListener) {
@@ -56,15 +59,28 @@ class PlayerDataSource(
 
 
     private fun initializeController() {
-
+        val done=controllerFuture.isDone
         controllerFuture.addListener(
             {
+                val done=controllerFuture.isDone
                 val controller = controllerFuture.get()
                 mediaControllerListener?.onMediaControllerReady(controller)
                 setController()
+                commandQueue.forEach { queuedCommand ->
+                    when (queuedCommand){
+                        is QueuedCommand.Play -> controller.play()
+                        is QueuedCommand.SetTracks -> controller.setMediaItems(queuedCommand.items)
+                    }
+
+
+                }
+                // Очистить очередь
+                commandQueue.clear()
             },
             MoreExecutors.directExecutor()
         )
+      //  val controller = controllerFuture.get()
+        println("hello")
         //////////////////
 
 
@@ -160,8 +176,14 @@ class PlayerDataSource(
     }
 
     fun play() {
-        Log.d("alarm","playing!")
-        controller.play()
+        if (controllerFuture.isDone) {
+            val controller = controllerFuture.get()
+            controller.play()
+        } else {
+            // Добавить команду приостановки в очередь
+            commandQueue.add(QueuedCommand.Play)
+        }
+       // controller.play()
     }
 
     fun seek(position: Long) {
@@ -177,6 +199,13 @@ class PlayerDataSource(
     }
 
     fun setTracks(items: List<MediaItem>) {
+        if (controllerFuture.isDone) {
+            val controller = controllerFuture.get()
+            controller.setMediaItems(items)
+        } else {
+            // Добавить команду приостановки в очередь
+            commandQueue.add(QueuedCommand.SetTracks(items))
+        }
         controller.setMediaItems(items)
     }
 
