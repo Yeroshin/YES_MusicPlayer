@@ -40,13 +40,16 @@ class Mapper {
     }
 
     fun mapToMediaItem(item: Track): MediaItem {
+        val file = File(item.uri)
+        val ex=file.exists()
+        val path=Uri.fromFile( File(item.uri))
          val mediaMetadata = MediaMetadata.Builder()
              .setAlbumTitle(item.album)
              .setArtist(item.artist)
              .setTitle(item.title)
              .build()
         return MediaItem.Builder()
-            .setUri(item.uri)
+            .setUri(path)
             .setMediaMetadata(mediaMetadata)
             .build()
      /*   return MediaItem.Builder()
