@@ -36,11 +36,13 @@ class YESBroadcastReceiver : BroadcastReceiver(),PlayerDataSource.MediaControlle
     override fun onReceive(context: Context, intent: Intent) {
         this.context=context
         component=(context.applicationContext as AlarmsScreen.DependencyResolver).getComponent()
-        Toast.makeText(context, "player ", Toast.LENGTH_SHORT).show()
-
+        Toast.makeText(context, "BroadcastReceiver ", Toast.LENGTH_SHORT).show()
+        println("BroadcastReceiver")
         CoroutineScope(Dispatchers.Main).launch {
 
             val result = getCurrentPlaylistTracksUseCase()
+            println("result getCurrentPlaylistTracksUseCase")
+            Toast.makeText(context, "result ", Toast.LENGTH_SHORT).show()
             when (result) {
                 is DomainResult.Success -> {
                     setTracksToPlayerPlaylistUseCase(
@@ -52,6 +54,8 @@ class YESBroadcastReceiver : BroadcastReceiver(),PlayerDataSource.MediaControlle
                 is DomainResult.Error -> TODO()
             }
         }
+        println("BroadcastReceiver exit")
+        Toast.makeText(context, "exit", Toast.LENGTH_SHORT).show()
     }
     override fun onMediaControllerReady(controller: MediaController) {
 

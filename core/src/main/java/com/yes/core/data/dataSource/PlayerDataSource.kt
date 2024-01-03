@@ -64,6 +64,7 @@ class PlayerDataSource(
             {
                 val done=controllerFuture.isDone
                 val controller = controllerFuture.get()
+                println("controller get")
                 mediaControllerListener?.onMediaControllerReady(controller)
                 setController()
                 commandQueue.forEach { queuedCommand ->
@@ -80,7 +81,7 @@ class PlayerDataSource(
             MoreExecutors.directExecutor()
         )
       //  val controller = controllerFuture.get()
-        println("hello")
+        println("controller waiting")
         //////////////////
 
 

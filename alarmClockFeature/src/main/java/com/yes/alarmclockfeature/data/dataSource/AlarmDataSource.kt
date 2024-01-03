@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import com.yes.alarmclockfeature.presentation.ui.YESBroadcastReceiver
 import java.util.Calendar
 import java.util.Date
@@ -21,16 +22,25 @@ class AlarmDataSource(
 
         alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         /////////////////////
-        alarmIntent = Intent(context, YESBroadcastReceiver::class.java)
+        alarmIntent = Intent(context, YESBroadcastReceiver::class.java).apply {
+            putExtra("hello","world")
+            action = "alarm"
+        }
+      //  alarmIntent.setAction("alarm")
         pendingIntent = PendingIntent
-            .getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            .getBroadcast(
+                context,
+                0,
+                alarmIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
         ////////////////////
 
         ///////////////////////////
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             alarmManager?.canScheduleExactAlarms()
         } else {
-            true
+           // Toast.makeText(context, "canScheduleExactAlarms ERROR!!!", Toast.LENGTH_SHORT).show()
         }
         val calendar = Calendar.getInstance()
         /* var currentTime = calendar.timeInMillis
@@ -62,12 +72,16 @@ class AlarmDataSource(
          }*/
 
         ///////////////////////
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),alarmIntent);
+        if (Build.VERSION.SDK_INT >= 23) {
+            /* alarmManager?.setExactAndAllowWhileIdle(
+                 AlarmManager.RTC_WAKEUP,
+                 calendar.timeInMillis,
+                 pendingIntent
+             )*/
             alarmManager?.setAlarmClock(
                 AlarmManager.AlarmClockInfo(
                     calendar.timeInMillis,
-                    pendingIntent
+                    null
                 ), pendingIntent
             )
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
