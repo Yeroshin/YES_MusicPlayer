@@ -23,12 +23,10 @@ class MusicService : MediaSessionService() {
     data class Dependency(
         val mediaSession: MediaSession
     )
-    private val component by lazy {
-        (application as DependencyResolver)
-            .getMusicServiceComponent(this)
-    }
+
     private val dependency by lazy {
-        component.getDependency()
+        (application as DependencyResolver)
+            .getMusicServiceComponent(this).getDependency()
     }
 
     private val mediaSession: MediaSession by lazy {
@@ -39,6 +37,7 @@ class MusicService : MediaSessionService() {
 
         controllerInfo: MediaSession.ControllerInfo
     ): MediaSession  {
+        println("MusicService onGetSession")
         Log.d("alarm","MusicService!")
         return mediaSession
     }

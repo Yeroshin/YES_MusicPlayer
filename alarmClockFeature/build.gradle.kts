@@ -56,6 +56,7 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":coreUI"))
 
+
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)

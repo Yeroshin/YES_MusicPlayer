@@ -64,7 +64,7 @@ class PlayerDataSource(
             {
                 val done=controllerFuture.isDone
                 val controller = controllerFuture.get()
-                println("controller get")
+                println("controller GET!!!")
                 mediaControllerListener?.onMediaControllerReady(controller)
                 setController()
                 commandQueue.forEach { queuedCommand ->

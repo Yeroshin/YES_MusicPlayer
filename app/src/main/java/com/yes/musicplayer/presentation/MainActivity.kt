@@ -4,6 +4,9 @@ package com.yes.musicplayer.presentation
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlarmManager
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -66,7 +69,7 @@ class MainActivity :
 
         super.onCreate(savedInstanceState)
         checkPermissions()
-
+        createNotificationChannel(this)
 
     }
 
@@ -200,6 +203,21 @@ class MainActivity :
 
     }
 
+    private fun createNotificationChannel(context: Context){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            val name:CharSequence="music"
+            val description="music alarm"
+            val importance=NotificationManager.IMPORTANCE_HIGH
+            val channel=NotificationChannel("yes",name, importance)
+            channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+            channel.description=description
+            val notificationManager=
+                context.getSystemService( NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
+
+        }
+    }
+
     class MainActivityFragmentFactory(
 
     ) : FragmentFactory() {
@@ -214,7 +232,6 @@ class MainActivity :
         }
     }
 
-    @SuppressLint("ScheduleExactAlarm")
     override fun showMediaDialog() {
         TrackDialog().show(supportFragmentManager, null)
     }
