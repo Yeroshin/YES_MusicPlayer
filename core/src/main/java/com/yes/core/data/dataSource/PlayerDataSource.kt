@@ -2,7 +2,10 @@ package com.yes.core.data.dataSource
 
 import android.content.ComponentName
 import android.content.Context
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.media3.common.C.TIME_UNSET
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
@@ -16,7 +19,7 @@ import com.yes.core.presentation.MusicService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-
+import java.util.concurrent.ExecutionException
 
 
 class PlayerDataSource(
@@ -34,16 +37,18 @@ class PlayerDataSource(
     fun setMediaControllerListener(listener: MediaControllerListener) {
         mediaControllerListener = listener
     }
-    private val sessionToken = SessionToken(
-        context,
-        ComponentName(
+    private val sessionToken by lazy {
+        SessionToken(
             context,
-            MusicService::class.java
+            ComponentName(
+                context,
+                MusicService::class.java
+            )
         )
-    )
+    }
     private val  controllerFuture by lazy {
             MediaController.Builder(
-                context,
+                context.applicationContext,
                 sessionToken
             ).buildAsync()
     }
@@ -58,27 +63,38 @@ class PlayerDataSource(
 
 
 
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun initializeController() {
         val done=controllerFuture.isDone
         controllerFuture.addListener(
             {
                 val done=controllerFuture.isDone
-                val controller = controllerFuture.get()
-                println("controller GET!!!")
-                mediaControllerListener?.onMediaControllerReady(controller)
-                setController()
-                commandQueue.forEach { queuedCommand ->
-                    when (queuedCommand){
-                        is QueuedCommand.Play -> controller.play()
-                        is QueuedCommand.SetTracks -> controller.setMediaItems(queuedCommand.items)
+                try{
+                    val controller = controllerFuture.get()
+                    println("controller GET!!!")
+                    mediaControllerListener?.onMediaControllerReady(controller)
+                    setController()
+                    commandQueue.forEach { queuedCommand ->
+                        when (queuedCommand){
+                            is QueuedCommand.Play -> controller.play()
+                            is QueuedCommand.SetTracks -> controller.setMediaItems(queuedCommand.items)
+                        }
                     }
+                    // Очистить очередь
+                    commandQueue.clear()
+                }catch ( e: ExecutionException) {
+                    println("controller: The session rejected the connection")
 
-
+                    if (e.cause is SecurityException) {
+                        println("controller: The session rejected the connection")
+                    }
                 }
-                // Очистить очередь
-                commandQueue.clear()
-            },
-            MoreExecutors.directExecutor()
+
+
+
+                },
+          //  MoreExecutors.directExecutor()
+                    context.mainExecutor
         )
       //  val controller = controllerFuture.get()
         println("controller waiting")
@@ -177,6 +193,7 @@ class PlayerDataSource(
     }
 
     fun play() {
+      //  controller.play()
         if (controllerFuture.isDone) {
             val controller = controllerFuture.get()
             controller.play()
@@ -200,6 +217,7 @@ class PlayerDataSource(
     }
 
     fun setTracks(items: List<MediaItem>) {
+
         if (controllerFuture.isDone) {
             val controller = controllerFuture.get()
             controller.setMediaItems(items)
@@ -207,7 +225,7 @@ class PlayerDataSource(
             // Добавить команду приостановки в очередь
             commandQueue.add(QueuedCommand.SetTracks(items))
         }
-        controller.setMediaItems(items)
+     //   controller.setMediaItems(items)
     }
 
     fun subscribeCurrentPlayerData(): Flow<PlayerStateDataSourceEntity> {

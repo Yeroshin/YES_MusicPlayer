@@ -73,8 +73,8 @@ class YESBroadcastReceiver : BroadcastReceiver(),PlayerDataSource.MediaControlle
             PendingIntent.FLAG_UPDATE_CURRENT)
         val builder= NotificationCompat.Builder(context,"yes")
             .setSmallIcon(com.yes.coreui.R.drawable.app_icon)
-            .setContentTitle("My notification")
-            .setContentText("Hello World from broadcast receiver!")
+          /*  .setContentTitle("My notification")
+            .setContentText("Hello World from broadcast receiver!")*/
           //  .setContentIntent(pendingIntent)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setFullScreenIntent(pendingIntent,true)

@@ -29,14 +29,16 @@ class MusicService : MediaSessionService() {
             .getMusicServiceComponent(this).getDependency()
     }
 
-    private val mediaSession: MediaSession by lazy {
-        dependency.mediaSession
-    }
+    private var mediaSession: MediaSession? = null
 
+    override fun onCreate() {
+        super.onCreate()
+        mediaSession =dependency.mediaSession
+    }
     override fun onGetSession(
 
         controllerInfo: MediaSession.ControllerInfo
-    ): MediaSession  {
+    ): MediaSession?  {
         println("MusicService onGetSession")
         Log.d("alarm","MusicService!")
         return mediaSession
@@ -51,5 +53,21 @@ class MusicService : MediaSessionService() {
             // Другие обработки команд
         }
         return super.onStartCommand(intent, flags, startId)
+    }
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        val player = mediaSession?.player!!
+        if (!player.playWhenReady || player.mediaItemCount == 0) {
+            // Stop the service if not playing, continue playing in the background
+            // otherwise.
+            stopSelf()
+        }
+    }
+    override fun onDestroy() {
+        mediaSession?.run {
+            player.release()
+            release()
+            mediaSession = null
+        }
+        super.onDestroy()
     }
 }

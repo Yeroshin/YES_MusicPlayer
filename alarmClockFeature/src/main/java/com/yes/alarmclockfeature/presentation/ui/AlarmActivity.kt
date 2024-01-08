@@ -43,16 +43,20 @@ class AlarmActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         showWhenLockedAndTurnScreenOn()
         super.onCreate(savedInstanceState)
-       // checkPermissions()
-        setFragments()
+        checkPermissions()
+        //setFragments()
         Toast.makeText(this, "result ", Toast.LENGTH_SHORT).show()
       //  turnScreenOnAndKeyguardOff()
     }
 
     override fun onStart() {
         super.onStart()
+
+       // run()
     }
-    fun run(){
+    private fun run(){
+        component=(applicationContext as AlarmsScreen.DependencyResolver).getComponent()
+
         CoroutineScope(Dispatchers.Main).launch {
 
             val result = getCurrentPlaylistTracksUseCase()
@@ -149,6 +153,7 @@ class AlarmActivity : AppCompatActivity(){
                 }
             } else {
                 setFragments()
+                run()
             }
         }
     }

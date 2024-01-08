@@ -181,7 +181,11 @@ class MainActivity :
             AlarmsScreen::class.java
         )
         binder.viewPager.adapter =
-            UniversalFragmentAdapter(this, fragmentsList, supportFragmentManager.fragmentFactory)
+            UniversalFragmentAdapter(
+                this,
+                fragmentsList,
+                supportFragmentManager.fragmentFactory
+            )
         TabLayoutMediator(binder.tabs, binder.viewPager) { tab, position ->
             run {
                 when (position) {
