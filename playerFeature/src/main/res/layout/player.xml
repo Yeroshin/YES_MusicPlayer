@@ -174,40 +174,26 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
 
+        android:background="@drawable/button_space"
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_rew"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height_regular"
-
-
-            android:layout_weight="1"
+            style="@style/buttonLeftLow"
             android:background="@drawable/button_left"
-            app:srcCompat="@drawable/rewind"
-            app:tint="@color/tint_pressed_state_list" />
+            app:srcCompat="@drawable/rewind" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_play"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height_regular"
-
-
-            android:layout_weight="1"
+            style="@style/buttonSingleLow"
             android:background="@drawable/button_center"
-            android:src="@drawable/button_play_state"
-            app:tint="@color/tint_pressed_state_list" />
+            android:src="@drawable/button_play_state" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_fwd"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height_regular"
-
-
-            android:layout_weight="1"
+            style="@style/buttonRightLow"
             android:background="@drawable/button_right"
-            app:srcCompat="@drawable/fast_forward"
-            app:tint="@color/tint_pressed_state_list" />
+            app:srcCompat="@drawable/fast_forward" />
 
     </LinearLayout>
 

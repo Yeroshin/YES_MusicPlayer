@@ -27,41 +27,29 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/button_height_small"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:background="@drawable/button_space"
         android:orientation="horizontal"
         android:showDividers="beginning">
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_media"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            android:layout_weight="1"
+            style="@style/buttonLeftTall"
             android:background="@drawable/button_left"
-            app:srcCompat="@drawable/file_plus"
-            app:tint="@color/tint_pressed_state_list" />
+            app:srcCompat="@drawable/file_plus" />
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_mode"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            android:layout_weight="1"
+            style="@style/buttonSingleTall"
             android:background="@drawable/button_center"
-            android:src="@drawable/button_mode_level_list"
-            app:tint="@color/tint_pressed_state_list" />
+            android:src="@drawable/button_mode_level_list" />
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_playlist"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            android:layout_weight="1"
+            style="@style/buttonRightTall"
             android:background="@drawable/button_right"
-            app:srcCompat="@drawable/playlist_edit"
-            app:tint="@color/tint_pressed_state_list" />
+            app:srcCompat="@drawable/playlist_edit" />
 
     </LinearLayout>
 

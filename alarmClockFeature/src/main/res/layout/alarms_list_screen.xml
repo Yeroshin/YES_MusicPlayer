@@ -42,6 +42,7 @@
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/add_alarm_button"
+                style="@style/buttonSingleTall"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="2dp"

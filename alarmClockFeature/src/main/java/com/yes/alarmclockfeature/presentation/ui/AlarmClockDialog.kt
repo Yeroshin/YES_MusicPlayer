@@ -90,7 +90,8 @@ class AlarmClockDialog(
         val hour=calendar.get(Calendar.HOUR)
         ///////////////////
        datePickerManager.setupView()
-        binder.okButton.setOnClickListener {
+
+        binder.buttons.okBtn.setOnClickListener {
             val checkBoxes: List<ToggleButton> = listOf(
                 binder.sun,
                 binder.mon,
@@ -128,7 +129,7 @@ class AlarmClockDialog(
                 )*/
             )
         }
-        binder.cancelButton.setOnClickListener {
+        binder.buttons.cancelBtn.setOnClickListener {
             onCancel.invoke()
         }
     }

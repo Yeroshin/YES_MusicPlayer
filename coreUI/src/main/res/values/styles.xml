@@ -23,4 +23,43 @@
 
         <item name="android:background">@drawable/display</item>
     </style>
+    <style name="buttonStyle">
+        <item name="android:layout_marginTop">1dp</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="tint">@color/tint_pressed_state_list</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+    <style name="buttonStyleTall" parent="buttonStyle">
+        <item name="android:layout_height">@dimen/button_height_regular</item>
+    </style>
+    <style name="buttonStyleLow" parent="buttonStyleTall">
+        <item name="android:layout_height">@dimen/button_height_small</item>
+    </style>
+    <style name="buttonLeftLow" parent="buttonStyleLow">
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginRight">1dp</item>
+    </style>
+    <style name="buttonRightLow" parent="buttonStyleLow">
+        <item name="android:layout_marginLeft">1dp</item>
+        <item name="android:layout_marginRight">2dp</item>
+    </style>
+    <style name="buttonSingleLow" parent="buttonStyleLow">
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginRight">2dp</item>
+    </style>
+    <style name="buttonLeftTall" parent="buttonStyleLow">
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginRight">1dp</item>
+    </style>
+    <style name="buttonRightTall" parent="buttonStyleLow">
+        <item name="android:layout_marginLeft">1dp</item>
+        <item name="android:layout_marginRight">2dp</item>
+    </style>
+    <style name="buttonSingleTall" parent="buttonStyleLow">
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginRight">2dp</item>
+    </style>
+
+
 </resources>
