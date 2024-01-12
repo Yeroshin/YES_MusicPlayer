@@ -13,9 +13,7 @@ import dagger.Provides
 
 private const val USER_PREFERENCES = "user_preferences"
 @Module
-internal class MainActivityModule(
-    private val activity: FragmentActivity
-) {
+class MainActivityModule {
 
   /*  @Provides
     fun provideFragmentActivity(

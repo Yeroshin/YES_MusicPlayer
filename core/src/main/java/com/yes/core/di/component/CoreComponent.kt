@@ -1,5 +1,6 @@
 package com.yes.core.di.component
 
+import android.app.Activity
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -40,4 +41,5 @@ interface CoreComponent {
     fun providesPlayerDataSource(): PlayerDataSource
     fun providesMediaDataStore(): MediaDataStore
     fun providesRendererFactory(): RendererFactory
+
 }

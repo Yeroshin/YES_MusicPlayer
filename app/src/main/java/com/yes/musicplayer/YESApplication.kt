@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import com.yes.alarmclockfeature.di.components.AlarmClockComponent
 import com.yes.alarmclockfeature.di.components.DaggerAlarmClockComponent
+import com.yes.alarmclockfeature.di.module.AlarmClockModule
 import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
 import com.yes.alarmclockfeature.presentation.ui.YESBroadcastReceiver
 import com.yes.core.di.component.BaseComponent
@@ -57,7 +58,6 @@ class YESApplication : Application(),
 
     override fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent {
         return DaggerMainActivityComponent.builder()
-            .mainActivityModule(MainActivityModule(activity))
             .build()
     }
 
@@ -106,6 +106,7 @@ class YESApplication : Application(),
 
     override fun getComponent(): AlarmClockComponent {
         return DaggerAlarmClockComponent.builder()
+            .alarmClockModule(AlarmClockModule(MainActivity::class.java))
             .coreComponent(coreComponent)
             .build()
     }

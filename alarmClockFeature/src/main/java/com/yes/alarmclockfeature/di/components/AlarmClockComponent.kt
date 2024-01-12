@@ -1,5 +1,7 @@
 package com.yes.alarmclockfeature.di.components
 
+import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import com.yes.alarmclockfeature.di.AlarmClockScope
 import com.yes.alarmclockfeature.di.module.AlarmClockModule
 import com.yes.alarmclockfeature.domain.usecase.GetCurrentPlaylistTracksUseCase
@@ -22,6 +24,7 @@ import dagger.Component
 interface AlarmClockComponent:BaseComponent{
     fun getGetCurrentPlaylistTracksUseCase(): GetCurrentPlaylistTracksUseCase
     fun getSetTracksToPlayerPlaylistUseCase(): SetTracksToPlayerPlaylistUseCase
+    fun getActivity(): Class<out AppCompatActivity>
 }
 
 

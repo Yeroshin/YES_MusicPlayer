@@ -1,5 +1,6 @@
 package com.yes.alarmclockfeature.presentation.ui
 
+import android.app.Activity
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -22,6 +23,10 @@ class YESBroadcastReceiver : BroadcastReceiver(),PlayerDataSource.MediaControlle
     private val setTracksToPlayerPlaylistUseCase by lazy {
         (component as AlarmClockComponent).getSetTracksToPlayerPlaylistUseCase()
     }
+    private val activityClass by lazy {
+        (component as AlarmClockComponent).getActivity()
+    }
+
     private lateinit var context: Context
     override fun onReceive(context: Context, intent: Intent) {
         this.context=context.applicationContext
@@ -53,7 +58,7 @@ class YESBroadcastReceiver : BroadcastReceiver(),PlayerDataSource.MediaControlle
 
     }
     private fun notification(context: Context){
-        val intent=Intent(context,AlarmActivity::class.java)
+        val intent=Intent(context,activityClass)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

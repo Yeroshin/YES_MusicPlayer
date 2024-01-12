@@ -41,7 +41,9 @@ class SetNextAlarmUseCase(
                 }
             }
         }
-
+        nearestAlarm?.let {
+            alarmManagerRepository.setAlarm(it)
+        }
         ///////////////////////
         return DomainResult.Success(nearestAlarm)
 

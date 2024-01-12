@@ -1,6 +1,8 @@
 package com.yes.alarmclockfeature.di.module
 
+import android.app.Activity
 import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import com.yes.alarmclockfeature.data.dataSource.AlarmDataSource
 import com.yes.alarmclockfeature.data.mapper.Mapper
 import com.yes.alarmclockfeature.data.repository.AlarmListRepository
@@ -28,7 +30,13 @@ import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
-class AlarmClockModule {
+class AlarmClockModule(
+    private val activityClass: Class<out AppCompatActivity>
+) {
+    @Provides
+    fun providesActivityClass(): Class<out AppCompatActivity> {
+        return activityClass
+    }
     @Provides
     fun providesPlayerRepository(
         mapper:Mapper,
