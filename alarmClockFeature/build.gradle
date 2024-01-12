@@ -1,0 +1,97 @@
+plugins {
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kotlinKapt)
+    alias(libs.plugins.devtoolsKsp)
+}
+
+android {
+    namespace = "com.yes.alarmclockfeature"
+    compileSdk = 34
+
+    defaultConfig {
+        minSdk = 21
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        debug {
+            minifyEnabled false
+            shrinkResources false
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    buildFeatures {
+        viewBinding = true
+    }
+    testOptions {
+        animationsDisabled = true
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
+
+    packaging {
+        resources {
+
+
+        }
+    }
+
+}
+
+dependencies {
+    implementation project(":core")
+    implementation project(":coreUI")
+
+
+    implementation libs.core.ktx
+    implementation libs.appcompat
+    implementation libs.material
+    //viewModel
+    implementation libs.androidx.lifecycle.runtime.ktx
+    implementation libs.androidx.lifecycle.viewmodel.ktx
+    implementation libs.androidx.fragment.ktx
+    //Dagger
+    implementation libs.dagger
+    androidTestImplementation libs.dagger
+    kapt libs.dagger.compiler
+    kaptAndroidTest libs.dagger.compiler
+    //Preferences DataStore
+    implementation libs.androidx.datastore.preferences
+    androidTestImplementation libs.androidx.datastore.preferences.core
+    androidTestImplementation libs.androidx.preference.ktx
+    //  implementation libs.media3//tmp
+    implementation libs.androidx.media3.session
+    implementation libs.androidx.media3.exoplayer
+    implementation libs.androidx.media3.exoplayer.dash
+    implementation libs.androidx.media3.ui
+    //Mockk
+    testImplementation libs.mockk
+    testImplementation libs.mockk.android
+   // testImplementation libs.mockk.agent
+    //Coroutines
+    testImplementation libs.kotlinx.coroutines.test
+    //Junit5
+    testImplementation libs.junit.jupiter
+    testRuntimeOnly libs.junit.jupiter
+    //Junit4
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.test.ext.junit
+
+}

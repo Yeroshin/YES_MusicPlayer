@@ -24,18 +24,22 @@ class AlarmDataSource(
     private val alarmManager: AlarmManager by lazy {
       context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     }
-    private lateinit var alarmIntent: Intent
-    private lateinit var pendingIntent: PendingIntent
+    private val calendar by lazy {
+        Calendar.getInstance()
+    }
+    fun getDate(){
+
+    }
 
     fun setAlarm(hour: Int, minute: Int) {
        // notification(context)
       //  alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         /////////////////////
-        alarmIntent = Intent(context, YESBroadcastReceiver::class.java).apply {
+        val alarmIntent = Intent(context, YESBroadcastReceiver::class.java).apply {
             putExtra("hello","world")
             action = "alarm"
         }
-        pendingIntent = PendingIntent
+        val pendingIntent = PendingIntent
             .getBroadcast(
                 context,
                 0,
@@ -48,7 +52,6 @@ class AlarmDataSource(
         } else {
            // Toast.makeText(context, "canScheduleExactAlarms ERROR!!!", Toast.LENGTH_SHORT).show()
         }
-        val calendar = Calendar.getInstance()
         ///////////////////
         val hourt = calendar.get(Calendar.HOUR)
         val mint = calendar.get(Calendar.MINUTE)

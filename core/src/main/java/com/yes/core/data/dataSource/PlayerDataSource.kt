@@ -63,7 +63,7 @@ class PlayerDataSource(
 
 
 
-    @RequiresApi(Build.VERSION_CODES.P)
+
     private fun initializeController() {
         val done=controllerFuture.isDone
         controllerFuture.addListener(
@@ -93,8 +93,8 @@ class PlayerDataSource(
 
 
                 },
-          //  MoreExecutors.directExecutor()
-                    context.mainExecutor
+            MoreExecutors.directExecutor()
+                   // context.mainExecutor
         )
       //  val controller = controllerFuture.get()
         println("controller waiting")

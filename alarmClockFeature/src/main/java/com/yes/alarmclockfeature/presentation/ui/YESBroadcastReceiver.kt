@@ -9,13 +9,8 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.media3.session.MediaController
 import com.yes.alarmclockfeature.di.components.AlarmClockComponent
-import com.yes.alarmclockfeature.domain.usecase.SetTracksToPlayerPlaylistUseCase
 import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.core.di.component.BaseComponent
-import com.yes.core.domain.models.DomainResult
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class YESBroadcastReceiver : BroadcastReceiver(),PlayerDataSource.MediaControllerListener {
@@ -29,11 +24,11 @@ class YESBroadcastReceiver : BroadcastReceiver(),PlayerDataSource.MediaControlle
     }
     private lateinit var context: Context
     override fun onReceive(context: Context, intent: Intent) {
-        this.context=context
-        component=(context.applicationContext as AlarmsScreen.DependencyResolver).getComponent()
+        this.context=context.applicationContext
+        component=(this.context as AlarmsScreen.DependencyResolver).getComponent()
        println("BroadcastReceiver")
-        Toast.makeText(context, "result ", Toast.LENGTH_SHORT).show()
-
+      //  Toast.makeText(context, "result ", Toast.LENGTH_SHORT).show()
+      //  activityStart(context)
         notification(context)
        /* CoroutineScope(Dispatchers.Main).launch {
 
@@ -85,11 +80,11 @@ class YESBroadcastReceiver : BroadcastReceiver(),PlayerDataSource.MediaControlle
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(1234,builder.build())
     }
-    fun activityStart(context: Context){
-       /* val intent = Intent(context, targetclass)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    private fun activityStart(context: Context){
+        val intent = Intent(context, AlarmActivity::class.java)
+       intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        context.startActivity(intent)*/
+        context.startActivity(intent)
     }
 }

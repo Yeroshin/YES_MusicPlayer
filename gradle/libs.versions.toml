@@ -72,6 +72,7 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockkVersion" }
+mockk-agent = { module = "io.mockk:mockk-agent", version.ref = "mockkVersion" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockkVersion" }
 navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation-fragment-ktx" }
 navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation-ui-ktx" }
