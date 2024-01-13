@@ -46,7 +46,7 @@ class DatePickerAdapter(
         private val textView: TextView = itemView.findViewById(R.id.text)
 
         fun bind(value: Int) {
-            textView.text = value.toString()
+            textView.text =String.format("%02d", value)
         }
     }
 }

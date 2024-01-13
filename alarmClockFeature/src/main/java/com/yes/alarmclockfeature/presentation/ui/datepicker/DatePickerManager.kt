@@ -6,6 +6,7 @@ import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import java.util.Calendar
 
 class DatePickerManager(
     val context: Context,
@@ -29,19 +30,24 @@ class DatePickerManager(
     private fun createOnGlobalLayoutListener(
         layoutManager: LinearLayoutManager,
         adapter: RecyclerView.Adapter<*>,
-        view: View
+        view: View,
+        time:Int
     ): ViewTreeObserver.OnGlobalLayoutListener {
-        return object :
-            ViewTreeObserver.OnGlobalLayoutListener {
+        return object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
+                val position= if(time<adapter.itemCount / 4){
+                    adapter.itemCount / 2 +time
+                } else {
+                    time
+                }
                 view.rootView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 layoutManager.findViewByPosition(0)?.height?.let { itemHeight ->
                     layoutManager.scrollToPositionWithOffset(
-                        adapter.itemCount / 2 + 1,
+                       // adapter.itemCount / 2 + 1,
+                        position,
                         view.height / 2 + itemHeight / 2
                     )
                 }
-
             }
         }
     }
@@ -89,7 +95,7 @@ class DatePickerManager(
         }
     }
 
-    fun setupView() {
+    fun setupView(hour: Int,minute: Int) {
         val valuesHour = List(24) { i -> i + 1 }
         val valuesMinute = List(60) { i -> i + 1 }
         val layoutManagerHour = LinearLayoutManager(context)
@@ -104,6 +110,8 @@ class DatePickerManager(
 
         snapHelperHour.attachToRecyclerView(datePickerHour)
         snapHelperMinute.attachToRecyclerView(datePickerMinute)
+
+       // setTime()
 
         datePickerHour.addOnScrollListener(
             createScrollListener(adapterHour, null, null)
@@ -129,14 +137,16 @@ class DatePickerManager(
             createOnGlobalLayoutListener(
                 layoutManagerHour,
                 adapterHour,
-                datePickerHour
+                datePickerHour,
+                hour
             )
         )
         datePickerHour.rootView.viewTreeObserver.addOnGlobalLayoutListener(
             createOnGlobalLayoutListener(
                 layoutManagerMinute,
                 adapterMinute,
-                datePickerMinute
+                datePickerMinute,
+                minute
             )
         )
 

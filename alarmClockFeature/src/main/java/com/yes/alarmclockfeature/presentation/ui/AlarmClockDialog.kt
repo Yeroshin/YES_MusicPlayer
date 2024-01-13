@@ -51,7 +51,7 @@ class AlarmClockDialog(
     override fun onResume() {
         super.onResume()
         setDialogSize()
-
+      //  datePickerManager.setTime()
     }
 
     private fun setDialogSize() {
@@ -84,12 +84,16 @@ class AlarmClockDialog(
     }
 
 
+
+
     private fun setupView() {
         ///////////////////
         val calendar = Calendar.getInstance()
-        val hour=calendar.get(Calendar.HOUR)
+        val hour=calendar.get(Calendar.HOUR_OF_DAY)
+        val minute=calendar.get(Calendar.MINUTE)
         ///////////////////
-       datePickerManager.setupView()
+       datePickerManager.setupView(hour,minute)
+       // datePickerManager.setTime()
 
         binder.buttons.okBtn.setOnClickListener {
             val checkBoxes: List<ToggleButton> = listOf(

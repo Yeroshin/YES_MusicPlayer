@@ -58,8 +58,9 @@ class AlarmDataSource(
         val sec = calendar.get(Calendar.SECOND)
         val mintr = calendar.get(Calendar.MINUTE)
         ////////////////
-        // calendar.set(Calendar.HOUR_OF_DAY, hour)
-        calendar.set(Calendar.SECOND, sec + 15)
+         calendar.set(Calendar.HOUR_OF_DAY, hour)
+        calendar.set(Calendar.MINUTE,minute)
+      //  calendar.set(Calendar.SECOND, sec + 15)
         /* alarmManager?.setAlarmClock(
              AlarmManager.AlarmClockInfo(
                  calendar.timeInMillis,
