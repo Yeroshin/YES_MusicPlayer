@@ -11,6 +11,7 @@ class TrackDialogContract {
         data object OnItemBackClicked : Event()
         data object OnButtonCancelClicked : Event()
         data class OnButtonOkClicked(val items:List<MenuUi.ItemUi>) : Event()
+        data class OnCheckPathIsAvailable(val path:String):Event()
     }
 
     data class State(
@@ -33,6 +34,7 @@ class TrackDialogContract {
                         && menu.title == other.menu.title
             }
         }
+        data class NetworkPathAvailable(val status:Boolean): TrackDialogState()
     }
 
     sealed class Effect : UiEffect {

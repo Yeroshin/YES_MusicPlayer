@@ -12,6 +12,9 @@ import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.dataSource.SettingsDataStore
+import com.yes.trackdialogfeature.data.repository.NetworkRepository
+import com.yes.trackdialogfeature.data.repository.dataSource.NetworkDataSource
+import com.yes.trackdialogfeature.domain.usecase.CheckNetworkPathAvailableUseCase
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase
 import com.yes.trackdialogfeature.presentation.mapper.UiMapper
@@ -125,8 +128,26 @@ class TrackDialogModule {
     fun providesArrayDeque(): ArrayDeque<MenuUi> {
         return ArrayDeque()
     }
-
-
+    @Provides
+    fun providesNetworkDataSource(): NetworkDataSource {
+        return NetworkDataSource()
+    }
+    @Provides
+    fun providesNetworkRepository(
+        networkDataSource: NetworkDataSource
+    ): NetworkRepository {
+        return NetworkRepository(networkDataSource)
+    }
+    @Provides
+    fun providesCheckNetworkPathAvailableUseCase(
+        @IoDispatcher dispatcher: CoroutineDispatcher,
+        networkRepository: NetworkRepository
+    ): CheckNetworkPathAvailableUseCase {
+        return CheckNetworkPathAvailableUseCase(
+            dispatcher,
+            networkRepository
+        )
+    }
 
     @Provides
     fun providesTrackDialogViewModelFactory(
@@ -134,14 +155,16 @@ class TrackDialogModule {
         saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase,
         uiMapper: UiMapper,
         menuStack: ArrayDeque<MenuUi>,
-        espressoIdlingResource: EspressoIdlingResource?
+        espressoIdlingResource: EspressoIdlingResource?,
+        checkNetworkPathAvailableUseCase: CheckNetworkPathAvailableUseCase
     ): TrackDialogViewModel.Factory {
         return TrackDialogViewModel.Factory(
             getMenuUseCase,
             saveTracksToPlaylistUseCase,
             uiMapper,
             menuStack,
-            espressoIdlingResource
+            espressoIdlingResource,
+            checkNetworkPathAvailableUseCase
         )
     }
 

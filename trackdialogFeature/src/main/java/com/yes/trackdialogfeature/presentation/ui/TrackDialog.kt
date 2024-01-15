@@ -1,6 +1,9 @@
 package com.yes.trackdialogfeature.presentation.ui
 
+import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -9,12 +12,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.yes.core.presentation.BaseViewModel
 import com.yes.core.presentation.BaseDialog
+import com.yes.core.presentation.BaseViewModel
 import com.yes.trackdialogfeature.R
 import com.yes.trackdialogfeature.databinding.TrackDialogBinding
 import com.yes.trackdialogfeature.di.component.TrackDialogComponent
@@ -28,6 +30,7 @@ class TrackDialog : BaseDialog() {
     interface DependencyResolver {
         fun getTrackDialogComponent(): TrackDialogComponent
     }
+
     private val component by lazy {
         (requireActivity().application as DependencyResolver)
             .getTrackDialogComponent()
@@ -96,11 +99,42 @@ class TrackDialog : BaseDialog() {
             if (isChecked) {
                 binder.recyclerViewContainer.disableView.visibility = GONE
                 binder.networkPath.isEnabled = false
+                binder.buttons.okBtn.isClickable= true
+                binder.buttons.okBtn.isPressed = false
             } else {
                 binder.recyclerViewContainer.disableView.visibility = VISIBLE
                 binder.networkPath.isEnabled = true
+                binder.buttons.okBtn.isClickable= false
+                binder.buttons.okBtn.isPressed = true
+                viewModel.setEvent(
+                    TrackDialogContract.Event.OnCheckPathIsAvailable(binder.networkPath.text.toString())
+                )
             }
         }
+        binder.networkPath.addTextChangedListener(
+            object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {
+                    val i = 0
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(
+                    s: CharSequence, start: Int,
+                    before: Int, count: Int
+                ) {
+                    viewModel.setEvent(
+                        TrackDialogContract.Event.OnCheckPathIsAvailable(binder.networkPath.text.toString())
+                    )
+                }
+            }
+        )
     }
 
     private fun observeViewModel() {
@@ -143,6 +177,38 @@ class TrackDialog : BaseDialog() {
 
             is TrackDialogContract.TrackDialogState.Dismiss -> {
                 dismiss()
+            }
+
+            is TrackDialogContract.TrackDialogState.NetworkPathAvailable -> setNetworkPathStatus(
+                state.trackDialogState.status
+            )
+        }
+    }
+
+    private fun setNetworkPathStatus(status: Boolean) {
+        binder.buttons.okBtn.isClickable= status
+        binder.buttons.okBtn.isPressed = !status
+        if (status) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                binder.networkPath.setTextColor(
+                    resources.getColor(
+                        com.yes.coreui.R.color.green,
+                        activity?.theme
+                    )
+                );
+            } else {
+                binder.networkPath.setTextColor(resources.getColor(com.yes.coreui.R.color.green))
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                binder.networkPath.setTextColor(
+                    resources.getColor(
+                        com.yes.coreui.R.color.red,
+                        activity?.theme
+                    )
+                );
+            } else {
+                binder.networkPath.setTextColor(resources.getColor(com.yes.coreui.R.color.red))
             }
         }
     }

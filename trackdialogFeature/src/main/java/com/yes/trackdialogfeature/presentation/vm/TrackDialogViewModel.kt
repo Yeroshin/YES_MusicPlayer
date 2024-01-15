@@ -19,6 +19,7 @@ import com.yes.trackdialogfeature.presentation.mapper.UiMapper
 import com.yes.trackdialogfeature.presentation.model.MenuUi
 import com.yes.trackdialogfeature.presentation.model.MenuUi.ItemUi
 import com.yes.core.util.EspressoIdlingResource
+import com.yes.trackdialogfeature.domain.usecase.CheckNetworkPathAvailableUseCase
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -27,7 +28,8 @@ open class TrackDialogViewModel(
     private val saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase,
     private val uiMapper: UiMapper,
     private val menuStack: ArrayDeque<MenuUi>,
-    private val espressoIdlingResource: EspressoIdlingResource?
+    private val espressoIdlingResource: EspressoIdlingResource?,
+    private val checkNetworkPathAvailableUseCase: CheckNetworkPathAvailableUseCase
 ) : BaseViewModel<TrackDialogContract.Event, State, Effect>() {
 
     override fun createInitialState(): State {
@@ -38,21 +40,53 @@ open class TrackDialogViewModel(
 
     override fun handleEvent(event: TrackDialogContract.Event) {
         when (event) {
-            is TrackDialogContract.Event.OnItemClicked -> {
-                getChildMenu(event.id, event.name)
+            is TrackDialogContract.Event.OnItemClicked -> getChildMenu(event.id, event.name)
+
+
+            is TrackDialogContract.Event.OnItemBackClicked -> getParentMenu()
+
+
+            is TrackDialogContract.Event.OnButtonOkClicked -> saveItems(event.items)
+
+
+            is TrackDialogContract.Event.OnButtonCancelClicked -> dismiss()
+
+
+            is TrackDialogContract.Event.OnCheckPathIsAvailable -> checkPathIsAvailable(event.path)
+        }
+    }
+    private fun checkPathIsAvailable(path:String){
+        viewModelScope.launch {
+            val result = checkNetworkPathAvailableUseCase(
+                CheckNetworkPathAvailableUseCase.Params(
+                    path
+                )
+            )
+            when (result) {
+                is DomainResult.Success -> {
+                    setState {
+                        copy(
+                            trackDialogState = TrackDialogContract.TrackDialogState.NetworkPathAvailable(
+                                status = result.data
+                            )
+                        )
+                    }
+                }
+
+                is DomainResult.Error -> {
+
+                    setEffect {
+                        Effect.UnknownException
+                    }
+                    setState {
+                        copy(
+                            trackDialogState = TrackDialogContract.TrackDialogState.Idle
+                        )
+                    }
+                }
             }
 
-            is TrackDialogContract.Event.OnItemBackClicked -> {
-                getParentMenu()
-            }
 
-            is TrackDialogContract.Event.OnButtonOkClicked -> {
-                saveItems(event.items)
-            }
-
-            is TrackDialogContract.Event.OnButtonCancelClicked -> {
-                dismiss()
-            }
         }
     }
 
@@ -241,7 +275,8 @@ open class TrackDialogViewModel(
         private val saveTracksToPlaylistUseCase: SaveTracksToPlaylistUseCase,
         private val uiMapper: UiMapper,
         private val menuStack: ArrayDeque<MenuUi>,
-        private val espressoIdlingResource: EspressoIdlingResource?
+        private val espressoIdlingResource: EspressoIdlingResource?,
+        private val checkNetworkPathAvailableUseCase: CheckNetworkPathAvailableUseCase
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
@@ -251,6 +286,7 @@ open class TrackDialogViewModel(
                 uiMapper,
                 menuStack,
                 espressoIdlingResource,
+                checkNetworkPathAvailableUseCase
             ) as T
         }
     }

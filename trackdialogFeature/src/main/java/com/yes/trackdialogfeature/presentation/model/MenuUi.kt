@@ -1,11 +1,12 @@
 package com.yes.trackdialogfeature.presentation.model
 
+import com.yes.trackdialogfeature.domain.usecase.CheckNetworkPathAvailableUseCase
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 
 
 data class MenuUi(
     val title: String,
-    val items: List<ItemUi>
+    val items: List<ItemUi>,
 ) {
     data class ItemUi(
         val id:Int=-1,
@@ -18,4 +19,6 @@ data class MenuUi(
         ),
         val onClick: ((TrackDialogContract.Event) -> Unit)={}
     )
+    ////////////////
+
 }
