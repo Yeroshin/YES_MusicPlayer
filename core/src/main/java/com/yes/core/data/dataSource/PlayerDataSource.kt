@@ -28,15 +28,19 @@ class PlayerDataSource(
     interface MediaControllerListener {
         fun onMediaControllerReady(controller: MediaController)
     }
+
     private val commandQueue: MutableList<QueuedCommand> = mutableListOf()
-    sealed class QueuedCommand{
-        data object Play:QueuedCommand()
-        data class SetTracks(val items: List<MediaItem>):QueuedCommand()
+
+    sealed class QueuedCommand {
+        data object Play : QueuedCommand()
+        data class SetTracks(val items: List<MediaItem>) : QueuedCommand()
     }
+
     private var mediaControllerListener: MediaControllerListener? = null
     fun setMediaControllerListener(listener: MediaControllerListener) {
         mediaControllerListener = listener
     }
+
     private val sessionToken by lazy {
         SessionToken(
             context,
@@ -46,11 +50,11 @@ class PlayerDataSource(
             )
         )
     }
-    private val  controllerFuture by lazy {
-            MediaController.Builder(
-                context.applicationContext,
-                sessionToken
-            ).buildAsync()
+    private val controllerFuture by lazy {
+        MediaController.Builder(
+            context.applicationContext,
+            sessionToken
+        ).buildAsync()
     }
     private val controller: MediaController by lazy {
         controllerFuture.get()
@@ -62,27 +66,25 @@ class PlayerDataSource(
     }
 
 
-
-
     private fun initializeController() {
-        val done=controllerFuture.isDone
+        val done = controllerFuture.isDone
         controllerFuture.addListener(
             {
-                val done=controllerFuture.isDone
-                try{
+                val done = controllerFuture.isDone
+                try {
                     val controller = controllerFuture.get()
                     println("controller GET!!!")
                     mediaControllerListener?.onMediaControllerReady(controller)
                     setController()
                     commandQueue.forEach { queuedCommand ->
-                        when (queuedCommand){
+                        when (queuedCommand) {
                             is QueuedCommand.Play -> controller.play()
                             is QueuedCommand.SetTracks -> controller.setMediaItems(queuedCommand.items)
                         }
                     }
                     // Очистить очередь
                     commandQueue.clear()
-                }catch ( e: ExecutionException) {
+                } catch (e: ExecutionException) {
                     println("controller: The session rejected the connection")
 
                     if (e.cause is SecurityException) {
@@ -91,12 +93,11 @@ class PlayerDataSource(
                 }
 
 
-
-                },
+            },
             MoreExecutors.directExecutor()
-                   // context.mainExecutor
+            // context.mainExecutor
         )
-      //  val controller = controllerFuture.get()
+        //  val controller = controllerFuture.get()
         println("controller waiting")
         //////////////////
 
@@ -111,7 +112,7 @@ class PlayerDataSource(
             PlayerStateDataSourceEntity()
         )
     private val mediaMetadataFlow: StateFlow<PlayerStateDataSourceEntity> = _mediaMetadataFlow
-    private val _mediaSessionIdFlow=MutableStateFlow(0)
+    private val _mediaSessionIdFlow = MutableStateFlow(0)
     private val mediaSessionIdFlow: StateFlow<Int> = _mediaSessionIdFlow
 
     private fun setController() {
@@ -158,6 +159,7 @@ class PlayerDataSource(
                 }
 
                 override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
+                    val i=controller.currentMediaItem
                     _mediaMetadataFlow.value = PlayerStateDataSourceEntity(
                         mediaMetadata = mediaMetadata
                     )
@@ -167,16 +169,20 @@ class PlayerDataSource(
             }
         )
     }
-    fun setRepeatMode(mode:Int){
-        controller.repeatMode=mode
+
+    fun setRepeatMode(mode: Int) {
+        controller.repeatMode = mode
     }
-    fun getRepeatMode():Int{
+
+    fun getRepeatMode(): Int {
         return controller.repeatMode
     }
-    fun setShuffleMode(mode:Boolean){
-        controller.shuffleModeEnabled=mode
+
+    fun setShuffleMode(mode: Boolean) {
+        controller.shuffleModeEnabled = mode
     }
-    fun getShuffleMode():Boolean{
+
+    fun getShuffleMode(): Boolean {
         return controller.shuffleModeEnabled
     }
 
@@ -192,16 +198,22 @@ class PlayerDataSource(
         return controller.duration
     }
 
+    fun seekToItemAndPlay(index:Int) {
+        controller.seekTo(3, 0)
+    }
+
+
     fun play() {
-      //  controller.play()
+        //  controller.play()
         if (controllerFuture.isDone) {
             val controller = controllerFuture.get()
             controller.play()
+
         } else {
             // Добавить команду приостановки в очередь
             commandQueue.add(QueuedCommand.Play)
         }
-       // controller.play()
+        // controller.play()
     }
 
     fun seek(position: Long) {
@@ -225,14 +237,14 @@ class PlayerDataSource(
             // Добавить команду приостановки в очередь
             commandQueue.add(QueuedCommand.SetTracks(items))
         }
-     //   controller.setMediaItems(items)
+        //   controller.setMediaItems(items)
     }
 
     fun subscribeCurrentPlayerData(): Flow<PlayerStateDataSourceEntity> {
         return mediaMetadataFlow
     }
 
-    fun subscribeAudioSessionId():Flow<Int> {
+    fun subscribeAudioSessionId(): Flow<Int> {
         return mediaSessionIdFlow
     }
 

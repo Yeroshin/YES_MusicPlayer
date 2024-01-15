@@ -12,6 +12,7 @@ class SettingsDataStore(
 ) {
     private object PreferencesKeys {
         val CURRENT_PLAYLIST_ID = longPreferencesKey("currentPlaylistId")
+        val CURRENT_TRACK_ID = longPreferencesKey("currentTrackId")
     }
 
     fun subscribeCurrentPlaylistId(): Flow<Long> =
@@ -27,6 +28,11 @@ class SettingsDataStore(
     suspend fun setCurrentPlaylistId(currentPlaylistId: Long) {
         dataStore.edit { preferences ->
             preferences[PreferencesKeys.CURRENT_PLAYLIST_ID] = currentPlaylistId
+        }
+    }
+    suspend fun setCurrentTrackId(currentPlaylistId: Long) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.CURRENT_TRACK_ID] = currentPlaylistId
         }
     }
 }

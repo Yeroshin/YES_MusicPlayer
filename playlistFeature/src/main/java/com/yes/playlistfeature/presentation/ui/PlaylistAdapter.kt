@@ -74,6 +74,15 @@ class PlaylistAdapter :
     override fun getItemCount(): Int {
         return itemList.size
     }
+    fun setCurrent(position:Int){
+        val oldItem=itemList.indexOfFirst { it.current }
+        if(oldItem!=-1){
+            itemList[oldItem] =itemList[oldItem].copy(current = false)
+            notifyItemChanged(oldItem)
+        }
+        itemList[position]=itemList[position].copy(current = true)
+        notifyItemChanged(position)
+    }
 
     inner class ViewHolder(private val binding: ItemTrackBinding) :
         RecyclerView.ViewHolder(binding.root) {
