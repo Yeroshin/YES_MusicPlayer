@@ -178,7 +178,6 @@ class PlaylistScreen : Fragment() {
                         state.playlistState.tracks
                     )
                 }
-
             }
 
             is PlaylistContract.PlaylistState.Loading -> {
@@ -189,7 +188,15 @@ class PlaylistScreen : Fragment() {
                 idleView()
             }
 
+            is PlaylistContract.PlaylistState.CurrentTrack -> setAdaptersCurrentTrack(
+                state.playlistState.currentTrack
+            )
         }
+    }
+    private fun setAdaptersCurrentTrack(position:Int){
+        val tmp=position
+        adapter.setCurrent(position)
+        binder.playList.layoutManager?.scrollToPosition(position)
     }
 
     private fun setMode(imageLevel: Int) {

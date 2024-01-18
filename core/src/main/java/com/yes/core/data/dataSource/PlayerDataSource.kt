@@ -36,10 +36,7 @@ class PlayerDataSource(
         data class SetTracks(val items: List<MediaItem>) : QueuedCommand()
     }
 
-    private var mediaControllerListener: MediaControllerListener? = null
-    fun setMediaControllerListener(listener: MediaControllerListener) {
-        mediaControllerListener = listener
-    }
+
 
     private val sessionToken by lazy {
         SessionToken(
@@ -74,7 +71,6 @@ class PlayerDataSource(
                 try {
                     val controller = controllerFuture.get()
                     println("controller GET!!!")
-                    mediaControllerListener?.onMediaControllerReady(controller)
                     setController()
                     commandQueue.forEach { queuedCommand ->
                         when (queuedCommand) {
@@ -112,8 +108,12 @@ class PlayerDataSource(
             PlayerStateDataSourceEntity()
         )
     private val mediaMetadataFlow: StateFlow<PlayerStateDataSourceEntity> = _mediaMetadataFlow
+
     private val _mediaSessionIdFlow = MutableStateFlow(0)
     private val mediaSessionIdFlow: StateFlow<Int> = _mediaSessionIdFlow
+
+    private val _currentTrackIndexFlow = MutableStateFlow(-1)
+    private val currentTrackIndexFlow: StateFlow<Int> = _currentTrackIndexFlow
 
     private fun setController() {
         controller.addListener(
@@ -160,6 +160,8 @@ class PlayerDataSource(
 
                 override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
                     val i=controller.currentMediaItem
+                    val f=controller.currentMediaItemIndex
+                    _currentTrackIndexFlow.value=controller.currentMediaItemIndex
                     _mediaMetadataFlow.value = PlayerStateDataSourceEntity(
                         mediaMetadata = mediaMetadata
                     )
@@ -246,6 +248,9 @@ class PlayerDataSource(
 
     fun subscribeAudioSessionId(): Flow<Int> {
         return mediaSessionIdFlow
+    }
+    fun subscribeCurrentTrackIndex():Flow<Int>{
+        return currentTrackIndexFlow
     }
 
 }

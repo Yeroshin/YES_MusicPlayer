@@ -11,7 +11,7 @@ class SetPlaylistUseCase(
     private val settingsRepository: SettingsRepositoryImpl
 ) : UseCase<SetPlaylistUseCase.Params, Long>(dispatcher) {
     override suspend fun run(params: Params?): DomainResult<Long> {
-
+        settingsRepository.updateCurrentTrackIndex(-1)
         params?.items?.find { it.current }?.let {
             settingsRepository.updateCurrentPlaylistId(
                 it.id

@@ -20,8 +20,13 @@ class PlaylistContract {
         data object Loading : PlaylistState()
         data class Success(
             val tracks: List<TrackUI>?=null,
-            val mode:Int?=null
+            val mode:Int?=null,
+            val currentTrack:Int?=null
         ) : PlaylistState()
+        data class CurrentTrack(
+            val currentTrack:Int
+        ) : PlaylistState()
+
     }
     sealed class Effect : UiEffect {
         data object UnknownException : Effect()

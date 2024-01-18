@@ -10,5 +10,10 @@ class SettingsRepositoryImpl(
 ): SettingsRepository {
     override suspend fun subscribeCurrentPlaylistId(): Flow<Long> =
         dataStore.subscribeCurrentPlaylistId()
+    suspend fun subscribeCurrentTrackIndex(): Flow<Int> =
+        dataStore.subscribeTrackIndex()
+    suspend fun setCurrentTrackIndex(currentTrackIndex: Int){
+        dataStore.setCurrentTrackIndex(currentTrackIndex)
+    }
 
 }

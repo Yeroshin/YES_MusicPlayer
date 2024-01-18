@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.Flow
 class SettingsRepositoryImpl(
     private val dataStore: SettingsDataStore
 ) {
-    fun subscribeCurrentPlaylistId(): Flow<Long> =
+    suspend fun subscribeCurrentPlaylistId(): Flow<Long> =
         dataStore.subscribeCurrentPlaylistId()
 }

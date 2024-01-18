@@ -9,9 +9,12 @@ import com.yes.core.util.EspressoIdlingResource
 import com.yes.playlistfeature.domain.usecase.ChangeTracksPositionUseCase
 import com.yes.playlistfeature.domain.usecase.DeleteTrackUseCase
 import com.yes.playlistfeature.domain.usecase.SetModeUseCase
+import com.yes.playlistfeature.domain.usecase.SetSettingsTrackIndexUseCase
 import com.yes.playlistfeature.domain.usecase.SetTracksToPlayerPlaylistUseCase
 
 import com.yes.playlistfeature.domain.usecase.SubscribeCurrentPlaylistTracksUseCase
+import com.yes.playlistfeature.domain.usecase.SubscribePlayerCurrentTrackIndexUseCase
+import com.yes.playlistfeature.domain.usecase.SubscribeSettingsCurrentTrackIndexUseCase
 import com.yes.playlistfeature.presentation.contract.PlaylistContract
 import com.yes.playlistfeature.presentation.contract.PlaylistContract.State
 import com.yes.playlistfeature.presentation.contract.PlaylistContract.Effect
@@ -26,10 +29,14 @@ class PlaylistViewModel(
     private val deleteTrackUseCase: DeleteTrackUseCase,
     private val setTracksToPlayerPlaylistUseCase: SetTracksToPlayerPlaylistUseCase,
     private val setModeUseCase: SetModeUseCase,
-    private val changeTracksPositionUseCase: ChangeTracksPositionUseCase
+    private val changeTracksPositionUseCase: ChangeTracksPositionUseCase,
+    private val subscribeSettingsCurrentTrackIndexUseCase: SubscribeSettingsCurrentTrackIndexUseCase,
+    private val setSettingsTrackIndexUseCase: SetSettingsTrackIndexUseCase,
+    private val subscribePlayerCurrentTrackIndexUseCase: SubscribePlayerCurrentTrackIndexUseCase
 ) : BaseViewModel<PlaylistContract.Event, State, Effect>() {
     init {
         subscribeTracks()
+        subscribePlayerCurrentTrackIndex()
     }
 
     override fun createInitialState(): State {
@@ -50,6 +57,55 @@ class PlaylistViewModel(
 
             is PlaylistContract.Event.OnMoveItemPosition -> {
                 moveItemPosition(event.fromPosition,event.toPosition)
+            }
+        }
+    }
+    private fun subscribePlayerCurrentTrackIndex(){
+        viewModelScope.launch {
+            val result = subscribePlayerCurrentTrackIndexUseCase()
+            when(result){
+                is DomainResult.Success -> {
+                    result.data.collect{
+                        setSettingsTrackIndex(it)
+                    }
+                }
+                is DomainResult.Error->{}
+            }
+        }
+    }
+    private fun setSettingsTrackIndex(index:Int){
+
+        viewModelScope.launch {
+            val result = setSettingsTrackIndexUseCase(
+                SetSettingsTrackIndexUseCase.Params(index)
+            )
+            when(result){
+                is DomainResult.Success -> {
+
+                }
+                is DomainResult.Error->{}
+            }
+        }
+    }
+    private fun subscribeCurrentTrackIndex() {
+
+        viewModelScope.launch {
+
+            val result = subscribeSettingsCurrentTrackIndexUseCase()
+            when (result) {
+                is DomainResult.Success -> {
+                    result.data.collect {
+                        setState {
+                            copy(
+                                playlistState = PlaylistContract.PlaylistState.CurrentTrack(
+                                    it
+                                )
+                            )
+                        }
+                   }
+                }
+
+                is DomainResult.Error -> TODO()
             }
         }
     }
@@ -136,7 +192,7 @@ class PlaylistViewModel(
                                 )
                             )
                         }
-
+                        subscribeCurrentTrackIndex()
                     }
                 }
 
@@ -152,7 +208,10 @@ class PlaylistViewModel(
         private val deleteTrackUseCase: DeleteTrackUseCase,
         private val setTracksToPlayerPlaylistUseCase: SetTracksToPlayerPlaylistUseCase,
         private val setModeUseCase: SetModeUseCase,
-        private val changeTracksPositionUseCase: ChangeTracksPositionUseCase
+        private val changeTracksPositionUseCase: ChangeTracksPositionUseCase,
+        private val subscribeSettingsCurrentTrackIndexUseCase: SubscribeSettingsCurrentTrackIndexUseCase,
+        private val setSettingsTrackIndexUseCase: SetSettingsTrackIndexUseCase,
+        private val subscribePlayerCurrentTrackIndexUseCase: SubscribePlayerCurrentTrackIndexUseCase
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
@@ -163,8 +222,11 @@ class PlaylistViewModel(
                 deleteTrackUseCase,
                 setTracksToPlayerPlaylistUseCase,
                 setModeUseCase,
-                changeTracksPositionUseCase
-                ) as T
+                changeTracksPositionUseCase,
+                subscribeSettingsCurrentTrackIndexUseCase,
+                setSettingsTrackIndexUseCase,
+                subscribePlayerCurrentTrackIndexUseCase
+            ) as T
         }
     }
 }

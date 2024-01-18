@@ -7,6 +7,7 @@ import androidx.media3.common.Player.REPEAT_MODE_ONE
 import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.playlistfeature.data.mapper.Mapper
 import com.yes.playlistfeature.domain.entity.Track
+import kotlinx.coroutines.flow.Flow
 import java.io.File
 
 class PlayerRepository(
@@ -39,6 +40,9 @@ class PlayerRepository(
 
     fun disableShuffleMode() {
        playerDataSource.setShuffleMode(false)
+    }
+    fun subscribeCurrentTrackIndex(): Flow<Int> {
+        return playerDataSource.subscribeCurrentTrackIndex()
     }
 
 

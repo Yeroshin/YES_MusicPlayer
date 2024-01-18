@@ -17,7 +17,7 @@ class AddPlayListUseCase (
         val  id=playListDialogRepositoryImpl.saveNewPlaylist(
             params?.name?:""
         )
-      //  settingsRepository.updateCurrentPlaylistId(id)
+        settingsRepository.updateCurrentPlaylistId(id)
         return DomainResult.Success(
             id
         )
