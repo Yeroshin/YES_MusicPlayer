@@ -159,8 +159,6 @@ class PlayerDataSource(
                 }
 
                 override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
-                    val i=controller.currentMediaItem
-                    val f=controller.currentMediaItemIndex
                     _currentTrackIndexFlow.value=controller.currentMediaItemIndex
                     _mediaMetadataFlow.value = PlayerStateDataSourceEntity(
                         mediaMetadata = mediaMetadata
@@ -203,7 +201,20 @@ class PlayerDataSource(
     fun seekToItemAndPlay(index:Int) {
         controller.seekTo(3, 0)
     }
+    fun play(index:Int){
+        if (controllerFuture.isDone) {
+            val controller = controllerFuture.get()
+            controller.seekTo(index,TIME_UNSET)
+          //  controller.seekToNextMediaItem()
+            controller.play()
 
+        } else {
+            // Добавить команду приостановки в очередь
+            commandQueue.add(QueuedCommand.Play)
+        }
+       /* controller.seekTo(index,0)
+        controller.play()*/
+    }
 
     fun play() {
         //  controller.play()
@@ -230,11 +241,12 @@ class PlayerDataSource(
         return controller.currentPosition
     }
 
-    fun setTracks(items: List<MediaItem>) {
+    fun setTracks(items: List<MediaItem>,index:Int) {
 
         if (controllerFuture.isDone) {
             val controller = controllerFuture.get()
             controller.setMediaItems(items)
+            controller.seekTo(index, TIME_UNSET)
         } else {
             // Добавить команду приостановки в очередь
             commandQueue.add(QueuedCommand.SetTracks(items))

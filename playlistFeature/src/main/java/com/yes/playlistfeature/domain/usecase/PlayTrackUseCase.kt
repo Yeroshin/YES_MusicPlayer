@@ -8,16 +8,17 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 
-class SubscribeSettingsCurrentTrackIndexUseCase(
+class PlayTrackUseCase(
     dispatcher: CoroutineDispatcher,
     private val playerRepository: PlayerRepository,
-    private val settingsRepository: SettingsRepositoryImpl
-) : UseCase<Any, Flow<Int>>(dispatcher) {
-    override suspend fun run(params: Any?): DomainResult<Flow<Int>> {
-        return DomainResult.Success(
-            settingsRepository.subscribeCurrentTrackIndex().filter { index -> index != -1 }
-        )
+) : UseCase<PlayTrackUseCase.Params, Int>(dispatcher) {
+    override suspend fun run(params: Params?): DomainResult<Int> {
+        return params?.let {
+            playerRepository.play(params.index)
+            DomainResult.Success(1 )
+        }?:DomainResult.Error(DomainResult.UnknownException)
     }
+    data class Params(val index:Int)
 
     /*  override suspend fun run(params: Any?): DomainResult<Flow<Int>> {
           return DomainResult.Success(

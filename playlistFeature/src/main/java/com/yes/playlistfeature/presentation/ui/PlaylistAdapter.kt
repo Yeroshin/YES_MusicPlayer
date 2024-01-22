@@ -9,7 +9,9 @@ import com.yes.playlistfeature.presentation.model.TrackUI
 import java.util.Collections
 
 
-class PlaylistAdapter :
+class PlaylistAdapter(
+    val onItemClick: (position: Int) -> Unit
+) :
     RecyclerView.Adapter<PlaylistAdapter.ViewHolder>() {
     private val itemList = mutableListOf<TrackUI>()
     override fun onCreateViewHolder(
@@ -24,12 +26,12 @@ class PlaylistAdapter :
 
     fun setItems(items: List<TrackUI>) {
         // itemList=items
-      //  val size = itemList.size
+        //  val size = itemList.size
         itemList.clear()
-       // notifyItemRangeRemoved(0, size)
+        // notifyItemRangeRemoved(0, size)
         itemList.addAll(items)
-      //  notifyItemRangeInserted(0, items.size)
-         notifyDataSetChanged()
+        //  notifyItemRangeInserted(0, items.size)
+        notifyDataSetChanged()
 //notifyItemRangeChanged(0,itemList.size)
     }
 
@@ -74,14 +76,18 @@ class PlaylistAdapter :
     override fun getItemCount(): Int {
         return itemList.size
     }
-    fun setCurrent(position:Int){
-        val oldItem=itemList.indexOfFirst { it.current }
-        if(oldItem!=-1){
-            itemList[oldItem] =itemList[oldItem].copy(current = false)
+
+    fun setCurrent(position: Int) {
+        val oldItem = itemList.indexOfFirst { it.current }
+        if (oldItem != -1) {
+            itemList[oldItem] = itemList[oldItem].copy(current = false)
             notifyItemChanged(oldItem)
         }
-        itemList[position]=itemList[position].copy(current = true)
-        notifyItemChanged(position)
+        if (position != -1) {
+            itemList[position] = itemList[position].copy(current = true)
+            notifyItemChanged(position)
+        }
+
     }
 
     inner class ViewHolder(private val binding: ItemTrackBinding) :
@@ -90,7 +96,6 @@ class PlaylistAdapter :
             position: Int,
             item: TrackUI,
         ) {
-val show=binding.root.isShown
             binding.root.isSelected = item.selected
             binding.root.isActivated = item.current
             binding.playlistTitle.text = item.title
@@ -98,7 +103,7 @@ val show=binding.root.isShown
             binding.duration.text = item.duration
             binding.position.text = (position + 1).toString() + "."
             binding.root.setOnClickListener {
-
+                onItemClick(position)
             }
 
         }

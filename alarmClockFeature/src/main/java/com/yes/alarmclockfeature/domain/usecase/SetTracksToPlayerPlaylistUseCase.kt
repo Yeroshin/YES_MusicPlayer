@@ -1,19 +1,24 @@
 package com.yes.alarmclockfeature.domain.usecase
 
 import com.yes.alarmclockfeature.data.repository.PlayerRepository
+import com.yes.alarmclockfeature.data.repository.SettingsRepositoryImpl
 import com.yes.alarmclockfeature.domain.model.Track
 import com.yes.core.domain.models.DomainResult
 import com.yes.core.domain.useCase.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.first
 
 class SetTracksToPlayerPlaylistUseCase (
     dispatcher: CoroutineDispatcher,
     private val playerRepository: PlayerRepository,
-
-    ) : UseCase<SetTracksToPlayerPlaylistUseCase.Params, Unit>(dispatcher) {
+    private val settingsRepository: SettingsRepositoryImpl
+) : UseCase<SetTracksToPlayerPlaylistUseCase.Params, Unit>(dispatcher) {
     override suspend fun run(params: Params?): DomainResult<Unit> {
         return params?.let {
-            playerRepository.setTracks(params.tracks)
+           playerRepository.setTracks(
+               params.tracks,
+               settingsRepository.subscribeCurrentTrackIndex().first()
+           )
             playerRepository.play()
             DomainResult.Success(Unit)
         }?: DomainResult.Error(DomainResult.UnknownException)

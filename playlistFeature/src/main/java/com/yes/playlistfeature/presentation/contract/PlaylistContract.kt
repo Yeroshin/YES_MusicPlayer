@@ -11,6 +11,7 @@ class PlaylistContract {
         data class OnMoveItemPosition(val fromPosition:Int,val toPosition:Int): Event()
         data class OnDeleteTrack(val track:TrackUI) : Event()
         data object OnModeChange : Event()
+        data class OnPlayTrack(val position:Int):Event()
     }
     data class State(
         val playlistState: PlaylistState

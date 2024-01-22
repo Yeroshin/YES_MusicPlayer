@@ -64,7 +64,16 @@ class PlaylistScreen : Fragment() {
         dependency.factory
     }
     private val adapter by lazy {
-        dependency.adapter
+        PlaylistAdapter{
+            position ->
+            viewModel.setEvent(
+                PlaylistContract.Event.OnPlayTrack(position)
+            )
+
+        }
+    }
+    private fun playItem(){
+
     }
 
     override fun onCreateView(
@@ -194,7 +203,6 @@ class PlaylistScreen : Fragment() {
         }
     }
     private fun setAdaptersCurrentTrack(position:Int){
-        val tmp=position
         adapter.setCurrent(position)
         binder.playList.layoutManager?.scrollToPosition(position)
     }
@@ -231,6 +239,6 @@ class PlaylistScreen : Fragment() {
 
     class Dependency(
         val factory: PlaylistViewModel.Factory,
-        val adapter: PlaylistAdapter
+       // val adapter: PlaylistAdapter
     )
 }

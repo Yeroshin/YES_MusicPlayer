@@ -13,11 +13,12 @@ class PlayerRepository(
     private val mapper: Mapper,
     private val playerDataSource: PlayerDataSource
 ) {
-    fun setTracks(tracks: List<Track>) {
+    fun setTracks(tracks: List<Track>,index:Int) {
         playerDataSource.setTracks(
             tracks.map {
                 mapper.mapToMediaItem(it)
-            }
+            },
+            index
         )
     }
     fun play() {

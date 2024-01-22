@@ -51,10 +51,12 @@ class AlarmClockModule(
     fun providesSetTracksToPlayerPlaylistUseCase(
         @MainDispatcher dispatcher: CoroutineDispatcher,
         playerRepository: PlayerRepository,
+        settingsRepository: SettingsRepositoryImpl
     ): SetTracksToPlayerPlaylistUseCase {
         return SetTracksToPlayerPlaylistUseCase(
             dispatcher,
-            playerRepository
+            playerRepository,
+            settingsRepository
         )
     }
 

@@ -18,7 +18,7 @@ import com.yes.playlistfeature.domain.usecase.SetSettingsTrackIndexUseCase
 import com.yes.playlistfeature.domain.usecase.SetTracksToPlayerPlaylistUseCase
 import com.yes.playlistfeature.domain.usecase.SubscribeCurrentPlaylistTracksUseCase
 import com.yes.playlistfeature.domain.usecase.SubscribePlayerCurrentTrackIndexUseCase
-import com.yes.playlistfeature.domain.usecase.SubscribeSettingsCurrentTrackIndexUseCase
+import com.yes.playlistfeature.domain.usecase.PlayTrackUseCase
 import com.yes.playlistfeature.presentation.mapper.MapperUI
 import com.yes.playlistfeature.presentation.ui.PlaylistScreen
 import com.yes.playlistfeature.presentation.ui.PlaylistAdapter
@@ -98,7 +98,6 @@ class PlaylistModule {
         @IoDispatcher dispatcher: CoroutineDispatcher,
         playListRepositoryImpl: PlayListRepositoryImpl,
         settingsRepository: SettingsRepositoryImpl
-
     ): ChangeTracksPositionUseCase {
         return ChangeTracksPositionUseCase(
             dispatcher,
@@ -120,10 +119,12 @@ class PlaylistModule {
     fun providesSetTracksToPlayerPlaylistUseCase(
         @MainDispatcher dispatcher: CoroutineDispatcher,
         playerRepository: PlayerRepository,
+        settingsRepository: SettingsRepositoryImpl
         ): SetTracksToPlayerPlaylistUseCase {
         return SetTracksToPlayerPlaylistUseCase(
             dispatcher,
-            playerRepository
+            playerRepository,
+            settingsRepository
         )
     }
     @Provides
@@ -137,15 +138,15 @@ class PlaylistModule {
         )
     }
     @Provides
-    fun providesSubscribeCurrentTrackUseCase(
-        @IoDispatcher dispatcher: CoroutineDispatcher,
+    fun providesPlayTrackUseCase(
+        @MainDispatcher dispatcher: CoroutineDispatcher,
         playerRepository: PlayerRepository,
         settingsRepository: SettingsRepositoryImpl
-    ): SubscribeSettingsCurrentTrackIndexUseCase {
-        return SubscribeSettingsCurrentTrackIndexUseCase(
+    ): PlayTrackUseCase {
+        return PlayTrackUseCase(
             dispatcher,
             playerRepository,
-            settingsRepository
+           // settingsRepository
         )
     }
     @Provides
@@ -177,7 +178,7 @@ class PlaylistModule {
         setTracksToPlayerPlaylistUseCase: SetTracksToPlayerPlaylistUseCase,
         setModeUseCase:SetModeUseCase,
         changeTracksPositionUseCase:ChangeTracksPositionUseCase,
-        subscribeSettingsCurrentTrackIndexUseCase: SubscribeSettingsCurrentTrackIndexUseCase,
+        playTrackUseCase: PlayTrackUseCase,
         setSettingsTrackIndexUseCase:SetSettingsTrackIndexUseCase,
         subscribePlayerCurrentTrackIndexUseCase: SubscribePlayerCurrentTrackIndexUseCase
     ): PlaylistViewModel.Factory {
@@ -189,25 +190,25 @@ class PlaylistModule {
             setTracksToPlayerPlaylistUseCase,
             setModeUseCase,
             changeTracksPositionUseCase,
-            subscribeSettingsCurrentTrackIndexUseCase,
+            playTrackUseCase,
             setSettingsTrackIndexUseCase,
             subscribePlayerCurrentTrackIndexUseCase
         )
     }
 
-    @Provides
+   /* @Provides
     fun providesPlayListAdapter(): PlaylistAdapter {
         return PlaylistAdapter()
-    }
+    }*/
 
     @Provides
     fun providesPlayListDialogDependency(
         factory: PlaylistViewModel.Factory,
-        adapter: PlaylistAdapter
+       // adapter: PlaylistAdapter
     ): PlaylistScreen.Dependency {
         return PlaylistScreen.Dependency(
-            factory,
-            adapter
+            factory
+           // adapter
         )
     }
 }
