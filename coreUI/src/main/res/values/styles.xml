@@ -15,12 +15,27 @@
         <item name="android:shadowRadius">2</item>
         <item name="android:singleLine">true</item>
     </style >
+    <style name="yesSwitch" parent="margin" >
+        <item name="android:layout_width">52dp</item>
+        <item name="android:layout_height">32dp</item>
+    </style >
+    <style name="textLabel" parent="margin">
+        <item name="android:textSize">14pt</item>
+        <item name="android:singleLine">true</item>
+    </style >
     <style name="ratingBar">
         <item name="colorControlNormal">#ffa800</item>
         <item name="colorControlActivated">#ffa800</item>
     </style>
+    <style name="margin">
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+    </style>
+    <style name="padding">
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
     <style name="mainDisplay">
-
         <item name="android:background">@drawable/display</item>
     </style>
     <style name="buttonStyle">
