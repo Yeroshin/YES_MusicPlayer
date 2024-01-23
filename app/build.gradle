@@ -58,6 +58,7 @@ dependencies {
     implementation project(path: ':trackdialogFeature')
     implementation project(path: ':playListDialogFeature')
     implementation project(path: ':alarmClockFeature')
+    implementation project(path: ':equalizerFeature')
     //tmp
     implementation project(path: ':shared-test')
 

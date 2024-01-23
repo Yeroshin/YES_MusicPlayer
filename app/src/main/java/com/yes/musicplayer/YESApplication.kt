@@ -23,6 +23,9 @@ import com.yes.musicplayer.di.components.DaggerMainActivityComponent
 
 import com.yes.musicplayer.di.components.MainActivityComponent
 import com.yes.musicplayer.di.module.MainActivityModule
+import com.yes.musicplayer.equalizer.di.components.DaggerEqualizerComponent
+import com.yes.musicplayer.equalizer.di.components.EqualizerComponent
+import com.yes.musicplayer.equalizer.presentation.ui.EqualizerScreen
 import com.yes.musicplayer.presentation.MainActivity
 import com.yes.player.di.components.DaggerPlayerFeatureComponent
 import com.yes.player.di.components.PlayerFeatureComponent
@@ -44,7 +47,8 @@ class YESApplication : Application(),
     PlaylistScreen.DependencyResolver,
     TrackDialog.DependencyResolver,
     MusicService.DependencyResolver,
-    AlarmsScreen.DependencyResolver
+    AlarmsScreen.DependencyResolver,
+    EqualizerScreen.DependencyResolver
 {
 
     private val dataModule by lazy {
@@ -107,6 +111,12 @@ class YESApplication : Application(),
     override fun getComponent(): AlarmClockComponent {
         return DaggerAlarmClockComponent.builder()
             .alarmClockModule(AlarmClockModule(MainActivity::class.java))
+            .coreComponent(coreComponent)
+            .build()
+    }
+
+    override fun getEqualizerScreenComponent(): EqualizerComponent {
+        return DaggerEqualizerComponent.builder()
             .coreComponent(coreComponent)
             .build()
     }

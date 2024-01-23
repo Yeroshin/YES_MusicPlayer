@@ -5,7 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
-public class SwitchCustom extends androidx.appcompat.widget.SwitchCompat {
+public class aSwitchCustom extends androidx.appcompat.widget.SwitchCompat {
     Drawable background;
     public SwitchCustom(Context context) {
         super(context);

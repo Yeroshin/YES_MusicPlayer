@@ -30,6 +30,7 @@ import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
 import com.yes.alarmclockfeature.presentation.ui.YESBroadcastReceiver
 import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.MainActivityComponent
+import com.yes.musicplayer.equalizer.presentation.ui.EqualizerScreen
 import com.yes.player.presentation.ui.PlayerFragment
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
 import com.yes.playlistfeature.presentation.ui.PlaylistScreen
@@ -69,7 +70,7 @@ class MainActivity :
 
         super.onCreate(savedInstanceState)
         checkPermissions()
-        createNotificationChannel(this)
+       // createNotificationChannel(this)
 
     }
 
@@ -178,6 +179,7 @@ class MainActivity :
 
         val fragmentsList = listOf(
             PlaylistScreen::class.java,
+            EqualizerScreen::class.java,
             AlarmsScreen::class.java
         )
         binder.viewPager.adapter =
@@ -207,7 +209,7 @@ class MainActivity :
 
     }
 
-    private fun createNotificationChannel(context: Context){
+   /* private fun createNotificationChannel(context: Context){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
             val name:CharSequence="music"
             val description="music alarm"
@@ -220,9 +222,9 @@ class MainActivity :
             notificationManager.createNotificationChannel(channel)
 
         }
-    }
+    }*/
 
-    class MainActivityFragmentFactory(
+   /* class MainActivityFragmentFactory(
 
     ) : FragmentFactory() {
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
@@ -234,7 +236,7 @@ class MainActivity :
                 else -> super.instantiate(classLoader, className)
             }
         }
-    }
+    }*/
 
     override fun showMediaDialog() {
         TrackDialog().show(supportFragmentManager, null)

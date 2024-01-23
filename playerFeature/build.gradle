@@ -61,7 +61,6 @@ dependencies {
     //fragment
     debugImplementation libs.androidx.fragment.testing
     implementation libs.androidx.fragment.ktx
-
     //viewModel
     implementation libs.androidx.lifecycle.runtime.ktx
     implementation libs.androidx.lifecycle.viewmodel.ktx
