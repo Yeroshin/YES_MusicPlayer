@@ -21,7 +21,6 @@ import com.yes.playlistfeature.domain.usecase.SubscribePlayerCurrentTrackIndexUs
 import com.yes.playlistfeature.domain.usecase.PlayTrackUseCase
 import com.yes.playlistfeature.presentation.mapper.MapperUI
 import com.yes.playlistfeature.presentation.ui.PlaylistScreen
-import com.yes.playlistfeature.presentation.ui.PlaylistAdapter
 import com.yes.playlistfeature.presentation.vm.PlaylistViewModel
 import dagger.Module
 import dagger.Provides
