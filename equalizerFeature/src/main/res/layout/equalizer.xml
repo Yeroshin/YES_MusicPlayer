@@ -25,8 +25,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="#37A3CD"
                 android:progressDrawable="@drawable/trackbar_progress"
-                android:thumb="@drawable/thumb_r" />
+                android:thumb="@drawable/thumb_layer" />
+
+            <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
+                android:id="@+id/verticalSeekBar9"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#DF26EC"
+                android:progressDrawable="@drawable/trackbar_progress"
+                android:thumb="@drawable/thumb_layer" />
 
         </LinearLayout>
 

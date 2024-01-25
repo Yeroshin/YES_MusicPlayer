@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:width="40dp"
-        android:height="30dp">
+        android:width="@dimen/button_height_small"
+        android:height="@dimen/button_height_regular">
         <bitmap
             android:gravity="fill_horizontal|fill_vertical"
             android:src="@drawable/thumb_r" />

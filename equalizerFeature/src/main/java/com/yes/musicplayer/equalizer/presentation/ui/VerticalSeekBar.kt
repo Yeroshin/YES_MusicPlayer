@@ -18,8 +18,27 @@ class VerticalSeekBar(
     context: Context,
     attrs: AttributeSet? = null
 ) : AppCompatSeekBar(context, attrs) {
+   /* init {
+          val bitmap = BitmapFactory.decodeResource(
+              resources, com.yes.musicplayer.equalizer.R.drawable.thumb_r
+          )
+          val thumb = Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888)
+          val canvas = Canvas(thumb)
+          canvas.drawBitmap(
+              bitmap,
+              Rect(0, 0, bitmap.width, bitmap.height),
+              Rect(0, 0, thumb.width, thumb.height),
+              null
+          )
+          val drawable: Drawable = BitmapDrawable(
+              resources, thumb
+          )
+          setThumb(drawable)
 
-    var measured=false
+    }*/
+
+    var measured = false
+    var drawable: Drawable?=null
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
         this.top = top
@@ -31,51 +50,46 @@ class VerticalSeekBar(
         val mPaint = Paint()
         val r: Int = getHeight()
 
-        /////////////////////////////////////
-        if (!measured) {
-            val thumbb = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(thumbb)
-            val th=thumb.toBitmap()
+        //////////////////////////////////////
+       /* if (!measured) {
+
+            val bitmap = BitmapFactory.decodeResource(
+                resources, com.yes.musicplayer.equalizer.R.drawable.thumb_r
+            )
+            val thumb = Bitmap.createBitmap(height / 3, width / 2, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(thumb)
             canvas.drawBitmap(
-                th,
-                null,
-                Rect(
-                    (width * 0.2f).toInt(),
-                    (width * 0.15f).toInt(),
-                    (width * 0.8f).toInt(),
-                    (width * 0.85f).toInt()
-                ),
+                bitmap,
+                Rect(0, 0, bitmap.width, bitmap.height),
+                Rect(0, 0, thumb.width, thumb.height),
                 null
             )
-
-            val thumb =  BitmapDrawable(resources, thumbb)
-            setThumb(thumb)
-            measured = true
-            /* thumbH=drawable.getIntrinsicWidth();//90angle
-            thumbW=drawable.getIntrinsicHeight();*/
-          /*  thumbH = (width * 0.6f).toInt()
-            thumbW = (width * 0.6f).toInt()
-            setValue(initValue)*/
+            drawable = BitmapDrawable(
+                resources, thumb
+            )
+          //  setThumb(drawable)
+            measured=true
         }
-
+        invalidate()*/
         ///////////////////////////
     }
- /*   fun setValue(value: Int) {
-        setProgress(value)
-        onSizeChanged(getWidth(), getHeight(), 0, 0)
-        //onProgress()
-    }*/
-   private var scaledProgressDrawable: Drawable? = null
-    var w=0
-    var h=0
+
+    /*   fun setValue(value: Int) {
+           setProgress(value)
+           onSizeChanged(getWidth(), getHeight(), 0, 0)
+           //onProgress()
+       }*/
+    private var scaledProgressDrawable: Drawable? = null
+    var w = 0
+    var h = 0
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(h, w, oldh, oldw)
         // Масштабирование progressDrawable
         scaledProgressDrawable = progressDrawable
 
 
-      //  progressDrawable.setBounds(10- paddingLeft, 10, h-10- paddingRight, w-10)
-        progressDrawable.setBounds(0, paddingLeft,h-paddingLeft - paddingRight,w- paddingRight )
+        //  progressDrawable.setBounds(10- paddingLeft, 10, h-10- paddingRight, w-10)
+        progressDrawable.setBounds(0, 0, h - paddingLeft - paddingRight, w)
 
 
     }
@@ -84,13 +98,14 @@ class VerticalSeekBar(
         super.onMeasure(heightMeasureSpec, widthMeasureSpec)
         setMeasuredDimension(measuredHeight, measuredWidth)
     }
-var angle:Float=0f
+
+    var angle: Float = 0f
     override fun onDraw(canvas: Canvas) {
 
-      //  canvas.rotate(-90f,(h/2).toFloat(),(w/2).toFloat())
-        canvas.rotate(-90f,0f,0f)
-      //  canvas.translate(-height.toFloat(),0f )
-        canvas.translate(-height.toFloat(),-h.toFloat()+w/2 )
+        //  canvas.rotate(-90f,(h/2).toFloat(),(w/2).toFloat())
+        canvas.rotate(-90f, 0f, 0f)
+        //  canvas.translate(-height.toFloat(),0f )
+        canvas.translate(-height.toFloat(), -h.toFloat() + w / 2)
         super.onDraw(canvas)
 
     }
@@ -102,7 +117,8 @@ var angle:Float=0f
         when (event.action) {
             MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
                 val progress: Int = max - (max * event.y / height).toInt()
-                setProgress(progress)
+               setProgress(progress)
+                invalidate()
                 onSizeChanged(width, height, 0, 0)
             }
 
