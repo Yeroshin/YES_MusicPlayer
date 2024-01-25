@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
 import androidx.viewbinding.ViewBinding
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
 import com.yes.alarmclockfeature.presentation.ui.YESBroadcastReceiver
@@ -178,10 +179,17 @@ class MainActivity :
         setContentView(view)
 
         val fragmentsList = listOf(
-            PlaylistScreen::class.java,
             EqualizerScreen::class.java,
+            PlaylistScreen::class.java,
+
             AlarmsScreen::class.java
         )
+        binder.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                binder.viewPager.isUserInputEnabled = false
+            }
+        })
         binder.viewPager.adapter =
             UniversalFragmentAdapter(
                 this,

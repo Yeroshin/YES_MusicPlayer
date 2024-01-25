@@ -1,9 +1,10 @@
 package com.yes.musicplayer.equalizer.presentation.ui
 
+import android.R
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
@@ -12,7 +13,109 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.appcompat.widget.AppCompatSeekBar
 
-class VerticalSeekBar(context:Context,  attrs:AttributeSet): AppCompatSeekBar( context,  attrs) {
+
+class VerticalSeekBar(
+    context: Context,
+    attrs: AttributeSet? = null
+) : AppCompatSeekBar(context, attrs) {
+
+    var measured=false
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        this.top = top
+        this.bottom = bottom
+        this.left = left
+        this.right = right
+        val width = right - left
+        val height = bottom - top
+        val mPaint = Paint()
+        val r: Int = getHeight()
+
+        /////////////////////////////////////
+        if (!measured) {
+            val thumbb = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(thumbb)
+            val th=thumb.toBitmap()
+            canvas.drawBitmap(
+                th,
+                null,
+                Rect(
+                    (width * 0.2f).toInt(),
+                    (width * 0.15f).toInt(),
+                    (width * 0.8f).toInt(),
+                    (width * 0.85f).toInt()
+                ),
+                null
+            )
+
+            val thumb =  BitmapDrawable(resources, thumbb)
+            setThumb(thumb)
+            measured = true
+            /* thumbH=drawable.getIntrinsicWidth();//90angle
+            thumbW=drawable.getIntrinsicHeight();*/
+          /*  thumbH = (width * 0.6f).toInt()
+            thumbW = (width * 0.6f).toInt()
+            setValue(initValue)*/
+        }
+
+        ///////////////////////////
+    }
+ /*   fun setValue(value: Int) {
+        setProgress(value)
+        onSizeChanged(getWidth(), getHeight(), 0, 0)
+        //onProgress()
+    }*/
+   private var scaledProgressDrawable: Drawable? = null
+    var w=0
+    var h=0
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(h, w, oldh, oldw)
+        // Масштабирование progressDrawable
+        scaledProgressDrawable = progressDrawable
+
+
+      //  progressDrawable.setBounds(10- paddingLeft, 10, h-10- paddingRight, w-10)
+        progressDrawable.setBounds(0, paddingLeft,h-paddingLeft - paddingRight,w- paddingRight )
+
+
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(heightMeasureSpec, widthMeasureSpec)
+        setMeasuredDimension(measuredHeight, measuredWidth)
+    }
+var angle:Float=0f
+    override fun onDraw(canvas: Canvas) {
+
+      //  canvas.rotate(-90f,(h/2).toFloat(),(w/2).toFloat())
+        canvas.rotate(-90f,0f,0f)
+      //  canvas.translate(-height.toFloat(),0f )
+        canvas.translate(-height.toFloat(),-h.toFloat()+w/2 )
+        super.onDraw(canvas)
+
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (!isEnabled) {
+            return false
+        }
+        when (event.action) {
+            MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
+                val progress: Int = max - (max * event.y / height).toInt()
+                setProgress(progress)
+                onSizeChanged(width, height, 0, 0)
+            }
+
+            MotionEvent.ACTION_UP -> {}
+            MotionEvent.ACTION_CANCEL -> {}
+        }
+        return true
+    }
+}
+/*class VerticalSeekBar(
+    context:Context,
+    attrs:AttributeSet
+): AppCompatSeekBar( context,  attrs) {
     private var initValue = 0
     private var mPaint: Paint? = null
     private var top = 0
@@ -215,4 +318,4 @@ class VerticalSeekBar(context:Context,  attrs:AttributeSet): AppCompatSeekBar( c
         }
         return true
     }
-}
+}*/

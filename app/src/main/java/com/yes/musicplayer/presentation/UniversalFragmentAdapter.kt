@@ -15,6 +15,7 @@ class UniversalFragmentAdapter<T : Fragment>(
       //  fragmentActivity.supportFragmentManager.fragmentFactory = fragmentFactory
     }
 
+
     override fun getItemCount(): Int = fragmentList.size
 
     override fun createFragment(position: Int): Fragment {

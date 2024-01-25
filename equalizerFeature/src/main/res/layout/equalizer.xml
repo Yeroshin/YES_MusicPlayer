@@ -16,42 +16,18 @@
             android:id="@+id/equalizers_panel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="right|center_horizontal"
             android:layout_weight="1"
             android:background="@drawable/display"
-            android:baselineAligned="true"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:orientation="horizontal">
 
             <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
                 android:id="@+id/verticalSeekBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:progressDrawable="@drawable/trackbar_progress"
+                android:thumb="@drawable/thumb_r" />
 
-            <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
-                android:id="@+id/verticalSeekBar5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
-                android:id="@+id/verticalSeekBar4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
-                android:id="@+id/verticalSeekBar3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
-                android:id="@+id/verticalSeekBar2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
         </LinearLayout>
 
         <LinearLayout
@@ -64,8 +40,7 @@
             <Switch
                 android:id="@+id/switch1"
                 style="@style/yesSwitch"
-                android:layout_gravity="center_vertical"
-                 />
+                android:layout_gravity="center_vertical" />
 
             <LinearLayout
                 style="@style/padding"

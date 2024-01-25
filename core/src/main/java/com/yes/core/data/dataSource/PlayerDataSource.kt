@@ -87,8 +87,6 @@ class PlayerDataSource(
                         println("controller: The session rejected the connection")
                     }
                 }
-
-
             },
             MoreExecutors.directExecutor()
             // context.mainExecutor
