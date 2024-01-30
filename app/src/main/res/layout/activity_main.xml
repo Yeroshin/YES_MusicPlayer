@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <LinearLayout
         android:id="@+id/LinearLayout1"
         android:layout_width="match_parent"
@@ -14,8 +15,7 @@
             android:name="com.yes.player.presentation.ui.PlayerFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            >
+            android:layout_marginBottom="8dp">
 
         </androidx.fragment.app.FragmentContainerView>
 
@@ -24,8 +24,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/panel_flat"
-            android:orientation="vertical"
-            android:visibility="visible">
+            android:orientation="vertical">
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"

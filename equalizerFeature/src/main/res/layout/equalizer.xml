@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
@@ -20,23 +21,191 @@
             android:background="@drawable/display"
             android:orientation="horizontal">
 
-            <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
-                android:id="@+id/verticalSeekBar"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#37A3CD"
-                android:progressDrawable="@drawable/trackbar_progress"
-                android:thumb="@drawable/thumb_layer" />
+                android:background="@drawable/panel_flat"
+                android:padding="4dp">
 
-            <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
-                android:id="@+id/verticalSeekBar9"
+                <TextView
+
+                    style="@style/textSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="0dp"
+                    android:text="20Hz"
+                    android:textAlignment="center"
+                    android:textColor="@color/branded_light" />
+
+                <TextView
+
+                    style="@style/textSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:text="40Hz"
+                    android:textAlignment="center"
+                    android:textColor="@color/branded_light" />
+
+                <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:progressDrawable="@drawable/trackbar_progress"
+                    android:thumb="@drawable/thumb_layer" />
+
+            </FrameLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#DF26EC"
-                android:progressDrawable="@drawable/trackbar_progress"
-                android:thumb="@drawable/thumb_layer" />
+                android:background="@drawable/panel_flat"
+                android:orientation="vertical"
+                android:padding="4dp">
+
+                <TextView
+
+                    style="@style/textSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textColor="@color/branded_light"
+                    tools:text="40Hz" />
+
+                <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:progressDrawable="@drawable/trackbar_progress"
+                    android:thumb="@drawable/thumb_layer" />
+
+                <TextView
+
+                    style="@style/textSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textColor="@color/branded_light"
+                    tools:text="40Hz" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/panel_flat"
+                android:orientation="vertical"
+                android:padding="4dp">
+
+                <TextView
+
+                    style="@style/textSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textColor="@color/branded_light"
+                    tools:text="40Hz" />
+
+                <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:progressDrawable="@drawable/trackbar_progress"
+                    android:thumb="@drawable/thumb_layer" />
+
+                <TextView
+
+                    style="@style/textSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textColor="@color/branded_light"
+                    tools:text="40Hz" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/panel_flat"
+                android:orientation="vertical"
+                android:padding="4dp">
+
+                <TextView
+
+                    style="@style/textSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textColor="@color/branded_light"
+                    tools:text="40Hz" />
+
+                <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:progressDrawable="@drawable/trackbar_progress"
+                    android:thumb="@drawable/thumb_layer" />
+
+                <TextView
+
+                    style="@style/textSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textColor="@color/branded_light"
+                    tools:text="40Hz" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/panel_flat"
+                android:orientation="vertical"
+                android:padding="4dp">
+
+                <TextView
+
+                    style="@style/textSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textColor="@color/branded_light"
+                    tools:text="40Hz" />
+
+                <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:progressDrawable="@drawable/trackbar_progress"
+                    android:thumb="@drawable/thumb_layer" />
+
+                <TextView
+
+                    style="@style/textSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textColor="@color/branded_light"
+                    tools:text="40Hz" />
+            </LinearLayout>
+
 
         </LinearLayout>
 
@@ -57,16 +226,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <TextView
-                    style="@style/textLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:singleLine="false"
-                    android:text="@string/preset"
-                    android:textAlignment="center"
-                    android:textSize="14sp" />
 
                 <Spinner
                     android:id="@+id/presetsSpinner"

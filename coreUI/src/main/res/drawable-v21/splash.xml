@@ -2,13 +2,18 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape>
-            <size android:height="100dp" android:width="100dp"/>
-            <solid android:color="@color/branded_color"/>
+            <size
+                android:width="100dp"
+                android:height="100dp" />
+            <solid android:color="@color/branded_color" />
         </shape>
     </item>
     <item
         android:drawable="@drawable/logo"
-        android:gravity="center"/>
+        android:gravity="center">
+
+    </item>
+
 
 
 </layer-list>

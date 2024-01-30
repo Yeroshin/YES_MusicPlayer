@@ -31,6 +31,7 @@ runtime = "1.5.4"
 turbine = "1.0.0"
 uiTooling = "1.5.4"
 compiler = "3.2.0-alpha11"
+annotationJvm = "1.7.1"
 
 [libraries]
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
@@ -79,6 +80,7 @@ navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx",
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version = "1.1.2" }
 androidx-compiler = { group = "androidx.databinding", name = "compiler", version.ref = "compiler" }
+androidx-annotation-jvm = { group = "androidx.annotation", name = "annotation-jvm", version.ref = "annotationJvm" }
 
 [plugins]
 androidLibrary = { id = 'com.android.library', version.ref = "androidGradlePlugin" }

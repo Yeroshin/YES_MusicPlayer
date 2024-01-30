@@ -7,7 +7,7 @@
     </style>
     <!-- Base application theme. -->
     <style name="text" >
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">#00ff00</item>
         <item name="android:shadowColor">#333333</item>
         <item name="android:shadowDx">5</item>
@@ -15,13 +15,18 @@
         <item name="android:shadowRadius">2</item>
         <item name="android:singleLine">true</item>
     </style >
+
+    <style name="textLabel" parent="margin">
+        <item name="android:textSize">14sp</item>
+        <item name="android:singleLine">true</item>
+    </style >
+    <style name="textSmall" parent="margin">
+        <item name="android:textSize">12sp</item>
+        <item name="android:singleLine">true</item>
+    </style >
     <style name="yesSwitch" parent="margin" >
         <item name="android:layout_width">52dp</item>
         <item name="android:layout_height">32dp</item>
-    </style >
-    <style name="textLabel" parent="margin">
-        <item name="android:textSize">14pt</item>
-        <item name="android:singleLine">true</item>
     </style >
     <style name="ratingBar">
         <item name="colorControlNormal">#ffa800</item>
@@ -76,5 +81,11 @@
         <item name="android:layout_marginRight">2dp</item>
     </style>
 
+
+    <declare-styleable name="CustomDrawable">
+        <attr name="customText" format="string" />
+        <attr name="customColor" format="color" />
+        <attr name="customTextSize" format="dimension" />
+    </declare-styleable>
 
 </resources>
