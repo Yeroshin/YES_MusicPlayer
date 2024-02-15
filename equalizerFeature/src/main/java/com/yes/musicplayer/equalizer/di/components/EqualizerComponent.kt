@@ -10,6 +10,7 @@ import dagger.Component
 @Component(
     dependencies = [
         CoreComponent::class,
+        AudioSessionIdComponent::class
     ],
     modules = [
         EqualizerModule::class,

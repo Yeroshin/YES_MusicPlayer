@@ -42,4 +42,5 @@ interface CoreComponent {
     fun providesMediaDataStore(): MediaDataStore
     fun providesRendererFactory(): RendererFactory
 
+
 }

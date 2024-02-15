@@ -11,9 +11,9 @@ import javax.inject.Singleton
 
     modules = [
         AudioSessionIdModule::class,
-    DataModule::class
+        DataModule::class
     ]
 )
 interface AudioSessionIdComponent {
-    fun getAudioSessionId():Int
+    fun getAudioSessionId(): Int
 }

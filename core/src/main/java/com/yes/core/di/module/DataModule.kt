@@ -86,10 +86,12 @@ class DataModule(
     }
     @Provides
     fun providesSettingsDataStore(
-        dataStore: DataStore<Preferences>
+        dataStore: DataStore<Preferences>,
+        context: Context
     ): SettingsDataStore {
         return SettingsDataStore(
-            dataStore
+            dataStore,
+            context
         )
     }
     @Provides
