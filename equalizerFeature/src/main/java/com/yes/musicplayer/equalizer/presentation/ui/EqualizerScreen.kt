@@ -85,6 +85,7 @@ class EqualizerScreen : Fragment() {
     }
 
     private fun setUpView() {
+       // binder.presetsSpinner.adapter=adapter
         /*  ArrayAdapter.createFromResource(
               requireContext(),
               R.array.planets_array,
@@ -110,21 +111,40 @@ class EqualizerScreen : Fragment() {
             }
         }
     }
-
+ /*   private val presets= mutableListOf<String>()
+    private val adapter: ArrayAdapter<String> by lazy {
+        ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            presets
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binder.presetsSpinner.adapter = adapter
+        }
+    }*/
+  /*  private val adapter=ArrayAdapter(
+        requireContext(),
+        android.R.layout.simple_spinner_item,
+        presets,
+    ).also { adapter ->
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binder.presetsSpinner.adapter = adapter
+    }*/
     private fun dataLoaded(equalizer: EqualizerUI) {
         equalizer.presets?.let { presets ->
+           // this.presets.addAll(presets)
             ArrayAdapter(
                 requireContext(),
-                android.R.layout.simple_spinner_item,
-                presets,
+                R.layout.item_presets_spinner,
+                presets
             ).also { adapter ->
-                // Specify the layout to use when the list of choices appears.
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                // Apply the adapter to the spinner.
                 binder.presetsSpinner.adapter = adapter
             }
+
+
         }
-        binder.presetsSpinner
+
 
     }
 

@@ -118,6 +118,7 @@ class YESApplication : Application(),
     override fun getEqualizerScreenComponent(): EqualizerComponent {
         return DaggerEqualizerComponent.builder()
             .coreComponent(coreComponent)
+            .audioSessionIdComponent(audioSessionIdComponent)
             .build()
     }
 }
