@@ -7,27 +7,40 @@ import com.yes.musicplayer.equalizer.data.repository.EqualizerRepositoryImpl
 import com.yes.musicplayer.equalizer.domain.entity.Equalizer
 import kotlinx.coroutines.CoroutineDispatcher
 
-class GetEqualizerUseCase (
+class GetEqualizerUseCase(
     dispatcher: CoroutineDispatcher,
     private val settingsRepository: SettingsRepositoryImpl,
     private val equalizerRepository: EqualizerRepositoryImpl
-) : UseCase<Any?, Equalizer>(dispatcher) {
-    override suspend fun run(params: Any?): DomainResult<Equalizer> {
-        val presets= mutableListOf<String>()
-        presets.add(
+) : UseCase<GetEqualizerUseCase.Params?, Equalizer>(dispatcher) {
+    override suspend fun run(params: Params?): DomainResult<Equalizer> {
+        val presetsNames = mutableListOf<String>()
+        val bands = mutableListOf<Short>()
+        params?.frequencies?.forEach {
+            bands.add(equalizerRepository.getBand(it))
+        }
+        val bandsLevelRanges = mutableListOf<IntArray>()
+        bands.forEach {
+            bandsLevelRanges.add(equalizerRepository.getBandLevelRange(it))
+        }
+        presetsNames.add(
             settingsRepository.getEqualizerCustomPresetsName()
         )
-        presets.addAll(
+        presetsNames.addAll(
             equalizerRepository.getPresets()
         )
-        val enabled=settingsRepository.getEqualizerEnabled()
-        val current=settingsRepository.getCurrentPreset()
+        val equalizerEnabled = settingsRepository.getEqualizerEnabled()
+        val currentPreset = settingsRepository.getCurrentPreset()
         return DomainResult.Success(
             Equalizer(
-                enabled,
-                presets,
-                current
+                equalizerEnabled,
+                currentPreset,
+                presetsNames,
+                bandsLevelRanges
             )
         )
     }
+
+    data class Params(
+        val frequencies: IntArray
+    )
 }

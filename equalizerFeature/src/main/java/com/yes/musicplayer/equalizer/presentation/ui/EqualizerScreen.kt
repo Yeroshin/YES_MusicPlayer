@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -85,7 +86,7 @@ class EqualizerScreen : Fragment() {
     }
 
     private fun setUpView() {
-       // binder.presetsSpinner.adapter=adapter
+        // binder.presetsSpinner.adapter=adapter
         /*  ArrayAdapter.createFromResource(
               requireContext(),
               R.array.planets_array,
@@ -106,33 +107,29 @@ class EqualizerScreen : Fragment() {
                 idleView()
             }
 
-            is EqualizerContract.EqualizerState.Success -> {
-                dataLoaded(state.state.equalizer)
+            is EqualizerContract.EqualizerState.Init -> {
+                dataInit(state.state.equalizer)
             }
         }
     }
- /*   private val presets= mutableListOf<String>()
-    private val adapter: ArrayAdapter<String> by lazy {
-        ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            presets
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binder.presetsSpinner.adapter = adapter
+
+
+    private val itemSelectedListener=object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+           // val selectedItem = parent?.getItemAtPosition(position)
+            viewModel.setEvent(
+                EqualizerContract.Event.OnPresetSelected(
+                    position.toShort()
+                )
+            )
         }
-    }*/
-  /*  private val adapter=ArrayAdapter(
-        requireContext(),
-        android.R.layout.simple_spinner_item,
-        presets,
-    ).also { adapter ->
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binder.presetsSpinner.adapter = adapter
-    }*/
-    private fun dataLoaded(equalizer: EqualizerUI) {
-        equalizer.presets?.let { presets ->
-           // this.presets.addAll(presets)
+
+        override fun onNothingSelected(parent: AdapterView<*>?) {
+            // Обработка события, когда ничего не выбрано
+        }
+    }
+    private fun dataInit(equalizer: EqualizerUI) {
+        equalizer.presetsNames?.let { presets ->
             ArrayAdapter(
                 requireContext(),
                 R.layout.item_presets_spinner,
@@ -140,9 +137,18 @@ class EqualizerScreen : Fragment() {
             ).also { adapter ->
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binder.presetsSpinner.adapter = adapter
+                binder.presetsSpinner.onItemSelectedListener = itemSelectedListener
             }
-
-
+        }
+        equalizer.currentPreset?.let {
+            binder.presetsSpinner.setSelection(it)
+        }
+        equalizer.equalizerValues?.let {
+            binder.one.progress=it[0]
+            binder.two.progress=it[1]
+            binder.three.progress=it[2]
+            binder.four.progress=it[3]
+            binder.five.progress=it[4]
         }
 
 

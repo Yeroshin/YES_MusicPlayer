@@ -6,16 +6,11 @@ import com.yes.musicplayer.equalizer.data.repository.EqualizerRepositoryImpl
 import com.yes.musicplayer.equalizer.domain.entity.Equalizer
 import kotlinx.coroutines.CoroutineDispatcher
 
-class SetPresetValuesUseCase (
+class GetPresetValuesUseCase(
     dispatcher: CoroutineDispatcher,
     private val equalizerRepository: EqualizerRepositoryImpl
-) : UseCase<SetPresetValuesUseCase.Params?, Equalizer>(dispatcher) {
+) : UseCase<GetPresetValuesUseCase.Params?, Equalizer>(dispatcher) {
     override suspend fun run(params: Params?): DomainResult<Equalizer> {
-        params?.let {
-            equalizerRepository.usePreset(
-                (params.preset-1).toShort()
-            )
-        }
         val bands = mutableListOf<Short>()
         val levels = mutableListOf<Short>()
         params?.frequencies?.forEach {
@@ -26,7 +21,9 @@ class SetPresetValuesUseCase (
             bandsLevelRanges.add(equalizerRepository.getBandLevelRange(it))
             levels.add(equalizerRepository.getBandLevel(it))
         }
-
+        params?.let {
+            equalizerRepository.usePreset(params.preset)
+        }
 
         return DomainResult.Success(
             Equalizer(
@@ -35,8 +32,9 @@ class SetPresetValuesUseCase (
             )
         )
     }
+
     data class Params(
-        val preset:Short,
+        val preset: Short,
         val frequencies: IntArray
     )
 }

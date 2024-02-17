@@ -8,6 +8,7 @@ import com.yes.musicplayer.equalizer.presentation.model.EqualizerUI
 class EqualizerContract {
 
     sealed class Event : UiEvent {
+        data class OnPresetSelected(val preset:Short): Event()
         data class OnSeek(val position:Int) : Event()
         data object OnPlay : Event()
 
@@ -19,7 +20,7 @@ class EqualizerContract {
 
 
     sealed class EqualizerState {
-        data class Success(val equalizer: EqualizerUI):EqualizerState()
+        data class Init(val equalizer: EqualizerUI):EqualizerState()
         data object Idle : EqualizerState()
     }
 

@@ -1,6 +1,5 @@
 package com.yes.musicplayer.equalizer.data.repository
 
-import android.hardware.ConsumerIrManager.CarrierFrequencyRange
 import android.media.audiofx.Equalizer
 
 
@@ -18,13 +17,16 @@ class EqualizerRepositoryImpl(
         }
         return presetsList
     }
-    fun setPresetValues(preset:Short){
+    fun usePreset(preset:Short){
         equalizer.usePreset(preset)
     }
     fun getBand(frequency:Int):Short{
         return equalizer.getBand(frequency)
     }
-    fun getBandFreqRange(band:Short):IntArray{
+    fun getBandLevelRange(band:Short):IntArray{
         return equalizer.getBandFreqRange(band)
+    }
+    fun getBandLevel(band:Short): Short {
+        return equalizer.getBandLevel(band)
     }
 }
