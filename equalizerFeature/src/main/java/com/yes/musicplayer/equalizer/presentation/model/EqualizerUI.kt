@@ -5,4 +5,5 @@ data class EqualizerUI(
     val currentPreset: Int? = null,
     val presetsNames: List<String>? = null,
     val equalizerValues: List<Int>? = null,
+    val equalizerValuesText: List<String>? = null,
 )

@@ -21,43 +21,43 @@
             android:background="@drawable/display"
             android:orientation="horizontal">
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/panel_flat"
+                android:orientation="vertical"
                 android:padding="4dp">
 
                 <TextView
 
+                    android:id="@+id/oneValue"
                     style="@style/textSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginTop="0dp"
-                    android:text="20Hz"
+                    android:text="TextView"
                     android:textAlignment="center"
-                    android:textColor="@color/branded_light" />
-
-                <TextView
-
-                    style="@style/textSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:text="60Hz"
-                    android:textAlignment="center"
-                    android:textColor="@color/branded_light" />
+                    android:textColor="@color/branded_light"
+                    tools:text="40Hz" />
 
                 <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
 
                     android:id="@+id/one"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:progressDrawable="@drawable/trackbar_progress"
                     android:thumb="@drawable/thumb_layer" />
 
-            </FrameLayout>
+                <TextView
+
+                    style="@style/textSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="60Hz"
+                    android:textAlignment="center"
+                    android:textColor="@color/branded_light" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -69,6 +69,7 @@
 
                 <TextView
 
+                    android:id="@+id/twoValue"
                     style="@style/textSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -107,6 +108,7 @@
 
                 <TextView
 
+                    android:id="@+id/threeValue"
                     style="@style/textSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -145,6 +147,7 @@
 
                 <TextView
 
+                    android:id="@+id/fourValue"
                     style="@style/textSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -183,6 +186,7 @@
 
                 <TextView
 
+                    android:id="@+id/fiveValue"
                     style="@style/textSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

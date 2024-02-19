@@ -10,19 +10,22 @@ class MapperUI {
             equalizerEnabled = equalizer.equalizerEnabled,
             currentPreset = equalizer.currentPreset,
             presetsNames = equalizer.presetsNames,
-            equalizerValues = equalizer.bandsLevelRanges?.let {
+            equalizerValues = equalizer.bandsLevelRange?.let {
                 equalizer.equalizerValues?.mapIndexed { index, value ->
                     convertToPercent(
                         value,
-                        equalizer.bandsLevelRanges[index])
+                        equalizer.bandsLevelRange)
                 }
+            },
+            equalizerValuesText = equalizer.equalizerValues?.map {
+                it.toString()
             }
         )
     }
 
-    private fun convertToPercent(bandLevel: Short, bandLevelRange: IntArray): Int {
+    private fun convertToPercent(bandLevel: Short, bandLevelRange: ShortArray): Int {
         val level = bandLevel - bandLevelRange[0]
         val max = bandLevelRange[1] - bandLevelRange[0]
-        return ((level * 100) / max)+50
+        return (level * 100) / max
     }
 }

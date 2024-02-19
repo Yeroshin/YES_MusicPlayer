@@ -21,11 +21,18 @@ class EqualizerRepositoryImpl(
         equalizer.usePreset(preset)
     }
     fun getBand(frequency:Int):Short{
+        val tmpBand=equalizer.getBandFreqRange(0)
+
         return equalizer.getBand(frequency)
+
     }
-    fun getBandLevelRange(band:Short):IntArray{
+    fun getBandFreqRange(band:Short):IntArray{
         return equalizer.getBandFreqRange(band)
     }
+    fun getBandLevelRange():ShortArray{
+        return equalizer.bandLevelRange
+    }
+
     fun getBandLevel(band:Short): Short {
         return equalizer.getBandLevel(band)
     }

@@ -18,19 +18,19 @@ class SetPresetValuesUseCase (
         }
         val bands = mutableListOf<Short>()
         val levels = mutableListOf<Short>()
+
         params?.frequencies?.forEach {
             bands.add(equalizerRepository.getBand(it))
         }
-        val bandsLevelRanges = mutableListOf<IntArray>()
+        val bandsLevelRange = equalizerRepository.getBandLevelRange()
         bands.forEach {
-            bandsLevelRanges.add(equalizerRepository.getBandLevelRange(it))
             levels.add(equalizerRepository.getBandLevel(it))
         }
 
 
         return DomainResult.Success(
             Equalizer(
-                bandsLevelRanges = bandsLevelRanges,
+                bandsLevelRange = bandsLevelRange,
                 equalizerValues = levels
             )
         )

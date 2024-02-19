@@ -18,10 +18,8 @@ class GetEqualizerUseCase(
         params?.frequencies?.forEach {
             bands.add(equalizerRepository.getBand(it))
         }
-        val bandsLevelRanges = mutableListOf<IntArray>()
-        bands.forEach {
-            bandsLevelRanges.add(equalizerRepository.getBandLevelRange(it))
-        }
+        val bandsLevelRange =equalizerRepository.getBandLevelRange()
+
         presetsNames.add(
             settingsRepository.getEqualizerCustomPresetsName()
         )
@@ -35,7 +33,7 @@ class GetEqualizerUseCase(
                 equalizerEnabled,
                 currentPreset,
                 presetsNames,
-                bandsLevelRanges
+                bandsLevelRange
             )
         )
     }

@@ -144,11 +144,18 @@ class EqualizerScreen : Fragment() {
             binder.presetsSpinner.setSelection(it)
         }
         equalizer.equalizerValues?.let {
-            binder.one.progress=it[0]
-            binder.two.progress=it[1]
-            binder.three.progress=it[2]
-            binder.four.progress=it[3]
-            binder.five.progress=it[4]
+            binder.one.setValue(it[0])
+            binder.two.setValue(it[1])
+            binder.three.setValue(it[2])
+            binder.four.setValue(it[3])
+            binder.five.setValue(it[4])
+        }
+        equalizer.equalizerValuesText?.let {
+            binder.oneValue.text=it[0]
+            binder.twoValue.text=it[1]
+            binder.threeValue.text=it[2]
+            binder.fourValue.text=it[3]
+            binder.fiveValue.text=it[4]
         }
 
 
