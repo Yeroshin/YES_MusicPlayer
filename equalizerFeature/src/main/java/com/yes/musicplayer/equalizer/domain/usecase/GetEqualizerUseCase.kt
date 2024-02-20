@@ -14,7 +14,7 @@ class GetEqualizerUseCase(
 ) : UseCase<GetEqualizerUseCase.Params?, Equalizer>(dispatcher) {
     override suspend fun run(params: Params?): DomainResult<Equalizer> {
         val presetsNames = mutableListOf<String>()
-        val bands = mutableListOf<Short>()
+        val bands = mutableListOf<Int>()
         params?.frequencies?.forEach {
             bands.add(equalizerRepository.getBand(it))
         }
@@ -28,12 +28,20 @@ class GetEqualizerUseCase(
         )
         val equalizerEnabled = settingsRepository.getEqualizerEnabled()
         val currentPreset = settingsRepository.getCurrentPreset()
+        equalizerRepository.usePreset(
+            currentPreset
+        )
+        val levels = mutableListOf<Int>()
+        bands.forEach {
+            levels.add(equalizerRepository.getBandLevel(it))
+        }
         return DomainResult.Success(
             Equalizer(
                 equalizerEnabled,
                 currentPreset,
                 presetsNames,
-                bandsLevelRange
+                bandsLevelRange,
+                        equalizerValues = levels
             )
         )
     }

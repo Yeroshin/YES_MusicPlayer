@@ -6,15 +6,17 @@ import androidx.lifecycle.viewModelScope
 import com.yes.core.domain.models.DomainResult
 import com.yes.core.presentation.BaseViewModel
 import com.yes.musicplayer.equalizer.domain.usecase.GetEqualizerUseCase
-import com.yes.musicplayer.equalizer.domain.usecase.SetPresetValuesUseCase
+import com.yes.musicplayer.equalizer.domain.usecase.SetEqualizerValueUseCase
+import com.yes.musicplayer.equalizer.domain.usecase.SetPresetUseCase
 import com.yes.musicplayer.equalizer.presentation.contract.EqualizerContract.*
 import com.yes.musicplayer.equalizer.presentation.mapper.MapperUI
 import kotlinx.coroutines.launch
 
 class EqualizerViewModel(
-    private val getEqualizerUseCase: GetEqualizerUseCase,
     private val mapperUI: MapperUI,
-    private val setPresetValuesUseCase: SetPresetValuesUseCase
+    private val getEqualizerUseCase: GetEqualizerUseCase,
+    private val setPresetUseCase: SetPresetUseCase,
+    private val setEqualizerValueUseCase: SetEqualizerValueUseCase
 ) : BaseViewModel<Event, State, Effect>() {
 
     init {
@@ -28,7 +30,7 @@ class EqualizerViewModel(
                 is DomainResult.Success -> {
                     setState {
                         copy(
-                            state = EqualizerState.Init(
+                            state = EqualizerState.Success(
                                 mapperUI.map(result.data)
                             )
                         )
@@ -54,20 +56,44 @@ class EqualizerViewModel(
 
             }
 
-            is Event.OnSeek -> {
-
+            is Event.OnPresetSelected -> {
+              //  setPreset(event.preset)
             }
 
-            is Event.OnPresetSelected -> {
-                setPreset(event.preset)
+            is Event.OnEqualizerValue ->{
+             //   setEqualizerValue(event.band,event.value)
+            }
+        }
+    }
+
+    private fun setEqualizerValue(band:Int,value: Int) {
+        viewModelScope.launch {
+            val result = setEqualizerValueUseCase(
+                SetEqualizerValueUseCase.Params(
+                    band,
+                    value
+                )
+            )
+            when (result) {
+                is DomainResult.Success -> {
+                    setState {
+                        copy(
+                            state = EqualizerState.Success(
+                                mapperUI.map(result.data)
+                            )
+                        )
+                    }
+                }
+
+                is DomainResult.Error -> {}
             }
         }
     }
 
     private fun setPreset(preset: Short) {
         viewModelScope.launch {
-            val result = setPresetValuesUseCase(
-                SetPresetValuesUseCase.Params(
+            val result = setPresetUseCase(
+                SetPresetUseCase.Params(
                     preset,
                     intArrayOf(60000, 230000, 910000, 3000000, 14000000)
                 )
@@ -76,7 +102,7 @@ class EqualizerViewModel(
                 is DomainResult.Success -> {
                     setState {
                         copy(
-                            state = EqualizerState.Init(
+                            state = EqualizerState.Success(
                                 mapperUI.map(result.data)
                             )
                         )
@@ -89,16 +115,18 @@ class EqualizerViewModel(
     }
 
     class Factory(
-        private val getEqualizerUseCase: GetEqualizerUseCase,
         private val mapperUI: MapperUI,
-        private val setPresetValuesUseCase: SetPresetValuesUseCase
+        private val getEqualizerUseCase: GetEqualizerUseCase,
+        private val setPresetUseCase: SetPresetUseCase,
+        private val setEqualizerValueUseCase: SetEqualizerValueUseCase
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return EqualizerViewModel(
-                getEqualizerUseCase,
                 mapperUI,
-                setPresetValuesUseCase
+                getEqualizerUseCase,
+                setPresetUseCase,
+                setEqualizerValueUseCase
             ) as T
         }
     }

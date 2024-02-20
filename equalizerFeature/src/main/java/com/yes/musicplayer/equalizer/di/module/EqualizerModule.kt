@@ -6,7 +6,8 @@ import com.yes.core.di.module.IoDispatcher
 import com.yes.musicplayer.equalizer.data.repository.EqualizerRepositoryImpl
 import com.yes.musicplayer.equalizer.data.repository.SettingsRepositoryImpl
 import com.yes.musicplayer.equalizer.domain.usecase.GetEqualizerUseCase
-import com.yes.musicplayer.equalizer.domain.usecase.SetPresetValuesUseCase
+import com.yes.musicplayer.equalizer.domain.usecase.SetEqualizerValueUseCase
+import com.yes.musicplayer.equalizer.domain.usecase.SetPresetUseCase
 import com.yes.musicplayer.equalizer.presentation.mapper.MapperUI
 import com.yes.musicplayer.equalizer.presentation.ui.EqualizerScreen
 import com.yes.musicplayer.equalizer.presentation.vm.EqualizerViewModel
@@ -17,12 +18,26 @@ import kotlinx.coroutines.CoroutineDispatcher
 @Module
 class EqualizerModule {
     @Provides
+    fun providesSetEqualizerValueUseCase(
+        @IoDispatcher dispatcher: CoroutineDispatcher,
+        settingsRepository: SettingsRepositoryImpl,
+        equalizerRepository: EqualizerRepositoryImpl
+    ): SetEqualizerValueUseCase {
+        return SetEqualizerValueUseCase(
+            dispatcher,
+            settingsRepository,
+            equalizerRepository
+        )
+    }
+    @Provides
     fun providesSetPresetValuesUseCase(
         @IoDispatcher dispatcher: CoroutineDispatcher,
+        settingsRepository: SettingsRepositoryImpl,
         equalizerRepository: EqualizerRepositoryImpl
-    ): SetPresetValuesUseCase {
-        return SetPresetValuesUseCase(
+    ): SetPresetUseCase {
+        return SetPresetUseCase(
             dispatcher,
+            settingsRepository,
             equalizerRepository
         )
     }
@@ -68,14 +83,16 @@ class EqualizerModule {
 
     @Provides
     fun providesEqualizerViewModelFactory(
-        getEqualizerUseCase:GetEqualizerUseCase,
         mapperUI: MapperUI,
-        setPresetValuesUseCase:SetPresetValuesUseCase
+        getEqualizerUseCase:GetEqualizerUseCase,
+        setPresetUseCase:SetPresetUseCase,
+        setEqualizerValueUseCase: SetEqualizerValueUseCase
     ): EqualizerViewModel.Factory {
         return EqualizerViewModel.Factory(
-            getEqualizerUseCase,
             mapperUI,
-            setPresetValuesUseCase
+            getEqualizerUseCase,
+            setPresetUseCase,
+            setEqualizerValueUseCase
         )
     }
 

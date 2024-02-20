@@ -203,28 +203,21 @@ class PlayerDataSource(
         if (controllerFuture.isDone) {
             val controller = controllerFuture.get()
             controller.seekTo(index,TIME_UNSET)
-          //  controller.seekToNextMediaItem()
             controller.play()
 
         } else {
             // Добавить команду приостановки в очередь
             commandQueue.add(QueuedCommand.Play)
         }
-       /* controller.seekTo(index,0)
-        controller.play()*/
     }
 
     fun play() {
-        //  controller.play()
         if (controllerFuture.isDone) {
             val controller = controllerFuture.get()
             controller.play()
-
         } else {
-            // Добавить команду приостановки в очередь
             commandQueue.add(QueuedCommand.Play)
         }
-        // controller.play()
     }
 
     fun seek(position: Long) {

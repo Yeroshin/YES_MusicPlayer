@@ -2,30 +2,45 @@ package com.yes.musicplayer.equalizer.presentation.mapper
 
 import com.yes.musicplayer.equalizer.domain.entity.Equalizer
 import com.yes.musicplayer.equalizer.presentation.model.EqualizerUI
+import kotlin.math.abs
 
 class MapperUI {
     fun map(equalizer: Equalizer): EqualizerUI {
 
         return EqualizerUI(
             equalizerEnabled = equalizer.equalizerEnabled,
-            currentPreset = equalizer.currentPreset,
+            currentPreset = equalizer.currentPreset?.toInt(),
             presetsNames = equalizer.presetsNames,
-            equalizerValues = equalizer.bandsLevelRange?.let {
+           /* equalizerValues = equalizer.bandsLevelRange?.let {
                 equalizer.equalizerValues?.mapIndexed { index, value ->
                     convertToPercent(
                         value,
                         equalizer.bandsLevelRange)
                 }
+            },*/
+            bandsLevelRange =equalizer.bandsLevelRange?.let {
+                convertBandLevelRangeToUi(it)
             },
-            equalizerValuesText = equalizer.equalizerValues?.map {
-                it.toString()
-            }
+            equalizerValues = equalizer.equalizerValues?.let {equalizerValues->
+                equalizer.bandsLevelRange?.let {
+                    equalizerValues.map {
+                        convertEqualizerValueToUi(it,equalizer.bandsLevelRange)
+                    }.toIntArray()
+                }
+            },
+
         )
     }
 
-    private fun convertToPercent(bandLevel: Short, bandLevelRange: ShortArray): Int {
+    private fun convertToPercent(bandLevel: Int, bandLevelRange: IntArray): Int {
         val level = bandLevel - bandLevelRange[0]
         val max = bandLevelRange[1] - bandLevelRange[0]
         return (level * 100) / max
+    }
+    private fun convertBandLevelRangeToUi(bandLevelRange: IntArray):Int{
+        return bandLevelRange[1]*2
+    }
+    private fun convertEqualizerValueToUi(value:Int,bandLevelRange: IntArray):Int{
+        return bandLevelRange[1]+ value
     }
 }

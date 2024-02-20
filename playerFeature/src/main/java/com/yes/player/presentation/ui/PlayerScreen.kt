@@ -30,7 +30,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class PlayerFragment : Fragment() {
+class PlayerScreen : Fragment() {
     interface DependencyResolver {
         fun getPlayerFragmentComponent(): PlayerFeatureComponent
     }

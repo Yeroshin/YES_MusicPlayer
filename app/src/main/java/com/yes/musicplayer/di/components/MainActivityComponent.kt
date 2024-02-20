@@ -1,11 +1,7 @@
 package com.yes.musicplayer.di.components
 
-import androidx.fragment.app.FragmentFactory
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.yes.musicplayer.di.MainActivityScope
 import com.yes.musicplayer.di.module.MainActivityModule
-import com.yes.player.di.components.PlayerFeatureComponent
-import com.yes.player.presentation.ui.PlayerFragment
 import dagger.Component
 
 

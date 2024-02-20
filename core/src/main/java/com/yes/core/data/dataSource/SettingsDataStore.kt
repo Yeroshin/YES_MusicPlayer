@@ -23,6 +23,7 @@ class SettingsDataStore(
         val CUSTOM_PRESET_NAME = stringPreferencesKey("customPresetNames")
         val EQUALIZER_ENABLED = booleanPreferencesKey("equalizerEnabled")
         val CURRENT_PRESET = intPreferencesKey("currentPreset")
+        val CUSTOM_PRESET = stringPreferencesKey("customPreset")
     }
 
     suspend fun subscribeCurrentPlaylistId(): Flow<Long> {
@@ -92,10 +93,12 @@ class SettingsDataStore(
             preferences[PreferencesKeys.EQUALIZER_ENABLED] = enabled
         }
     }
-    fun getCurrentPreset():Flow<Int>{
+    fun getCurrentPreset():Flow<Short>{
         return dataStore.data
             .map { preferences ->
-                preferences[PreferencesKeys.CURRENT_PRESET]?:run {
+                preferences[PreferencesKeys.CURRENT_PRESET]?.let{
+                    it.toShort()
+            }?:run {
                     setCurrentPreset(0)
                     0
                 }
@@ -105,5 +108,22 @@ class SettingsDataStore(
         dataStore.edit { preferences ->
             preferences[PreferencesKeys.CURRENT_PRESET] =preset
         }
+    }
+    suspend fun setCustomPreset(customPreset: IntArray) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.CUSTOM_PRESET] = customPreset.joinToString(",")
+        }
+    }
+    suspend fun getCustomPreset():Flow<IntArray>{
+       return dataStore.data
+           .map {preferences ->
+               preferences[PreferencesKeys.CUSTOM_PRESET]?.let {arrayString->
+                   arrayString.split(",").map { it.toInt() }.toIntArray()
+               } ?:run {
+                   val customPreset= intArrayOf(0,0,0,0,0)
+                   setCustomPreset(customPreset)
+                   customPreset
+               }
+           }
     }
 }

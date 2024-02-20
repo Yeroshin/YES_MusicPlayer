@@ -9,8 +9,8 @@ class EqualizerContract {
 
     sealed class Event : UiEvent {
         data class OnPresetSelected(val preset:Short): Event()
-        data class OnSeek(val position:Int) : Event()
         data object OnPlay : Event()
+        data class OnEqualizerValue(val band:Int,val value:Int): Event()
 
     }
 
@@ -20,8 +20,9 @@ class EqualizerContract {
 
 
     sealed class EqualizerState {
-        data class Init(val equalizer: EqualizerUI):EqualizerState()
+        data class Success(val equalizer: EqualizerUI):EqualizerState()
         data object Idle : EqualizerState()
+
     }
 
     sealed class Effect : UiEffect {

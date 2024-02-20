@@ -1,6 +1,10 @@
 package com.yes.musicplayer.equalizer.data.repository
 
+import android.content.Context
+import android.media.AudioManager
+import android.media.audiofx.AudioEffect
 import android.media.audiofx.Equalizer
+import androidx.core.content.ContextCompat.getSystemService
 
 
 class EqualizerRepositoryImpl(
@@ -17,23 +21,46 @@ class EqualizerRepositoryImpl(
         }
         return presetsList
     }
-    fun usePreset(preset:Short){
-        equalizer.usePreset(preset)
-    }
-    fun getBand(frequency:Int):Short{
-        val tmpBand=equalizer.getBandFreqRange(0)
+    fun usePreset(preset:Int){
 
-        return equalizer.getBand(frequency)
+        val pr=preset.toShort()
+        val t=equalizer.enabled
+        equalizer.enabled=true
+        equalizer.setEnabled(true)
+        val c=equalizer.hasControl()
+       // equalizer.release()
+        val f=equalizer.enabled
+        try{
+            equalizer.usePreset(1)
+        }catch (exception: Exception){
+            equalizer.release()
+            val pr=preset.toShort()
+        }
+
+    }
+    fun getBand(frequency:Int):Int{
+        return equalizer.getBand(frequency).toInt()
 
     }
     fun getBandFreqRange(band:Short):IntArray{
         return equalizer.getBandFreqRange(band)
     }
-    fun getBandLevelRange():ShortArray{
-        return equalizer.bandLevelRange
+    fun getBandLevelRange():IntArray{
+        return equalizer.bandLevelRange.map { it.toInt() }.toIntArray()
     }
 
-    fun getBandLevel(band:Short): Short {
-        return equalizer.getBandLevel(band)
+    fun getBandLevel(band:Int): Int {
+        return equalizer.getBandLevel(band.toShort()).toInt()
+    }
+    fun setBandLevel(band: Int,level:Int){
+        try{
+            equalizer.setBandLevel(
+                band.toShort(),
+                level.toShort()
+            )
+        }catch (exception: Exception){
+            val pr=0
+        }
+      //  equalizer.setBandLevel(band.toShort(),level.toShort())
     }
 }
