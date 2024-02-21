@@ -1,6 +1,5 @@
 package com.yes.core.di.component
 
-import android.app.Activity
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -25,7 +24,7 @@ import javax.inject.Singleton
         DataModule::class,
     ]
 )
-interface CoreComponent {
+interface DataComponent {
     fun providesEspressoIdlingResource(): EspressoIdlingResource?
     @IoDispatcher
     fun providesIoDispatcher(): CoroutineDispatcher
@@ -40,6 +39,7 @@ interface CoreComponent {
     fun providesSettingsDataStore(): SettingsDataStore
     fun providesPlayerDataSource(): PlayerDataSource
     fun providesMediaDataStore(): MediaDataStore
+
     fun providesRendererFactory(): RendererFactory
 
 

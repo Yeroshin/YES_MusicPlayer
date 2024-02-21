@@ -1,21 +1,16 @@
 package com.yes.alarmclockfeature.di.components
 
-import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import com.yes.alarmclockfeature.di.AlarmClockScope
 import com.yes.alarmclockfeature.di.module.AlarmClockModule
 import com.yes.alarmclockfeature.domain.usecase.GetCurrentPlaylistTracksUseCase
 import com.yes.alarmclockfeature.domain.usecase.SetTracksToPlayerPlaylistUseCase
-import com.yes.core.data.dataSource.PlayerDataSource
-import com.yes.core.di.component.AudioSessionIdComponent
 import com.yes.core.di.component.BaseComponent
-import com.yes.core.di.component.CoreComponent
-import com.yes.core.presentation.BaseDependency
-import com.yes.core.presentation.BaseFragment
+import com.yes.core.di.component.DataComponent
 import dagger.Component
 
 @Component(
-    dependencies = [CoreComponent::class],
+    dependencies = [DataComponent::class],
     modules = [
         AlarmClockModule::class,
     ]

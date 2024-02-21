@@ -1,7 +1,7 @@
 package com.yes.player.di.components
 
-import com.yes.core.di.component.AudioSessionIdComponent
-import com.yes.core.di.component.CoreComponent
+import com.yes.core.di.component.AudioComponent
+import com.yes.core.di.component.DataComponent
 import com.yes.player.di.PlayerScope
 import com.yes.player.di.module.PlayerModule
 import com.yes.player.di.module.UseCaseModule
@@ -10,8 +10,8 @@ import dagger.Component
 
 @Component(
     dependencies = [
-        CoreComponent::class,
-        AudioSessionIdComponent::class
+        DataComponent::class,
+        AudioComponent::class
     ],
     modules = [
         PlayerModule::class,

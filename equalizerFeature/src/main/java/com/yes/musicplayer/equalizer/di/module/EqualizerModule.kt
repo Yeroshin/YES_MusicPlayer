@@ -1,6 +1,13 @@
 package com.yes.musicplayer.equalizer.di.module
 
+import android.content.Context
+import android.media.AudioManager
+import android.media.MediaPlayer
 import android.media.audiofx.Equalizer
+import androidx.annotation.OptIn
+import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.ExoPlayer
 import com.yes.core.data.dataSource.SettingsDataStore
 import com.yes.core.di.module.IoDispatcher
 import com.yes.musicplayer.equalizer.data.repository.EqualizerRepositoryImpl
@@ -42,11 +49,21 @@ class EqualizerModule {
         )
     }
 
-    @Provides
+   /* @Provides
     fun providesEqualizer(
         audioSessionId:Int
     ): Equalizer{
         return Equalizer(0,audioSessionId)
+    }*/
+    @OptIn(UnstableApi::class)
+    @Provides
+    fun providesEqualizer(
+       context: Context,
+       player: ExoPlayer
+    ): Equalizer{
+        val t=player.audioSessionId
+       val playe=  ExoPlayer.Builder(context).build()
+         return Equalizer(0,playe.audioSessionId)
     }
     @Provides
     fun providesSettingsRepositoryImpl(

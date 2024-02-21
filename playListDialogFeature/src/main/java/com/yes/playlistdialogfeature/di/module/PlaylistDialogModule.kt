@@ -27,13 +27,10 @@ class PlaylistDialogModule {
             factory
         )
     }
-
-
     @Provides
     fun providesMapper(): Mapper {
         return Mapper()
     }
-
     @Provides
     fun providesPlayListDialogRepository(
         mapper: Mapper,
@@ -44,7 +41,6 @@ class PlaylistDialogModule {
             playListDao,
         )
     }
-
     @Provides
     fun providesSubscribePlayListsUseCase(
         @IoDispatcher dispatcher: CoroutineDispatcher,
@@ -57,7 +53,6 @@ class PlaylistDialogModule {
             settingsRepository
         )
     }
-
     @Provides
     fun providesAddPlayListUseCase(
         @IoDispatcher dispatcher: CoroutineDispatcher,

@@ -33,7 +33,7 @@ class EqualizerRepositoryImpl(
         try{
             equalizer.usePreset(1)
         }catch (exception: Exception){
-            equalizer.release()
+           // equalizer.release()
             val pr=preset.toShort()
         }
 

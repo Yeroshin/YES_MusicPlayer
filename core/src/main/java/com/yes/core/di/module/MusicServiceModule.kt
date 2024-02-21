@@ -2,6 +2,7 @@ package com.yes.core.di.module
 
 import android.content.Context
 import android.media.audiofx.Visualizer
+import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
 import com.yes.core.data.factory.RendererFactory
@@ -21,16 +22,16 @@ class MusicServiceModule {
         return MediaSession.Builder(context, player).build()
     }
 
-    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+  /*  @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     @Provides
-    fun  providesExoPlayer(
+    fun  providesPlayer(
         context: Context,
         audioSessionId:Int
     ): ExoPlayer {
         val player=ExoPlayer.Builder(context).build()
         player.audioSessionId=audioSessionId
         return player
-    }
+    }*/
 
 
   /* @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)

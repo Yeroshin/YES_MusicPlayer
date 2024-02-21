@@ -7,19 +7,19 @@ import com.yes.alarmclockfeature.di.components.AlarmClockComponent
 import com.yes.alarmclockfeature.di.components.DaggerAlarmClockComponent
 import com.yes.alarmclockfeature.di.module.AlarmClockModule
 import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
-import com.yes.core.di.component.DaggerAudioSessionIdComponent
-import com.yes.core.di.component.DaggerCoreComponent
+import com.yes.core.di.component.DaggerAudioComponent
+import com.yes.core.di.component.DaggerDataComponent
 import com.yes.core.di.component.DaggerMusicServiceComponent
 import com.yes.core.di.component.MusicServiceComponent
-import com.yes.core.di.module.AudioSessionIdModule
+import com.yes.core.di.module.AudioModule
 import com.yes.core.di.module.DataModule
 import com.yes.core.di.module.MusicServiceModule
 import com.yes.core.presentation.MusicService
 import com.yes.musicplayer.di.components.DaggerMainActivityComponent
-
 import com.yes.musicplayer.di.components.MainActivityComponent
 import com.yes.musicplayer.equalizer.di.components.DaggerEqualizerComponent
 import com.yes.musicplayer.equalizer.di.components.EqualizerComponent
+import com.yes.musicplayer.equalizer.di.module.EqualizerModule
 import com.yes.musicplayer.equalizer.presentation.ui.EqualizerScreen
 import com.yes.musicplayer.presentation.MainActivity
 import com.yes.player.di.components.DaggerPlayerFeatureComponent
@@ -49,8 +49,8 @@ class YESApplication : Application(),
     private val dataModule by lazy {
         DataModule(this)
     }
-     private val coreComponent by lazy {
-        DaggerCoreComponent.builder()
+     private val dataComponent by lazy {
+        DaggerDataComponent.builder()
             .dataModule(dataModule)
             .build()
     }
@@ -62,58 +62,65 @@ class YESApplication : Application(),
 
     override fun getPlayerFragmentComponent(): PlayerFeatureComponent {
         return DaggerPlayerFeatureComponent.builder()
-            .audioSessionIdComponent(audioSessionIdComponent)
-            .coreComponent(coreComponent)
+            .audioComponent(audioComponent)
+            .dataComponent(dataComponent)
             .build()
     }
 
     override fun getPlayListDialogComponent(): PlayListDialogComponent {
         return DaggerPlayListDialogComponent.builder()
-            .coreComponent(coreComponent)
+            .dataComponent(dataComponent)
             .build()
     }
 
     override fun getPlaylistComponent(): PlaylistComponent {
         return DaggerPlaylistComponent.builder()
-            .coreComponent(coreComponent)
+            .dataComponent(dataComponent)
             .build()
     }
 
     override fun getTrackDialogComponent(): TrackDialogComponent {
         return DaggerTrackDialogComponent.builder()
-            .coreComponent(coreComponent)
+            .dataComponent(dataComponent)
             .build()
     }
 
     private val musicServiceModule by lazy {
         MusicServiceModule()
     }
-    private val audioSessionIdComponent by lazy {
-        DaggerAudioSessionIdComponent.builder()
-            .audioSessionIdModule(AudioSessionIdModule())
-            .dataModule(dataModule)
+    private val audioComponent by lazy {
+        DaggerAudioComponent.builder()
+            .dataComponent(dataComponent)
+            .audioModule(AudioModule())
             .build()
     }
-
+/*private val musicServiceComponent by lazy{
+    DaggerMusicServiceComponent.builder()
+        .coreComponent(coreComponent)
+        .musicServiceModule(musicServiceModule)
+        .build()
+}*/
     override fun getMusicServiceComponent(context: Context): MusicServiceComponent {
         return DaggerMusicServiceComponent.builder()
-            .coreComponent(coreComponent)
+            .dataComponent(dataComponent)
             .musicServiceModule(musicServiceModule)
-            .audioSessionIdComponent(audioSessionIdComponent)
-            .build()
+            .audioComponent(audioComponent)
+           .build()
+      //  return musicServiceComponent
     }
 
     override fun getComponent(): AlarmClockComponent {
         return DaggerAlarmClockComponent.builder()
             .alarmClockModule(AlarmClockModule(MainActivity::class.java))
-            .coreComponent(coreComponent)
+            .dataComponent(dataComponent)
             .build()
     }
 
     override fun getEqualizerScreenComponent(): EqualizerComponent {
         return DaggerEqualizerComponent.builder()
-            .coreComponent(coreComponent)
-            .audioSessionIdComponent(audioSessionIdComponent)
+            .dataComponent(dataComponent)
+            .audioComponent(audioComponent)
+            .equalizerModule(EqualizerModule())
             .build()
     }
 }
