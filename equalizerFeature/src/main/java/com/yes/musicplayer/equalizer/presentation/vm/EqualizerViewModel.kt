@@ -57,11 +57,11 @@ class EqualizerViewModel(
             }
 
             is Event.OnPresetSelected -> {
-              //  setPreset(event.preset)
+                setPreset(event.preset)
             }
 
             is Event.OnEqualizerValue ->{
-             //   setEqualizerValue(event.band,event.value)
+               setEqualizerValue(event.band,event.value)
             }
         }
     }

@@ -61,9 +61,41 @@ class EqualizerModule {
        context: Context,
        player: ExoPlayer
     ): Equalizer{
-        val t=player.audioSessionId
-       val playe=  ExoPlayer.Builder(context).build()
-         return Equalizer(0,playe.audioSessionId)
+       var eq=Equalizer(1000,player.audioSessionId)
+      /* eq.setControlStatusListener { effect, controlGranted ->
+           if(!controlGranted){
+             // eq.release()
+             //  eq=Equalizer(1000,player.audioSessionId)
+               val a=eq.hasControl()
+               val b=eq.enabled
+               eq.enabled=true
+               val c=eq.hasControl()
+               val d=eq.enabled
+               val hasControl = controlGranted
+           }
+
+       }*/
+       try{
+           eq.usePreset(1)
+       }catch (exception: Exception){
+           // equalizer.release()
+           val pr=exception
+       }
+       val a=eq.hasControl()
+       val b=eq.enabled
+       eq.enabled=true
+       val c=eq.hasControl()
+       val d=eq.enabled
+
+       try{
+           eq.usePreset(1)
+       }catch (exception: Exception){
+           // equalizer.release()
+           val pr=exception
+       }
+       val z=eq.hasControl()
+       //  return Equalizer(0,playe.audioSessionId)
+       return eq
     }
     @Provides
     fun providesSettingsRepositoryImpl(
@@ -73,12 +105,14 @@ class EqualizerModule {
             settings
         )
     }
-    @Provides
+    @OptIn(UnstableApi::class) @Provides
     fun providesEqualizerRepositoryImpl(
-        equalizer: Equalizer
+        equalizer: Equalizer,
+        player:ExoPlayer
     ): EqualizerRepositoryImpl{
         return EqualizerRepositoryImpl(
-            equalizer
+            equalizer,
+            player.audioSessionId
         )
     }
     @Provides

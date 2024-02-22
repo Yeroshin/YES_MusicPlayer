@@ -27,7 +27,6 @@ class AudioModule {
   fun providesAudioSessionId(
       player: ExoPlayer
   ): Int{
-      val t=player.audioSessionId
       return player.audioSessionId
   }
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)

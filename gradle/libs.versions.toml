@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "8.1.3"#"7.4.0"
+androidGradlePlugin = "8.2.2"#"7.4.0"
 androidx-material = "1.5.4"
 dagger = "2.47"
 datastorePreferences = "1.0.0"
