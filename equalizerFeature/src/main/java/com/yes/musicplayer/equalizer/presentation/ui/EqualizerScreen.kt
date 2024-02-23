@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.CompoundButton
+import android.widget.RadioGroup.OnCheckedChangeListener
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -156,6 +158,9 @@ class EqualizerScreen : Fragment() {
         binder.five.setOnVerticalSeekBarChangeListener(verticalSeekBarChangeListener)
       //  binder.five.setOnSeekBarChangeListener(seekBarChangeListener)
 
+        binder.switch1.setOnCheckedChangeListener { buttonView, isChecked ->
+            binder.one.isEnabled = isChecked
+        }
 
     }
 

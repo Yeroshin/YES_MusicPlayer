@@ -12,7 +12,7 @@ import androidx.media3.exoplayer.ExoPlayer
 
 class EqualizerRepositoryImpl(
     private var equalizer:Equalizer,
-    private val player:Int
+    private val audioSessionId:Int
 ) {
     fun getPresets():List<String>{
         val numberOfPresets =
@@ -62,7 +62,7 @@ class EqualizerRepositoryImpl(
         if(!equalizer.hasControl()){
             equalizer.release()
             try{
-                equalizer=Equalizer(1000,player)
+                equalizer=Equalizer(1000,audioSessionId)
                 equalizer.enabled=true//tmp
             }catch (exception: Exception){
                 val pr=exception
