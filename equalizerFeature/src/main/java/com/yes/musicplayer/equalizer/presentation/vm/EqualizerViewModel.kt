@@ -61,17 +61,21 @@ class EqualizerViewModel(
             }
 
             is Event.OnEqualizerValue ->{
-               setEqualizerValue(event.band,event.value)
+               setEqualizerValue(event.band,event.value,event.maxLevelRange)
             }
         }
     }
 
-    private fun setEqualizerValue(band:Int,value: Int) {
+    private fun setEqualizerValue(band:Int,value: Int,maxLevelRange: Int) {
         viewModelScope.launch {
             val result = setEqualizerValueUseCase(
+
                 SetEqualizerValueUseCase.Params(
                     band,
-                    value
+                    mapperUI.mapUiEqualizerValueToDomain(
+                        value,
+                        maxLevelRange
+                    )
                 )
             )
             when (result) {

@@ -1,11 +1,8 @@
 package com.yes.core.di.module
 
 import android.content.Context
-import android.media.audiofx.Visualizer
-import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
-import com.yes.core.data.factory.RendererFactory
 import com.yes.core.presentation.MusicService
 import dagger.Module
 import dagger.Provides

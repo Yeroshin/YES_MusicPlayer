@@ -6,6 +6,7 @@ import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.widget.SeekBar
 import androidx.appcompat.widget.AppCompatSeekBar
 
 
@@ -13,6 +14,13 @@ class VerticalSeekBar(
     context: Context,
     attrs: AttributeSet? = null
 ) : AppCompatSeekBar(context, attrs) {
+    interface OnVerticalSeekBarChangeListener {
+        fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean)
+    }
+    private var onVerticalSeekBarChangeListener: OnVerticalSeekBarChangeListener? = null
+    fun setOnVerticalSeekBarChangeListener(listener: OnVerticalSeekBarChangeListener) {
+        onVerticalSeekBarChangeListener = listener
+    }
 
     private var w = 0
     private var h = 0
@@ -47,6 +55,7 @@ class VerticalSeekBar(
                 progress = max - (max * event.y / height).toInt()
                 onSizeChanged(width, height, 0, 0)
                 invalidate()
+                onVerticalSeekBarChangeListener?.onProgressChanged(this,progress,true)
             }
 
             MotionEvent.ACTION_UP -> {}

@@ -180,7 +180,7 @@ class PlayerViewModel(
             val result = playUseCase()
             when (result) {
                 is DomainResult.Success -> {
-                  //  subscribeVisualizer()
+                    subscribeVisualizer()
                 }
                 is DomainResult.Error -> setEffect {
                     Effect.UnknownException

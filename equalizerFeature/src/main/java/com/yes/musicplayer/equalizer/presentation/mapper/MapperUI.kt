@@ -31,16 +31,18 @@ class MapperUI {
 
         )
     }
-
-    private fun convertToPercent(bandLevel: Int, bandLevelRange: IntArray): Int {
-        val level = bandLevel - bandLevelRange[0]
-        val max = bandLevelRange[1] - bandLevelRange[0]
-        return (level * 100) / max
+    fun mapUiEqualizerValueToDomain(value:Int,maxLevelRange: Int):Int{
+        return value-(maxLevelRange/2)
     }
     private fun convertBandLevelRangeToUi(bandLevelRange: IntArray):Int{
         return bandLevelRange[1]*2
     }
     private fun convertEqualizerValueToUi(value:Int,bandLevelRange: IntArray):Int{
         return bandLevelRange[1]+ value
+    }
+    private fun convertToPercent(bandLevel: Int, bandLevelRange: IntArray): Int {
+        val level = bandLevel - bandLevelRange[0]
+        val max = bandLevelRange[1] - bandLevelRange[0]
+        return (level * 100) / max
     }
 }

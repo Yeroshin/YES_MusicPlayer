@@ -90,12 +90,34 @@ class EqualizerScreen : Fragment() {
             }
         }
     }
+    private val verticalSeekBarChangeListener=object :VerticalSeekBar.OnVerticalSeekBarChangeListener{
+        override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+            if (fromUser) {
+                viewModel.setEvent(
+                    EqualizerContract.Event.OnEqualizerValue(
+                        seekBar.tag as Int,
+                        progress,
+                        seekBar.max
+                    )
+                )
+            }
+        }
+    }
     private val seekBarChangeListener=object : SeekBar.OnSeekBarChangeListener {
         override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
           /*  if (fromUser) {
                 viewModel.setEvent(EqualizerContract.Event.OnEqualizerValue(seekBar.tag as Int, progress))
             }*/
-            viewModel.setEvent(EqualizerContract.Event.OnEqualizerValue(seekBar.tag as Int, progress))
+            if (fromUser) {
+                viewModel.setEvent(
+                    EqualizerContract.Event.OnEqualizerValue(
+                        seekBar.tag as Int,
+                        progress,
+                        seekBar.max
+                    )
+                )
+            }
+
 
         }
 
@@ -119,15 +141,20 @@ class EqualizerScreen : Fragment() {
         }
         /////////////////
         binder.one.tag=0
-        binder.one.setOnSeekBarChangeListener(seekBarChangeListener)
+        binder.one.setOnVerticalSeekBarChangeListener(verticalSeekBarChangeListener)
+       // binder.one.setOnSeekBarChangeListener(seekBarChangeListener)
         binder.two.tag=1
-        binder.two.setOnSeekBarChangeListener(seekBarChangeListener)
+        binder.two.setOnVerticalSeekBarChangeListener(verticalSeekBarChangeListener)
+        // binder.two.setOnSeekBarChangeListener(seekBarChangeListener)
         binder.three.tag=2
-        binder.three.setOnSeekBarChangeListener(seekBarChangeListener)
+        binder.three.setOnVerticalSeekBarChangeListener(verticalSeekBarChangeListener)
+        //binder.three.setOnSeekBarChangeListener(seekBarChangeListener)
         binder.four.tag=3
-        binder.four.setOnSeekBarChangeListener(seekBarChangeListener)
+        binder.four.setOnVerticalSeekBarChangeListener(verticalSeekBarChangeListener)
+      //  binder.four.setOnSeekBarChangeListener(seekBarChangeListener)
         binder.five.tag=4
-        binder.five.setOnSeekBarChangeListener(seekBarChangeListener)
+        binder.five.setOnVerticalSeekBarChangeListener(verticalSeekBarChangeListener)
+      //  binder.five.setOnSeekBarChangeListener(seekBarChangeListener)
 
 
     }

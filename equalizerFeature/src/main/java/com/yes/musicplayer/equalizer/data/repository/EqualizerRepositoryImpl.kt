@@ -63,6 +63,7 @@ class EqualizerRepositoryImpl(
             equalizer.release()
             try{
                 equalizer=Equalizer(1000,player)
+                equalizer.enabled=true//tmp
             }catch (exception: Exception){
                 val pr=exception
             }
