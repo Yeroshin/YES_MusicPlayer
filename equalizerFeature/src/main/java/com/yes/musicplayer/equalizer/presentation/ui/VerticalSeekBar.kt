@@ -34,17 +34,17 @@ class VerticalSeekBar(
     override fun onDraw(canvas: Canvas) {
         canvas.rotate(-90f, 0f, 0f)
         canvas.translate(-height.toFloat(), -h.toFloat() + w / 2)
+        onSizeChanged(width, height, 0, 0)
         super.onDraw(canvas)
     }
-
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (!isEnabled) {
             return false
         }
         when (event.action) {
             MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
-                val progress: Int = max - (max * event.y / height).toInt()
-                setProgress(progress)
+               // val progress = max - (max * event.y / height).toInt()
+                progress = max - (max * event.y / height).toInt()
                 onSizeChanged(width, height, 0, 0)
                 invalidate()
             }

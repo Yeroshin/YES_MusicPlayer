@@ -61,7 +61,7 @@ class EqualizerModule {
        context: Context,
        player: ExoPlayer
     ): Equalizer{
-       var eq=Equalizer(1000,player.audioSessionId)
+     /*  var eq=Equalizer(1000,player.audioSessionId)
       /* eq.setControlStatusListener { effect, controlGranted ->
            if(!controlGranted){
              // eq.release()
@@ -94,8 +94,9 @@ class EqualizerModule {
            val pr=exception
        }
        val z=eq.hasControl()
-       //  return Equalizer(0,playe.audioSessionId)
-       return eq
+       return eq*/
+        return Equalizer(0,player.audioSessionId)
+
     }
     @Provides
     fun providesSettingsRepositoryImpl(

@@ -92,9 +92,11 @@ class EqualizerScreen : Fragment() {
     }
     private val seekBarChangeListener=object : SeekBar.OnSeekBarChangeListener {
         override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-            if (fromUser) {
+          /*  if (fromUser) {
                 viewModel.setEvent(EqualizerContract.Event.OnEqualizerValue(seekBar.tag as Int, progress))
-            }
+            }*/
+            viewModel.setEvent(EqualizerContract.Event.OnEqualizerValue(seekBar.tag as Int, progress))
+
         }
 
         override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -173,7 +175,7 @@ class EqualizerScreen : Fragment() {
             }
         }
         equalizer.currentPreset?.let {
-          //  binder.presetsSpinner.setSelection(it)
+            binder.presetsSpinner.setSelection(it)
         }
         equalizer.equalizerValues?.let {
             binder.one.setValue(it[0])

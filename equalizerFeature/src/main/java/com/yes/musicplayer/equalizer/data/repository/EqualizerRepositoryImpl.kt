@@ -25,56 +25,16 @@ class EqualizerRepositoryImpl(
         }
         return presetsList
     }
-    @OptIn(UnstableApi::class)
     fun usePreset(preset:Int){
-        val a=equalizer.enabled
-      /*  val b=equalizer.hasControl()
-        val c=equalizer.enabled
-        equalizer.enabled=true
-        val d=equalizer.enabled*/
-        val e=equalizer.hasControl()
-        if(!e){
-            equalizer.release()
-            try{
-                equalizer=Equalizer(1000,player)
-            }catch (exception: Exception){
-                // equalizer.release()
-                val pr=preset.toShort()
-            }
-        }
-        val z=equalizer.hasControl()
+        checkControl()
         try{
-            equalizer.usePreset(1)
+            equalizer.usePreset(preset.toShort())
         }catch (exception: Exception){
-           // equalizer.release()
-            val pr=preset.toShort()
-        }
-        val s=equalizer.hasControl()
-        try{
-            equalizer.setBandLevel(
-                0,
-                0
-            )
-        }catch (exception: Exception){
-            val pr=0
-        }
-        val x=equalizer.hasControl()
-
-    }
-    fun getBand(frequency:Int):Int{
-        val a=equalizer.hasControl()
-        var eq=0
-         try{
-            eq=equalizer.getBand(frequency).toInt()
-
-        }catch (exception: Exception){
-            // equalizer.release()
             val pr=exception
         }
-
-        return eq
-      //  return equalizer.getBand(frequency).toInt()
-
+    }
+    fun getBand(frequency:Int):Int{
+        return equalizer.getBand(frequency).toInt()
     }
     fun getBandFreqRange(band:Short):IntArray{
         return equalizer.getBandFreqRange(band)
@@ -87,24 +47,25 @@ class EqualizerRepositoryImpl(
         return equalizer.getBandLevel(band.toShort()).toInt()
     }
     fun setBandLevel(band: Int,level:Int){
-        val e=equalizer.hasControl()
-        if(!e){
-            equalizer.release()
-            try{
-                equalizer=Equalizer(1000,player)
-            }catch (exception: Exception){
-                // equalizer.release()
-                val pr=exception
-            }
-        }
+        checkControl()
         try{
             equalizer.setBandLevel(
                 band.toShort(),
                 level.toShort()
             )
         }catch (exception: Exception){
-            val pr=0
+            val pr=exception
         }
       //  equalizer.setBandLevel(band.toShort(),level.toShort())
+    }
+    private fun checkControl(){
+        if(!equalizer.hasControl()){
+            equalizer.release()
+            try{
+                equalizer=Equalizer(1000,player)
+            }catch (exception: Exception){
+                val pr=exception
+            }
+        }
     }
 }
