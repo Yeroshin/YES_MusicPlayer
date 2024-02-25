@@ -14,6 +14,9 @@ class SettingsRepositoryImpl(
     suspend fun getEqualizerEnabled():Boolean{
         return settings.getEqualizerEnabled().first()
     }
+    suspend fun setEqualizerEnabled(enabled:Boolean){
+        settings.setEqualizerEnabled(enabled)
+    }
     suspend fun getCurrentPreset():Int{
         return settings.getCurrentPreset().first().toInt()
     }

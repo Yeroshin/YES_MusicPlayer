@@ -159,7 +159,11 @@ class EqualizerScreen : Fragment() {
       //  binder.five.setOnSeekBarChangeListener(seekBarChangeListener)
 
         binder.switch1.setOnCheckedChangeListener { buttonView, isChecked ->
-            binder.one.isEnabled = isChecked
+            viewModel.setEvent(
+                EqualizerContract.Event.OnEqualizerEnabled(
+                    isChecked
+                )
+            )
         }
 
     }
@@ -229,6 +233,13 @@ class EqualizerScreen : Fragment() {
             binder.three.max = it
             binder.four.max = it
             binder.five.max = it
+        }
+        equalizer.equalizerEnabled?.let {
+            binder.one.isEnabled = it
+            binder.two.isEnabled = it
+            binder.three.isEnabled = it
+            binder.four.isEnabled = it
+            binder.five.isEnabled = it
         }
     }
 

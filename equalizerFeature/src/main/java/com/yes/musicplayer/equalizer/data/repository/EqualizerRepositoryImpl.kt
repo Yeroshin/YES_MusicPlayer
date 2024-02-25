@@ -58,6 +58,9 @@ class EqualizerRepositoryImpl(
         }
       //  equalizer.setBandLevel(band.toShort(),level.toShort())
     }
+    fun setEnabled(enabled:Boolean){
+        equalizer.enabled=enabled
+    }
     private fun checkControl(){
         if(!equalizer.hasControl()){
             equalizer.release()

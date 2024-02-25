@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.yes.core.domain.models.DomainResult
 import com.yes.core.presentation.BaseViewModel
 import com.yes.musicplayer.equalizer.domain.usecase.GetEqualizerUseCase
+import com.yes.musicplayer.equalizer.domain.usecase.SetEqualizerEnabledUseCase
 import com.yes.musicplayer.equalizer.domain.usecase.SetEqualizerValueUseCase
 import com.yes.musicplayer.equalizer.domain.usecase.SetPresetUseCase
 import com.yes.musicplayer.equalizer.presentation.contract.EqualizerContract.*
@@ -16,7 +17,8 @@ class EqualizerViewModel(
     private val mapperUI: MapperUI,
     private val getEqualizerUseCase: GetEqualizerUseCase,
     private val setPresetUseCase: SetPresetUseCase,
-    private val setEqualizerValueUseCase: SetEqualizerValueUseCase
+    private val setEqualizerValueUseCase: SetEqualizerValueUseCase,
+    private val setEqualizerEnabledUseCase: SetEqualizerEnabledUseCase
 ) : BaseViewModel<Event, State, Effect>() {
 
     init {
@@ -62,6 +64,30 @@ class EqualizerViewModel(
 
             is Event.OnEqualizerValue ->{
                setEqualizerValue(event.band,event.value,event.maxLevelRange)
+            }
+
+            is Event.OnEqualizerEnabled -> setEqualizerEnabled(event.enabled)
+        }
+    }
+    private fun setEqualizerEnabled(enabled:Boolean){
+        viewModelScope.launch {
+            val result = setEqualizerEnabledUseCase(
+                SetEqualizerEnabledUseCase.Params(
+                    enabled
+                )
+            )
+            when (result) {
+                is DomainResult.Success -> {
+                    setState {
+                        copy(
+                            state = EqualizerState.Success(
+                                mapperUI.map(result.data)
+                            )
+                        )
+                    }
+                }
+
+                is DomainResult.Error -> {}
             }
         }
     }
@@ -122,7 +148,8 @@ class EqualizerViewModel(
         private val mapperUI: MapperUI,
         private val getEqualizerUseCase: GetEqualizerUseCase,
         private val setPresetUseCase: SetPresetUseCase,
-        private val setEqualizerValueUseCase: SetEqualizerValueUseCase
+        private val setEqualizerValueUseCase: SetEqualizerValueUseCase,
+        private val setEqualizerEnabledUseCase: SetEqualizerEnabledUseCase
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
@@ -130,7 +157,8 @@ class EqualizerViewModel(
                 mapperUI,
                 getEqualizerUseCase,
                 setPresetUseCase,
-                setEqualizerValueUseCase
+                setEqualizerValueUseCase,
+                setEqualizerEnabledUseCase
             ) as T
         }
     }

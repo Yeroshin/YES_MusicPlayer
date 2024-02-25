@@ -13,6 +13,7 @@ import com.yes.core.di.module.IoDispatcher
 import com.yes.musicplayer.equalizer.data.repository.EqualizerRepositoryImpl
 import com.yes.musicplayer.equalizer.data.repository.SettingsRepositoryImpl
 import com.yes.musicplayer.equalizer.domain.usecase.GetEqualizerUseCase
+import com.yes.musicplayer.equalizer.domain.usecase.SetEqualizerEnabledUseCase
 import com.yes.musicplayer.equalizer.domain.usecase.SetEqualizerValueUseCase
 import com.yes.musicplayer.equalizer.domain.usecase.SetPresetUseCase
 import com.yes.musicplayer.equalizer.presentation.mapper.MapperUI
@@ -24,6 +25,18 @@ import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 class EqualizerModule {
+    @Provides
+    fun providesSetEqualizerEnabledUseCase(
+        @IoDispatcher dispatcher: CoroutineDispatcher,
+        settingsRepository: SettingsRepositoryImpl,
+        equalizerRepository: EqualizerRepositoryImpl
+    ): SetEqualizerEnabledUseCase {
+        return SetEqualizerEnabledUseCase(
+            dispatcher,
+            settingsRepository,
+            equalizerRepository
+        )
+    }
     @Provides
     fun providesSetEqualizerValueUseCase(
         @IoDispatcher dispatcher: CoroutineDispatcher,
@@ -141,13 +154,15 @@ class EqualizerModule {
         mapperUI: MapperUI,
         getEqualizerUseCase:GetEqualizerUseCase,
         setPresetUseCase:SetPresetUseCase,
-        setEqualizerValueUseCase: SetEqualizerValueUseCase
+        setEqualizerValueUseCase: SetEqualizerValueUseCase,
+        setEqualizerEnabledUseCase:SetEqualizerEnabledUseCase
     ): EqualizerViewModel.Factory {
         return EqualizerViewModel.Factory(
             mapperUI,
             getEqualizerUseCase,
             setPresetUseCase,
-            setEqualizerValueUseCase
+            setEqualizerValueUseCase,
+            setEqualizerEnabledUseCase
         )
     }
 
