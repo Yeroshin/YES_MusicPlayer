@@ -85,7 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:progressDrawable="@drawable/trackbar_progress"
+                    android:progressDrawable="@drawable/trackbar_progress_enabled"
                     android:thumb="@drawable/thumb_layer" />
 
                 <TextView
@@ -124,7 +124,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:progressDrawable="@drawable/trackbar_progress"
+                    android:progressDrawable="@drawable/trackbar_progress_enabled"
                     android:thumb="@drawable/thumb_layer" />
 
                 <TextView
@@ -163,7 +163,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:progressDrawable="@drawable/trackbar_progress"
+                    android:progressDrawable="@drawable/trackbar_progress_enabled"
                     android:thumb="@drawable/thumb_layer" />
 
                 <TextView
@@ -202,7 +202,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:progressDrawable="@drawable/trackbar_progress"
+                    android:progressDrawable="@drawable/trackbar_progress_enabled"
                     android:thumb="@drawable/thumb_layer" />
 
                 <TextView
@@ -227,18 +227,24 @@
             android:background="@drawable/panel_flat"
             android:orientation="horizontal">
 
-            <Switch
-                style="@style/yesSwitch"
-                android:id="@+id/switch1"
-                android:thumb="@drawable/thumb"
-                android:track="@drawable/switch_selector" />
+            <com.yes.musicplayer.equalizer.presentation.ui.CircularSeekBar
+                android:id="@+id/circularSeekBar"
+                android:layout_width="256dp"
+                android:layout_height="256dp"
+                android:foreground="@drawable/rotaryknob"
+                android:max="360"
+                android:progressDrawable="@drawable/test_rotary_knob" />
 
             <LinearLayout
-                style="@style/padding"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="horizontal">
+
+                <Switch
+                    android:id="@+id/switch1"
+                    style="@style/yesSwitch"
+                    android:thumb="@drawable/thumb"
+                    android:track="@drawable/switch_selector" />
 
                 <Spinner
                     android:id="@+id/presetsSpinner"
@@ -247,7 +253,6 @@
                     android:layout_height="48dp"
                     android:background="@drawable/button_space"
                     android:dropDownWidth="wrap_content" />
-
             </LinearLayout>
 
         </LinearLayout>

@@ -15,7 +15,7 @@ class SetEqualizerEnabledUseCase(
     override suspend fun run(params: Params?): DomainResult<Equalizer> {
         return params?.let {
             equalizerRepository.setEnabled(params.enabled)
-            settingsRepository.
+            settingsRepository.setEqualizerEnabled(params.enabled)
             DomainResult.Success(
                 Equalizer(
                     equalizerEnabled = params.enabled
