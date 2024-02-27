@@ -1,102 +1,190 @@
 package com.yes.musicplayer.equalizer.presentation.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.RectF
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.ClipDrawable
-import android.graphics.drawable.ClipDrawable.HORIZONTAL
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
 import android.util.AttributeSet
-import android.util.Log
-import android.view.Gravity
 import android.view.MotionEvent
-import android.widget.SeekBar
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.drawable.toDrawable
-import kotlin.io.path.moveTo
 import kotlin.math.atan2
 import kotlin.math.min
 
-class CircularSeekBar(context: Context, attrs: AttributeSet) : androidx.appcompat.widget.AppCompatSeekBar(context, attrs) {
+@SuppressLint("UseCompatLoadingForDrawables")
+class CircularSeekBar(context: Context, attrs: AttributeSet) :
+    androidx.appcompat.widget.AppCompatSeekBar(context, attrs) {
 
     private var onProgressChangeListener: OnProgressChangeListener? = null
 
+    interface OnProgressChangeListener {
+        fun onProgressChanged(progress: Int)
+    }
+
+    fun setOnProgressChangeListener(listener: OnProgressChangeListener) {
+        onProgressChangeListener = listener
+    }
+
+
+    private var attrProgressDrawable: LayerDrawable? = null
+    private val rect = RectF()
+    private val paint = Paint()
+    private val matrix = Matrix()
+    // private var bounds: Rect? = null
+    /*private val bounds by lazy {
+           attrProgressDrawable?.getDrawable(2)?.copyBounds()
+    }*/
     init {
+        context.obtainStyledAttributes(
+            attrs,
+            intArrayOf(
+                android.R.attr.progressDrawable
+            )
+        ).apply {
+
+            try {
+                attrProgressDrawable = resources.getDrawable(
+                    getResourceId(0, 0),
+                    context.theme
+                ) as LayerDrawable
+            } catch (e: Exception) {
+                val a = e
+            } finally {
+                recycle()
+            }
+        }
+        /* attrProgressDrawable = (resources.getDrawable(
+             context.obtainStyledAttributes(
+                 attrs,
+                 intArrayOf(
+                     android.R.attr.progressDrawable
+                 )
+             ).getResourceId(0, 0),
+             context.theme
+         ) as LayerDrawable)*/
+        //   bounds = attrProgressDrawable?.getDrawable(2)?.bounds
+
         thumb = null // Скрываем стандартный "бегунок"
     }
 
+    private var initProgressDrawable: Drawable? = null
+
     override fun onDraw(canvas: Canvas) {
+
         val centerX = width / 2f
         val centerY = height / 2f
-        val radius = min(centerX, centerY) - 20f
+        val radius = min(centerX, centerY) //- 20f
 
-        val angle = progress
-        val paint = Paint()
         paint.color = Color.BLUE
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 20f
-        val oval = RectF(
+        rect.set(
             centerX - radius,
             centerY - radius,
             centerX + radius,
             centerY + radius
         )
         canvas.drawArc(
-            oval,
+            rect,
             0f,
-            angle,
+            progress.toFloat(),
             false,
             paint
         )
+        ////////////////////
+        progressDrawable.setBounds(
+            rect.left.toInt(),
+            rect.top.toInt(),
+            rect.right.toInt(),
+            rect.bottom.toInt()
+        )
+      //  progressDrawable.draw(canvas)
+        canvas.drawBitmap(
+            progressDrawable.toBitmap(
+                rect.right.toInt(),
+                rect.bottom.toInt()
+            ),
+            matrix,
+            paint
+        )
+        ///////////////////
+        /*   initProgressDrawable?.let {
+               val bounds = (initProgressDrawable as LayerDrawable).getDrawable(2).bounds
+               val layerDrawable = LayerDrawable(
+                   arrayOf<Drawable>(
+                       (it as LayerDrawable).getDrawable(0),
+                       clipCenterPartOfBackgroundImage(
+                           it.getDrawable(1).toBitmap(
+                               oval.right.toInt(),
+                               oval.bottom.toInt()
+                           ),
+                           progress
+                       ).toDrawable(resources),
+                       rotateDrawable(
+                           it.getDrawable(2),
+                           progress.toFloat()
+                       )
+
+                   )
+               )
+               layerDrawable.setLayerInset(
+                   2,
+                   bounds.left,
+                   bounds.top,
+                   bounds.right,
+                   bounds.bottom
+               )
+               progressDrawable = layerDrawable
 
 
-        initProgressDrawable?.let {
-            val copy=it.constantState!!.newDrawable().mutate()
-            progressDrawable = clipCenterPartOfBackgroundImage(
-                copy
-                    .toBitmap(oval.right.toInt(), oval.bottom.toInt()),
-                progress
-            ).toDrawable(resources)
-            progressDrawable.setBounds(
-                oval.left.toInt(),
-                oval.top.toInt(),
-                oval.right.toInt(),
-                oval.bottom.toInt()
-            )
-            progressDrawable.draw(canvas)
-        }?:run{
-            initProgressDrawable=progressDrawable
-
-        }
-
-
-
+               progressDrawable.draw(canvas)
+               //progressDrawable.invalidateSelf()
+           } ?: run {
+               initProgressDrawable = progressDrawable
+               progressDrawable.setBounds(
+                   oval.left.toInt(),
+                   oval.top.toInt(),
+                   oval.right.toInt(),
+                   oval.bottom.toInt()
+               )
+           }*/
 
 
     }
-private var initProgressDrawable:Drawable?=null
-    private fun clipCenterPartOfBackgroundImage(background: Bitmap,angle: Float): Bitmap {
+
+    fun rotateDrawable(drawable: Drawable, degrees: Float): Drawable {
+        val bitmap = drawable.toBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight)
+        val matrix = Matrix()
+        matrix.postRotate(degrees)
+        val rotatedBitmap =
+            Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+        return BitmapDrawable(resources, rotatedBitmap)
+    }
+
+    private fun clipCenterPartOfBackgroundImage(background: Bitmap, angle: Int): Bitmap {
         val canvas = Canvas(background)
         val paint = Paint()
         paint.isAntiAlias = true
         paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
-      //  paint.color = Color.BLUE
+        //  paint.color = Color.BLUE
         canvas.drawPath(
-            getSeeThroughPath(background.width, background.height,angle),
+            getSeeThroughPath(background.width, background.height, angle),
             paint
         )
 
         return background
     }
 
-    private fun getSeeThroughPath(width: Int, height: Int,angle:Float): Path {
+    private fun getSeeThroughPath(width: Int, height: Int, angle: Int): Path {
 
         val rect = RectF(
             0f,
@@ -106,85 +194,80 @@ private var initProgressDrawable:Drawable?=null
         )
         val path = Path()
         path.moveTo(
-            (width/2).toFloat(),
-            (height/2).toFloat()
+            (width / 2).toFloat(),
+            (height / 2).toFloat()
         )
         path.lineTo(
             (width).toFloat(),
-            (height/2).toFloat()
+            (height / 2).toFloat()
         )
-        path.arcTo(rect, 0f, angle)
+        path.arcTo(rect, 0f, angle.toFloat())
         path.close()
 
         return path
     }
 
 
-    var initAngle = 0.0
-
-
-    var Mywidth = 0
     private var cx = 0.0
     private var cy = 0.0// Координаты центра круга
-    private var radius = 0f // Радиус круга
-    private var progress = 0f // Текущий прогресс
+
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         cx = (w / 2).toDouble()
         cy = (h / 2).toDouble()
-        radius = (Math.min(w, h) / 2 - 10).toFloat()
+
     }
 
-    var prevAngle = 0
+    private var prevAngle = 0
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        when (event.action) {
+        return when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                initAngle = Math.toDegrees(
+                prevAngle = Math.toDegrees(
                     atan2(
                         (event.y.toDouble() - cy),
                         (event.x.toDouble() - cx)
                     )
-                )
-                if (initAngle < 0) {
-                    initAngle += 360f
+                ).toInt()
+                if (prevAngle < 0) {
+                    prevAngle += 360
                 }
-                prevAngle = initAngle.toInt()
                 true
-
             }
 
             MotionEvent.ACTION_MOVE -> {
                 var movedAngle = Math.toDegrees(
                     atan2(
-                        (event.y.toDouble() - cy),
-                        (event.x.toDouble() - cx)
+                        (event.y - cy),
+                        (event.x - cx)
                     )
-                )
+                ).toInt()
                 if (movedAngle < 0) {
-                    movedAngle += 360f
+                    movedAngle += 360
                 }
-                Log.d("movedAngle", movedAngle.toString())
+                if (prevAngle < 90 && movedAngle > 270) {
+                    movedAngle = 0
+                } else if (prevAngle > 270 && movedAngle < 90) {
+                    prevAngle = -(360 - prevAngle)
+                }
                 val delta = movedAngle - prevAngle
-                prevAngle = movedAngle.toInt()
-                progress += delta.toFloat()
+                prevAngle = movedAngle
+                progress += delta
                 if (progress < 0) {
-                    progress = 0f
-                } else if (progress > 270) {
-                    progress = 270f
+                    progress = 0
+                } else if (progress > max) {
+                    progress = max
                 }
-                invalidate()
+                // invalidate()
                 true
+            }
+
+            else -> {
+                return false
             }
         }
 
-        return true
     }
 
-    fun setOnProgressChangeListener(listener: OnProgressChangeListener) {
-        onProgressChangeListener = listener
-    }
 
-    interface OnProgressChangeListener {
-        fun onProgressChanged(progress: Int)
-    }
 }

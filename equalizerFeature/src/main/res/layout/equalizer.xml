@@ -231,8 +231,7 @@
                 android:id="@+id/circularSeekBar"
                 android:layout_width="256dp"
                 android:layout_height="256dp"
-                android:foreground="@drawable/rotaryknob"
-                android:max="360"
+                android:max="270"
                 android:progressDrawable="@drawable/test_rotary_knob" />
 
             <LinearLayout
