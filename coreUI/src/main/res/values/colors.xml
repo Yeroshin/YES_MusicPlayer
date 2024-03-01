@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="tint">#A3B3CE</color>
-    <color name="branded_color">#222329</color>
-    <color name="branded_light">#5d5d5d</color>
+    <color name="branded_color">#22222B</color>
+    <color name="branded_light">#FF3F3F4E</color>
     <color name="branded_dark">#242424</color>
     <color name="text_gray">#939292</color>
     <color name="transparent">#00000000</color>
 
+    <color name="shadow">#111111</color>
+    <color name="gray">#555555</color>
+    <color name="light">#aaaaaa</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
-    <color name="light">#48484e</color>
+
     <color name="green">#4CAF50</color>
     <color name="red">#FF0000</color>
 

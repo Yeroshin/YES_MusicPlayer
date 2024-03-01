@@ -60,6 +60,7 @@ class EqualizerRepositoryImpl(
     }
     fun setEnabled(enabled:Boolean){
         equalizer.enabled=enabled
+
     }
     private fun checkControl(){
         if(!equalizer.hasControl()){

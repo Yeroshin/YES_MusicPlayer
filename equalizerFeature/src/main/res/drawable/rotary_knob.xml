@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/rotaryknobticksenabled"
+        android:bottom="0dp"
+        android:left="0dp"
+        android:right="0dp"
+        android:top="0dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/black" />
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/rotaryknobticks"
+        android:bottom="0dp"
+        android:left="0dp"
+        android:right="0dp"
+        android:top="0dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/black" />
+        </shape>
+    </item>
+    <item
+        android:bottom="70dp"
+        android:left="30dp"
+        android:right="30dp"
+        android:top="0dp"
+        >
+        <shape android:shape="oval">
+
+            <gradient
+                android:angle="90"
+                android:gradientRadius="30dp"
+                android:centerX="0.5"
+                android:centerY="0.5"
+                android:startColor="@color/light"
+                android:centerColor="@color/light"
+                android:endColor="@color/transparent"
+                android:type="radial"
+                android:useLevel="false" />
+        </shape>
+    </item>
+    <item
+        android:bottom="0dp"
+        android:left="30dp"
+        android:right="30dp"
+        android:top="70dp"
+        >
+        <shape android:shape="oval">
+
+            <gradient
+                android:angle="90"
+                android:gradientRadius="30dp"
+                android:centerX="0.5"
+                android:centerY="0.8"
+                android:startColor="@color/black"
+                android:centerColor="@color/black"
+                android:endColor="@color/transparent"
+                android:type="radial"
+                android:useLevel="false" />
+        </shape>
+    </item>
+    <item
+        android:bottom="70dp"
+        android:left="70dp"
+        android:right="70dp"
+        android:top="70dp"
+        >
+        <shape android:shape="oval">
+
+            <solid android:color="@color/branded_color" />
+        </shape>
+    </item>
+    <item
+        android:bottom="76dp"
+        android:left="76dp"
+        android:right="76dp"
+        android:top="76dp"
+        >
+        <shape android:shape="oval">
+
+            <solid android:color="@color/gray" />
+        </shape>
+    </item>
+    <item
+        android:bottom="80dp"
+        android:left="80dp"
+        android:right="80dp"
+        android:top="80dp"
+        >
+        <shape android:shape="oval">
+            <gradient
+                android:angle="90"
+                android:gradientRadius="50dp"
+                android:centerX="0.5"
+                android:centerY="0.5"
+                android:endColor="@color/shadow"
+                android:startColor="@color/light"
+                android:type="linear"
+                android:useLevel="false" />
+        </shape>
+    </item>
+    <item
+        android:bottom="102dp"
+        android:left="102dp"
+        android:right="102dp"
+        android:top="102dp"
+        >
+        <shape android:shape="oval">
+
+            <solid android:color="@color/black" />
+        </shape>
+    </item>
+    <item
+        android:bottom="106dp"
+        android:left="106dp"
+        android:right="106dp"
+        android:top="106dp"
+        >
+        <shape android:shape="oval">
+            <gradient
+                android:angle="90"
+                android:gradientRadius="50dp"
+                android:centerX="0.5"
+                android:centerY="0.5"
+                android:endColor="@color/light"
+                android:centerColor="@color/gray"
+                android:startColor="@color/shadow"
+                android:type="linear"
+                android:useLevel="false" />
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/rotary_knob_cap"
+        android:bottom="110dp"
+        android:left="110dp"
+        android:right="110dp"
+        android:top="110dp"/>
+    <item
+        android:bottom="146dp"
+        android:left="146dp"
+        android:right="146dp"
+        android:top="146dp"
+        >
+        <shape android:shape="oval">
+            <gradient
+                android:angle="90"
+                android:gradientRadius="50dp"
+                android:centerX="0.5"
+                android:centerY="0.5"
+                android:endColor="@color/shadow"
+                android:centerColor="@color/gray"
+                android:startColor="@color/light"
+                android:type="linear"
+                android:useLevel="false" />
+        </shape>
+    </item>
+    <item
+        android:bottom="150dp"
+        android:left="150dp"
+        android:right="150dp"
+        android:top="150dp"
+        >
+        <shape android:shape="oval">
+            <gradient
+                android:angle="90"
+                android:gradientRadius="50dp"
+                android:centerX="0.5"
+                android:centerY="0.5"
+                android:endColor="@color/light"
+                android:startColor="@color/shadow"
+                android:type="linear"
+                android:useLevel="false" />
+        </shape>
+    </item>
+    <item
+        android:bottom="176dp"
+        android:left="176dp"
+        android:right="176dp"
+        android:top="176dp"
+        >
+        <shape android:shape="oval">
+            <solid android:color="@color/light" />
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/rotary_knob_cap"
+        android:bottom="180dp"
+        android:left="180dp"
+        android:right="180dp"
+        android:top="180dp"/>
+</layer-list>

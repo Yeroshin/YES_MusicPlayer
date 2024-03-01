@@ -10,6 +10,7 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
+import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -43,6 +44,7 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
     /*private val bounds by lazy {
            attrProgressDrawable?.getDrawable(2)?.copyBounds()
     }*/
+    private var layer:Bitmap?=null
     init {
         context.obtainStyledAttributes(
             attrs,
@@ -62,6 +64,7 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
                 recycle()
             }
         }
+
         /* attrProgressDrawable = (resources.getDrawable(
              context.obtainStyledAttributes(
                  attrs,
@@ -101,21 +104,129 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
             paint
         )
         ////////////////////
-        progressDrawable.setBounds(
+     /*   background.setBounds(
             rect.left.toInt(),
             rect.top.toInt(),
             rect.right.toInt(),
             rect.bottom.toInt()
-        )
+        )*/
       //  progressDrawable.draw(canvas)
-        canvas.drawBitmap(
+        ///////////////////////////
+
+        val layers= mutableListOf<Bitmap>()
+      /*  for (i in 0..<(progressDrawable as LayerDrawable).numberOfLayers){
+           /* canvas.drawBitmap(
+                (progressDrawable as LayerDrawable).getDrawable(i).toBitmap(
+                    rect.right.toInt(),
+                    rect.bottom.toInt(),
+                ),
+                matrix,
+                null
+            )*/
+          /*  layers.add(
+
+                (progressDrawable as LayerDrawable).getDrawable(i).toBitmap(
+                    rect.right.toInt(),
+                    rect.bottom.toInt(),
+                )
+            )*/
+        }*/
+        ///////////////////////////
+      //  val bounds=(progressDrawable as LayerDrawable).getDrawable(i).bounds
+     /*   val progressBitmap=progressDrawable.toBitmap(
+            rect.right.toInt(),
+            rect.bottom.toInt()
+        )*/
+     /*   for( layer in layers){
+          /*  val bounds=layer.bounds
+            val bitmap =layer.toBitmap(
+                bounds.right,
+                bounds.bottom
+            )*/
+
+            canvas.drawBitmap(
+                layer,
+                matrix,
+                null
+            )
+           /* canvas.drawBitmap(
+                bitmap ,
+                null,
+                Rect(bounds.left,
+                    bounds.top,
+                    bounds.right,
+                    bounds.bottom
+                ),
+                null
+            )*/
+          /*  canvas.drawBitmap(
+                layer.toBitmap(
+                    bounds.right,
+                    bounds.bottom
+                ),
+                null,
+                Rect(bounds.left, bounds.top, bounds.right, bounds.bottom),
+                null
+            )*/
+        }*/
+       /* canvas.drawBitmap(
+            progressBitmap,
+            null,
+            rect,
+            null
+        )*/
+       /* canvas.drawBitmap(
+            progressBitmap,
+            matrix,
+            null
+        )*/
+       /* layer=progressDrawable.toBitmap(
+            rect.right.toInt(),
+            rect.bottom.toInt()
+        )*/
+
+         layer?.let {
+             canvas.drawBitmap(
+                 it,
+                 matrix,
+                 null
+             )
+         }
+        /////////////////////////
+        ///////worked
+      /*  val layer1=(progressDrawable as LayerDrawable).getDrawable(0).toBitmap(
+            rect.right.toInt(),
+            rect.bottom.toInt()
+        )*/
+      /*  val layer2=(progressDrawable as LayerDrawable).getDrawable(1).toBitmap(
+            rect.right.toInt(),
+            rect.bottom.toInt()
+        )
+        clipCenterPartOfBackgroundImage(
+            layer2,
+            progress
+        )*/
+       /* canvas.drawBitmap(
+            layer1,
+            matrix,
+            null
+        )*/
+       /* canvas.drawBitmap(
+            layer2,
+            matrix,
+            null
+        )*/
+///////////endofworked
+        ////////////////////////////
+        ////////////////////////////
+       /* canvas.drawBitmap(
             progressDrawable.toBitmap(
                 rect.right.toInt(),
                 rect.bottom.toInt()
             ),
             matrix,
-            paint
-        )
+            null
+        )*/
         ///////////////////
         /*   initProgressDrawable?.let {
                val bounds = (initProgressDrawable as LayerDrawable).getDrawable(2).bounds
@@ -232,6 +343,7 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
                 if (prevAngle < 0) {
                     prevAngle += 360
                 }
+
                 true
             }
 
@@ -258,7 +370,16 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
                 } else if (progress > max) {
                     progress = max
                 }
-                // invalidate()
+                /////////////////////
+                layer=clipCenterPartOfBackgroundImage(
+                    progressDrawable.toBitmap(
+                        rect.right.toInt(),
+                        rect.bottom.toInt()
+                    ),
+                    progress
+                )
+                //////////////////////
+                 invalidate()
                 true
             }
 
