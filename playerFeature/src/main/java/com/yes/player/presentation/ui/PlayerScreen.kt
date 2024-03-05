@@ -139,8 +139,6 @@ class PlayerScreen : Fragment() {
     }
 
     private fun dataLoaded(playerState: PlayerStateUI) {
-        binder.durationCounter.gravity = Gravity.CENTER_HORIZONTAL
-        binder.durationCounter.gravity = Gravity.CENTER_VERTICAL
         if (playerState.stateBuffering) {
             showBuffering()
         } else {
@@ -150,6 +148,8 @@ class PlayerScreen : Fragment() {
                 binder.trackTitle.text = playerState.trackTitle
             }
             playerState.durationCounter?.let {
+                binder.durationCounter.gravity = Gravity.CENTER_HORIZONTAL
+                binder.durationCounter.gravity = Gravity.CENTER_VERTICAL
                 binder.durationCounter.text = playerState.durationCounter
             }
             playerState.duration?.let { binder.duration.text = playerState.duration }

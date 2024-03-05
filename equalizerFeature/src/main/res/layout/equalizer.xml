@@ -249,10 +249,9 @@
                     android:orientation="horizontal">
 
                     <Switch
-                        android:id="@+id/switch1"
+                        android:id="@+id/loudness_switch"
                         style="@style/yesSwitch"
-                        android:thumb="@drawable/thumb"
-                        android:track="@drawable/switch_selector" />
+                        />
 
                     <TextView
                         android:id="@+id/textView2"
@@ -269,10 +268,8 @@
                     android:orientation="horizontal">
 
                     <Switch
-                        android:id="@+id/switch2"
-                        style="@style/yesSwitch"
-                        android:thumb="@drawable/thumb"
-                        android:track="@drawable/switch_selector" />
+                        android:id="@+id/equalizer_switch"
+                        style="@style/yesSwitch"/>
 
                     <TextView
                         android:id="@+id/textView"

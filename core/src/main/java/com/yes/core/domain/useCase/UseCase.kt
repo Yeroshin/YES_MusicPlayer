@@ -14,6 +14,7 @@ abstract class UseCase<REQUEST, RESULT>(
             try {
                 run(params)
             }catch (exception: Exception){
+                val e = exception
                 DomainResult.Error(DomainResult.UnknownException)
             }
         }

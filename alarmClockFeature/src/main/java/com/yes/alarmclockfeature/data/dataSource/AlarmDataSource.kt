@@ -44,13 +44,16 @@ class AlarmDataSource(
                 context,
                 0,
                 alarmIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_IMMUTABLE//PendingIntent.FLAG_UPDATE_CURRENT||
             )
         ////////////////////
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            alarmManager.canScheduleExactAlarms()
+            val can=alarmManager.canScheduleExactAlarms()
+            if (!can){
+                Toast.makeText(context, "canScheduleExactAlarms ERROR!!!", Toast.LENGTH_SHORT).show()
+            }
         } else {
-           // Toast.makeText(context, "canScheduleExactAlarms ERROR!!!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "canScheduleExactAlarms ERROR!!!", Toast.LENGTH_SHORT).show()
         }
         ///////////////////
         val hourt = calendar.get(Calendar.HOUR)
@@ -80,7 +83,7 @@ class AlarmDataSource(
          }*/
 
         ///////////////////////
-        if (Build.VERSION.SDK_INT >= 23) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             /* alarmManager.setExactAndAllowWhileIdle(
                  AlarmManager.RTC_WAKEUP,
                  calendar.timeInMillis,

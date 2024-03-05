@@ -158,7 +158,7 @@ class EqualizerScreen : Fragment() {
         binder.five.setOnVerticalSeekBarChangeListener(verticalSeekBarChangeListener)
       //  binder.five.setOnSeekBarChangeListener(seekBarChangeListener)
 
-        binder.switch2.setOnCheckedChangeListener { buttonView, isChecked ->
+        binder.equalizerSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             viewModel.setEvent(
                 EqualizerContract.Event.OnEqualizerEnabled(
                     isChecked
@@ -168,7 +168,7 @@ class EqualizerScreen : Fragment() {
         binder.circularSeekBar.setMinValue(144)
         binder.circularSeekBar.setMaxValue(396)
         binder.circularSeekBar.setProgressValue(250)
-        binder.switch1.setOnCheckedChangeListener { _, isChecked ->
+        binder.loudnessSwitch.setOnCheckedChangeListener { _, isChecked ->
             binder.circularSeekBar.isEnabled=isChecked
         }
 

@@ -26,7 +26,7 @@ import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
 
-@SuppressLint("UseCompatLoadingForDrawables")
+@SuppressLint("UseCompatLoadingForDrawables", "ResourceType")
 class CircularSeekBar(context: Context, attrs: AttributeSet) :
     androidx.appcompat.widget.AppCompatSeekBar(context, attrs) {
 
@@ -46,29 +46,9 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
     private val paint = Paint()
     private val matrix = Matrix()
 
-    // private var bounds: Rect? = null
-    /*private val bounds by lazy {
-           attrProgressDrawable?.getDrawable(2)?.copyBounds()
-    }*/
-    private var layer: Bitmap? = null
-    private val layers: MutableList<Bitmap> by lazy {
-        val bitmap =
-            (progressDrawable as LayerDrawable).findDrawableByLayerId(android.R.id.progress)
-                .toBitmap(
-                    rect.right.toInt(),
-                    rect.bottom.toInt()
-                )
-        val backgroundBitmap =
-            (progressDrawable as LayerDrawable).findDrawableByLayerId(android.R.id.background)
-                .toBitmap(
-                    rect.right.toInt(),
-                    rect.bottom.toInt()
-                )
-        mutableListOf(backgroundBitmap, bitmap)
 
-    }
+    private val layers: MutableList<Bitmap> = mutableListOf()
     private val drawable: LayerDrawable = progressDrawable as LayerDrawable
-    private var progressBitmap: Bitmap? = null
     private var startValue = 0
     private var endValue = 360
     private var prevAngle = 0
@@ -76,7 +56,6 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
     private var thumbOffset=0
 
     init {
-        var offset=0
         context.obtainStyledAttributes(
             attrs,
             intArrayOf(
@@ -104,15 +83,6 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
             }
         }
         thumb = null // Скрываем стандартный "бегунок"
-        //  max=endValue
-
-
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-
-
     }
 
     fun setMinValue(value: Int) {
@@ -132,10 +102,6 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
         updateProgressBitmap()
-        /* val state=if (enabled){
-
-         }
-         (progressDrawable as StateListDrawable).setState()*/
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -155,25 +121,6 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
                 null
             )
         }
-
-        /*  val th=thumb.toBitmap(
-              rect.right.toInt(),
-              rect.bottom.toInt()
-          )
-          matrix.postRotate(progressValue.toFloat())
-          canvas.drawBitmap(
-              th,
-              matrix,
-              null
-          )*/
-
-        /*   layer?.let {
-               canvas.drawBitmap(
-                   it,
-                   matrix,
-                   null
-               )
-           }*/
     }
 
 
@@ -241,17 +188,6 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
     }
 
     private fun updateProgressBitmap() {
-        /*  val bitmap=(progressDrawable as LayerDrawable).findDrawableByLayerId(android.R.id.progress)
-              .toBitmap(
-              rect.right.toInt(),
-              rect.bottom.toInt()
-          )
-
-         val backgroundBitmap=(progressDrawable as LayerDrawable).findDrawableByLayerId(android.R.id.background).toBitmap(
-              rect.right.toInt(),
-              rect.bottom.toInt()
-          )
-          layers[0] = backgroundBitmap*/
         layers.clear()
 
         val background = drawable
@@ -283,59 +219,26 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
             (progressDrawable as LayerDrawable)
                 .findDrawableByLayerId(android.R.id.button2)
         }
-      /*  val rotatedThumb = rotateDrawableToBitmap(
-            thumb,
-            progressValue.toFloat(),
-            rect
-        )*/
+
         val rotatedThumb = rotateDrawable(
             thumb,
             progressValue.toFloat(),
-            rect
+            thumbOffset
         )
 
         layers.add(background)
         layers.add(progress)
         layers.add(secondaryProgress)
         layers.add(rotatedThumb)
-        /* for (index in 0..<(progressDrawable as LayerDrawable).numberOfLayers) {
-
-             layers.add(index,
-                  (progressDrawable as LayerDrawable).getDrawable(index).toBitmap(
-                     rect.right.toInt(),
-                     rect.bottom.toInt()
-                 )
-             )
-         }
-         /* layer = clipDrawable(
-              bitmap,
-              (progressValue - startValue).toFloat()
-          )*/
-         layers.getOrNull(1)?.let {
-             if (isEnabled) {
-                 layers[1] = clipDrawable(
-                     layers[1],
-                     (progressValue - startValue).toFloat()
-                 )
-             }
-
-         }*/
-
-
 
         invalidate()
-        /* val l=clipDrawable(
-             bitmap,
-             (progressValue - startValue).toFloat()
-         )
-         layers[1] = l*/
+
     }
 
-    private fun rotateDrawable(drawable: Drawable, angle: Float, rect: RectF): Bitmap {
+    private fun rotateDrawable(drawable: Drawable, angle: Float, radius:Int): Bitmap {
         val bitmap =
             Bitmap.createBitmap(rect.right.toInt(), rect.bottom.toInt(), Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
-        val radius=thumbOffset
         val drawableWidth = drawable.intrinsicWidth
         val drawableHeight = drawable.intrinsicHeight
         val angleRadians = Math.toRadians(angle.toDouble())
@@ -344,10 +247,8 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
         val drawableLeft = (drawableCenterX - drawableWidth / 2).toInt()
         val drawableTop = (drawableCenterY - drawableHeight / 2).toInt()
 
-        // Устанавливаем границы для Drawable
         drawable.setBounds(drawableLeft, drawableTop, drawableLeft + drawableWidth, drawableTop + drawableHeight)
 
-        // Отрисовываем Drawable
         drawable.draw(canvas)
         return Bitmap.createBitmap(bitmap)
     }
@@ -391,9 +292,6 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
                         if (it < startValue) it + 360 else it
                     }
 
-              /*  if (movedAngle < startValue) {
-                    movedAngle += 360
-                }*/
 
                 if (prevAngle < startValue + 90 && movedAngle > endValue - 90) {
                     movedAngle = startValue
