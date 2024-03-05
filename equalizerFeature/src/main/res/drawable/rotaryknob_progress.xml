@@ -1,0 +1,23 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@android:id/progress"
+        android:drawable="@drawable/rotaryknobticksenabledfinal2"
+        />
+    <item
+        android:id="@android:id/background"
+        android:drawable="@drawable/rotaryknobticksdisabledfinal2"
+    />
+    <item
+        android:id="@android:id/secondaryProgress"
+        android:drawable="@drawable/rotaryknobfinal2"
+        />
+    <item
+        android:id="@android:id/button1"
+        android:drawable="@drawable/rotaryknobthumbenabledfinal2"
+        />
+    <item
+        android:id="@android:id/button2"
+        android:drawable="@drawable/rotaryknobthumbdisabledfinal2"
+        />
+
+</layer-list>

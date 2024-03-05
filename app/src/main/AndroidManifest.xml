@@ -23,7 +23,6 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <application
-        android:hardwareAccelerated="true"
         android:requestLegacyExternalStorage="true"
         android:name=".YESApplication"
         android:allowBackup="true"

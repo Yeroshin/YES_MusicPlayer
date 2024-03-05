@@ -225,26 +225,64 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_horizontal|center_vertical"
             android:background="@drawable/panel_flat"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <com.yes.musicplayer.equalizer.presentation.ui.CircularSeekBar
                 android:id="@+id/circularSeekBar"
-                android:layout_width="256dp"
-                android:layout_height="256dp"
-                android:background="@drawable/rotaryknobfinal"
-                android:max="270"
-                android:progressDrawable="@drawable/tick_marks_final" />
+                style="@style/margin"
+                android:layout_width="144dp"
+                android:layout_height="144dp"
+                android:backgroundTint="#AF2121"
+                android:progressDrawable="@drawable/rotaryknob_progress"
+                android:thumbOffset="5dp" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-                <Switch
-                    android:id="@+id/switch1"
-                    style="@style/yesSwitch"
-                    android:thumb="@drawable/thumb"
-                    android:track="@drawable/switch_selector" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Switch
+                        android:id="@+id/switch1"
+                        style="@style/yesSwitch"
+                        android:thumb="@drawable/thumb"
+                        android:track="@drawable/switch_selector" />
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        style="@style/textLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/loudness_enhancer" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Switch
+                        android:id="@+id/switch2"
+                        style="@style/yesSwitch"
+                        android:thumb="@drawable/thumb"
+                        android:track="@drawable/switch_selector" />
+
+                    <TextView
+                        android:id="@+id/textView"
+                        style="@style/textLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/equalizer" />
+
+                </LinearLayout>
 
                 <Spinner
                     android:id="@+id/presetsSpinner"
@@ -253,6 +291,7 @@
                     android:layout_height="48dp"
                     android:background="@drawable/button_space"
                     android:dropDownWidth="wrap_content" />
+
             </LinearLayout>
 
         </LinearLayout>
