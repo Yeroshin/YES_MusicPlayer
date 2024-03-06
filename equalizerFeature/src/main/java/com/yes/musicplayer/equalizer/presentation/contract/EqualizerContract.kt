@@ -13,6 +13,9 @@ class EqualizerContract {
         data object OnPlay : Event()
         data class OnEqualizerValue(val band:Int,val value:Int,val maxLevelRange: Int): Event()
 
+        data class OnLoudnessEnhancerEnabled(val enabled:Boolean): Event()
+        data class OnLoudnessEnhancerTargetGain(val percent:Int): Event()
+
     }
 
     data class State(

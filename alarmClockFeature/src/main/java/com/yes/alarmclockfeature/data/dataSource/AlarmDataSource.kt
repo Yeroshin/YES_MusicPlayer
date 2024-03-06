@@ -53,7 +53,7 @@ class AlarmDataSource(
                 Toast.makeText(context, "canScheduleExactAlarms ERROR!!!", Toast.LENGTH_SHORT).show()
             }
         } else {
-            Toast.makeText(context, "canScheduleExactAlarms ERROR!!!", Toast.LENGTH_SHORT).show()
+         //   Toast.makeText(context, "canScheduleExactAlarms ERROR!!!", Toast.LENGTH_SHORT).show()
         }
         ///////////////////
         val hourt = calendar.get(Calendar.HOUR)

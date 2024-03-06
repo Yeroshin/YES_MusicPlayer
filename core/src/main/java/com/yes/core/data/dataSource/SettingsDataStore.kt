@@ -24,6 +24,8 @@ class SettingsDataStore(
         val EQUALIZER_ENABLED = booleanPreferencesKey("equalizerEnabled")
         val CURRENT_PRESET = intPreferencesKey("currentPreset")
         val CUSTOM_PRESET = stringPreferencesKey("customPreset")
+        val LOUDNESS_ENHANCER_ENABLED = booleanPreferencesKey("loudnessEnhancerEnabled")
+        val LOUDNESS_ENHANCER_TARGET_GAIN = intPreferencesKey("loudnessEnhancerTargetGain")
     }
 
     suspend fun subscribeCurrentPlaylistId(): Flow<Long> {
@@ -125,5 +127,16 @@ class SettingsDataStore(
                    customPreset
                }
            }
+    }
+
+    suspend fun setLoudnessEnhancerEnabled(enabled:Boolean){
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.LOUDNESS_ENHANCER_ENABLED] = enabled
+        }
+    }
+    suspend fun setLoudnessEnhancerTargetGain(gainMB:Int){
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.LOUDNESS_ENHANCER_TARGET_GAIN] = gainMB
+        }
     }
 }

@@ -7,7 +7,9 @@ import com.yes.alarmclockfeature.databinding.ItemAlarmlistBinding
 import com.yes.alarmclockfeature.presentation.model.AlarmUI
 import java.util.Collections
 
-class AlarmsScreenAdapter :
+class AlarmsScreenAdapter(
+    val onItemOnCheckedChange: (position: Int) -> Unit
+) :
     RecyclerView.Adapter<AlarmsScreenAdapter.ViewHolder>() {
     private val itemList = mutableListOf<AlarmUI>()
     override fun onCreateViewHolder(
@@ -43,6 +45,11 @@ class AlarmsScreenAdapter :
     }
 
     override fun onBindViewHolder(holder: AlarmsScreenAdapter.ViewHolder, position: Int) {
+       /* val currentTime = System.currentTimeMillis()
+        val remainingTime =  itemList[position].alarmTime - currentTime
+
+        val hours = TimeUnit.MILLISECONDS.toHours(remainingTime)
+        val minutes = TimeUnit.MILLISECONDS.toMinutes(remainingTime) % 60*/
         holder.bind(position, itemList[position])
     }
 
@@ -57,7 +64,10 @@ class AlarmsScreenAdapter :
             item: AlarmUI,
         ) {
             binding.alarmTime.text = item.alarmTime
+            binding.alarmSwitch.isChecked=item.enabled
+            binding.alarmSwitch.setOnCheckedChangeListener { _, isChecked ->
 
+            }
         }
     }
 }
