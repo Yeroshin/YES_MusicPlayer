@@ -1,14 +1,18 @@
 package com.yes.alarmclockfeature.presentation.ui
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.yes.alarmclockfeature.R
 import com.yes.alarmclockfeature.databinding.ItemAlarmlistBinding
 import com.yes.alarmclockfeature.presentation.model.AlarmUI
+import com.yes.alarmclockfeature.presentation.model.DayOfWeek
 import java.util.Collections
+import java.util.concurrent.TimeUnit
 
 class AlarmsScreenAdapter(
-    val onItemOnCheckedChange: (alarm:AlarmUI) -> Unit
+    val onItemOnCheckedChange: (alarm: AlarmUI) -> Unit
 ) :
     RecyclerView.Adapter<AlarmsScreenAdapter.ViewHolder>() {
     private val itemList = mutableListOf<AlarmUI>()
@@ -18,7 +22,7 @@ class AlarmsScreenAdapter(
     ): AlarmsScreenAdapter.ViewHolder {
         val binding = ItemAlarmlistBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+        return ViewHolder(parent.context,binding)
     }
 
     fun setItems(items: List<AlarmUI>) {
@@ -45,11 +49,12 @@ class AlarmsScreenAdapter(
     }
 
     override fun onBindViewHolder(holder: AlarmsScreenAdapter.ViewHolder, position: Int) {
-       /* val currentTime = System.currentTimeMillis()
-        val remainingTime =  itemList[position].alarmTime - currentTime
+       /*  val currentTime = System.currentTimeMillis()
+         val remainingTime =  itemList[position].alarmTime - currentTime
 
-        val hours = TimeUnit.MILLISECONDS.toHours(remainingTime)
-        val minutes = TimeUnit.MILLISECONDS.toMinutes(remainingTime) % 60*/
+         val hours = TimeUnit.MILLISECONDS.toHours(remainingTime)
+         val minutes = TimeUnit.MILLISECONDS.toMinutes(remainingTime) % 60
+        itemList[position].alarmTimeLeft=*/
         holder.bind(position, itemList[position])
     }
 
@@ -57,17 +62,36 @@ class AlarmsScreenAdapter(
         return itemList.size
     }
 
-    inner class ViewHolder(private val binding: ItemAlarmlistBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(
+        private val context: Context,
+        private val binding: ItemAlarmlistBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(
             position: Int,
             item: AlarmUI,
         ) {
             binding.alarmTime.text = item.alarmTime
-            binding.alarmSwitch.isChecked=item.enabled
+            binding.alarmSwitch.isChecked = item.enabled
             binding.alarmSwitch.setOnCheckedChangeListener { _, isChecked ->
                 onItemOnCheckedChange(item)
             }
+            binding.alarmTimeLeft.text = context.resources.getString(
+                com.yes.coreui.R.string.time_left,
+                item.alarmHourLeft,
+                item.alarmMinutesLeft
+            )
+            binding.alarmRepeatDays.text=formatDaysOfWeek(item.daysOfWeek,context)
+
         }
+    }
+    private fun formatDaysOfWeek(selectedDays: Set<DayOfWeek>, context: Context): String {
+        val daysArray = context.resources.getStringArray(com.yes.coreui.R.array.days_array)
+        val dayAbbreviations = daysArray.map { it.substring(0, 3) } // Получаем сокращенные названия дней недели
+
+        val selectedAbbreviations = selectedDays.map { dayOfWeek ->
+            dayAbbreviations[dayOfWeek.value - 1] // Выбираем сокращенные названия для выбранных дней
+        }
+
+        return selectedAbbreviations.joinToString(", ") // Соединяем сокращенные названия дней через запятую
     }
 }

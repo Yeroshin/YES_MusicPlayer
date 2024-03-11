@@ -20,7 +20,7 @@ import java.util.Calendar
 
 
 class AlarmClockDialog(
-    private val onOk: (date: DatePickerManager.Time,selectedDays:Set<DayOfWeek>) -> Unit,
+    private val onOk: (date: DatePickerManager.Time, selectedDays: Set<DayOfWeek>) -> Unit,
     private val onCancel: () -> Unit
 ) : DialogFragment() {
     private lateinit var binding: ViewBinding
@@ -51,7 +51,7 @@ class AlarmClockDialog(
     override fun onResume() {
         super.onResume()
         setDialogSize()
-      //  datePickerManager.setTime()
+        //  datePickerManager.setTime()
     }
 
     private fun setDialogSize() {
@@ -84,16 +84,14 @@ class AlarmClockDialog(
     }
 
 
-
-
     private fun setupView() {
         ///////////////////
         val calendar = Calendar.getInstance()
-        val hour=calendar.get(Calendar.HOUR_OF_DAY)
-        val minute=calendar.get(Calendar.MINUTE)
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
         ///////////////////
-       datePickerManager.setupView(hour,minute)
-       // datePickerManager.setTime()
+        datePickerManager.setupView(hour, minute)
+        // datePickerManager.setTime()
 
         binder.buttons.okBtn.setOnClickListener {
             val checkBoxes: List<ToggleButton> = listOf(
@@ -107,7 +105,7 @@ class AlarmClockDialog(
             )
             val selectedDays: MutableSet<DayOfWeek> = mutableSetOf()
             for ((index, checkBox) in checkBoxes.withIndex()) {
-                if (checkBox.isSelected) {
+                if (checkBox.isChecked) {
                     when (index) {
                         0 -> selectedDays.add(DayOfWeek.SUNDAY)
                         1 -> selectedDays.add(DayOfWeek.MONDAY)
@@ -122,15 +120,15 @@ class AlarmClockDialog(
             onOk.invoke(
                 datePickerManager.getTime(),
                 selectedDays
-               /* mapOf(
-                    "sun" to binder.sun.isChecked,
-                    "mon" to binder.mon.isChecked,
-                    "tue" to binder.tue.isChecked,
-                    "wed" to binder.wed.isChecked,
-                    "thu" to binder.thu.isChecked,
-                    "fri" to binder.fri.isChecked,
-                    "sat" to binder.sat.isChecked,
-                )*/
+                /* mapOf(
+                     "sun" to binder.sun.isChecked,
+                     "mon" to binder.mon.isChecked,
+                     "tue" to binder.tue.isChecked,
+                     "wed" to binder.wed.isChecked,
+                     "thu" to binder.thu.isChecked,
+                     "fri" to binder.fri.isChecked,
+                     "sat" to binder.sat.isChecked,
+                 )*/
             )
         }
         binder.buttons.cancelBtn.setOnClickListener {

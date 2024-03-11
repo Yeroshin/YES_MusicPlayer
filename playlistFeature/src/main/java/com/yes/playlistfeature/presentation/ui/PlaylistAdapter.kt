@@ -84,7 +84,9 @@ class PlaylistAdapter(
             notifyItemChanged(oldItem)
         }
         if (position != -1) {
-            itemList[position] = itemList[position].copy(current = true)
+            itemList.getOrNull(position)?.let {
+                itemList[position] = itemList[position].copy(current = true)
+            }
             notifyItemChanged(position)
         }
 

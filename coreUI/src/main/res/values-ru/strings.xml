@@ -13,6 +13,7 @@
     <string name="hour">ч</string>
     <string name="minute">м</string>
     <string name="left">осталось</string>
+    <string name="time_left">%1\$s ч %2\$s мин осталось</string>
     <string name="widget_name">ЕС Музыкальный Проигрыватель</string>
     <string name="loudness_enhancer">УСИЛИТЕЛЬ ГРОМКОСТИ</string>
     <string name="song">ПЕСНЯ</string>

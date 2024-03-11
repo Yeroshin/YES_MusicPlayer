@@ -23,7 +23,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-
+@Deprecated("do not use this")
 class AlarmActivity : AppCompatActivity(){
 
     private lateinit var binding: ViewBinding

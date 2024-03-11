@@ -15,6 +15,7 @@
     <string name="hour">h</string>
     <string name="minute">m</string>
     <string name="left">left</string>
+    <string name="time_left">%1\$s h %2\$s min left</string>
     <string name="widget_name">YES Music Player</string>
     <string name="loudness_enhancer">LOUDNESS ENHANCER</string>
     <string name="song">SONG</string>
