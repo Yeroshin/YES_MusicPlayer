@@ -19,6 +19,9 @@ class AlarmClockContract {
         data class OnSetAlarm(
             val alarm:AlarmUI
         ) : Event()
+        data class OnAlarmEnabled(
+            val alarm:AlarmUI
+        ): Event()
 
     }
 

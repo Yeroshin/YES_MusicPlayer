@@ -67,7 +67,7 @@ class EqualizerRepositoryImpl(
             equalizer.release()
             try{
                 equalizer=Equalizer(1000,audioSessionId)
-                equalizer.enabled=true//tmp
+                equalizer.enabled=true//tmp TODO remove this
             }catch (exception: Exception){
                 val pr=exception
             }

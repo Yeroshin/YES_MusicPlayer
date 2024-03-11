@@ -34,8 +34,14 @@ class SettingsRepositoryImpl(
     suspend fun setLoudnessEnhancerEnabled(enabled:Boolean){
         settings.setLoudnessEnhancerEnabled(enabled)
     }
+    suspend fun getLoudnessEnhancerEnabled():Boolean{
+        return settings.getLoudnessEnhancerEnabled().first()
+    }
     suspend fun setLoudnessEnhancerTargetGain(percent:Int){
         settings.setLoudnessEnhancerTargetGain(percent)
+    }
+    suspend fun getLoudnessEnhancerTargetGain():Int{
+        return settings.getLoudnessEnhancerTargetGain().first()
     }
 
 }

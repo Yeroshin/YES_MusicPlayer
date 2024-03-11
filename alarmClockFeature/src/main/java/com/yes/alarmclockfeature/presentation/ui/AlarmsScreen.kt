@@ -28,7 +28,15 @@ class AlarmsScreen : BaseFragment() {
         binding as AlarmsListScreenBinding
     }
     private val adapter by lazy {
-        AlarmsScreenAdapter()
+        AlarmsScreenAdapter { alarm ->
+            viewModel.setEvent(
+                Event.OnAlarmEnabled(
+                    alarm
+                )
+            )
+        }
+
+
     }
 
     /* private val alarmClockDialog by lazy {
@@ -55,7 +63,7 @@ class AlarmsScreen : BaseFragment() {
     private var alarmClockDialog: AlarmClockDialog? = null
     override fun setupView() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-           // startActivity(Intent(ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
+            // startActivity(Intent(ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
         }
 
         val onSwipeCallback: (position: Int) -> Unit = { position ->
@@ -98,8 +106,8 @@ class AlarmsScreen : BaseFragment() {
         itemTouchHelper.attachToRecyclerView(
             binder.alarmsList
         )
-        val snapHelper=LinearSnapHelper()
-      // snapHelper.attachToRecyclerView(binder.alarmsList)
+        val snapHelper = LinearSnapHelper()
+        // snapHelper.attachToRecyclerView(binder.alarmsList)
         binder.alarmsList.layoutManager = LinearLayoutManager(context)
         binder.alarmsList.adapter = adapter
         binder.addAlarmButton.setOnClickListener {

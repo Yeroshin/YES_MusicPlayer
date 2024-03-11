@@ -30,7 +30,7 @@ import com.yes.musicplayer.equalizer.presentation.model.EqualizerUI
 import com.yes.musicplayer.equalizer.presentation.vm.EqualizerViewModel
 import kotlinx.coroutines.launch
 
-class EqualizerScreen : Fragment() {
+class EqualizerScreen : Fragment() ,CircularSeekBar.OnProgressChangeListener{
     interface DependencyResolver {
         fun getEqualizerScreenComponent(): EqualizerComponent
     }
@@ -105,32 +105,7 @@ class EqualizerScreen : Fragment() {
             }
         }
     }
-    private val seekBarChangeListener=object : SeekBar.OnSeekBarChangeListener {
-        override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-          /*  if (fromUser) {
-                viewModel.setEvent(EqualizerContract.Event.OnEqualizerValue(seekBar.tag as Int, progress))
-            }*/
-            if (fromUser) {
-                viewModel.setEvent(
-                    EqualizerContract.Event.OnEqualizerValue(
-                        seekBar.tag as Int,
-                        progress,
-                        seekBar.max
-                    )
-                )
-            }
 
-
-        }
-
-        override fun onStartTrackingTouch(p0: SeekBar?) {
-
-        }
-
-        override fun onStopTrackingTouch(p0: SeekBar?) {
-
-        }
-    }
     private fun setUpView() {
         //////////////////
         val audioManager = requireActivity().getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -167,10 +142,16 @@ class EqualizerScreen : Fragment() {
         }
         binder.circularSeekBar.setMinValue(144)
         binder.circularSeekBar.setMaxValue(396)
-        binder.circularSeekBar.setProgressValue(250)
+     //   binder.circularSeekBar.setProgressValue(250)
         binder.loudnessSwitch.setOnCheckedChangeListener { _, isChecked ->
-            binder.circularSeekBar.isEnabled=isChecked
+          //  binder.circularSeekBar.isEnabled=isChecked
+            viewModel.setEvent(
+                EqualizerContract.Event.OnLoudnessEnhancerEnabled(
+                    isChecked
+                )
+            )
         }
+        binder.circularSeekBar.setOnProgressChangeListener(this)
 
     }
 
@@ -241,11 +222,21 @@ class EqualizerScreen : Fragment() {
             binder.five.max = it
         }
         equalizer.equalizerEnabled?.let {
+            binder.equalizerSwitch.isChecked=it
             binder.one.isEnabled = it
             binder.two.isEnabled = it
             binder.three.isEnabled = it
             binder.four.isEnabled = it
             binder.five.isEnabled = it
+        }
+
+        equalizer.loudnessEnhancerEnabled?.let {
+            binder.loudnessSwitch.isChecked=it
+            binder.circularSeekBar.isEnabled=it
+        }
+        equalizer.loudnessEnhancerValue?.let {
+
+            binder.circularSeekBar.setProgressValue(it)
         }
     }
 
@@ -266,4 +257,12 @@ class EqualizerScreen : Fragment() {
     class Dependency(
         val factory: EqualizerViewModel.Factory,
     )
+
+    override fun onProgressChanged(progress: Int) {
+        viewModel.setEvent(
+            EqualizerContract.Event.OnLoudnessEnhancerTargetGain(
+                progress
+            )
+        )
+    }
 }

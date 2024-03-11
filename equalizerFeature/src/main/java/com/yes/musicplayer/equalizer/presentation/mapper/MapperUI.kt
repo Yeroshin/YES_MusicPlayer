@@ -5,6 +5,11 @@ import com.yes.musicplayer.equalizer.presentation.model.EqualizerUI
 import kotlin.math.abs
 
 class MapperUI {
+    private val loudnessEnhancerTargetGainMaxValue=1500
+    fun mapLoudnessEnhancerTargetGainPercentToValue(percent:Int):Int{
+        return percent
+        //return percent*100/loudnessEnhancerTargetGainMaxValue
+    }
     fun map(equalizer: Equalizer): EqualizerUI {
 
         return EqualizerUI(
@@ -28,7 +33,8 @@ class MapperUI {
                     }.toIntArray()
                 }
             },
-
+            loudnessEnhancerEnabled = equalizer.loudnessEnhancerEnabled,
+            loudnessEnhancerValue = equalizer.loudnessEnhancerValue
         )
     }
     fun mapUiEqualizerValueToDomain(value:Int,maxLevelRange: Int):Int{

@@ -134,9 +134,27 @@ class SettingsDataStore(
             preferences[PreferencesKeys.LOUDNESS_ENHANCER_ENABLED] = enabled
         }
     }
+    suspend fun getLoudnessEnhancerEnabled():Flow<Boolean>{
+        return dataStore.data
+            .map { preferences ->
+                preferences[PreferencesKeys.LOUDNESS_ENHANCER_ENABLED]?:run {
+                    setLoudnessEnhancerEnabled(false)
+                    false
+                }
+            }
+    }
     suspend fun setLoudnessEnhancerTargetGain(gainMB:Int){
         dataStore.edit { preferences ->
             preferences[PreferencesKeys.LOUDNESS_ENHANCER_TARGET_GAIN] = gainMB
         }
+    }
+    suspend fun getLoudnessEnhancerTargetGain():Flow<Int>{
+        return dataStore.data
+            .map { preferences ->
+                preferences[PreferencesKeys.LOUDNESS_ENHANCER_TARGET_GAIN]?:run {
+                    setLoudnessEnhancerTargetGain(0)
+                    0
+                }
+            }
     }
 }

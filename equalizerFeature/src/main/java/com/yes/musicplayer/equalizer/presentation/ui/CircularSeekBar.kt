@@ -96,7 +96,14 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
     }
 
     fun setProgressValue(value: Int) {
-        progressValue = value
+        progressValue = if (value+startValue>endValue){
+            endValue
+        }else if(value+startValue<startValue){
+            startValue
+        }else{
+            (value*(endValue-startValue)/100)+startValue
+        }
+        updateProgressBitmap()
     }
 
     override fun setEnabled(enabled: Boolean) {
@@ -311,7 +318,9 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
                 /////////////////////
                 updateProgressBitmap()
                 //////////////////////
-
+                onProgressChangeListener?.onProgressChanged(
+                    (progressValue-startValue)*100/(endValue-startValue)
+                )
                 true
             }
 

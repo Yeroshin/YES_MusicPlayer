@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yes.core.domain.models.DomainResult
 import com.yes.core.presentation.BaseViewModel
-import com.yes.musicplayer.equalizer.domain.usecase.GetEqualizerUseCase
+import com.yes.musicplayer.equalizer.domain.usecase.GetAudioEffectUseCase
 import com.yes.musicplayer.equalizer.domain.usecase.SetEqualizerEnabledUseCase
 import com.yes.musicplayer.equalizer.domain.usecase.SetEqualizerValueUseCase
+import com.yes.musicplayer.equalizer.domain.usecase.SetLoudnessEnhancerEnabledUseCase
+import com.yes.musicplayer.equalizer.domain.usecase.SetLoudnessEnhancerValueUseCase
 import com.yes.musicplayer.equalizer.domain.usecase.SetPresetUseCase
 import com.yes.musicplayer.equalizer.presentation.contract.EqualizerContract.*
 import com.yes.musicplayer.equalizer.presentation.mapper.MapperUI
@@ -15,16 +17,18 @@ import kotlinx.coroutines.launch
 
 class EqualizerViewModel(
     private val mapperUI: MapperUI,
-    private val getEqualizerUseCase: GetEqualizerUseCase,
+    private val getAudioEffectUseCase: GetAudioEffectUseCase,
     private val setPresetUseCase: SetPresetUseCase,
     private val setEqualizerValueUseCase: SetEqualizerValueUseCase,
-    private val setEqualizerEnabledUseCase: SetEqualizerEnabledUseCase
+    private val setEqualizerEnabledUseCase: SetEqualizerEnabledUseCase,
+    private val setLoudnessEnhancerEnabledUseCase: SetLoudnessEnhancerEnabledUseCase,
+    private val setLoudnessEnhancerValueUseCase: SetLoudnessEnhancerValueUseCase
 ) : BaseViewModel<Event, State, Effect>() {
 
     init {
         viewModelScope.launch {
-            val result = getEqualizerUseCase(
-                GetEqualizerUseCase.Params(
+            val result = getAudioEffectUseCase(
+                GetAudioEffectUseCase.Params(
                     intArrayOf(60000, 230000, 910000, 3000000, 14000000)
                 )
             )
@@ -62,14 +66,64 @@ class EqualizerViewModel(
                 setPreset(event.preset)
             }
 
-            is Event.OnEqualizerValue ->{
-               setEqualizerValue(event.band,event.value,event.maxLevelRange)
+            is Event.OnEqualizerValue -> {
+                setEqualizerValue(event.band, event.value, event.maxLevelRange)
             }
 
             is Event.OnEqualizerEnabled -> setEqualizerEnabled(event.enabled)
+            is Event.OnLoudnessEnhancerEnabled -> setLoudnessEnhancerEnabled(event.enabled)
+            is Event.OnLoudnessEnhancerTargetGain -> setLoudnessEnhancerTargetGain(event.percent)
         }
     }
-    private fun setEqualizerEnabled(enabled:Boolean){
+    private fun setLoudnessEnhancerEnabled(enabled: Boolean){
+        viewModelScope.launch {
+            val result = setLoudnessEnhancerEnabledUseCase(
+                SetLoudnessEnhancerEnabledUseCase.Params(
+                    enabled
+                )
+            )
+            when (result) {
+                is DomainResult.Success -> {
+                    setState {
+                        copy(
+                            state = EqualizerState.Success(
+                                mapperUI.map(result.data)
+                            )
+                        )
+                    }
+                }
+
+                is DomainResult.Error -> {}
+            }
+        }
+    }
+
+    private fun setLoudnessEnhancerTargetGain(percent:Int) {
+        viewModelScope.launch {
+            val result = setLoudnessEnhancerValueUseCase(
+                SetLoudnessEnhancerValueUseCase.Params(
+                    mapperUI.mapLoudnessEnhancerTargetGainPercentToValue(
+                        percent
+                    )
+                )
+            )
+            when (result) {
+                is DomainResult.Success -> {
+                    setState {
+                        copy(
+                            state = EqualizerState.Success(
+                                mapperUI.map(result.data)
+                            )
+                        )
+                    }
+                }
+
+                is DomainResult.Error -> {}
+            }
+        }
+    }
+
+    private fun setEqualizerEnabled(enabled: Boolean) {
         viewModelScope.launch {
             val result = setEqualizerEnabledUseCase(
                 SetEqualizerEnabledUseCase.Params(
@@ -92,7 +146,7 @@ class EqualizerViewModel(
         }
     }
 
-    private fun setEqualizerValue(band:Int,value: Int,maxLevelRange: Int) {
+    private fun setEqualizerValue(band: Int, value: Int, maxLevelRange: Int) {
         viewModelScope.launch {
             val result = setEqualizerValueUseCase(
 
@@ -146,19 +200,23 @@ class EqualizerViewModel(
 
     class Factory(
         private val mapperUI: MapperUI,
-        private val getEqualizerUseCase: GetEqualizerUseCase,
+        private val getAudioEffectUseCase: GetAudioEffectUseCase,
         private val setPresetUseCase: SetPresetUseCase,
         private val setEqualizerValueUseCase: SetEqualizerValueUseCase,
-        private val setEqualizerEnabledUseCase: SetEqualizerEnabledUseCase
+        private val setEqualizerEnabledUseCase: SetEqualizerEnabledUseCase,
+        private val setLoudnessEnhancerEnabledUseCase: SetLoudnessEnhancerEnabledUseCase,
+        private val setLoudnessEnhancerValueUseCase: SetLoudnessEnhancerValueUseCase
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
             return EqualizerViewModel(
                 mapperUI,
-                getEqualizerUseCase,
+                getAudioEffectUseCase,
                 setPresetUseCase,
                 setEqualizerValueUseCase,
-                setEqualizerEnabledUseCase
+                setEqualizerEnabledUseCase,
+                setLoudnessEnhancerEnabledUseCase,
+                setLoudnessEnhancerValueUseCase
             ) as T
         }
     }

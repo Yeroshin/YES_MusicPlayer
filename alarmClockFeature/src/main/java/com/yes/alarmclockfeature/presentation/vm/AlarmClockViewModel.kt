@@ -60,6 +60,11 @@ class AlarmClockViewModel(
 
             is Event.OnDeleteAlarm -> deleteAlarm(event.alarm)
             is Event.OnSetAlarm -> setAlarm(event.alarm)
+            is Event.OnAlarmEnabled -> TODO()
+            is Event.OnAddAlarm -> TODO()
+            is Event.OnAlarmEnabled -> TODO()
+            is Event.OnDeleteAlarm -> TODO()
+            is Event.OnSetAlarm -> TODO()
         }
     }
 

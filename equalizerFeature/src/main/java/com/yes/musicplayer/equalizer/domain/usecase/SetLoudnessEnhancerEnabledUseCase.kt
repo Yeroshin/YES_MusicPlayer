@@ -19,7 +19,7 @@ class SetLoudnessEnhancerEnabledUseCase (
             settingsRepository.setLoudnessEnhancerEnabled(params.enabled)
             DomainResult.Success(
                 Equalizer(
-                    equalizerEnabled = params.enabled
+                    loudnessEnhancerEnabled = params.enabled
                 )
             )
         } ?: return DomainResult.Error(DomainResult.UnknownException)

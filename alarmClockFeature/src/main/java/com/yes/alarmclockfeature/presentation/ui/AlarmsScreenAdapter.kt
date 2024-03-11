@@ -8,7 +8,7 @@ import com.yes.alarmclockfeature.presentation.model.AlarmUI
 import java.util.Collections
 
 class AlarmsScreenAdapter(
-    val onItemOnCheckedChange: (position: Int) -> Unit
+    val onItemOnCheckedChange: (alarm:AlarmUI) -> Unit
 ) :
     RecyclerView.Adapter<AlarmsScreenAdapter.ViewHolder>() {
     private val itemList = mutableListOf<AlarmUI>()
@@ -66,7 +66,7 @@ class AlarmsScreenAdapter(
             binding.alarmTime.text = item.alarmTime
             binding.alarmSwitch.isChecked=item.enabled
             binding.alarmSwitch.setOnCheckedChangeListener { _, isChecked ->
-
+                onItemOnCheckedChange(item)
             }
         }
     }
