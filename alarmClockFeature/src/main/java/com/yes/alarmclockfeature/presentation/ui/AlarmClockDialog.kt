@@ -20,7 +20,7 @@ import java.util.Calendar
 
 
 class AlarmClockDialog(
-    private val onOk: (date: DatePickerManager.Time, selectedDays: Set<DayOfWeek>) -> Unit,
+    private val onOk: (date: DatePickerManager.Time, selectedDays: Set<Int>) -> Unit,
     private val onCancel: () -> Unit
 ) : DialogFragment() {
     private lateinit var binding: ViewBinding
@@ -103,10 +103,10 @@ class AlarmClockDialog(
                 binder.fri,
                 binder.sat
             )
-            val selectedDays: MutableSet<DayOfWeek> = mutableSetOf()
+            val selectedDays: MutableSet<Int> = mutableSetOf()
             for ((index, checkBox) in checkBoxes.withIndex()) {
                 if (checkBox.isChecked) {
-                    when (index) {
+                   /* when (index) {
                         0 -> selectedDays.add(DayOfWeek.SUNDAY)
                         1 -> selectedDays.add(DayOfWeek.MONDAY)
                         2 -> selectedDays.add(DayOfWeek.TUESDAY)
@@ -114,6 +114,15 @@ class AlarmClockDialog(
                         4 -> selectedDays.add(DayOfWeek.THURSDAY)
                         5 -> selectedDays.add(DayOfWeek.FRIDAY)
                         6 -> selectedDays.add(DayOfWeek.SATURDAY)
+                    }*/
+                    when (index) {
+                        0 -> selectedDays.add(Calendar.SUNDAY)
+                        1 -> selectedDays.add(Calendar.MONDAY)
+                        2 -> selectedDays.add(Calendar.TUESDAY)
+                        3 -> selectedDays.add(Calendar.WEDNESDAY)
+                        4 -> selectedDays.add(Calendar.THURSDAY)
+                        5 -> selectedDays.add(Calendar.FRIDAY)
+                        6 -> selectedDays.add(Calendar.SATURDAY)
                     }
                 }
             }

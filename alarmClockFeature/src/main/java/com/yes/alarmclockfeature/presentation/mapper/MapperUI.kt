@@ -7,11 +7,11 @@ import com.yes.alarmclockfeature.presentation.ui.datepicker.DatePickerManager
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
-class MapperUI {
-    private val calendar by lazy {
-        Calendar.getInstance()
-    }
-    fun map(date: DatePickerManager.Time, selectedDays:Set<DayOfWeek>): Alarm {
+class MapperUI(
+    private val calendar: Calendar
+) {
+
+    fun map(date: DatePickerManager.Time, selectedDays:Set<Int>): Alarm {
         return Alarm(
             null,
             date.hour,
@@ -34,6 +34,25 @@ class MapperUI {
     }
 
     fun map(alarm: Alarm): AlarmUI {
+        val currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+        val currentTime = calendar.get(Calendar.HOUR) * 60 + calendar.get(Calendar.MINUTE)
+        var nearestTimeDiff = Int.MAX_VALUE
+        val alarmCopy=if(alarm.daysOfWeek== emptySet<Int>()){
+            alarm.copy(daysOfWeek = setOf(currentDayOfWeek))
+        }else{
+            alarm
+        }
+        alarmCopy.daysOfWeek.forEach{dayOfWeek->
+            val minutesUntilNext: Int = ((dayOfWeek - currentDayOfWeek + 7) % 7) * 24 * 60+(alarm.timeHour*60+alarm.timeMinute)
+            val diff = minutesUntilNext - currentTime
+            if (diff < nearestTimeDiff) {
+                nearestTimeDiff = diff
+            }
+        }
+        val timeHour=nearestTimeDiff/60
+        val timeMinute=nearestTimeDiff/60
+
+        ///////////////////////////////
         val currentTimeMinutes = getCurrentTimeInMinutes()
         val alarmTimeMinutes = calculateMinutesUntilNextAlarm(alarm, currentTimeMinutes)
 
@@ -57,7 +76,7 @@ class MapperUI {
         var daysToAdd = 0
         var minutesUntilNextAlarm = 0
 
-        val daysOfWeekValues = alarm.daysOfWeek?.map { it.value } ?: emptyList()
+        val daysOfWeekValues = alarm.daysOfWeek.map { it } ?: emptyList()
 
        /* if (daysOfWeekValues.isEmpty()) {
             return -1 // Возвращаем -1 в случае пустого списка daysOfWeek

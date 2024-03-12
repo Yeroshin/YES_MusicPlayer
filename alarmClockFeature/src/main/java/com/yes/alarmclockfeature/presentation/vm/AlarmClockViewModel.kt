@@ -92,7 +92,7 @@ class AlarmClockViewModel(
         }
     }
 
-    private fun addAlarm(date: DatePickerManager.Time, selectedDays: Set<DayOfWeek>) {
+    private fun addAlarm(date: DatePickerManager.Time, selectedDays: Set<Int>) {
         viewModelScope.launch {
             val result = addAlarmUseCase(
                 mapper.map(date, selectedDays)

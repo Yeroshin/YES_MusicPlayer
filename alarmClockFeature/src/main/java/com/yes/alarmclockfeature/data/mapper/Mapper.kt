@@ -8,6 +8,7 @@ import com.yes.alarmclockfeature.domain.model.Track
 import com.yes.alarmclockfeature.presentation.model.DayOfWeek
 import com.yes.core.data.entity.AlarmDataBaseEntity
 import com.yes.core.data.entity.PlayListDataBaseTrackEntity
+import java.util.Calendar
 
 class Mapper {
     fun map(track: PlayListDataBaseTrackEntity): Track {
@@ -55,13 +56,13 @@ class Mapper {
             alarm.id,
             alarm.timeHour,
             alarm.timeMinute,
-            alarm.daysOfWeek.contains(DayOfWeek.SUNDAY),
-            alarm.daysOfWeek.contains(DayOfWeek.MONDAY),
-            alarm.daysOfWeek.contains(DayOfWeek.TUESDAY),
-            alarm.daysOfWeek.contains(DayOfWeek.WEDNESDAY),
-            alarm.daysOfWeek.contains(DayOfWeek.THURSDAY),
-            alarm.daysOfWeek.contains(DayOfWeek.FRIDAY),
-            alarm.daysOfWeek.contains(DayOfWeek.SATURDAY),
+            alarm.daysOfWeek.contains(Calendar.SUNDAY),
+            alarm.daysOfWeek.contains(Calendar.MONDAY),
+            alarm.daysOfWeek.contains(Calendar.TUESDAY),
+            alarm.daysOfWeek.contains(Calendar.WEDNESDAY),
+            alarm.daysOfWeek.contains(Calendar.THURSDAY),
+            alarm.daysOfWeek.contains(Calendar.FRIDAY),
+            alarm.daysOfWeek.contains(Calendar.SATURDAY),
             alarm.enabled,
         )
     }
@@ -75,17 +76,17 @@ class Mapper {
             alarm.fri,
             alarm.sat
         )
-        val selectedDays: MutableSet<DayOfWeek> = mutableSetOf()
+        val selectedDays: MutableSet<Int> = mutableSetOf()
         for ((index, day) in days.withIndex()) {
             if (day) {
                 when (index) {
-                    0 -> selectedDays.add(DayOfWeek.SUNDAY)
-                    1 -> selectedDays.add(DayOfWeek.MONDAY)
-                    2 -> selectedDays.add(DayOfWeek.TUESDAY)
-                    3 -> selectedDays.add(DayOfWeek.WEDNESDAY)
-                    4 -> selectedDays.add(DayOfWeek.THURSDAY)
-                    5 -> selectedDays.add(DayOfWeek.FRIDAY)
-                    6 -> selectedDays.add(DayOfWeek.SATURDAY)
+                    0 -> selectedDays.add(Calendar.SUNDAY)
+                    1 -> selectedDays.add(Calendar.MONDAY)
+                    2 -> selectedDays.add(Calendar.TUESDAY)
+                    3 -> selectedDays.add(Calendar.WEDNESDAY)
+                    4 -> selectedDays.add(Calendar.THURSDAY)
+                    5 -> selectedDays.add(Calendar.FRIDAY)
+                    6 -> selectedDays.add(Calendar.SATURDAY)
                 }
             }
         }

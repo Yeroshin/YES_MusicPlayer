@@ -5,7 +5,7 @@ data class AlarmUI (
     val alarmTime:String,
     val alarmHourLeft:String="",
     val alarmMinutesLeft:String="",
-    val daysOfWeek: Set<DayOfWeek> ,
+    val daysOfWeek: Set<Int> ,
     val enabled:Boolean=true
 )
 enum class DayOfWeek(val value: Int) {

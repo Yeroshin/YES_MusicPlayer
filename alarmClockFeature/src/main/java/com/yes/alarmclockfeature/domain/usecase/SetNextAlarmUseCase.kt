@@ -22,18 +22,18 @@ class SetNextAlarmUseCase(
         val currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
         val currentTime = calendar.get(Calendar.HOUR) * 60 + calendar.get(Calendar.MINUTE)
         var nearestAlarm: Alarm? = null
-        var nearestTimeDiff = Int.MAX_VALUE
+      /*  var nearestTimeDiff = Int.MAX_VALUE
         alarmListRepository.subscribeAlarms().first().filter {
             it.enabled
         }.map { alarm ->
-            if(alarm.daysOfWeek == emptySet<DayOfWeek>()){
+            if(alarm.daysOfWeek == emptySet<Int>()){
                 alarm.copy(daysOfWeek = setOf(DayOfWeek.entries.first { it.value == currentDayOfWeek }))
             }else{
                 alarm
             }
         }.forEach{alarm->
             alarm.daysOfWeek.forEach{dayOfWeek->
-                val minutesUntilNext: Int = ((dayOfWeek.value - currentDayOfWeek + 7) % 7) * 24 * 60+(alarm.timeHour*60+alarm.timeMinute)
+                val minutesUntilNext: Int = ((dayOfWeek - currentDayOfWeek + 7) % 7) * 24 * 60+(alarm.timeHour*60+alarm.timeMinute)
                 val diff = minutesUntilNext - currentTime
                 if (diff < nearestTimeDiff) {
                     nearestTimeDiff = diff
@@ -43,7 +43,7 @@ class SetNextAlarmUseCase(
         }
         nearestAlarm?.let {
             alarmManagerRepository.setAlarm(it)
-        }
+        }*/
         ///////////////////////
         return DomainResult.Success(nearestAlarm)
 

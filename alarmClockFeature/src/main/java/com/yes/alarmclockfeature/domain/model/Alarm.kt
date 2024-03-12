@@ -6,6 +6,6 @@ data class Alarm (
     val id: Long?,
     val timeHour:Int,
     val timeMinute:Int,
-    val daysOfWeek: Set<DayOfWeek>,
+    val daysOfWeek: Set<Int>,
     val enabled:Boolean
 )

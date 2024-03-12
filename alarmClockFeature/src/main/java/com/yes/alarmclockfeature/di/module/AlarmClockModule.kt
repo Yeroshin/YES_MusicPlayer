@@ -28,6 +28,7 @@ import com.yes.core.presentation.BaseDependency
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
+import java.util.Calendar
 
 @Module
 class AlarmClockModule(
@@ -93,7 +94,9 @@ class AlarmClockModule(
 
     @Provides
     fun providesMapperUI(): MapperUI {
-        return MapperUI()
+        return MapperUI(
+            Calendar.getInstance()
+        )
     }
 
     @Provides

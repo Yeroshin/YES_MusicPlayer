@@ -11,7 +11,7 @@ class AlarmClockContract {
     sealed class Event : UiEvent {
         data class OnAddAlarm(
             val date: DatePickerManager.Time,
-            val selectedDays:Set<DayOfWeek>
+            val selectedDays:Set<Int>
         ) : Event()
         data class OnDeleteAlarm(
             val alarm:AlarmUI

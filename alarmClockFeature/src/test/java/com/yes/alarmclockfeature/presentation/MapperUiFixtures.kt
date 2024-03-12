@@ -1,12 +1,10 @@
-package com.yes.alarmclockfeature.domain
+package com.yes.alarmclockfeature.presentation
 
 import com.yes.alarmclockfeature.domain.model.Alarm
-import com.yes.alarmclockfeature.presentation.model.DayOfWeek
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import com.yes.alarmclockfeature.presentation.model.AlarmUI
 import java.util.Calendar
 
-object DomainFixtures {
+object MapperUiFixtures {
     private val alarms = listOf(
         Alarm(
             1,
@@ -19,14 +17,14 @@ object DomainFixtures {
             2,
             14,
             30,
-            setOf(),
+            setOf(Calendar.MONDAY),
             true
         ),
         Alarm(
             3,
             14,
             15,
-            setOf(),
+            setOf(Calendar.TUESDAY),
             true
         ),
         Alarm(
@@ -61,20 +59,36 @@ object DomainFixtures {
             3,
             1,
             30,
-            setOf(Calendar.SATURDAY),
+            setOf(),
             false
         )
     )
-
-    fun getCurrentDay(): Int {
-        return Calendar.FRIDAY
+    fun getSundayAlarm():Alarm{
+        return Alarm(
+            1,
+            12,
+            0,
+            setOf(Calendar.TUESDAY),
+            false
+        )
     }
-
-    fun getNextAlarm(): Alarm {
-        return alarms[5]
+    fun getSundayAlarmUI(): AlarmUI {
+        return AlarmUI(
+            1,
+            "12",
+            "30",
+            "256",
+            setOf(),
+            false
+        )
     }
-
-    fun getAlarms(): Flow<List<Alarm>> = flow {
-        emit(alarms)
+    fun getCurrentDaySunday():Int{
+        return Calendar.MONDAY
+    }
+    fun getCurrentHour():Int{
+        return 12
+    }
+    fun getCurrentMinute():Int{
+        return 0
     }
 }

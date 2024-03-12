@@ -84,12 +84,12 @@ class AlarmsScreenAdapter(
 
         }
     }
-    private fun formatDaysOfWeek(selectedDays: Set<DayOfWeek>, context: Context): String {
+    private fun formatDaysOfWeek(selectedDays: Set<Int>, context: Context): String {
         val daysArray = context.resources.getStringArray(com.yes.coreui.R.array.days_array)
         val dayAbbreviations = daysArray.map { it.substring(0, 3) } // Получаем сокращенные названия дней недели
 
         val selectedAbbreviations = selectedDays.map { dayOfWeek ->
-            dayAbbreviations[dayOfWeek.value - 1] // Выбираем сокращенные названия для выбранных дней
+            dayAbbreviations[dayOfWeek - 1] // Выбираем сокращенные названия для выбранных дней
         }
 
         return selectedAbbreviations.joinToString(", ") // Соединяем сокращенные названия дней через запятую
