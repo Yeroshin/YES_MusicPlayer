@@ -29,7 +29,7 @@ internal class MapperUITest {
             calendar.get(Calendar.DAY_OF_WEEK)
         } returns currentDay
         every {
-            calendar.get(Calendar.HOUR)
+            calendar.get(Calendar.HOUR_OF_DAY)
         } returns currentHour
         every {
             calendar.get(Calendar.MINUTE)

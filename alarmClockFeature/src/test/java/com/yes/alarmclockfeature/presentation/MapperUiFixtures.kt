@@ -63,27 +63,28 @@ object MapperUiFixtures {
             false
         )
     )
-    fun getSundayAlarm():Alarm{
-        return Alarm(
-            1,
-            12,
-            0,
-            setOf(Calendar.TUESDAY),
-            false
-        )
-    }
     fun getSundayAlarmUI(): AlarmUI {
         return AlarmUI(
             1,
-            "12",
-            "30",
-            "256",
+            "12:10",
+            "0",
+            "10",
             setOf(),
             false
         )
     }
+    fun getSundayAlarm():Alarm{
+        return Alarm(
+            1,
+            12,
+            10,
+            setOf(),
+            false
+        )
+    }
+
     fun getCurrentDaySunday():Int{
-        return Calendar.MONDAY
+        return Calendar.WEDNESDAY
     }
     fun getCurrentHour():Int{
         return 12

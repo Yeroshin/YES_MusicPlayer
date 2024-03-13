@@ -2,16 +2,14 @@ package com.yes.alarmclockfeature.presentation.mapper
 
 import com.yes.alarmclockfeature.domain.model.Alarm
 import com.yes.alarmclockfeature.presentation.model.AlarmUI
-import com.yes.alarmclockfeature.presentation.model.DayOfWeek
 import com.yes.alarmclockfeature.presentation.ui.datepicker.DatePickerManager
 import java.util.Calendar
-import java.util.concurrent.TimeUnit
 
 class MapperUI(
     private val calendar: Calendar
 ) {
 
-    fun map(date: DatePickerManager.Time, selectedDays:Set<Int>): Alarm {
+    fun map(date: DatePickerManager.Time, selectedDays: Set<Int>): Alarm {
         return Alarm(
             null,
             date.hour,
@@ -20,6 +18,7 @@ class MapperUI(
             true
         )
     }
+
     fun map(alarm: AlarmUI): Alarm {
         val parts = alarm.alarmTime.split(":")
         val hour = parts[0].toInt()
@@ -35,38 +34,36 @@ class MapperUI(
 
     fun map(alarm: Alarm): AlarmUI {
         val currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-        val currentTime = calendar.get(Calendar.HOUR) * 60 + calendar.get(Calendar.MINUTE)
+        val currentTimeMinutes = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)
         var nearestTimeDiff = Int.MAX_VALUE
-        val alarmCopy=if(alarm.daysOfWeek== emptySet<Int>()){
-            alarm.copy(daysOfWeek = setOf(currentDayOfWeek))
-        }else{
-            alarm
-        }
-        alarmCopy.daysOfWeek.forEach{dayOfWeek->
-            val minutesUntilNext: Int = ((dayOfWeek - currentDayOfWeek + 7) % 7) * 24 * 60+(alarm.timeHour*60+alarm.timeMinute)
-            val diff = minutesUntilNext - currentTime
+        val daysOfWeek = alarm.daysOfWeek.ifEmpty { setOf(currentDayOfWeek) }
+        daysOfWeek.forEach { dayOfWeek ->
+            val minutesUntilNext = calculateMinutesUntilNextAlarm(
+                dayOfWeek,
+                currentDayOfWeek,
+                alarm.timeHour,
+                alarm.timeMinute,
+                currentTimeMinutes
+            )
+            val diff = if (minutesUntilNext < 0){
+                minutesUntilNext + 24 * 60
+            } else minutesUntilNext
             if (diff < nearestTimeDiff) {
                 nearestTimeDiff = diff
             }
         }
-        val timeHour=nearestTimeDiff/60
-        val timeMinute=nearestTimeDiff/60
-
-        ///////////////////////////////
-        val currentTimeMinutes = getCurrentTimeInMinutes()
-        val alarmTimeMinutes = calculateMinutesUntilNextAlarm(alarm, currentTimeMinutes)
-
-        val minutesLeftTotal = calculateMinutesLeft(currentTimeMinutes, alarmTimeMinutes)
-        val (hoursLeft, minutesLeft) = convertMinutesToHoursAndMinutes(minutesLeftTotal)
-
         return AlarmUI(
             alarm.id,
             formatTime(alarm.timeHour, alarm.timeMinute),
-            hoursLeft.toString(),
-            minutesLeft.toString(),
-            alarm.daysOfWeek ?: emptySet(),
+            (nearestTimeDiff / 60).toString(),
+            (nearestTimeDiff % 60).toString(),
+            alarm.daysOfWeek,
             alarm.enabled
         )
+    }
+    private fun calculateMinutesUntilNextAlarm(dayOfWeek: Int, currentDayOfWeek: Int, timeHour: Int, timeMinute: Int, currentTimeMinutes: Int): Int {
+        val daysDiff = (dayOfWeek - currentDayOfWeek + 7) % 7
+        return daysDiff * 24 * 60 + (timeHour * 60 + timeMinute) - currentTimeMinutes
     }
 
     private fun calculateMinutesUntilNextAlarm(alarm: Alarm, currentTimeMinutes: Int): Int {
@@ -78,9 +75,9 @@ class MapperUI(
 
         val daysOfWeekValues = alarm.daysOfWeek.map { it } ?: emptyList()
 
-       /* if (daysOfWeekValues.isEmpty()) {
-            return -1 // Возвращаем -1 в случае пустого списка daysOfWeek
-        }*/
+        /* if (daysOfWeekValues.isEmpty()) {
+             return -1 // Возвращаем -1 в случае пустого списка daysOfWeek
+         }*/
         if (daysOfWeekValues.isEmpty()) {
             return calculateMinutesLeft(currentTimeMinutes, alarmTimeInMinutes)
         }
@@ -89,7 +86,8 @@ class MapperUI(
             val nextDay = (currentDayOfWeek + daysToAdd) % 7 + 1
             if (daysOfWeekValues.contains(nextDay)) {
                 val alarmTimeForNextDay = alarmTimeInMinutes + daysToAdd * 24 * 60
-                minutesUntilNextAlarm = calculateMinutesLeft(currentTimeMinutes, alarmTimeForNextDay)
+                minutesUntilNextAlarm =
+                    calculateMinutesLeft(currentTimeMinutes, alarmTimeForNextDay)
                 break
             }
             daysToAdd++
