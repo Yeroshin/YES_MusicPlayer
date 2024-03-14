@@ -55,33 +55,8 @@ class AlarmDataSource(
         } else {
          //   Toast.makeText(context, "canScheduleExactAlarms ERROR!!!", Toast.LENGTH_SHORT).show()
         }
-        ///////////////////
-        val hourt = calendar.get(Calendar.HOUR)
-        val mint = calendar.get(Calendar.MINUTE)
-        val sec = calendar.get(Calendar.SECOND)
-        val mintr = calendar.get(Calendar.MINUTE)
-        ////////////////
          calendar.set(Calendar.HOUR_OF_DAY, hour)
         calendar.set(Calendar.MINUTE,minute)
-      //  calendar.set(Calendar.SECOND, sec + 15)
-        /* alarmManager?.setAlarmClock(
-             AlarmManager.AlarmClockInfo(
-                 calendar.timeInMillis,
-                 pendingIntent
-             ),
-             pendingIntent
-         )*/
-        //     alarmManager?.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
-        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-             alarmManager?.setExactAndAllowWhileIdle(
-                 AlarmManager.RTC_WAKEUP,
-                 calendar.timeInMillis,
-                 pendingIntent
-             )
-             val next=alarmManager?.nextAlarmClock
-             Log.d("alarm","loaded!")
-         }*/
-
         ///////////////////////
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             /* alarmManager.setExactAndAllowWhileIdle(
@@ -101,8 +76,6 @@ class AlarmDataSource(
         } else {
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
         }
-        ///////////////////////
-
     }
     fun notification(context: Context){
         val intent=Intent(context, AlarmActivity::class.java).apply {

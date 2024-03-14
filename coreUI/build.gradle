@@ -39,7 +39,7 @@ android {
 dependencies {
     // androidTestImplementation 'androidx.multidex:multidex:2.0.1'
 
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation libs.material
     implementation libs.androidx.annotation.jvm
     //  implementation 'androidx.core:core-ktx:1.9.0'
     // implementation 'androidx.appcompat:appcompat:1.6.0'

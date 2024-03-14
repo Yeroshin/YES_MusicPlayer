@@ -15,7 +15,7 @@ class AddAlarmUseCase (
     override suspend fun run(alarm: Alarm?): DomainResult<Boolean> {
         return alarm?.let {
             alarmListRepository.addAlarm(alarm)
-            alarmManagerRepository.setAlarm(alarm)
+           // alarmManagerRepository.setAlarm(alarm)
             DomainResult.Success(true)
         } ?: DomainResult.Error(DomainResult.UnknownException)
     }

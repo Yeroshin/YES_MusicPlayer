@@ -30,8 +30,8 @@ class AlarmActivity : AppCompatActivity(){
     private val binder by lazy {
         binding as AlarmSetScreenBinding
     }
-    private lateinit var component: BaseComponent
-
+  //  private lateinit var component: BaseComponent
+    private lateinit var component: AlarmClockComponent
     private val getCurrentPlaylistTracksUseCase by lazy {
         (component as AlarmClockComponent).getGetCurrentPlaylistTracksUseCase()
     }
@@ -55,7 +55,7 @@ class AlarmActivity : AppCompatActivity(){
        // run()
     }
     private fun run(){
-        component=(applicationContext as AlarmsScreen.DependencyResolver).getComponent()
+        component=(applicationContext as AlarmsScreen.DependencyResolver).getAlarmsScreenComponent()
 
         CoroutineScope(Dispatchers.Main).launch {
 

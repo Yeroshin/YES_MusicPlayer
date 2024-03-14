@@ -14,6 +14,7 @@ import com.yes.alarmclockfeature.domain.usecase.AddAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.DeleteAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.GetCurrentPlaylistTracksUseCase
 import com.yes.alarmclockfeature.domain.usecase.SetAlarmUseCase
+import com.yes.alarmclockfeature.domain.usecase.SetNextAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.SetTracksToPlayerPlaylistUseCase
 import com.yes.alarmclockfeature.domain.usecase.SubscribeAlarmsUseCase
 import com.yes.alarmclockfeature.presentation.mapper.MapperUI
@@ -138,6 +139,19 @@ class AlarmClockModule(
             alarmListRepository
         )
     }
+    @Provides
+    fun providesSetNextAlarmUseCase(
+        @IoDispatcher dispatcher: CoroutineDispatcher,
+        alarmListRepository: AlarmListRepository,
+        alarmManagerRepository: AlarmManagerRepository,
+    ): SetNextAlarmUseCase {
+        return SetNextAlarmUseCase(
+            dispatcher,
+            alarmListRepository,
+            alarmManagerRepository,
+            Calendar.getInstance()
+        )
+    }
 
     @Provides
     fun providesDeleteAlarmUseCase(
@@ -187,14 +201,16 @@ class AlarmClockModule(
         addAlarmUseCase: AddAlarmUseCase,
         subscribeAlarmsUseCase: SubscribeAlarmsUseCase,
         deleteAlarmUseCase: DeleteAlarmUseCase,
-        setAlarmUseCase: SetAlarmUseCase
+        setAlarmUseCase: SetAlarmUseCase,
+        setNextAlarmUseCase:SetNextAlarmUseCase
     ): AlarmClockViewModel.Factory {
         return AlarmClockViewModel.Factory(
             mapper,
             addAlarmUseCase,
             subscribeAlarmsUseCase,
             deleteAlarmUseCase,
-            setAlarmUseCase
+            setAlarmUseCase,
+            setNextAlarmUseCase
         )
     }
 

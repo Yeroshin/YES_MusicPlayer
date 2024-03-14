@@ -32,6 +32,7 @@ android {
             ]
         }
     }*/
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
@@ -60,7 +61,7 @@ dependencies {
     implementation project(path: ':alarmClockFeature')
     implementation project(path: ':equalizerFeature')
     //tmp
-    implementation project(path: ':shared-test')
+   // implementation project(path: ':shared-test')
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
 

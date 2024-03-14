@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.yes.alarmclockfeature.domain.usecase.AddAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.DeleteAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.SetAlarmUseCase
+import com.yes.alarmclockfeature.domain.usecase.SetNextAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.SubscribeAlarmsUseCase
 import com.yes.alarmclockfeature.presentation.contract.AlarmClockContract
 import com.yes.alarmclockfeature.presentation.contract.AlarmClockContract.*
@@ -22,7 +23,8 @@ class AlarmClockViewModel(
     private val addAlarmUseCase: AddAlarmUseCase,
     private val subscribeAlarmsUseCase: SubscribeAlarmsUseCase,
     private val deleteAlarmUseCase: DeleteAlarmUseCase,
-    private val setAlarmUseCase: SetAlarmUseCase
+    private val setAlarmUseCase: SetAlarmUseCase,
+    private val setNextAlarmUseCase: SetNextAlarmUseCase
 ) : BaseViewModel<Event, State, Effect>() {
     init {
         viewModelScope.launch {
@@ -56,17 +58,12 @@ class AlarmClockViewModel(
     override fun handleEvent(event: Event) {
         when (event) {
             is Event.OnAddAlarm -> addAlarm(event.date, event.selectedDays)
-
-
             is Event.OnDeleteAlarm -> deleteAlarm(event.alarm)
             is Event.OnSetAlarm -> setAlarm(event.alarm)
-            is Event.OnAlarmEnabled -> TODO()
-            is Event.OnAddAlarm -> TODO()
-            is Event.OnAlarmEnabled -> TODO()
-            is Event.OnDeleteAlarm -> TODO()
-            is Event.OnSetAlarm -> TODO()
+            is Event.OnAlarmEnabled -> setAlarm(event.alarm)
         }
     }
+
 
     private fun setAlarm(alarm: AlarmUI) {
         viewModelScope.launch {
@@ -74,7 +71,9 @@ class AlarmClockViewModel(
                 mapper.map(alarm)
             )
             when (result) {
-                is DomainResult.Success -> {}
+                is DomainResult.Success -> {
+                    setNextAlarmUseCase()
+                }
                 is DomainResult.Error -> {}
             }
         }
@@ -109,7 +108,8 @@ class AlarmClockViewModel(
         private val addAlarmUseCase: AddAlarmUseCase,
         private val subscribeAlarmsUseCase: SubscribeAlarmsUseCase,
         private val deleteAlarmUseCase: DeleteAlarmUseCase,
-        private val setAlarmUseCase: SetAlarmUseCase
+        private val setAlarmUseCase: SetAlarmUseCase,
+        private val setNextAlarmUseCase: SetNextAlarmUseCase
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
@@ -118,7 +118,8 @@ class AlarmClockViewModel(
                 addAlarmUseCase,
                 subscribeAlarmsUseCase,
                 deleteAlarmUseCase,
-                setAlarmUseCase
+                setAlarmUseCase,
+                setNextAlarmUseCase
             ) as T
         }
     }

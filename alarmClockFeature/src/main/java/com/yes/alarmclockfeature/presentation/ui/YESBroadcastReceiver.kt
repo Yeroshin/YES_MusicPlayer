@@ -20,22 +20,25 @@ import kotlinx.coroutines.launch
 
 
 class YESBroadcastReceiver : BroadcastReceiver(){
-    private lateinit var component: BaseComponent
+   // private lateinit var component: BaseComponent
+    private lateinit var context: Context
+    private val component by lazy {
+         (this.context as AlarmsScreen.DependencyResolver).getAlarmsScreenComponent()
 
+    }
     private val getCurrentPlaylistTracksUseCase by lazy {
-        (component as AlarmClockComponent).getGetCurrentPlaylistTracksUseCase()
+        component.getGetCurrentPlaylistTracksUseCase()
     }
     private val setTracksToPlayerPlaylistUseCase by lazy {
-        (component as AlarmClockComponent).getSetTracksToPlayerPlaylistUseCase()
+        component.getSetTracksToPlayerPlaylistUseCase()
     }
 
-    private lateinit var context: Context
+
     override fun onReceive(context: Context, intent: Intent) {
         this.context = context.applicationContext
-        component = (this.context as AlarmsScreen.DependencyResolver).getComponent()
+       // component = (this.context as AlarmsScreen.DependencyResolver).getAlarmsScreenComponent()
          CoroutineScope(Dispatchers.Main).launch {
-             val result = getCurrentPlaylistTracksUseCase()
-             when (result) {
+             when (val result = getCurrentPlaylistTracksUseCase()) {
                  is DomainResult.Success -> {
                      setTracksToPlayerPlaylistUseCase(
                          SetTracksToPlayerPlaylistUseCase.Params(

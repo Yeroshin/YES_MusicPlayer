@@ -109,7 +109,7 @@ class YESApplication : Application(),
       //  return musicServiceComponent
     }
 
-    override fun getComponent(): AlarmClockComponent {
+    override fun getAlarmsScreenComponent(): AlarmClockComponent {
         return DaggerAlarmClockComponent.builder()
             .alarmClockModule(AlarmClockModule(MainActivity::class.java))
             .dataComponent(dataComponent)
