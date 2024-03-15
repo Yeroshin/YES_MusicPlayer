@@ -1,6 +1,5 @@
 package com.yes.alarmclockfeature.di.module
 
-import android.app.Activity
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import com.yes.alarmclockfeature.data.dataSource.AlarmDataSource
@@ -14,10 +13,11 @@ import com.yes.alarmclockfeature.domain.usecase.AddAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.DeleteAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.GetCurrentPlaylistTracksUseCase
 import com.yes.alarmclockfeature.domain.usecase.SetAlarmUseCase
-import com.yes.alarmclockfeature.domain.usecase.SetNextAlarmUseCase
+import com.yes.alarmclockfeature.domain.usecase.SetNearestAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.SetTracksToPlayerPlaylistUseCase
 import com.yes.alarmclockfeature.domain.usecase.SubscribeAlarmsUseCase
 import com.yes.alarmclockfeature.presentation.mapper.MapperUI
+import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
 import com.yes.alarmclockfeature.presentation.vm.AlarmClockViewModel
 import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.core.data.dataSource.SettingsDataStore
@@ -25,7 +25,6 @@ import com.yes.core.di.module.IoDispatcher
 import com.yes.core.di.module.MainDispatcher
 import com.yes.core.domain.repository.IAlarmDao
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.core.presentation.BaseDependency
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
@@ -144,8 +143,8 @@ class AlarmClockModule(
         @IoDispatcher dispatcher: CoroutineDispatcher,
         alarmListRepository: AlarmListRepository,
         alarmManagerRepository: AlarmManagerRepository,
-    ): SetNextAlarmUseCase {
-        return SetNextAlarmUseCase(
+    ): SetNearestAlarmUseCase {
+        return SetNearestAlarmUseCase(
             dispatcher,
             alarmListRepository,
             alarmManagerRepository,
@@ -202,7 +201,7 @@ class AlarmClockModule(
         subscribeAlarmsUseCase: SubscribeAlarmsUseCase,
         deleteAlarmUseCase: DeleteAlarmUseCase,
         setAlarmUseCase: SetAlarmUseCase,
-        setNextAlarmUseCase:SetNextAlarmUseCase
+        setNearestAlarmUseCase:SetNearestAlarmUseCase
     ): AlarmClockViewModel.Factory {
         return AlarmClockViewModel.Factory(
             mapper,
@@ -210,15 +209,15 @@ class AlarmClockModule(
             subscribeAlarmsUseCase,
             deleteAlarmUseCase,
             setAlarmUseCase,
-            setNextAlarmUseCase
+            setNearestAlarmUseCase
         )
     }
 
     @Provides
     fun providesDependency(
         factory: AlarmClockViewModel.Factory,
-    ): BaseDependency {
-        return BaseDependency(
+    ): AlarmsScreen.Dependency {
+        return AlarmsScreen.Dependency(
             factory
         )
     }

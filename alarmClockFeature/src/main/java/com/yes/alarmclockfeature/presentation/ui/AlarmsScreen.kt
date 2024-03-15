@@ -1,9 +1,7 @@
 package com.yes.alarmclockfeature.presentation.ui
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,15 +22,12 @@ import com.yes.alarmclockfeature.di.components.AlarmClockComponent
 import com.yes.alarmclockfeature.domain.usecase.AddAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.DeleteAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.SetAlarmUseCase
-import com.yes.alarmclockfeature.domain.usecase.SetNextAlarmUseCase
+import com.yes.alarmclockfeature.domain.usecase.SetNearestAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.SubscribeAlarmsUseCase
-import com.yes.alarmclockfeature.presentation.contract.AlarmClockContract
 import com.yes.alarmclockfeature.presentation.contract.AlarmClockContract.*
 import com.yes.alarmclockfeature.presentation.mapper.MapperUI
 import com.yes.alarmclockfeature.presentation.model.AlarmUI
 import com.yes.alarmclockfeature.presentation.vm.AlarmClockViewModel
-import com.yes.core.presentation.BaseDependency
-import com.yes.core.presentation.BaseFragment
 import com.yes.core.presentation.BaseViewModel
 
 
@@ -112,10 +107,16 @@ class AlarmsScreen : Fragment() {
          )
      }*/
 
-    fun createBinding(inflater: LayoutInflater, container: ViewGroup?): ViewBinding {
+    private fun createBinding(inflater: LayoutInflater, container: ViewGroup?): ViewBinding {
         return AlarmsListScreenBinding.inflate(inflater)
     }
-
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = createBinding(inflater, container)
+        return binding.root
+    }
     private var alarmClockDialog: AlarmClockDialog? = null
     private fun setupView() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -207,7 +208,7 @@ class AlarmsScreen : Fragment() {
         adapter.setItems(items)
     }
 
-    fun showEffect() {
+    private fun showEffect() {
         TODO("Not yet implemented")
     }
 
@@ -221,7 +222,7 @@ class AlarmsScreen : Fragment() {
         private val subscribeAlarmsUseCase: SubscribeAlarmsUseCase,
         private val deleteAlarmUseCase: DeleteAlarmUseCase,
         private val setAlarmUseCase: SetAlarmUseCase,
-        private val setNextAlarmUseCase: SetNextAlarmUseCase
+        private val setNearestAlarmUseCase: SetNearestAlarmUseCase
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
@@ -231,7 +232,7 @@ class AlarmsScreen : Fragment() {
                 subscribeAlarmsUseCase,
                 deleteAlarmUseCase,
                 setAlarmUseCase,
-                setNextAlarmUseCase
+                setNearestAlarmUseCase
             ) as T
         }
     }

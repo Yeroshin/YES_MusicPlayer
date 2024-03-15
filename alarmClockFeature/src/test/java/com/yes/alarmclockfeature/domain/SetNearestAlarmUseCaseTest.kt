@@ -3,8 +3,7 @@ package com.yes.alarmclockfeature.domain
 import com.yes.alarmclockfeature.data.repository.AlarmListRepository
 import com.yes.alarmclockfeature.data.repository.AlarmManagerRepository
 import com.yes.alarmclockfeature.domain.model.Alarm
-import com.yes.alarmclockfeature.domain.usecase.SetNextAlarmUseCase
-import com.yes.alarmclockfeature.presentation.model.DayOfWeek
+import com.yes.alarmclockfeature.domain.usecase.SetNearestAlarmUseCase
 import com.yes.core.domain.models.DomainResult
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -13,8 +12,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -26,13 +23,13 @@ import org.junit.jupiter.params.provider.MethodSource
 import java.util.Calendar
 
 
-internal class SetNextAlarmUseCaseTest {
+internal class SetNearestAlarmUseCaseTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     private val testDispatcher: TestDispatcher = StandardTestDispatcher()
     private val alarmListRepository: AlarmListRepository = mockk()
     private val alarmManagerRepository: AlarmManagerRepository = mockk()
     private val calendar:Calendar= mockk()
-    private lateinit var cut: SetNextAlarmUseCase
+    private lateinit var cut: SetNearestAlarmUseCase
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
@@ -40,7 +37,7 @@ internal class SetNextAlarmUseCaseTest {
         // @MockK
         Dispatchers.setMain(testDispatcher)
         MockKAnnotations.init(this, relaxUnitFun = true)
-        cut = SetNextAlarmUseCase (
+        cut = SetNearestAlarmUseCase (
             testDispatcher,
             alarmListRepository,
             alarmManagerRepository,

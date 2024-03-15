@@ -12,6 +12,7 @@ import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import com.yes.alarmclockfeature.presentation.model.DayOfWeek
 import com.yes.alarmclockfeature.presentation.ui.AlarmActivity
 import com.yes.alarmclockfeature.presentation.ui.YESBroadcastReceiver
 import java.util.Calendar
@@ -31,7 +32,7 @@ class AlarmDataSource(
 
     }
 
-    fun setAlarm(hour: Int, minute: Int) {
+    fun setAlarm(hour: Int, minute: Int,dayOfWeek:Int) {
        // notification(context)
       //  alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         /////////////////////
@@ -57,6 +58,7 @@ class AlarmDataSource(
         }
          calendar.set(Calendar.HOUR_OF_DAY, hour)
         calendar.set(Calendar.MINUTE,minute)
+        calendar.set(Calendar.DAY_OF_WEEK,dayOfWeek)
         ///////////////////////
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             /* alarmManager.setExactAndAllowWhileIdle(
@@ -64,6 +66,7 @@ class AlarmDataSource(
                  calendar.timeInMillis,
                  pendingIntent
              )*/
+            alarmManager.cancel(pendingIntent)
             alarmManager.setAlarmClock(
                 AlarmManager.AlarmClockInfo(
                     calendar.timeInMillis,

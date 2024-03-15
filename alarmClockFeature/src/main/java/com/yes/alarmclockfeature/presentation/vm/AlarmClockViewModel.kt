@@ -6,13 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.yes.alarmclockfeature.domain.usecase.AddAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.DeleteAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.SetAlarmUseCase
-import com.yes.alarmclockfeature.domain.usecase.SetNextAlarmUseCase
+import com.yes.alarmclockfeature.domain.usecase.SetNearestAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.SubscribeAlarmsUseCase
-import com.yes.alarmclockfeature.presentation.contract.AlarmClockContract
 import com.yes.alarmclockfeature.presentation.contract.AlarmClockContract.*
 import com.yes.alarmclockfeature.presentation.mapper.MapperUI
 import com.yes.alarmclockfeature.presentation.model.AlarmUI
-import com.yes.alarmclockfeature.presentation.model.DayOfWeek
 import com.yes.alarmclockfeature.presentation.ui.datepicker.DatePickerManager
 import com.yes.core.domain.models.DomainResult
 import com.yes.core.presentation.BaseViewModel
@@ -24,7 +22,7 @@ class AlarmClockViewModel(
     private val subscribeAlarmsUseCase: SubscribeAlarmsUseCase,
     private val deleteAlarmUseCase: DeleteAlarmUseCase,
     private val setAlarmUseCase: SetAlarmUseCase,
-    private val setNextAlarmUseCase: SetNextAlarmUseCase
+    private val setNearestAlarmUseCase: SetNearestAlarmUseCase
 ) : BaseViewModel<Event, State, Effect>() {
     init {
         viewModelScope.launch {
@@ -66,17 +64,17 @@ class AlarmClockViewModel(
 
 
     private fun setAlarm(alarm: AlarmUI) {
-        viewModelScope.launch {
+       /* viewModelScope.launch {
             val result = setAlarmUseCase(
                 mapper.map(alarm)
             )
             when (result) {
                 is DomainResult.Success -> {
-                    setNextAlarmUseCase()
+                    setNearestAlarmUseCase()
                 }
                 is DomainResult.Error -> {}
             }
-        }
+        }*/
     }
 
     private fun deleteAlarm(alarm: AlarmUI) {
@@ -85,7 +83,9 @@ class AlarmClockViewModel(
                 mapper.map(alarm)
             )
             when (result) {
-                is DomainResult.Success -> {}
+                is DomainResult.Success -> {
+                    setNearestAlarmUseCase()
+                }
                 is DomainResult.Error -> {}
             }
         }
@@ -97,7 +97,9 @@ class AlarmClockViewModel(
                 mapper.map(date, selectedDays)
             )
             when (result) {
-                is DomainResult.Success -> {}
+                is DomainResult.Success -> {
+                    setNearestAlarmUseCase()
+                }
                 is DomainResult.Error -> {}
             }
         }
@@ -109,7 +111,7 @@ class AlarmClockViewModel(
         private val subscribeAlarmsUseCase: SubscribeAlarmsUseCase,
         private val deleteAlarmUseCase: DeleteAlarmUseCase,
         private val setAlarmUseCase: SetAlarmUseCase,
-        private val setNextAlarmUseCase: SetNextAlarmUseCase
+        private val setNearestAlarmUseCase: SetNearestAlarmUseCase
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             @Suppress("UNCHECKED_CAST")
@@ -119,7 +121,7 @@ class AlarmClockViewModel(
                 subscribeAlarmsUseCase,
                 deleteAlarmUseCase,
                 setAlarmUseCase,
-                setNextAlarmUseCase
+                setNearestAlarmUseCase
             ) as T
         }
     }
