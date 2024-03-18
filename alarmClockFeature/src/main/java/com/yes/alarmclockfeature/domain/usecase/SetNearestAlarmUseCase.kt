@@ -17,21 +17,24 @@ class SetNearestAlarmUseCase(
 ) : UseCase<Any?, Alarm?>(dispatcher) {
     override suspend fun run(params: Any?): DomainResult<Alarm?> {
         val currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-        val currentTimeMinutes = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)
+        val currentTimeMinutes =
+            calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)
         var nearestAlarm: Alarm? = null
         var nearestTimeDiff = Int.MAX_VALUE
-        var nearestDayOfWeek= Int.MAX_VALUE
+        var nearestDayOfWeek = Int.MAX_VALUE
+        var diff: Int
+        var dayOfAlarm: Int
         alarmListRepository.subscribeAlarms().first().filter {
             it.enabled
         }.mapTo(mutableListOf()) { alarm ->
-            if(alarm.daysOfWeek == emptySet<Int>()){
+            if (alarm.daysOfWeek == emptySet<Int>()) {
                 alarm.copy(daysOfWeek = setOf(currentDayOfWeek))
-            }else{
+            } else {
                 alarm
             }
-        }.forEach{alarm->
-            alarm.daysOfWeek.forEach{dayOfWeek->
-             //   val minutesUntilNext: Int = ((dayOfWeek - currentDayOfWeek + 7) % 7) * 24 * 60+(alarm.timeHour*60+alarm.timeMinute)
+        }.forEach { alarm ->
+            alarm.daysOfWeek.forEach { dayOfWeek ->
+                //   val minutesUntilNext: Int = ((dayOfWeek - currentDayOfWeek + 7) % 7) * 24 * 60+(alarm.timeHour*60+alarm.timeMinute)
                 val minutesUntilNext = calculateMinutesUntilNextAlarm(
                     dayOfWeek,
                     currentDayOfWeek,
@@ -39,25 +42,40 @@ class SetNearestAlarmUseCase(
                     alarm.timeMinute,
                     currentTimeMinutes
                 )
-             //   val diff = minutesUntilNext - currentTimeMinutes
-                val diff = if (minutesUntilNext < 0){
-                    minutesUntilNext + 24 * 60
-                } else minutesUntilNext
+                //   val diff = minutesUntilNext - currentTimeMinutes
+                if (minutesUntilNext < 0) {
+                    diff = minutesUntilNext + (24 * 60)
+                    dayOfAlarm = if (dayOfWeek==Calendar.SATURDAY){
+                        Calendar.SUNDAY
+                    }else{
+                        dayOfWeek+1
+                    }
+                } else {
+                    diff =minutesUntilNext
+                    dayOfAlarm=dayOfWeek
+                }
                 if (diff < nearestTimeDiff) {
                     nearestTimeDiff = diff
-                    nearestAlarm=alarm
-                    nearestDayOfWeek=dayOfWeek
+                    nearestAlarm = alarm
+                    nearestDayOfWeek = dayOfAlarm
                 }
             }
         }
         nearestAlarm?.let {
-            alarmManagerRepository.setAlarm(it, dayOfWeek=nearestDayOfWeek)
+            alarmManagerRepository.setAlarm(it, dayOfWeek = nearestDayOfWeek)
         }
         ///////////////////////
         return DomainResult.Success(nearestAlarm)
 
     }
-    private fun calculateMinutesUntilNextAlarm(dayOfWeek: Int, currentDayOfWeek: Int, timeHour: Int, timeMinute: Int, currentTimeMinutes: Int): Int {
+
+    private fun calculateMinutesUntilNextAlarm(
+        dayOfWeek: Int,
+        currentDayOfWeek: Int,
+        timeHour: Int,
+        timeMinute: Int,
+        currentTimeMinutes: Int
+    ): Int {
         val daysDiff = (dayOfWeek - currentDayOfWeek + 7) % 7
         return daysDiff * 24 * 60 + (timeHour * 60 + timeMinute) - currentTimeMinutes
     }

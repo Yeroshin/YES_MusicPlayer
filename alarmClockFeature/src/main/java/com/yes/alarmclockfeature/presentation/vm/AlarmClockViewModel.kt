@@ -64,7 +64,7 @@ class AlarmClockViewModel(
 
 
     private fun setAlarm(alarm: AlarmUI) {
-       /* viewModelScope.launch {
+        val job =viewModelScope.launch {
             val result = setAlarmUseCase(
                 mapper.map(alarm)
             )
@@ -74,7 +74,9 @@ class AlarmClockViewModel(
                 }
                 is DomainResult.Error -> {}
             }
-        }*/
+
+        }
+
     }
 
     private fun deleteAlarm(alarm: AlarmUI) {
