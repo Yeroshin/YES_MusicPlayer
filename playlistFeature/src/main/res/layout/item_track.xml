@@ -11,13 +11,13 @@
 
     <TextView
         android:id="@+id/position"
-        android:layout_width="@dimen/font_size_coloss"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="TextView"
         android:textColor="@color/item_activatable_state_list"
         android:textStyle="bold"
-        tools:text="10" />
+        tools:text="12345" />
 
     <LinearLayout
         android:layout_width="match_parent"

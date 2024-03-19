@@ -114,13 +114,13 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
     override fun onDraw(canvas: Canvas) {
 
 
-        canvas.drawArc(
+      /*  canvas.drawArc(
             rect,
             startValue.toFloat(),
             (progressValue - startValue).toFloat(),
             false,
             paint
-        )
+        )*/
         for (layer in layers) {
             canvas.drawBitmap(
                 layer,
