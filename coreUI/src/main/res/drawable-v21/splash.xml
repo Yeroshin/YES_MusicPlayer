@@ -9,7 +9,7 @@
         </shape>
     </item>
     <item
-        android:drawable="@drawable/logo"
+        android:drawable="@drawable/logoredcolor"
         android:gravity="center">
 
     </item>

@@ -69,7 +69,7 @@ class AlarmsScreenAdapter(
             position: Int,
             item: AlarmUI,
         ) {
-            binding.alarmSwitch.setOnCheckedChangeListener(null)//Important shit in some casese could lead to unnecasery aditional fake cals
+            binding.alarmSwitch.setOnCheckedChangeListener(null)//Important shit in some cases could lead to unnecesary aditional fake calls
             binding.alarmTime.text = item.alarmTime
             binding.alarmSwitch.isChecked = item.enabled
             binding.alarmSwitch.setOnCheckedChangeListener { _, isChecked ->

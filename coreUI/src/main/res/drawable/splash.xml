@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item >
+    <item>
         <shape>
             <gradient
                 android:angle="45"
-                android:startColor="#1c1c22"
-                android:centerColor= "#353539"
+                android:centerColor="#353539"
                 android:endColor="#1c1c22"
+                android:startColor="#1c1c22"
                 android:type="linear" />
 
         </shape>
@@ -14,10 +14,8 @@
     </item>
 
     <item
-            android:drawable="@drawable/logo"
-        android:gravity="center"
-    />
-
+        android:drawable="@drawable/logoredcolor"
+        android:gravity="center" />
 
 
 </layer-list>
