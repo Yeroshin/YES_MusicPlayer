@@ -66,7 +66,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
 
     implementation 'com.google.android.material:material:1.8.0'
-
+    implementation libs.app.update.ktx
 
 
     //Test
@@ -99,4 +99,7 @@ dependencies {
     //fragment
     debugImplementation libs.androidx.fragment.testing
     implementation libs.androidx.fragment.ktx
+    //update
+    implementation(libs.app.update)
+    implementation(libs.app.update.ktx)
 }

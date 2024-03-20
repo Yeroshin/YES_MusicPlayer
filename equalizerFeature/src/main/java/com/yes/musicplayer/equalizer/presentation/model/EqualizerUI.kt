@@ -6,6 +6,7 @@ data class EqualizerUI(
     val presetsNames: List<String>? = null,
     val bandsLevelRange:Int?=null,
     val equalizerValues:IntArray? = null,
+    val equalizerValuesInfo:List<String>? = null,
     val loudnessEnhancerEnabled:Boolean?=null,
     val loudnessEnhancerValue:Int?=null
 )

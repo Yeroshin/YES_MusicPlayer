@@ -24,12 +24,13 @@ class EqualizerViewModel(
     private val setLoudnessEnhancerEnabledUseCase: SetLoudnessEnhancerEnabledUseCase,
     private val setLoudnessEnhancerValueUseCase: SetLoudnessEnhancerValueUseCase
 ) : BaseViewModel<Event, State, Effect>() {
+    private val frequencies= intArrayOf(60000, 230000, 910000, 3000000, 14000000)
 
     init {
         viewModelScope.launch {
             val result = getAudioEffectUseCase(
                 GetAudioEffectUseCase.Params(
-                    intArrayOf(60000, 230000, 910000, 3000000, 14000000)
+                    frequencies
                 )
             )
             when (result) {
@@ -154,8 +155,9 @@ class EqualizerViewModel(
                     band,
                     mapperUI.mapUiEqualizerValueToDomain(
                         value,
-                        maxLevelRange
-                    )
+                        maxLevelRange,
+                    ),
+                    frequencies
                 )
             )
             when (result) {

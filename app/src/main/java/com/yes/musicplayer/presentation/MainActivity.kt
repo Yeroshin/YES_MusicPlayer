@@ -165,9 +165,8 @@ class MainActivity :
         setContentView(view)
 
         val fragmentsList = listOf(
-            EqualizerScreen::class.java,
             PlaylistScreen::class.java,
-
+            EqualizerScreen::class.java,
             AlarmsScreen::class.java
         )
         binder.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {

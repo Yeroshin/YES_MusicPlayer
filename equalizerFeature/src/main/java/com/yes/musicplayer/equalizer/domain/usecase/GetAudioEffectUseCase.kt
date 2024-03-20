@@ -49,6 +49,7 @@ class GetAudioEffectUseCase(
                 presetsNames,
                 bandsLevelRange,
                 equalizerValues = levels,
+                equalizerValuesInfo = levels,
                 loudnessEnhancerEnabled = loudnessEnhancerEnabled,
                 loudnessEnhancerValue = loudnessEnhancerValue
 

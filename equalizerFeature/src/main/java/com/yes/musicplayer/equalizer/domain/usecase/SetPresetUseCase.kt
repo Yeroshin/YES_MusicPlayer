@@ -35,6 +35,7 @@ class SetPresetUseCase (
             DomainResult.Success(
                 Equalizer(
                     bandsLevelRange = equalizerRepository.getBandLevelRange(),
+                    equalizerValuesInfo = levels,
                     equalizerValues = levels
                 )
             )

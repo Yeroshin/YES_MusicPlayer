@@ -94,6 +94,7 @@ class EqualizerScreen : Fragment() ,CircularSeekBar.OnProgressChangeListener{
     }
     private val verticalSeekBarChangeListener=object :VerticalSeekBar.OnVerticalSeekBarChangeListener{
         override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+            seekBar.parent
             if (fromUser) {
                 viewModel.setEvent(
                     EqualizerContract.Event.OnEqualizerValue(
@@ -206,13 +207,13 @@ class EqualizerScreen : Fragment() ,CircularSeekBar.OnProgressChangeListener{
             binder.three.setValue(it[2])
             binder.four.setValue(it[3])
             binder.five.setValue(it[4])
-
-            binder.oneValue.text = it[0].toString()
-            binder.twoValue.text = it[1].toString()
-            binder.threeValue.text = it[2].toString()
-            binder.fourValue.text = it[3].toString()
-            binder.fiveValue.text = it[4].toString()
-
+        }
+        equalizer.equalizerValuesInfo?.let {
+            binder.oneValue.text = it.elementAt(0)
+            binder.twoValue.text = it.elementAt(1)
+            binder.threeValue.text = it.elementAt(2)
+            binder.fourValue.text = it.elementAt(3)
+            binder.fiveValue.text = it.elementAt(4)
         }
         equalizer.bandsLevelRange?.let {
             binder.one.max = it

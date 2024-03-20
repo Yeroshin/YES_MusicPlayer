@@ -33,6 +33,7 @@ uiTooling = "1.5.4"
 compiler = "3.2.0-alpha11"
 annotationJvm = "1.7.1"
 media3Common = "1.2.1"
+appUpdateKtx = "2.1.0"
 
 [libraries]
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
@@ -54,6 +55,7 @@ androidx-runtime = { module = "androidx.compose.runtime:runtime", version.ref = 
 androidx-ui = { module = "androidx.compose.ui:ui", version.ref = "uiTooling" }
 androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "uiTooling" }
 androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "uiTooling" }
+app-update = { module = "com.google.android.play:app-update", version.ref = "appUpdateKtx" }
 hamcrest={module='org.hamcrest:hamcrest',version.ref = "hamcrest"}
 androidx-espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "espresso" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
@@ -83,6 +85,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3",
 androidx-compiler = { group = "androidx.databinding", name = "compiler", version.ref = "compiler" }
 androidx-annotation-jvm = { group = "androidx.annotation", name = "annotation-jvm", version.ref = "annotationJvm" }
 androidx-media3-common = { group = "androidx.media3", name = "media3-common", version.ref = "media3Common" }
+app-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "appUpdateKtx" }
 
 [plugins]
 androidLibrary = { id = 'com.android.library', version.ref = "androidGradlePlugin" }

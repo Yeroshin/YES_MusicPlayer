@@ -14,7 +14,7 @@ class MapperUI {
 
         return EqualizerUI(
             equalizerEnabled = equalizer.equalizerEnabled,
-            currentPreset = equalizer.currentPreset?.toInt(),
+            currentPreset = equalizer.currentPreset,
             presetsNames = equalizer.presetsNames,
            /* equalizerValues = equalizer.bandsLevelRange?.let {
                 equalizer.equalizerValues?.mapIndexed { index, value ->
@@ -33,6 +33,7 @@ class MapperUI {
                     }.toIntArray()
                 }
             },
+            equalizerValuesInfo = equalizer.equalizerValuesInfo?.map { it.toString() },
             loudnessEnhancerEnabled = equalizer.loudnessEnhancerEnabled,
             loudnessEnhancerValue = equalizer.loudnessEnhancerValue
         )

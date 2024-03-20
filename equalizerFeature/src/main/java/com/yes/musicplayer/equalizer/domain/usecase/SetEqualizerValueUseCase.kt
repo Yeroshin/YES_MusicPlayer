@@ -15,20 +15,29 @@ class SetEqualizerValueUseCase(
     override suspend fun run(params: Params?): DomainResult<Equalizer> {
 
         return params?.let {
-            equalizerRepository.setBandLevel(params.band,params.value)
+            equalizerRepository.setBandLevel(params.band, params.value)
+
+            val bands = mutableListOf<Int>()
+            it.frequencies.forEach { frequencies ->
+                bands.add(equalizerRepository.getBand(frequencies))
+            }
+            val levels = mutableListOf<Int>()
+            bands.forEach { band ->
+                levels.add(equalizerRepository.getBandLevel(band))
+            }
             DomainResult.Success(
                 Equalizer(
-
+                    equalizerValuesInfo = levels
                 )
             )
-        }?: return DomainResult.Error(DomainResult.UnknownException)
-
+        } ?: return DomainResult.Error(DomainResult.UnknownException)
 
 
     }
 
     data class Params(
         val band: Int,
-        val value: Int
+        val value: Int,
+        val frequencies: IntArray
     )
 }

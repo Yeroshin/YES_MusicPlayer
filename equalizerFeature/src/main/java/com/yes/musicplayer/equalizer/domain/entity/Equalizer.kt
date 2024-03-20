@@ -8,6 +8,7 @@ data class Equalizer (
     val presetsNames:List<String>?=null,
     val bandsLevelRange:IntArray?=null,
     val equalizerValues:List<Int>?=null,
+    val equalizerValuesInfo:List<Int>? = null,
     val loudnessEnhancerEnabled:Boolean?=null,
     val loudnessEnhancerValue:Int?=null
 )
