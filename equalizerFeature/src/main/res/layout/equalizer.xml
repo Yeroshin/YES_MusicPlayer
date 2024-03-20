@@ -168,7 +168,6 @@
                     android:layout_height="wrap_content"
                     android:text="3kHz"
                     android:textAlignment="center"
-                    android:textColor="@color/branded_light"
                     tools:text="40Hz" />
             </LinearLayout>
 

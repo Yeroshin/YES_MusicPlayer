@@ -94,13 +94,19 @@ class EqualizerScreen : Fragment() ,CircularSeekBar.OnProgressChangeListener{
     }
     private val verticalSeekBarChangeListener=object :VerticalSeekBar.OnVerticalSeekBarChangeListener{
         override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-            seekBar.parent
             if (fromUser) {
+                val seekBarValues= IntArray(5)
+                seekBarValues[0]=binder.one.progress
+                seekBarValues[1]=binder.two.progress
+                seekBarValues[2]=binder.three.progress
+                seekBarValues[3]=binder.four.progress
+                seekBarValues[4]=binder.five.progress
                 viewModel.setEvent(
                     EqualizerContract.Event.OnEqualizerValue(
                         seekBar.tag as Int,
                         progress,
-                        seekBar.max
+                        seekBar.max,
+                        seekBarValues
                     )
                 )
             }

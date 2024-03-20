@@ -10,6 +10,11 @@ class MapperUI {
         return percent
         //return percent*100/loudnessEnhancerTargetGainMaxValue
     }
+    fun map(equalizerUI: EqualizerUI):Equalizer{
+        return Equalizer(
+
+        )
+    }
     fun map(equalizer: Equalizer): EqualizerUI {
 
         return EqualizerUI(

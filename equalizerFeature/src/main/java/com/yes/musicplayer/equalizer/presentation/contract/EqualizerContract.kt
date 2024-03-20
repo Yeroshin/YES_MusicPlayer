@@ -11,7 +11,7 @@ class EqualizerContract {
         data class OnPresetSelected(val preset:Short): Event()
         data class OnEqualizerEnabled(val enabled:Boolean): Event()
         data object OnPlay : Event()
-        data class OnEqualizerValue(val band:Int,val value:Int,val maxLevelRange: Int): Event()
+        data class OnEqualizerValue(val band:Int,val value:Int,val maxLevelRange: Int,val seekBarValues:IntArray): Event()
 
         data class OnLoudnessEnhancerEnabled(val enabled:Boolean): Event()
         data class OnLoudnessEnhancerTargetGain(val percent:Int): Event()

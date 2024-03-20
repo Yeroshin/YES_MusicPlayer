@@ -119,9 +119,11 @@ class SettingsDataStore(
     suspend fun getCustomPreset():Flow<IntArray>{
        return dataStore.data
            .map {preferences ->
-               preferences[PreferencesKeys.CUSTOM_PRESET]?.let {arrayString->
-                   arrayString.split(",").map { it.toInt() }.toIntArray()
-               } ?:run {
+               preferences[PreferencesKeys.CUSTOM_PRESET]
+                   ?.split(",")
+                   ?.map { it.toInt() }
+                   ?.toIntArray()
+                   ?:run {
                    val customPreset= intArrayOf(0,0,0,0,0)
                    setCustomPreset(customPreset)
                    customPreset

@@ -15,6 +15,7 @@ class SetEqualizerValueUseCase(
     override suspend fun run(params: Params?): DomainResult<Equalizer> {
 
         return params?.let {
+            settingsRepository.setCustomPreset(params.seekBarValues)
             equalizerRepository.setBandLevel(params.band, params.value)
 
             val bands = mutableListOf<Int>()
@@ -38,6 +39,7 @@ class SetEqualizerValueUseCase(
     data class Params(
         val band: Int,
         val value: Int,
-        val frequencies: IntArray
+        val frequencies: IntArray,
+        val seekBarValues:IntArray
     )
 }

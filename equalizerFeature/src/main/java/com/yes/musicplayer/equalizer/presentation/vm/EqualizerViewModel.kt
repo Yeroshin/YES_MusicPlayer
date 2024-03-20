@@ -68,7 +68,7 @@ class EqualizerViewModel(
             }
 
             is Event.OnEqualizerValue -> {
-                setEqualizerValue(event.band, event.value, event.maxLevelRange)
+                setEqualizerValue(event.band, event.value, event.maxLevelRange,event.seekBarValues)
             }
 
             is Event.OnEqualizerEnabled -> setEqualizerEnabled(event.enabled)
@@ -147,7 +147,7 @@ class EqualizerViewModel(
         }
     }
 
-    private fun setEqualizerValue(band: Int, value: Int, maxLevelRange: Int) {
+    private fun setEqualizerValue(band: Int, value: Int, maxLevelRange: Int,seekBarValues:IntArray) {
         viewModelScope.launch {
             val result = setEqualizerValueUseCase(
 
@@ -157,7 +157,13 @@ class EqualizerViewModel(
                         value,
                         maxLevelRange,
                     ),
-                    frequencies
+                    frequencies,
+                    seekBarValues.map {
+                        mapperUI.mapUiEqualizerValueToDomain(
+                            it,
+                            maxLevelRange,
+                        )
+                    }.toIntArray()
                 )
             )
             when (result) {
