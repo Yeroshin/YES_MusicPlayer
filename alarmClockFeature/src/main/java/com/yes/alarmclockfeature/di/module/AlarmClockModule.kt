@@ -1,5 +1,6 @@
 package com.yes.alarmclockfeature.di.module
 
+import android.app.AlarmManager
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import com.yes.alarmclockfeature.data.dataSource.AlarmDataSource
@@ -162,13 +163,21 @@ class AlarmClockModule(
             alarmListRepository
         )
     }
-
+    @Provides
+    fun providesAlarmManager(
+        context: Context,
+    ): AlarmManager {
+        return context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    }
     @Provides
     fun providesAlarmDataSource(
-        context: Context
+        context: Context,
+        alarmManager: AlarmManager
     ): AlarmDataSource {
         return AlarmDataSource(
-            context
+            context,
+            Calendar.getInstance(),
+            alarmManager
         )
     }
 

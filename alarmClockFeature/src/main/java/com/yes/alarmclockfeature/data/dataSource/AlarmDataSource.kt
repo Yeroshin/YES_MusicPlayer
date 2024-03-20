@@ -19,34 +19,34 @@ import java.util.Calendar
 import java.util.Date
 
 class AlarmDataSource(
-    private val context: Context
+    private val context: Context,
+    private val calendar: Calendar,
+    private val alarmManager: AlarmManager
 ) {
   //  private var alarmManager: AlarmManager? = null
-    private val alarmManager: AlarmManager by lazy {
+   /* private val alarmManager: AlarmManager by lazy {
       context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    }
-    private val calendar by lazy {
-        Calendar.getInstance()
-    }
-    fun getDate(){
-
+    }*/
+    private val pendingIntent = PendingIntent
+        .getBroadcast(
+            context,
+            0,
+            Intent(context, YESBroadcastReceiver::class.java),
+            PendingIntent.FLAG_IMMUTABLE//PendingIntent.FLAG_UPDATE_CURRENT||
+        )
+    fun cancelAlarm(){
+        alarmManager.cancel(pendingIntent)
     }
 
     fun setAlarm(hour: Int, minute: Int,dayOfWeek:Int) {
        // notification(context)
       //  alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         /////////////////////
-        val alarmIntent = Intent(context, YESBroadcastReceiver::class.java).apply {
+       /* val alarmIntent = Intent(context, YESBroadcastReceiver::class.java).apply {
             putExtra("hello","world")
             action = "alarm"
-        }
-        val pendingIntent = PendingIntent
-            .getBroadcast(
-                context,
-                0,
-                Intent(context, YESBroadcastReceiver::class.java),
-                PendingIntent.FLAG_IMMUTABLE//PendingIntent.FLAG_UPDATE_CURRENT||
-            )
+        }*/
+
         ////////////////////
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val can=alarmManager.canScheduleExactAlarms()

@@ -63,7 +63,9 @@ class SetNearestAlarmUseCase(
         }
         nearestAlarm?.let {
             alarmManagerRepository.setAlarm(it, dayOfWeek = nearestDayOfWeek)
-        }
+        }?:run(
+            alarmManagerRepository.cancelAlarm()
+        )
         ///////////////////////
         return DomainResult.Success(nearestAlarm)
 

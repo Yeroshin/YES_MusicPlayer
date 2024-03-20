@@ -10,4 +10,7 @@ class AlarmManagerRepository(
     fun setAlarm(alarm: Alarm,dayOfWeek: Int){
         alarmDataSource.setAlarm(alarm.timeHour,alarm.timeMinute,dayOfWeek)
     }
+    fun cancelAlarm(){
+        alarmDataSource.cancelAlarm()
+    }
 }

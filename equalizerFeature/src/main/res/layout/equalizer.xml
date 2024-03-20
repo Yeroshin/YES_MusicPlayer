@@ -38,7 +38,6 @@
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     android:textAlignment="center"
-                    android:textColor="@color/branded_light"
                     tools:text="40Hz" />
 
                 <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
@@ -112,7 +111,6 @@
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     android:textAlignment="center"
-                    android:textColor="@color/branded_light"
                     tools:text="40Hz" />
 
                 <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
