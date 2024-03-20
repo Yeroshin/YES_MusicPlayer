@@ -10,7 +10,7 @@ import com.yes.trackdialogfeature.data.repository.SettingsRepositoryImpl
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.trackdialogfeature.domain.repository.SettingsRepository
-import com.yes.core.data.data.dataSource.MediaDataStore
+import com.yes.core.data.dataSource.MediaDataStore
 import com.yes.core.data.dataSource.SettingsSharedPreferences
 import com.yes.trackdialogfeature.domain.usecase.GetMenuUseCase
 import com.yes.trackdialogfeature.domain.usecase.SaveTracksToPlaylistUseCase

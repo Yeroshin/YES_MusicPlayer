@@ -214,7 +214,7 @@ open class TrackDialogViewModel(
                             ItemUi(
                                 -1,
                                 "..",
-                                0,
+                                3,
                                 null,
                                 TrackDialogContract.Event.OnItemBackClicked,
                                 ::setEvent

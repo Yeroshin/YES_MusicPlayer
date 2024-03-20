@@ -3,7 +3,7 @@ package com.yes.trackdialogfeature.di.module
 import android.content.Context
 import androidx.room.Room
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.core.data.data.dataSource.MediaDataStore
+import com.yes.core.data.dataSource.MediaDataStore
 import com.yes.core.data.dataSource.SettingsSharedPreferences
 import com.yes.core.data.dataSource.YESDataBase
 import dagger.Module

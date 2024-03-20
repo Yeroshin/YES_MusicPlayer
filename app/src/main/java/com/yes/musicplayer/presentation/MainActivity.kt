@@ -8,14 +8,26 @@ import android.os.Build
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
+import com.google.android.play.core.ktx.isImmediateUpdateAllowed
+import com.google.android.play.core.ktx.startUpdateFlowForResult
 import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
 import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.MainActivityComponent
@@ -23,6 +35,9 @@ import com.yes.musicplayer.equalizer.presentation.ui.EqualizerScreen
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
 import com.yes.playlistfeature.presentation.ui.PlaylistScreen
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
 
 class MainActivity :
@@ -31,6 +46,45 @@ class MainActivity :
     PlaylistScreen.PlaylistManager {
     interface DependencyResolver {
         fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent
+    }
+    private lateinit var appUpdateManager: AppUpdateManager
+    private val updateType=AppUpdateType.IMMEDIATE
+    private val updateLauncher = registerForActivityResult(
+        ActivityResultContracts.StartIntentSenderForResult()
+    ) { result ->
+        if (result.resultCode != Activity.RESULT_OK) {
+
+        }
+    }
+    private val installStateUpdatedListener=InstallStateUpdatedListener{state->
+        if(state.installStatus()==InstallStatus.DOWNLOADED){
+             Toast.makeText(
+                 applicationContext,
+                 "Download successful. Restarting app in 5 seconds",
+                 Toast.LENGTH_LONG
+             ).show()
+            lifecycleScope.launch {
+                delay(5.seconds)
+                appUpdateManager.completeUpdate()
+            }
+        }
+    }
+    private fun checkForUpdates(){
+        appUpdateManager.appUpdateInfo.addOnSuccessListener {info->
+            val isUpdateAvailable=info.updateAvailability()==UpdateAvailability.UPDATE_AVAILABLE
+            val isUpdateAllowed=when(updateType){
+                AppUpdateType.FLEXIBLE->info.isFlexibleUpdateAllowed
+                AppUpdateType.IMMEDIATE->info.isImmediateUpdateAllowed
+                else->false
+            }
+            if(isUpdateAvailable&&isUpdateAllowed){
+                appUpdateManager.startUpdateFlowForResult(
+                    info,
+                    updateLauncher,
+                    AppUpdateOptions.newBuilder(updateType).build()
+                )
+            }
+        }
     }
 
     private lateinit var binding: ViewBinding
@@ -54,13 +108,32 @@ class MainActivity :
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
+        appUpdateManager=AppUpdateManagerFactory.create(applicationContext)
+        if(updateType==AppUpdateType.FLEXIBLE){
+            appUpdateManager.registerListener(installStateUpdatedListener)
+        }
+        checkForUpdates()
         checkPermissions()
        // createNotificationChannel(this)
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(updateType==AppUpdateType.IMMEDIATE){
+            appUpdateManager.appUpdateInfo.addOnSuccessListener{info->
+                if(info.updateAvailability()==UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS){
+                    appUpdateManager.startUpdateFlowForResult(
+                        info,
+                        updateLauncher,
+                        AppUpdateOptions.newBuilder(updateType).build()
+                    )
+                }
+            }
+        }
+
+    }
 
     private fun checkPermissions() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
@@ -120,7 +193,7 @@ class MainActivity :
             if (it.isNotEmpty()) {
                 Toast.makeText(
                     this,
-                    "Player is unavailable because the feature requires a permission that the you has denied.",
+                    "Player is unavailable because the feature requires a permission that you has denied.",
                     Toast.LENGTH_LONG
                 ).show()
                 // checkPermissions()
@@ -200,6 +273,13 @@ class MainActivity :
               add<PlayerFragment>(R.id.player_controls)
           }*/
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(updateType==AppUpdateType.FLEXIBLE){
+            appUpdateManager.unregisterListener(installStateUpdatedListener)
+        }
     }
 
    /* private fun createNotificationChannel(context: Context){

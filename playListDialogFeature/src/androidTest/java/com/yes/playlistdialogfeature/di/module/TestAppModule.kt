@@ -9,7 +9,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.core.data.data.dataSource.MediaDataStore
+import com.yes.core.data.dataSource.MediaDataStore
 import com.yes.core.data.dataSource.SettingsSharedPreferences
 import com.yes.core.data.dataSource.YESDataBase
 import dagger.Module

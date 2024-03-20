@@ -2,7 +2,7 @@ package com.yes.trackdialogfeature.data.repository.dataSource
 
 import android.content.Context
 import androidx.test.platform.app.InstrumentationRegistry
-import com.yes.core.data.data.dataSource.MediaDataStore
+import com.yes.core.data.dataSource.MediaDataStore
 import org.junit.After
 import org.junit.Before
 

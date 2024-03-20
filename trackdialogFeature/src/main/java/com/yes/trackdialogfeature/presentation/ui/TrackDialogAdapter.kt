@@ -19,7 +19,7 @@ class TrackDialogAdapter :
     }
 
     override fun onBindViewHolder(holder: TrackHolder, position: Int) {
-        holder.bind(position, mediaList[position], mediaList[position].iconType)
+        holder.bind(position)
     }
 
     override fun getItemCount(): Int {
@@ -39,15 +39,13 @@ class TrackDialogAdapter :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             position: Int,
-            item: MenuUi.ItemUi,
-            iconType: Int
         ) {
 
             binding.root.isSelected = false
             binding.root.isActivated = false
-            binding.itemTitle.text = item.name
+            binding.itemTitle.text = mediaList[position].name
             //TODO think about how to refactor this
-            if(item.name==".."){
+            if(mediaList[position].name==".."){
                 binding.checkBox.visibility=GONE
             }else{
                 binding.checkBox.visibility= VISIBLE
@@ -55,7 +53,9 @@ class TrackDialogAdapter :
             binding.checkBox.setOnCheckedChangeListener{ buttonView, isChecked ->
                 mediaList[position].selected=isChecked
             }
-            binding.icon.setImageLevel(iconType)
+            binding.icon.setImageLevel(
+                mediaList[position].iconType
+            )
             binding.root.setOnClickListener {
                 mediaList[position].onClick(mediaList[position].param)
             }

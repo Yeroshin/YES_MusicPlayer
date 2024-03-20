@@ -7,7 +7,7 @@ import com.yes.core.di.module.DataModule
 import com.yes.core.di.module.IoDispatcher
 import com.yes.core.di.module.MainDispatcher
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.core.data.data.dataSource.MediaDataStore
+import com.yes.core.data.dataSource.MediaDataStore
 import com.yes.core.data.dataSource.YESDataBase
 import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.core.data.dataSource.SettingsDataStore

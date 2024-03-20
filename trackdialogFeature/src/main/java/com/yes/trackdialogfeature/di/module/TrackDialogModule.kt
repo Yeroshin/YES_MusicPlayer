@@ -1,7 +1,7 @@
 package com.yes.trackdialogfeature.di.module
 
 import com.yes.core.di.module.IoDispatcher
-import com.yes.core.data.data.dataSource.MediaDataStore
+import com.yes.core.data.dataSource.MediaDataStore
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
 import com.yes.trackdialogfeature.data.mapper.MenuRepositoryMapper

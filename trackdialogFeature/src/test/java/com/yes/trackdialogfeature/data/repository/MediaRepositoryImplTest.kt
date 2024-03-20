@@ -5,7 +5,7 @@ import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
 import com.yes.trackdialogfeature.domain.DomainFixtures
 import com.yes.trackdialogfeature.domain.entity.Menu.Item
 import com.yes.core.data.entity.PlayListDataBaseTrackEntity
-import com.yes.core.data.data.dataSource.MediaDataStore
+import com.yes.core.data.dataSource.MediaDataStore
 import com.yes.core.data.entity.MediaDataStoreEntity
 import io.mockk.MockKAnnotations
 import io.mockk.every

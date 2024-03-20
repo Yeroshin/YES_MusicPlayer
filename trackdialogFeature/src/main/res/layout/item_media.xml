@@ -11,36 +11,18 @@
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"
         app:srcCompat="@drawable/icon_media_item_level_list"
-        app:tint="@color/tint" />
+        app:tint="@color/tint"
+        style="@style/leadingIcon" />
 
     <TextView
         android:id="@+id/item_title"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"
 
-        android:layout_weight="1"
-        android:clickable="false"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:singleLine="true"
-        android:textColor="@color/item_activatable_state_list"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        tools:text="file selected"></TextView>
+        style="@style/textInListLarge"
+        tools:text="file selected" />
 
     <CheckBox
         android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:buttonTint="@color/tint"
-        android:clickable="true"
-        android:focusable="true"
-        android:focusableInTouchMode="false"></CheckBox>
+        style="@style/TrailingIcon" />
 
 </LinearLayout>
