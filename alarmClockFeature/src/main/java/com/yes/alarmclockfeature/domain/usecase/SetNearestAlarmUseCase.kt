@@ -17,8 +17,14 @@ class SetNearestAlarmUseCase(
 ) : UseCase<Any?, Alarm?>(dispatcher) {
     override suspend fun run(params: Any?): DomainResult<Alarm?> {
         val currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-        val currentTimeMinutes =
-            calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)
+        val currentTimeMinutes = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)
+       //////////////
+        val tmp =currentTimeMinutes
+       // calendar.clear()
+        val currentTimeMinutes2 = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)
+        val tmp2=currentTimeMinutes2
+        val tmp3=tmp+tmp2
+        /////////////////////
         var nearestAlarm: Alarm? = null
         var nearestTimeDiff = Int.MAX_VALUE
         var nearestDayOfWeek = Int.MAX_VALUE
@@ -40,7 +46,8 @@ class SetNearestAlarmUseCase(
                     currentDayOfWeek,
                     alarm.timeHour,
                     alarm.timeMinute,
-                    currentTimeMinutes
+                    calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)
+
                 )
                 //   val diff = minutesUntilNext - currentTimeMinutes
                 if (minutesUntilNext < 0) {
@@ -78,6 +85,15 @@ class SetNearestAlarmUseCase(
         timeMinute: Int,
         currentTimeMinutes: Int
     ): Int {
+        /////////////
+        val t=calendar.get(Calendar.MINUTE)
+        val h=currentTimeMinutes/60
+        val m=currentTimeMinutes%60
+        val c=Calendar.getInstance()
+        val ct=c.get(Calendar.HOUR_OF_DAY) * 60 + c.get(Calendar.MINUTE)
+        val nh=ct/60
+        val nm=ct%60
+        /////////////
         val daysDiff = (dayOfWeek - currentDayOfWeek + 7) % 7
         return daysDiff * 24 * 60 + (timeHour * 60 + timeMinute) - currentTimeMinutes
     }

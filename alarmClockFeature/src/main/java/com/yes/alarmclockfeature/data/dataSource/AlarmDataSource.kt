@@ -61,13 +61,15 @@ class AlarmDataSource(
         calendar.set(Calendar.DAY_OF_WEEK,dayOfWeek)
         ///////////////////////
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      //  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.cancel(pendingIntent)
             /* alarmManager.setExactAndAllowWhileIdle(
                  AlarmManager.RTC_WAKEUP,
                  calendar.timeInMillis,
                  pendingIntent
              )*/
-            alarmManager.cancel(pendingIntent)
-            alarmManager.setAlarmClock(
+
+           alarmManager.setAlarmClock(
                 AlarmManager.AlarmClockInfo(
                     calendar.timeInMillis,
                     null

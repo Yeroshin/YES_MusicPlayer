@@ -97,7 +97,7 @@ class DatePickerManager(
 
     fun setupView(hour: Int,minute: Int) {
         val valuesHour = List(24) { i -> i + 1 }
-        val valuesMinute = List(60) { i -> i + 1 }
+        val valuesMinute = List(59) { i -> i + 1 }
         val layoutManagerHour = LinearLayoutManager(context)
         val layoutManagerMinute = LinearLayoutManager(context)
 
