@@ -3,10 +3,11 @@ package com.yes.alarmclockfeature.presentation.mapper
 import com.yes.alarmclockfeature.domain.model.Alarm
 import com.yes.alarmclockfeature.presentation.model.AlarmUI
 import com.yes.alarmclockfeature.presentation.ui.datepicker.DatePickerManager
+import com.yes.alarmclockfeature.util.CalendarFactory
 import java.util.Calendar
 
 class MapperUI(
-    private val calendar: Calendar
+    private val calendarFactory: CalendarFactory
 ) {
 
     fun map(date: DatePickerManager.Time, selectedDays: Set<Int>): Alarm {
@@ -33,6 +34,7 @@ class MapperUI(
     }
 
     fun map(alarm: Alarm): AlarmUI {
+        val calendar=calendarFactory.getCalendar()
         val currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
         val currentTimeMinutes = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)
         var nearestTimeDiff = Int.MAX_VALUE

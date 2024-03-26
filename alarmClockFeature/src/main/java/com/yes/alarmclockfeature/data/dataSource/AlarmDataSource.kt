@@ -60,14 +60,14 @@ class AlarmDataSource(
         calendar.set(Calendar.MINUTE,minute)
         calendar.set(Calendar.DAY_OF_WEEK,dayOfWeek)
         ///////////////////////
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      //  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      //  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.cancel(pendingIntent)
-            /* alarmManager.setExactAndAllowWhileIdle(
+             alarmManager.setExactAndAllowWhileIdle(
                  AlarmManager.RTC_WAKEUP,
                  calendar.timeInMillis,
                  pendingIntent
-             )*/
+             )
 
            alarmManager.setAlarmClock(
                 AlarmManager.AlarmClockInfo(
@@ -99,3 +99,14 @@ class AlarmDataSource(
         notificationManager.notify(123,builder.build())
     }
 }
+//testing commands
+//E:\androidsdk\platform-tools>
+//adb shell dumpsys alarm
+//adb shell dumpsys deviceidle step
+//adb shell dumpsys deviceidle -h //all doze commands
+// adb shell dumpsys battery unplug
+//////////////////////////////////////
+//There may be a condition which prevents the phone
+// from going into IDLE, such as a scheduled alarm clock.
+// Make sure there are no alarm clock apps set to go off in
+// less than an hour of you trying to force the phone into IDLE.

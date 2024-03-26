@@ -20,6 +20,7 @@ import com.yes.alarmclockfeature.domain.usecase.SubscribeAlarmsUseCase
 import com.yes.alarmclockfeature.presentation.mapper.MapperUI
 import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
 import com.yes.alarmclockfeature.presentation.vm.AlarmClockViewModel
+import com.yes.alarmclockfeature.util.CalendarFactory
 import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.core.data.dataSource.SettingsDataStore
 import com.yes.core.di.module.IoDispatcher
@@ -94,9 +95,11 @@ class AlarmClockModule(
     }
 
     @Provides
-    fun providesMapperUI(): MapperUI {
+    fun providesMapperUI(
+        calendarFactory:CalendarFactory
+    ): MapperUI {
         return MapperUI(
-            Calendar.getInstance()
+            calendarFactory
         )
     }
 
@@ -140,16 +143,22 @@ class AlarmClockModule(
         )
     }
     @Provides
+    fun providesCalendarFactory(
+    ): CalendarFactory {
+        return CalendarFactory()
+    }
+    @Provides
     fun providesSetNextAlarmUseCase(
         @IoDispatcher dispatcher: CoroutineDispatcher,
         alarmListRepository: AlarmListRepository,
         alarmManagerRepository: AlarmManagerRepository,
+        calendarFactory:CalendarFactory
     ): SetNearestAlarmUseCase {
         return SetNearestAlarmUseCase(
             dispatcher,
             alarmListRepository,
             alarmManagerRepository,
-            Calendar.getInstance()
+            calendarFactory
         )
     }
 
