@@ -129,13 +129,12 @@ class MainActivity :
             val intent = Intent();
             val packageName = packageName;
             val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
-            if (pm.isIgnoringBatteryOptimizations(packageName)) {
-         //       intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
-            } else {
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
                 intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                intent.setData(Uri.parse("package:$packageName"));
+                intent.setData(Uri.parse("package:$packageName"))
+                startActivity(intent)
             }
-            startActivity(intent)
+
         }
     }
 

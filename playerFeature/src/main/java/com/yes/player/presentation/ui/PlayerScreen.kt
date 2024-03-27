@@ -160,6 +160,11 @@ class PlayerScreen : Fragment() {
                 binder.seekBar.max = playerState.durationInt
             }
             playerState.visualizerData?.let {
+                binder.visualizerView.setValue(
+                    playerState.visualizerData
+                )
+            }
+           /* playerState.visualizerData?.let {
                 binder.composeView.setContent {
                  /* AdaptiveGrid(playerState.visualizerData)*/
                    /* EqualizerView(
@@ -171,7 +176,7 @@ class PlayerScreen : Fragment() {
                         dependentContent = { maxSize,values -> DependentContent(maxSize,values) } // Передаем DependentContent в качестве dependentContent
                     )
                 }
-            }
+            }*/
         }
 
 
