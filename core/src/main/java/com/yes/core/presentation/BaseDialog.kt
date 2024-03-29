@@ -52,7 +52,7 @@ abstract class BaseDialog (): DialogFragment() {
         val screeSize1 = Point()*/
         /////////////////
       //  val outSmallestSize = Point()
-        val outLargestSize = Point()
+       // val outLargestSize = Point()
         val screeSize1 = Point()
 
          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {

@@ -64,7 +64,7 @@ class PlayerDataSource(
 
 
     private fun initializeController() {
-        val done = controllerFuture.isDone
+        //val done = controllerFuture.isDone
         controllerFuture.addListener(
             {
                 val done = controllerFuture.isDone

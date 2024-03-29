@@ -145,7 +145,7 @@ class ItemTouchHelperCallback(
             it.scaleX = 1f
             it.scaleY = 1f
         }
-        val toPos = viewHolder.bindingAdapterPosition
+       // val toPos = viewHolder.bindingAdapterPosition
         // onDraggedItemDrop(0, toPos)
         Log.e("DragDrop Example", "Unknown action type received by View.OnDragListener.")
     }
