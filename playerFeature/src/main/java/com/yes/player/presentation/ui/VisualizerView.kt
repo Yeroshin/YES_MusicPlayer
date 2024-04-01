@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
+import kotlin.math.abs
 
 class VisualizerView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     private var width: Int = 0
@@ -21,9 +22,11 @@ class VisualizerView(context: Context, attrs: AttributeSet?) : View(context, att
     }
 
     private var update: Boolean = false
+    private val value= mutableListOf<Float>()
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         if (update) {
+            val interpolationFactor = 0.4f
             val rect = if (frequencies.size != 0) width / frequencies.size else 1
             val spacing = rect / 4
             val rectSide = rect - spacing
@@ -31,17 +34,16 @@ class VisualizerView(context: Context, attrs: AttributeSet?) : View(context, att
             paint.color = Color.BLACK
             paint.style = Paint.Style.STROKE
             paint.strokeWidth = rectSide.toFloat()
-            val interpolationFactor = 0.1f
             for ((barIndex, value) in frequencies.withIndex()) {
-
-                val level = if (value > oldFrequencies[barIndex]) {
-                    oldFrequencies[barIndex] + (interpolationFactor * (value - oldFrequencies[barIndex]))
+                val tmp=interpolationFactor * (value - oldFrequencies[barIndex])
+                oldFrequencies[barIndex]=if (value > oldFrequencies[barIndex]) {
+                    oldFrequencies[barIndex] + abs(interpolationFactor * (value - oldFrequencies[barIndex]))
                 } else if (value < oldFrequencies[barIndex]) {
-                    oldFrequencies[barIndex] - (interpolationFactor * (value - oldFrequencies[barIndex]))
+                     oldFrequencies[barIndex] - abs(interpolationFactor * (value - oldFrequencies[barIndex]))
                 } else {
                     value
                 }
-                val barCount = ((level * maxHeightCount) / maxValue).toInt()
+                val barCount = ((oldFrequencies[barIndex] * maxHeightCount) / maxValue).toInt()
 
                 for (valIndex in 0..<barCount) {
                     canvas.drawLine(
@@ -61,11 +63,9 @@ class VisualizerView(context: Context, attrs: AttributeSet?) : View(context, att
 
     fun setValue(values: FloatArray) {
         if (values.isNotEmpty()) {
-            oldFrequencies.clear()
-            if (frequencies.isEmpty()) {
+            if (oldFrequencies.isEmpty()) {
                 oldFrequencies.addAll(values.asList())
             }
-            oldFrequencies.addAll(frequencies)
             frequencies.clear()
             frequencies.addAll(values.asList())
             update = true

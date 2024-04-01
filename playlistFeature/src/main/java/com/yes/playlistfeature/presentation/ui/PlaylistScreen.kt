@@ -215,24 +215,23 @@ class PlaylistScreen : Fragment() {
         binder.playList.layoutManager?.removeAllViews()
         adapter.setItems(tracks)
 
-        /*  binder.recyclerViewContainer.progressBar.visibility = View.GONE
-          binder.recyclerViewContainer.disableView.visibility = View.GONE*/
+          binder.progressBar.visibility = View.GONE
+          binder.disableView.visibility = View.GONE
     }
 
     private fun idleView() {
-        // binder.recyclerViewContainer.dialogTitle.text = ""
-        /*  binder.recyclerViewContainer.progressBar.visibility = View.GONE
-          binder.recyclerViewContainer.disableView.visibility = View.GONE*/
+          binder.progressBar.visibility = View.GONE
+          binder.disableView.visibility = View.GONE
     }
 
     private fun showLoading() {
-        /*  binder.recyclerViewContainer.progressBar.visibility = View.VISIBLE
-          binder.recyclerViewContainer.disableView.visibility = View.VISIBLE*/
+          binder.progressBar.visibility = View.VISIBLE
+          binder.disableView.visibility = View.VISIBLE
     }
 
     private fun showError(message: Int) {
-        /* binder.recyclerViewContainer.progressBar.visibility = View.GONE
-         binder.recyclerViewContainer.disableView.visibility = View.GONE*/
+         binder.progressBar.visibility = View.GONE
+         binder.disableView.visibility = View.GONE
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
