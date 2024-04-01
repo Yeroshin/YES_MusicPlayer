@@ -35,7 +35,6 @@ class VisualizerView(context: Context, attrs: AttributeSet?) : View(context, att
             paint.style = Paint.Style.STROKE
             paint.strokeWidth = rectSide.toFloat()
             for ((barIndex, value) in frequencies.withIndex()) {
-                val tmp=interpolationFactor * (value - oldFrequencies[barIndex])
                 oldFrequencies[barIndex]=if (value > oldFrequencies[barIndex]) {
                     oldFrequencies[barIndex] + abs(interpolationFactor * (value - oldFrequencies[barIndex]))
                 } else if (value < oldFrequencies[barIndex]) {
