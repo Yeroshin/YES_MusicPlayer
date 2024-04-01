@@ -16,8 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.viewbinding.ViewBinding
 import com.yes.alarmclockfeature.databinding.AlarmSetScreenBinding
 import com.yes.alarmclockfeature.di.components.AlarmClockComponent
-import com.yes.alarmclockfeature.domain.usecase.SetTracksToPlayerPlaylistUseCase
-import com.yes.core.di.component.BaseComponent
+import com.yes.alarmclockfeature.domain.usecase.SetAndPlayTracksToPlayerPlaylistUseCase
 import com.yes.core.domain.models.DomainResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,8 +34,8 @@ class AlarmActivity : AppCompatActivity(){
     private val getCurrentPlaylistTracksUseCase by lazy {
         (component as AlarmClockComponent).getGetCurrentPlaylistTracksUseCase()
     }
-    private val setTracksToPlayerPlaylistUseCase by lazy {
-        (component as AlarmClockComponent).getSetTracksToPlayerPlaylistUseCase()
+    private val setAndPlayTracksToPlayerPlaylistUseCase by lazy {
+        (component as AlarmClockComponent).getSetAndPlayTracksToPlayerPlaylistUseCase()
     }
 
 
@@ -65,8 +64,8 @@ class AlarmActivity : AppCompatActivity(){
             when (result) {
                 is DomainResult.Success -> {
                     println("result SUCCESS")
-                    setTracksToPlayerPlaylistUseCase(
-                        SetTracksToPlayerPlaylistUseCase.Params(
+                    setAndPlayTracksToPlayerPlaylistUseCase(
+                        SetAndPlayTracksToPlayerPlaylistUseCase.Params(
                             result.data
                         )
                     )

@@ -8,11 +8,11 @@ import com.yes.core.domain.useCase.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 
-class SetTracksToPlayerPlaylistUseCase (
+class SetAndPlayTracksToPlayerPlaylistUseCase (
     dispatcher: CoroutineDispatcher,
     private val playerRepository: PlayerRepository,
     private val settingsRepository: SettingsRepositoryImpl
-) : UseCase<SetTracksToPlayerPlaylistUseCase.Params, Unit>(dispatcher) {
+) : UseCase<SetAndPlayTracksToPlayerPlaylistUseCase.Params, Unit>(dispatcher) {
     override suspend fun run(params: Params?): DomainResult<Unit> {
         return params?.let {
            playerRepository.setTracks(

@@ -1,18 +1,9 @@
 package com.yes.alarmclockfeature.presentation.ui
 
-import android.app.Activity
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
-import androidx.core.app.NotificationCompat
-import androidx.media3.session.MediaController
-import com.yes.alarmclockfeature.di.components.AlarmClockComponent
-import com.yes.alarmclockfeature.domain.usecase.SetTracksToPlayerPlaylistUseCase
-import com.yes.core.data.dataSource.PlayerDataSource
-import com.yes.core.di.component.BaseComponent
+import com.yes.alarmclockfeature.domain.usecase.SetAndPlayTracksToPlayerPlaylistUseCase
 import com.yes.core.domain.models.DomainResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,8 +20,11 @@ class YESBroadcastReceiver : BroadcastReceiver(){
     private val getCurrentPlaylistTracksUseCase by lazy {
         component.getGetCurrentPlaylistTracksUseCase()
     }
-    private val setTracksToPlayerPlaylistUseCase by lazy {
-        component.getSetTracksToPlayerPlaylistUseCase()
+    private val setAndPlayTracksToPlayerPlaylistUseCase by lazy {
+        component.getSetAndPlayTracksToPlayerPlaylistUseCase()
+    }
+    private val setNearestAlarmUseCase by lazy {
+        component.getSetNearestAlarmUseCase()
     }
 
 
@@ -40,13 +34,17 @@ class YESBroadcastReceiver : BroadcastReceiver(){
          CoroutineScope(Dispatchers.Main).launch {
              when (val result = getCurrentPlaylistTracksUseCase()) {
                  is DomainResult.Success -> {
-                     setTracksToPlayerPlaylistUseCase(
-                         SetTracksToPlayerPlaylistUseCase.Params(
+                     setAndPlayTracksToPlayerPlaylistUseCase(
+                         SetAndPlayTracksToPlayerPlaylistUseCase.Params(
                              result.data
                          )
                      )
                  }
-                 is DomainResult.Error -> TODO()
+                 is DomainResult.Error -> {}
+             }
+             when (val result = setNearestAlarmUseCase()) {
+                 is DomainResult.Success -> {}
+                 is DomainResult.Error -> {}
              }
          }
     }

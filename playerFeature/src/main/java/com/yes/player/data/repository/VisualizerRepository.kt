@@ -16,7 +16,7 @@ import kotlin.random.Random
 class VisualizerRepository(
     private val visualizer: Visualizer
 ) {
-    private val _visualizerEntity = MutableStateFlow<VisualizerEntity>(VisualizerEntity())
+    private val _visualizerEntity = MutableStateFlow(VisualizerEntity())
     private val visualizerEntity: StateFlow<VisualizerEntity> = _visualizerEntity
     private val captureListener = object : Visualizer.OnDataCaptureListener {
         override fun onWaveFormDataCapture(
@@ -42,7 +42,7 @@ class VisualizerRepository(
     init {
         visualizer.scalingMode = SCALING_MODE_NORMALIZED
         visualizer.measurementMode = MEASUREMENT_MODE_PEAK_RMS
-        visualizer.captureSize = Visualizer.getCaptureSizeRange()[1]
+       // visualizer.captureSize = Visualizer.getCaptureSizeRange()[1]
         visualizer.setDataCaptureListener(
             captureListener,
             Visualizer.getMaxCaptureRate() / 2,

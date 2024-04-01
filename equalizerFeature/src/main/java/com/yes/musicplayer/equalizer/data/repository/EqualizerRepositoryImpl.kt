@@ -60,14 +60,19 @@ class EqualizerRepositoryImpl(
     }
     fun setEnabled(enabled:Boolean){
         equalizer.enabled=enabled
-
+        equalizer.setEnabled(enabled)
+        if (!enabled){
+            equalizer.release()
+        }
+        val tmp=equalizer.enabled
+        val a=tmp
     }
     private fun checkControl(){
         if(!equalizer.hasControl()){
             equalizer.release()
             try{
                 equalizer=Equalizer(1000,audioSessionId)
-                equalizer.enabled=true//tmp TODO remove this
+             //   equalizer.enabled=true//tmp TODO remove this
             }catch (exception: Exception){
                 val pr=exception
             }

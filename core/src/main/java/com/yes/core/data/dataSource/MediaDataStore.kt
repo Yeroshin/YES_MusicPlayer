@@ -27,7 +27,7 @@ class MediaDataStore(private val context: Context) {
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
             }
 
-        val sortOrder = "${MediaStore.Audio.Media.DISPLAY_NAME} ASC"
+        val sortOrder = "$selection ASC"
         /////////////////////////
         val projection = arrayOf(
             MediaStore.Audio.AudioColumns._ID,
@@ -99,7 +99,7 @@ class MediaDataStore(private val context: Context) {
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
             }
 
-        val sortOrder = "${MediaStore.Audio.Media.DISPLAY_NAME} ASC"
+        val sortOrder = "$type ASC"
         /////////////////////////
         val projection = arrayOf(
             type

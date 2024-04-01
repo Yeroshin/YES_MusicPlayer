@@ -44,7 +44,7 @@ class DatePickerManager(
                 layoutManager.findViewByPosition(0)?.height?.let { itemHeight ->
                     layoutManager.scrollToPositionWithOffset(
                        // adapter.itemCount / 2 + 1,
-                        position,
+                        position+1,
                         view.height / 2 + itemHeight / 2
                     )
                 }
@@ -96,8 +96,8 @@ class DatePickerManager(
     }
 
     fun setupView(hour: Int,minute: Int) {
-        val valuesHour = List(24) { i -> i + 1 }
-        val valuesMinute = List(59) { i -> i + 1 }
+        val valuesHour = List(24) { it }
+        val valuesMinute = List(60) { it}
         val layoutManagerHour = LinearLayoutManager(context)
         val layoutManagerMinute = LinearLayoutManager(context)
 

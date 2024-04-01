@@ -15,7 +15,7 @@ import com.yes.alarmclockfeature.domain.usecase.DeleteAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.GetCurrentPlaylistTracksUseCase
 import com.yes.alarmclockfeature.domain.usecase.SetAlarmUseCase
 import com.yes.alarmclockfeature.domain.usecase.SetNearestAlarmUseCase
-import com.yes.alarmclockfeature.domain.usecase.SetTracksToPlayerPlaylistUseCase
+import com.yes.alarmclockfeature.domain.usecase.SetAndPlayTracksToPlayerPlaylistUseCase
 import com.yes.alarmclockfeature.domain.usecase.SubscribeAlarmsUseCase
 import com.yes.alarmclockfeature.presentation.mapper.MapperUI
 import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
@@ -51,12 +51,12 @@ class AlarmClockModule(
         )
     }
     @Provides
-    fun providesSetTracksToPlayerPlaylistUseCase(
+    fun providesSetAndPlayTracksToPlayerPlaylistUseCase(
         @MainDispatcher dispatcher: CoroutineDispatcher,
         playerRepository: PlayerRepository,
         settingsRepository: SettingsRepositoryImpl
-    ): SetTracksToPlayerPlaylistUseCase {
-        return SetTracksToPlayerPlaylistUseCase(
+    ): SetAndPlayTracksToPlayerPlaylistUseCase {
+        return SetAndPlayTracksToPlayerPlaylistUseCase(
             dispatcher,
             playerRepository,
             settingsRepository

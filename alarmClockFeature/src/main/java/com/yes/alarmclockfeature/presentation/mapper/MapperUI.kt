@@ -45,7 +45,7 @@ class MapperUI(
                 currentDayOfWeek,
                 alarm.timeHour,
                 alarm.timeMinute,
-                currentTimeMinutes
+                currentTimeMinutes+1//+1 means send next minute after present
             )
             val diff = if (minutesUntilNext < 0){
                 minutesUntilNext + 24 * 60

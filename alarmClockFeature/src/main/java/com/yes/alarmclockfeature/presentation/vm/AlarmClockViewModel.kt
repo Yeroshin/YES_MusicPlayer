@@ -84,7 +84,11 @@ class AlarmClockViewModel(
             )
             when (result) {
                 is DomainResult.Success -> {
-                    setNearestAlarmUseCase()
+                    val result =setNearestAlarmUseCase()
+                    when(result){
+                        is DomainResult.Success->{}
+                        is DomainResult.Error -> {}
+                    }
                 }
                 is DomainResult.Error -> {}
             }

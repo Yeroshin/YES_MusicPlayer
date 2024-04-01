@@ -32,7 +32,7 @@ class AlarmDataSource(
             context,
             0,
             Intent(context, YESBroadcastReceiver::class.java),
-            PendingIntent.FLAG_IMMUTABLE//PendingIntent.FLAG_UPDATE_CURRENT||
+            PendingIntent.FLAG_IMMUTABLE//PendingIntent.FLAG_UPDATE_CURRENT//
         )
     fun cancelAlarm(){
         alarmManager.cancel(pendingIntent)

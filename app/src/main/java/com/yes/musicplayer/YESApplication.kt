@@ -67,6 +67,7 @@ class YESApplication : Application(),
             .build()
     }
 
+
     override fun getPlayListDialogComponent(): PlayListDialogComponent {
         return DaggerPlayListDialogComponent.builder()
             .dataComponent(dataComponent)

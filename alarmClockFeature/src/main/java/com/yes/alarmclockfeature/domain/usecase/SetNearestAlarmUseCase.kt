@@ -8,6 +8,7 @@ import com.yes.core.domain.models.DomainResult
 import com.yes.core.domain.useCase.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.last
 import java.util.Calendar
 
 class SetNearestAlarmUseCase(
@@ -34,13 +35,12 @@ class SetNearestAlarmUseCase(
             }
         }.forEach { alarm ->
             alarm.daysOfWeek.forEach { dayOfWeek ->
-                //   val minutesUntilNext: Int = ((dayOfWeek - currentDayOfWeek + 7) % 7) * 24 * 60+(alarm.timeHour*60+alarm.timeMinute)
                 val minutesUntilNext = calculateMinutesUntilNextAlarm(
                     dayOfWeek,
                     currentDayOfWeek,
                     alarm.timeHour,
                     alarm.timeMinute,
-                    calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)
+                    calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)+1//+1 means send next minute after present
 
                 )
                 if (minutesUntilNext < 0) {
@@ -63,9 +63,8 @@ class SetNearestAlarmUseCase(
         }
         nearestAlarm?.let {
             alarmManagerRepository.setAlarm(it, dayOfWeek = nearestDayOfWeek)
-        }?:run(
-            alarmManagerRepository.cancelAlarm()
-        )
+        }?: alarmManagerRepository.cancelAlarm()
+
         ///////////////////////
         return DomainResult.Success(nearestAlarm)
 
