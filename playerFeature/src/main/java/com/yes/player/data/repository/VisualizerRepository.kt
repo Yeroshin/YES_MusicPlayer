@@ -42,7 +42,7 @@ class VisualizerRepository(
     init {
         visualizer.scalingMode = SCALING_MODE_NORMALIZED
         visualizer.measurementMode = MEASUREMENT_MODE_PEAK_RMS
-       // visualizer.captureSize = Visualizer.getCaptureSizeRange()[1]
+        visualizer.captureSize = Visualizer.getCaptureSizeRange()[1]
         visualizer.setDataCaptureListener(
             captureListener,
             Visualizer.getMaxCaptureRate() / 2,

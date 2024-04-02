@@ -29,7 +29,7 @@ class PlayerModule {
     fun providesVisualizer(
         audioSessionId: Int
     ): Visualizer {
-        return Visualizer(audioSessionId)
+        return Visualizer( audioSessionId)
     }
     @Provides
     fun providesVisualizerRepository(

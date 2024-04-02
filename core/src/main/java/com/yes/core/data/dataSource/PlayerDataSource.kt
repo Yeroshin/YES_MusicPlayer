@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.os.Build
 import android.widget.Toast
+import androidx.annotation.OptIn
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.media3.common.C.TIME_UNSET
@@ -11,6 +12,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.MoreExecutors
@@ -67,6 +69,7 @@ class PlayerDataSource(
         //val done = controllerFuture.isDone
         controllerFuture.addListener(
             {
+
                 val done = controllerFuture.isDone
                 try {
                     val controller = controllerFuture.get()
@@ -113,9 +116,13 @@ class PlayerDataSource(
     private val _currentTrackIndexFlow = MutableStateFlow(-1)
     private val currentTrackIndexFlow: StateFlow<Int> = _currentTrackIndexFlow
 
-    private fun setController() {
+     private fun setController() {
         controller.addListener(
             object : Player.Listener {
+                @OptIn(UnstableApi::class)
+                override fun onAudioSessionIdChanged(audioSessionId: Int) {
+                    super.onAudioSessionIdChanged(audioSessionId)
+                }
 
                 override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                     if (controller.duration != TIME_UNSET) {
@@ -124,6 +131,7 @@ class PlayerDataSource(
                         )
                     }
                 }
+
 
                 override fun onPlaybackStateChanged(playbackState: Int) {
                     when (playbackState) {

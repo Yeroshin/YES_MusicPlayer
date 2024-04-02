@@ -59,6 +59,7 @@ class AlarmDataSource(
          calendar.set(Calendar.HOUR_OF_DAY, hour)
         calendar.set(Calendar.MINUTE,minute)
         calendar.set(Calendar.DAY_OF_WEEK,dayOfWeek)
+        calendar.set(Calendar.SECOND,0)
         ///////////////////////
       //  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
