@@ -19,7 +19,7 @@ class SettingsDataStore(
 ) {
     private object PreferencesKeys {
         val CURRENT_PLAYLIST_ID = longPreferencesKey("currentPlaylistId")
-        val CURRENT_TRACK_INDEX = intPreferencesKey("currentTrackIndex")
+        val CURRENT_TRACK_INDEX = longPreferencesKey("currentTrackIndex")
         val CUSTOM_PRESET_NAME = stringPreferencesKey("customPresetNames")
         val EQUALIZER_ENABLED = booleanPreferencesKey("equalizerEnabled")
         val CURRENT_PRESET = intPreferencesKey("currentPreset")
@@ -46,13 +46,13 @@ class SettingsDataStore(
         }
     }
 
-    suspend fun setCurrentTrackIndex(currentTrackIndex: Int) {
+    suspend fun setCurrentTrackIndex(currentTrackIndex: Long) {
         dataStore.edit { preferences ->
             preferences[PreferencesKeys.CURRENT_TRACK_INDEX] = currentTrackIndex
         }
     }
 
-    fun subscribeTrackIndex(): Flow<Int> {
+    fun subscribeTrackIndex(): Flow<Long> {
         return dataStore.data
             .map { preferences ->
                 preferences[PreferencesKeys.CURRENT_TRACK_INDEX] ?: run {

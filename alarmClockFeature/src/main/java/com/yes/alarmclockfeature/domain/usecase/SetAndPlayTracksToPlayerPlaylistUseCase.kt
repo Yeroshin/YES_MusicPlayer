@@ -17,7 +17,7 @@ class SetAndPlayTracksToPlayerPlaylistUseCase (
         return params?.let {
            playerRepository.setTracks(
                params.tracks,
-               settingsRepository.subscribeCurrentTrackIndex().first()
+               settingsRepository.subscribeCurrentTrackIndex().first().toInt()
            )
             playerRepository.play()
             DomainResult.Success(Unit)

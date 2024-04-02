@@ -61,6 +61,7 @@ class PlaylistViewModel(
             )
             when (result) {
                 is DomainResult.Success -> {
+                   // setSettingsTrackIndex(position)
                 }
 
                 is DomainResult.Error -> {}
@@ -74,7 +75,7 @@ class PlaylistViewModel(
             when (result) {
                 is DomainResult.Success -> {
                     result.data.collect {
-                        setSettingsTrackIndex(it)
+
                         setState {
                             copy(
                                 playlistState = PlaylistContract.PlaylistState.CurrentTrack(
@@ -207,11 +208,11 @@ class PlaylistViewModel(
                 is DomainResult.Success -> {
 
                     playLists.data.collect {
-                        setTracksToPlayerPlaylistUseCase(
+                       /* setTracksToPlayerPlaylistUseCase(
                             SetTracksToPlayerPlaylistUseCase.Params(
                                 it
                             )
-                        )
+                        )*/
                         setState {
                             copy(
                                 playlistState = PlaylistContract.PlaylistState.Success(
@@ -225,7 +226,7 @@ class PlaylistViewModel(
                     }
                 }
 
-                is DomainResult.Error -> TODO()
+                is DomainResult.Error -> {}
             }
         }
     }

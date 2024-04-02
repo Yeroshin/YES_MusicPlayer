@@ -15,6 +15,6 @@ class SettingsRepositoryImpl(
         settings.setCurrentPlaylistId(currentPlaylistId)
     }
     suspend fun updateCurrentTrackIndex(currentTrackIndex: Int) {
-        settings.setCurrentTrackIndex(currentTrackIndex)
+        settings.setCurrentTrackIndex(currentTrackIndex.toLong())
     }
 }

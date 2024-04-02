@@ -12,6 +12,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
+import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
@@ -116,14 +117,25 @@ class PlayerDataSource(
     private val _currentTrackIndexFlow = MutableStateFlow(-1)
     private val currentTrackIndexFlow: StateFlow<Int> = _currentTrackIndexFlow
 
+
+
+    private fun getMediaItems():List<MediaItem>{
+        val mediaItems= mutableListOf<MediaItem>()
+        for (index in 0..controller.mediaItemCount){
+            mediaItems.add(
+                controller.getMediaItemAt(index)
+            )
+        }
+        return mediaItems
+    }
      private fun setController() {
         controller.addListener(
             object : Player.Listener {
-                @OptIn(UnstableApi::class)
-                override fun onAudioSessionIdChanged(audioSessionId: Int) {
-                    super.onAudioSessionIdChanged(audioSessionId)
-                }
 
+                override fun onTracksChanged(tracks: Tracks) {
+                    super.onTracksChanged(tracks)
+
+                }
                 override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                     if (controller.duration != TIME_UNSET) {
                         _mediaMetadataFlow.value = PlayerStateDataSourceEntity(
@@ -242,14 +254,14 @@ class PlayerDataSource(
 
     fun setTracks(items: List<MediaItem>,index:Int) {
 
-        if (controllerFuture.isDone) {
+     /*   if (controllerFuture.isDone) {
             val controller = controllerFuture.get()
             controller.setMediaItems(items)
             controller.seekTo(index, TIME_UNSET)
         } else {
             // Добавить команду приостановки в очередь
             commandQueue.add(QueuedCommand.SetTracks(items))
-        }
+        }*/
         //   controller.setMediaItems(items)
     }
 
@@ -263,5 +275,7 @@ class PlayerDataSource(
     fun subscribeCurrentTrackIndex():Flow<Int>{
         return currentTrackIndexFlow
     }
+
+
 
 }

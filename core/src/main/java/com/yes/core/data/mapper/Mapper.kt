@@ -1,12 +1,11 @@
-package com.yes.playlistfeature.data.mapper
+package com.yes.core.data.mapper
 
 
 import android.net.Uri
-import android.provider.MediaStore
 import com.yes.core.data.entity.PlayListDataBaseTrackEntity
-import com.yes.playlistfeature.domain.entity.Track
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import com.yes.core.domain.entity.Track
 import java.io.File
 
 
@@ -57,6 +56,5 @@ class Mapper {
             .setMediaMetadata(mediaMetadata)
             .build()*/
     }
-
 
 }
