@@ -187,6 +187,11 @@ class PlaylistScreen : Fragment() {
                         state.playlistState.tracks
                     )
                 }
+                state.playlistState.currentTrack?.let {
+                    setAdaptersCurrentTrack(
+                        state.playlistState.currentTrack
+                    )
+                }
             }
 
             is PlaylistContract.PlaylistState.Loading -> {

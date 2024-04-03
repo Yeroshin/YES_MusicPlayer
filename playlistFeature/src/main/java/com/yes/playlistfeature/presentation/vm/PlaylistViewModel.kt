@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.yes.core.domain.models.DomainResult
 import com.yes.core.presentation.BaseViewModel
 import com.yes.core.util.EspressoIdlingResource
+import com.yes.playlistfeature.domain.entity.Track
 import com.yes.playlistfeature.domain.usecase.ChangeTracksPositionUseCase
 import com.yes.playlistfeature.domain.usecase.DeleteTrackUseCase
 import com.yes.playlistfeature.domain.usecase.SetModeUseCase
@@ -20,7 +21,10 @@ import com.yes.playlistfeature.presentation.contract.PlaylistContract.State
 import com.yes.playlistfeature.presentation.contract.PlaylistContract.Effect
 import com.yes.playlistfeature.presentation.mapper.MapperUI
 import com.yes.playlistfeature.presentation.model.TrackUI
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
+
 
 class PlaylistViewModel(
     private val subscribeCurrentPlaylistTracksUseCase: SubscribeCurrentPlaylistTracksUseCase,
@@ -49,19 +53,23 @@ class PlaylistViewModel(
         when (event) {
             is PlaylistContract.Event.OnDeleteTrack -> deleteTrack(event.track)
             is PlaylistContract.Event.OnModeChange -> setMode()
-            is PlaylistContract.Event.OnMoveItemPosition -> moveItemPosition(event.fromPosition, event.toPosition)
+            is PlaylistContract.Event.OnMoveItemPosition -> moveItemPosition(
+                event.fromPosition,
+                event.toPosition
+            )
+
             is PlaylistContract.Event.OnPlayTrack -> playTrack(event.position)
         }
     }
 
-    private fun playTrack(position:Int) {
+    private fun playTrack(position: Int) {
         viewModelScope.launch {
             val result = playTrackUseCase(
                 PlayTrackUseCase.Params(position)
             )
             when (result) {
                 is DomainResult.Success -> {
-                   // setSettingsTrackIndex(position)
+                    // setSettingsTrackIndex(position)
                 }
 
                 is DomainResult.Error -> {}
@@ -195,34 +203,38 @@ class PlaylistViewModel(
     }
 
     private fun subscribeTracks() {
-        espressoIdlingResource?.increment()
+
         viewModelScope.launch {
             setState {
                 copy(
                     playlistState = PlaylistContract.PlaylistState.Loading
                 )
             }
-            val playLists = subscribeCurrentPlaylistTracksUseCase()
-            espressoIdlingResource?.decrement()
-            when (playLists) {
+            val playListsFlow = subscribeCurrentPlaylistTracksUseCase()
+            val trackIndexFlow = subscribePlayerCurrentTrackIndexUseCase()
+            when (playListsFlow) {
                 is DomainResult.Success -> {
+                    when (trackIndexFlow) {
+                        is DomainResult.Success -> {
 
-                    playLists.data.collect {
-                       /* setTracksToPlayerPlaylistUseCase(
-                            SetTracksToPlayerPlaylistUseCase.Params(
-                                it
-                            )
-                        )*/
-                        setState {
-                            copy(
-                                playlistState = PlaylistContract.PlaylistState.Success(
-                                    it.map { item ->
-                                        mapperUI.map(item)
+                            playListsFlow.data.combine(trackIndexFlow.data) { playListsResult, trackIndexResult ->
+                                Pair(playListsResult, trackIndexResult)
+                            }.collect { (playlist, currentTrackIndex) ->
+                                    setState {
+                                        copy(
+                                            playlistState = PlaylistContract.PlaylistState.Success(
+                                                playlist.map {
+                                                    mapperUI.map(it)
+                                                },
+                                                null,
+                                                currentTrackIndex
+                                            )
+                                        )
                                     }
-                                )
-                            )
+                                }
                         }
-                        subscribePlayerCurrentTrackIndex()
+
+                        is DomainResult.Error -> {}
                     }
                 }
 

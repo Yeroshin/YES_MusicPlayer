@@ -22,12 +22,15 @@ import com.yes.core.domain.useCase.SubscribeCurrentPlaylistTracksUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
 class MusicService : MediaSessionService() {
     interface DependencyResolver {
         fun getMusicServiceComponent(context: Context): MusicServiceComponent
     }
+
     data class Dependency(
         val mediaSession: MediaSession,
         val mapper: Mapper,
@@ -47,21 +50,21 @@ class MusicService : MediaSessionService() {
     private val serviceScope = CoroutineScope(Dispatchers.Main)
     override fun onCreate() {
         super.onCreate()
-      //  mediaSession =dependency.mediaSession
+        //  mediaSession =dependency.mediaSession
         mediaSession.player.addListener(
             object : Player.Listener {
 
                 override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
-                   // val currentMediaItemIndex=mediaSession?.player?.currentMediaItemIndex
+                    // val currentMediaItemIndex=mediaSession?.player?.currentMediaItemIndex
                     serviceScope.launch {
-                        val result=dependency.setSettingsTrackIndexUseCase(
+                        val result = dependency.setSettingsTrackIndexUseCase(
                             SetSettingsTrackIndexUseCase.Params(
                                 mediaSession.player.currentMediaItemIndex
                             )
                         )
-                        when(result){
-                            is DomainResult.Success->{}
-                            is DomainResult.Error->{}
+                        when (result) {
+                            is DomainResult.Success -> {}
+                            is DomainResult.Error -> {}
                         }
                     }
 
@@ -72,8 +75,27 @@ class MusicService : MediaSessionService() {
         )
         serviceScope.launch {
             val playLists = dependency.subscribeCurrentPlaylistTracksUseCase()
+            val currentTrackIndex = dependency.getCurrentTrackIndexUseCase()
             when (playLists) {
                 is DomainResult.Success -> {
+                    when (currentTrackIndex) {
+                        is DomainResult.Success -> {
+                            playLists.data.zip(currentTrackIndex.data) { playList, trackIndex ->
+                                Pair(playList, trackIndex)
+
+                            }.collect {
+                                mediaSession.player.setMediaItems(
+                                    it.first.map { track ->
+                                        dependency.mapper.mapToMediaItem(track)
+                                    }
+                                )
+                                mediaSession.player.seekTo(it.second, 0)
+                            }
+                        }
+
+                        is DomainResult.Error -> {}
+                    }
+                    /*
                     playLists.data.collect {
                         mediaSession.player.setMediaItems(
                             it.map {track->
@@ -92,18 +114,23 @@ class MusicService : MediaSessionService() {
                     }
                 }
 
+                is DomainResult.Error -> {}*/
+                }
+
                 is DomainResult.Error -> {}
             }
         }
     }
+
     override fun onGetSession(
 
         controllerInfo: MediaSession.ControllerInfo
-    ): MediaSession  {
+    ): MediaSession {
         println("MusicService onGetSession")
-        Log.d("alarm","MusicService!")
+        Log.d("alarm", "MusicService!")
         return mediaSession
     }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         when (intent?.action) {
@@ -115,6 +142,7 @@ class MusicService : MediaSessionService() {
         }
         return super.onStartCommand(intent, flags, startId)
     }
+
     override fun onTaskRemoved(rootIntent: Intent?) {
         val player = mediaSession.player!!
         if (!player.playWhenReady || player.mediaItemCount == 0) {
@@ -123,11 +151,12 @@ class MusicService : MediaSessionService() {
             stopSelf()
         }
     }
+
     override fun onDestroy() {
         mediaSession.run {
             player.release()
             release()
-           // mediaSession = null
+            // mediaSession = null
         }
         super.onDestroy()
     }
