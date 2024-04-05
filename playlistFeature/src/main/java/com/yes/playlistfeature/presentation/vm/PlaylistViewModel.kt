@@ -217,7 +217,7 @@ class PlaylistViewModel(
                     when (trackIndexFlow) {
                         is DomainResult.Success -> {
 
-                            playListsFlow.data.combine(trackIndexFlow.data) { playListsResult, trackIndexResult ->
+                            playListsFlow.data.zip(trackIndexFlow.data) { playListsResult, trackIndexResult ->
                                 Pair(playListsResult, trackIndexResult)
                             }.collect { (playlist, currentTrackIndex) ->
                                     setState {

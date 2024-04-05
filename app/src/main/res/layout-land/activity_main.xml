@@ -5,15 +5,16 @@
     android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="8dp">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/player_controls"
         android:name="com.yes.player.presentation.ui.PlayerScreen"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_weight="1">
 
     </androidx.fragment.app.FragmentContainerView>
 
