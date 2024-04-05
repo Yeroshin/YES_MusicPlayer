@@ -112,10 +112,10 @@ class EqualizerModule {
           }
           val z=eq.hasControl()
           return eq*/
-        val eq = Equalizer(0, player.audioSessionId)
+      /*  val eq = Equalizer(0, player.audioSessionId)
         eq.enabled = true//tmp
-        return eq
-        // return Equalizer(0,player.audioSessionId)
+        return eq*/
+         return Equalizer(0,player.audioSessionId)
 
     }
 

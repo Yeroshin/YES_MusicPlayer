@@ -89,7 +89,10 @@ class MusicService : MediaSessionService() {
                                         dependency.mapper.mapToMediaItem(track)
                                     }
                                 )
-                                mediaSession.player.seekTo(it.second, 0)
+                                if(it.first.isNotEmpty()||it.second!=-1){
+                                    mediaSession.player.seekTo(it.second, 0)
+                                }
+
                             }
                         }
 
