@@ -14,21 +14,6 @@ class EqualizerRepositoryImpl(
     private var equalizer:Equalizer,
     private val audioSessionId:Int
 ) {
-    init {
-        equalizer.setControlStatusListener { effect, controlGranted ->
-            if(!controlGranted){
-                equalizer.release()
-                equalizer=Equalizer(1000,audioSessionId)
-                val a=equalizer.hasControl()
-                val b=equalizer.enabled
-                equalizer.enabled=true
-                val c=equalizer.hasControl()
-                val d=equalizer.enabled
-                val hasControl = controlGranted
-            }
-
-        }
-    }
 
     fun getPresets():List<String>{
         val numberOfPresets =

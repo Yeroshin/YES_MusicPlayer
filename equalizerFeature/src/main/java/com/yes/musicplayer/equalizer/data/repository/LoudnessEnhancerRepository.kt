@@ -23,6 +23,7 @@ class LoudnessEnhancerRepository(
         )
     }
     fun setEnabled(enabled:Boolean){
+        checkControl()
         try {
             loudnessEnhancer.enabled=enabled
         }catch (e:Exception){
