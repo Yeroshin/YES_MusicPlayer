@@ -179,7 +179,7 @@ class PlaylistScreen : Fragment() {
     private fun renderUiState(state: PlaylistContract.State) {
         when (state.playlistState) {
             is PlaylistContract.PlaylistState.Success -> {
-                state.playlistState.mode?.let {
+                state.mode?.let {
                     setMode(it)
                 }
                 state.playlistState.tracks?.let {
@@ -187,9 +187,9 @@ class PlaylistScreen : Fragment() {
                         state.playlistState.tracks
                     )
                 }
-                state.playlistState.currentTrack?.let {
+                state.currentTrack?.let {
                     setAdaptersCurrentTrack(
-                        state.playlistState.currentTrack
+                        state.currentTrack
                     )
                 }
             }
@@ -220,8 +220,8 @@ class PlaylistScreen : Fragment() {
         binder.playList.layoutManager?.removeAllViews()
         adapter.setItems(tracks)
 
-          binder.progressBar.visibility = View.GONE
-          binder.disableView.visibility = View.GONE
+        binder.progressBar.visibility = View.GONE
+        binder.disableView.visibility = View.GONE
     }
 
     private fun idleView() {

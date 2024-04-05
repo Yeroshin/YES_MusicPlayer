@@ -14,15 +14,16 @@ class PlaylistContract {
         data class OnPlayTrack(val position:Int):Event()
     }
     data class State(
-        val playlistState: PlaylistState
+        val playlistState: PlaylistState,
+        val mode:Int?=null,
+        val currentTrack:Int?=null
     ) : UiState
     sealed class PlaylistState {
         data object Idle : PlaylistState()
         data object Loading : PlaylistState()
         data class Success(
             val tracks: List<TrackUI>?=null,
-            val mode:Int?=null,
-            val currentTrack:Int?=null
+
         ) : PlaylistState()
         data class CurrentTrack(
             val currentTrack:Int

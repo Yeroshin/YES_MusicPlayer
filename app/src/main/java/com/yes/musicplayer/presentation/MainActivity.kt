@@ -120,7 +120,7 @@ class MainActivity :
         }
         checkForUpdates()
         checkPermissions()
-        checkBatteryOptimizations()
+      //  checkBatteryOptimizations()
        // createNotificationChannel(this)
 
     }

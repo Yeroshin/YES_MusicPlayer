@@ -82,13 +82,13 @@ class PlaylistViewModel(
             val result = subscribePlayerCurrentTrackIndexUseCase()
             when (result) {
                 is DomainResult.Success -> {
-                    result.data.collect {
+                    result.data.collect { trackIndex ->
 
                         setState {
                             copy(
-                                playlistState = PlaylistContract.PlaylistState.CurrentTrack(
-                                    it
-                                )
+
+                                    currentTrack = trackIndex
+
                             )
                         }
                     }
@@ -162,9 +162,9 @@ class PlaylistViewModel(
                 is DomainResult.Success -> {
                     setState {
                         copy(
-                            playlistState = PlaylistContract.PlaylistState.Success(
-                                mode = mapperUI.map(result.data)
-                            )
+
+                            mode = mapperUI.map(result.data)
+
                         )
                     }
                 }
@@ -211,36 +211,26 @@ class PlaylistViewModel(
                 )
             }
             val playListsFlow = subscribeCurrentPlaylistTracksUseCase()
-            val trackIndexFlow = subscribePlayerCurrentTrackIndexUseCase()
             when (playListsFlow) {
                 is DomainResult.Success -> {
-                    when (trackIndexFlow) {
-                        is DomainResult.Success -> {
-
-                            playListsFlow.data.zip(trackIndexFlow.data) { playListsResult, trackIndexResult ->
-                                Pair(playListsResult, trackIndexResult)
-                            }.collect { (playlist, currentTrackIndex) ->
-                                    setState {
-                                        copy(
-                                            playlistState = PlaylistContract.PlaylistState.Success(
-                                                playlist.map {
-                                                    mapperUI.map(it)
-                                                },
-                                                null,
-                                                currentTrackIndex
-                                            )
-                                        )
+                    playListsFlow.data.collect { playlist ->
+                        setState {
+                            copy(
+                                playlistState = PlaylistContract.PlaylistState.Success(
+                                    playlist.map {
+                                        mapperUI.map(it)
                                     }
-                                }
+                                )
+                            )
                         }
-
-                        is DomainResult.Error -> {}
+                        subscribePlayerCurrentTrackIndex()
                     }
                 }
 
                 is DomainResult.Error -> {}
             }
         }
+
     }
 
     class Factory(
