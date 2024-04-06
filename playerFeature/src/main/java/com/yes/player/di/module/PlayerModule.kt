@@ -29,7 +29,12 @@ class PlayerModule {
     fun providesVisualizer(
         audioSessionId: Int
     ): Visualizer {
-        val visualizer=Visualizer( audioSessionId)
+        var visualizer=Visualizer( audioSessionId)
+       if (visualizer.enabled){
+           visualizer.release()
+       }
+        visualizer=Visualizer( audioSessionId)
+        val e =visualizer.enabled
         visualizer.enabled = false
         return visualizer
     }

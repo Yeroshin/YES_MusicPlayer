@@ -2,14 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/padding"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
 
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:visibility="visible">
 
     <LinearLayout
 
+        style="@style/margin"
         android:layout_width="match_parent"
         android:layout_height="158dp"
         android:background="@drawable/display"
@@ -178,10 +180,10 @@
     </LinearLayout>
 
     <LinearLayout
+        style="@style/margin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
 
+        android:layout_height="wrap_content"
         android:background="@drawable/button_space"
         android:orientation="horizontal">
 

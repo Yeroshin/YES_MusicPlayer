@@ -127,7 +127,7 @@ class PlayerScreen : Fragment() {
         when (state.playerState) {
             is PlayerContract.PlayerState.Success -> {
                 dataLoaded(
-                    state.playerState.info
+                    state.info
                 )
             }
 
@@ -138,45 +138,49 @@ class PlayerScreen : Fragment() {
         }
     }
 
-    private fun dataLoaded(playerState: PlayerStateUI) {
-        if (playerState.stateBuffering) {
-            showBuffering()
-        } else {
-            hideBuffering()
-            playerState.playListName?.let { binder.playListName.text = playerState.playListName }
-            playerState.trackTitle?.let {
-                binder.trackTitle.text = playerState.trackTitle
-            }
-            playerState.durationCounter?.let {
-                binder.durationCounter.gravity = Gravity.CENTER_HORIZONTAL
-                binder.durationCounter.gravity = Gravity.CENTER_VERTICAL
-                binder.durationCounter.text = playerState.durationCounter
-            }
-            playerState.duration?.let { binder.duration.text = playerState.duration }
-            playerState.progress?.let {
-                binder.seekBar.progress = playerState.progress
-            }
-            playerState.durationInt?.let {
-                binder.seekBar.max = playerState.durationInt
-            }
-            playerState.visualizerData?.let {
-                binder.visualizerView.setValue(
-                    playerState.visualizerData
-                )
-            }
-           /* playerState.visualizerData?.let {
-                binder.composeView.setContent {
-                 /* AdaptiveGrid(playerState.visualizerData)*/
-                   /* EqualizerView(
+    private fun dataLoaded(playerState: PlayerStateUI?) {
+        playerState?.let {
+            if (playerState.stateBuffering) {
+                showBuffering()
+            } else {
+                hideBuffering()
+                playerState.playListName?.let {
+                    binder.playListName.text = playerState.playListName
+                }
+                playerState.trackTitle?.let {
+                    binder.trackTitle.text = playerState.trackTitle
+                }
+                playerState.durationCounter?.let {
+                    binder.durationCounter.gravity = Gravity.CENTER_HORIZONTAL
+                    binder.durationCounter.gravity = Gravity.CENTER_VERTICAL
+                    binder.durationCounter.text = playerState.durationCounter
+                }
+                playerState.duration?.let { binder.duration.text = playerState.duration }
+                playerState.progress?.let {
+                    binder.seekBar.progress = playerState.progress
+                }
+                playerState.durationInt?.let {
+                    binder.seekBar.max = playerState.durationInt
+                }
+                playerState.visualizerData?.let {
+                    binder.visualizerView.setValue(
                         playerState.visualizerData
-                    )*/
-                    DimensionLayout(
-                        values = playerState.visualizerData,
-                        mainContent = { MainContent() },
-                        dependentContent = { maxSize,values -> DependentContent(maxSize,values) } // Передаем DependentContent в качестве dependentContent
                     )
                 }
-            }*/
+            }
+            /* playerState.visualizerData?.let {
+                 binder.composeView.setContent {
+                  /* AdaptiveGrid(playerState.visualizerData)*/
+                    /* EqualizerView(
+                         playerState.visualizerData
+                     )*/
+                     DimensionLayout(
+                         values = playerState.visualizerData,
+                         mainContent = { MainContent() },
+                         dependentContent = { maxSize,values -> DependentContent(maxSize,values) } // Передаем DependentContent в качестве dependentContent
+                     )
+                 }
+             }*/
         }
 
 
@@ -232,5 +236,5 @@ class PlayerScreen : Fragment() {
     class Dependency(
         val factory: PlayerViewModel.Factory,
 
-    )
+        )
 }

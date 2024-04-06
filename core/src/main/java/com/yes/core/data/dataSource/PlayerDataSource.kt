@@ -40,7 +40,6 @@ class PlayerDataSource(
     }
 
 
-
     private val sessionToken by lazy {
         SessionToken(
             context,
@@ -118,17 +117,17 @@ class PlayerDataSource(
     private val currentTrackIndexFlow: StateFlow<Int> = _currentTrackIndexFlow
 
 
-
-    private fun getMediaItems():List<MediaItem>{
-        val mediaItems= mutableListOf<MediaItem>()
-        for (index in 0..controller.mediaItemCount){
+    private fun getMediaItems(): List<MediaItem> {
+        val mediaItems = mutableListOf<MediaItem>()
+        for (index in 0..controller.mediaItemCount) {
             mediaItems.add(
                 controller.getMediaItemAt(index)
             )
         }
         return mediaItems
     }
-     private fun setController() {
+
+    private fun setController() {
         controller.addListener(
             object : Player.Listener {
 
@@ -136,9 +135,10 @@ class PlayerDataSource(
                     super.onTracksChanged(tracks)
 
                 }
+
                 override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                     if (controller.duration != TIME_UNSET) {
-                        _mediaMetadataFlow.value = PlayerStateDataSourceEntity(
+                        _mediaMetadataFlow.value = _mediaMetadataFlow.value.copy(
                             duration = controller.duration
                         )
                     }
@@ -151,14 +151,15 @@ class PlayerDataSource(
                         }
 
                         Player.STATE_BUFFERING -> {
-                            _mediaMetadataFlow.value = PlayerStateDataSourceEntity(
+                            _mediaMetadataFlow.value = _mediaMetadataFlow.value.copy(
                                 stateBuffering = true
                             )
                         }
 
                         Player.STATE_READY -> {
-                            _mediaMetadataFlow.value = PlayerStateDataSourceEntity(
-                                duration = controller.duration
+                            _mediaMetadataFlow.value = _mediaMetadataFlow.value.copy(
+                                duration = controller.duration,
+                                stateBuffering = false
                             )
                         }
 
@@ -177,8 +178,8 @@ class PlayerDataSource(
                 }
 
                 override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
-                    _currentTrackIndexFlow.value=controller.currentMediaItemIndex
-                    _mediaMetadataFlow.value = PlayerStateDataSourceEntity(
+                    _currentTrackIndexFlow.value = controller.currentMediaItemIndex
+                    _mediaMetadataFlow.value = _mediaMetadataFlow.value.copy(
                         mediaMetadata = mediaMetadata
                     )
                 }
@@ -216,13 +217,14 @@ class PlayerDataSource(
         return controller.duration
     }
 
-    fun seekToItemAndPlay(index:Int) {
+    fun seekToItemAndPlay(index: Int) {
         controller.seekTo(3, 0)
     }
-    fun play(index:Int){
+
+    fun play(index: Int) {
         if (controllerFuture.isDone) {
             val controller = controllerFuture.get()
-            controller.seekTo(index,TIME_UNSET)
+            controller.seekTo(index, TIME_UNSET)
             controller.play()
 
         } else {
@@ -252,16 +254,16 @@ class PlayerDataSource(
         return controller.currentPosition
     }
 
-    fun setTracks(items: List<MediaItem>,index:Int) {
+    fun setTracks(items: List<MediaItem>, index: Int) {
 
-     /*   if (controllerFuture.isDone) {
-            val controller = controllerFuture.get()
-            controller.setMediaItems(items)
-            controller.seekTo(index, TIME_UNSET)
-        } else {
-            // Добавить команду приостановки в очередь
-            commandQueue.add(QueuedCommand.SetTracks(items))
-        }*/
+        /*   if (controllerFuture.isDone) {
+               val controller = controllerFuture.get()
+               controller.setMediaItems(items)
+               controller.seekTo(index, TIME_UNSET)
+           } else {
+               // Добавить команду приостановки в очередь
+               commandQueue.add(QueuedCommand.SetTracks(items))
+           }*/
         //   controller.setMediaItems(items)
     }
 
@@ -272,10 +274,10 @@ class PlayerDataSource(
     fun subscribeAudioSessionId(): Flow<Int> {
         return mediaSessionIdFlow
     }
-    fun subscribeCurrentTrackIndex():Flow<Int>{
+
+    fun subscribeCurrentTrackIndex(): Flow<Int> {
         return currentTrackIndexFlow
     }
-
 
 
 }

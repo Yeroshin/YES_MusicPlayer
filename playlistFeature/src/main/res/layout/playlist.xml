@@ -2,27 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/padding"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <FrameLayout
+        style="@style/margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
         android:layout_weight="1"
         android:background="@drawable/button_space"
-        android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:paddingRight="5dp"
-        android:paddingBottom="5dp">
+        android:padding="4dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/playList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            tools:itemCount="30" />
+            tools:itemCount="30"
+            tools:listitem="@layout/item_track" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -42,12 +41,12 @@
     </FrameLayout>
 
     <LinearLayout
+        style="@style/margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:background="@drawable/button_space"
         android:orientation="horizontal"
-        android:showDividers="beginning">
+        >
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_media"

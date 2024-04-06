@@ -216,11 +216,10 @@ class PlaylistViewModel(
                     playListsFlow.data.collect { playlist ->
                         setState {
                             copy(
-                                playlistState = PlaylistContract.PlaylistState.Success(
-                                    playlist.map {
-                                        mapperUI.map(it)
-                                    }
-                                )
+                                playlistState = PlaylistContract.PlaylistState.Success,
+                                tracks = playlist.map {
+                                    mapperUI.map(it)
+                                }
                             )
                         }
                         subscribePlayerCurrentTrackIndex()

@@ -3,22 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:id="@+id/LinearLayout1"
+    style="@style/padding"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:padding="8dp">
+    android:orientation="horizontal">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/player_controls"
         android:name="com.yes.player.presentation.ui.PlayerScreen"
+        style="@style/margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
         android:layout_weight="1">
 
     </androidx.fragment.app.FragmentContainerView>
 
     <LinearLayout
+        style="@style/margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -28,7 +29,7 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height_regular"
+            android:layout_height="@dimen/button_height_small"
             android:background="#00FFFFFF"
             android:theme="@style/text"
             app:tabGravity="center"
@@ -44,7 +45,6 @@
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="8dp"
             android:layout_weight="1">
 
         </androidx.viewpager2.widget.ViewPager2>

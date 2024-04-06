@@ -182,9 +182,9 @@ class PlaylistScreen : Fragment() {
                 state.mode?.let {
                     setMode(it)
                 }
-                state.playlistState.tracks?.let {
+                state.tracks?.let {
                     setItemsToAdapter(
-                        state.playlistState.tracks
+                        state.tracks
                     )
                 }
                 state.currentTrack?.let {
@@ -202,9 +202,6 @@ class PlaylistScreen : Fragment() {
                 idleView()
             }
 
-            is PlaylistContract.PlaylistState.CurrentTrack -> setAdaptersCurrentTrack(
-                state.playlistState.currentTrack
-            )
         }
     }
     private fun setAdaptersCurrentTrack(position:Int){

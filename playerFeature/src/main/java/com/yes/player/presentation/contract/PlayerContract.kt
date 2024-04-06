@@ -15,12 +15,13 @@ class PlayerContract {
     }
 
     data class State(
-        val playerState: PlayerState
+        val playerState: PlayerState,
+        val info: PlayerStateUI?=null
     ) : UiState
 
 
     sealed class PlayerState {
-        data class Success(val info: PlayerStateUI):PlayerState()
+        data object Success:PlayerState()
         data object Idle : PlayerState()
     }
 

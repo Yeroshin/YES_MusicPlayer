@@ -10,6 +10,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -32,6 +33,12 @@ class VisualizerRepository(
             fft: ByteArray?,
             samplingRate: Int
         ) {
+            visualizer?.let {
+                if (!it.enabled){
+                    visualizer.enabled=true
+                }
+            }
+            val en=visualizer?.enabled
             _visualizerEntity.value = VisualizerEntity(
                 fft?.clone(),
                 samplingRate/1000
@@ -49,6 +56,7 @@ class VisualizerRepository(
             false,
             true
         )
+        visualizer.enabled = true
         /*  val job = CoroutineScope(Dispatchers.Default).launch {
               while (true) {
                   delay(1000) // ждем 1 секунду

@@ -16,18 +16,14 @@ class PlaylistContract {
     data class State(
         val playlistState: PlaylistState,
         val mode:Int?=null,
+        val tracks: List<TrackUI>?=null,
         val currentTrack:Int?=null
     ) : UiState
     sealed class PlaylistState {
         data object Idle : PlaylistState()
         data object Loading : PlaylistState()
-        data class Success(
-            val tracks: List<TrackUI>?=null,
+        data object Success: PlaylistState()
 
-        ) : PlaylistState()
-        data class CurrentTrack(
-            val currentTrack:Int
-        ) : PlaylistState()
 
     }
     sealed class Effect : UiEffect {
