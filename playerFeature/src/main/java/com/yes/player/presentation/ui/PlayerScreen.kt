@@ -32,16 +32,21 @@ import kotlinx.coroutines.launch
 
 class PlayerScreen : Fragment() {
     interface DependencyResolver {
-        fun getPlayerFragmentComponent(): PlayerFeatureComponent
+        fun getPlayerFragmentComponent(): PlayerScreen.Dependency
     }
 
-    private val component by lazy {
+   /* private val component by lazy {
         (requireActivity().application as DependencyResolver)
             .getPlayerFragmentComponent()
     }
     private val dependency by lazy {
         component.getDependency()
-    }
+    }*/
+   private val dependency by lazy {
+       (requireActivity().application as DependencyResolver)
+           .getPlayerFragmentComponent()
+   }
+
 
     private lateinit var binding: ViewBinding
     private val binder by lazy {

@@ -9,6 +9,7 @@ import com.yes.player.data.repository.PlayerRepository
 import com.yes.player.data.repository.PlaylistRepositoryImpl
 import com.yes.player.data.repository.SettingsRepositoryImpl
 import com.yes.player.data.repository.VisualizerRepository
+import com.yes.player.di.PlayerScope
 import com.yes.player.domain.usecase.PlayUseCase
 import com.yes.player.domain.usecase.SeekToNextUseCase
 import com.yes.player.domain.usecase.SeekToPreviousUseCase
@@ -39,6 +40,7 @@ class PlayerModule {
         return visualizer
     }
     @Provides
+    @PlayerScope
     fun providesVisualizerRepository(
         visualizer: Visualizer
     ): VisualizerRepository {

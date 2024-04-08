@@ -60,12 +60,21 @@ class YESApplication : Application(),
             .build()
     }
 
-    override fun getPlayerFragmentComponent(): PlayerFeatureComponent {
+   /* override fun getPlayerFragmentComponent(): PlayerFeatureComponent {
         return DaggerPlayerFeatureComponent.builder()
             .audioComponent(audioComponent)
             .dataComponent(dataComponent)
             .build()
-    }
+    }*/
+    private val dep by lazy {
+       DaggerPlayerFeatureComponent.builder()
+           .audioComponent(audioComponent)
+           .dataComponent(dataComponent)
+           .build().getDependency()
+   }
+   override fun getPlayerFragmentComponent(): PlayerScreen.Dependency {
+       return dep
+   }
 
 
     override fun getPlayListDialogComponent(): PlayListDialogComponent {
