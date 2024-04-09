@@ -8,6 +8,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import com.yes.core.data.dataSource.SettingsDataStore
 import com.yes.core.di.module.IoDispatcher
+import com.yes.core.presentation.BaseDependency
 import com.yes.musicplayer.equalizer.data.mapper.Mapper
 import com.yes.musicplayer.equalizer.data.repository.EqualizerRepositoryImpl
 import com.yes.musicplayer.equalizer.data.repository.LoudnessEnhancerRepository
@@ -75,7 +76,6 @@ class EqualizerModule {
     @OptIn(UnstableApi::class)
     @Provides
     fun providesEqualizer(
-        context: Context,
         player: ExoPlayer
     ): Equalizer {
         /*  var eq=Equalizer(1000,player.audioSessionId)
@@ -234,8 +234,8 @@ class EqualizerModule {
     @Provides
     fun providesDependency(
         factory: EqualizerViewModel.Factory,
-    ): EqualizerScreen.Dependency {
-        return EqualizerScreen.Dependency(
+    ): BaseDependency {
+        return BaseDependency(
             factory
         )
     }

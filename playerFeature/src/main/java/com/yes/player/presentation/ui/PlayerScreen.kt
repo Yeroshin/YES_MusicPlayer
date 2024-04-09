@@ -18,9 +18,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
+import com.yes.core.presentation.BaseDependency
+import com.yes.core.presentation.BaseFragment
 import com.yes.core.presentation.BaseViewModel
+import com.yes.core.presentation.UiState
 import com.yes.player.databinding.PlayerBinding
-import com.yes.player.di.components.PlayerFeatureComponent
 import com.yes.player.presentation.contract.PlayerContract
 import com.yes.player.presentation.model.PlayerStateUI
 import com.yes.player.presentation.vm.PlayerViewModel
@@ -30,75 +32,35 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class PlayerScreen : Fragment() {
+class PlayerScreen :  BaseFragment() {
+
     interface DependencyResolver {
-        fun getPlayerFragmentComponent(): PlayerScreen.Dependency
+        fun resolvePlayerFragmentDependency(): BaseDependency
     }
 
-   /* private val component by lazy {
-        (requireActivity().application as DependencyResolver)
-            .getPlayerFragmentComponent()
-    }
-    private val dependency by lazy {
-        component.getDependency()
-    }*/
-   private val dependency by lazy {
+   override val dependency by lazy {
        (requireActivity().application as DependencyResolver)
-           .getPlayerFragmentComponent()
+           .resolvePlayerFragmentDependency()
    }
 
 
-    private lateinit var binding: ViewBinding
+
     private val binder by lazy {
         binding as PlayerBinding
     }
-    private val viewModel: BaseViewModel<PlayerContract.Event,
-            PlayerContract.State,
-            PlayerContract.Effect> by viewModels {
-        dependency.factory
+
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): ViewBinding {
+        return  PlayerBinding.inflate(inflater, container, false)
     }
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = PlayerBinding.inflate(inflater, container, false)
-        //migration
 
-        ///////////////////////
-        return binder.root
+    override fun showEffect() {
+
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setUpView()
-        observeViewModel()
-    }
-
-    private fun observeViewModel() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect {
-                    renderUiState(it)
-                }
-            }
-        }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.effect.collect {
-                    when (it) {
-                        is PlayerContract.Effect.UnknownException -> {
-                            showError(com.yes.coreui.R.string.UnknownException)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun setUpView() {
+    override fun setUpView() {
 
         binder.btnPlay.setOnClickListener {
             viewModel.setEvent(PlayerContract.Event.OnPlay)
@@ -128,7 +90,10 @@ class PlayerScreen : Fragment() {
     }
 
 
-    private fun renderUiState(state: PlayerContract.State) {
+
+
+    override fun renderUiState(state:UiState) {
+        state as PlayerContract.State
         when (state.playerState) {
             is PlayerContract.PlayerState.Success -> {
                 dataLoaded(
@@ -238,8 +203,4 @@ class PlayerScreen : Fragment() {
         animateTextJob.cancel()
     }
 
-    class Dependency(
-        val factory: PlayerViewModel.Factory,
-
-        )
 }

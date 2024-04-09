@@ -14,8 +14,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
+import com.yes.core.presentation.BaseDependency
+import com.yes.core.presentation.BaseFragment
 import com.yes.core.presentation.BaseViewModel
 import com.yes.core.presentation.ItemTouchHelperCallback
+import com.yes.core.presentation.UiState
 import com.yes.playlistfeature.databinding.PlaylistBinding
 import com.yes.playlistfeature.di.component.PlaylistComponent
 import com.yes.playlistfeature.presentation.contract.PlaylistContract
@@ -24,17 +27,15 @@ import com.yes.playlistfeature.presentation.vm.PlaylistViewModel
 import kotlinx.coroutines.launch
 
 
-class PlaylistScreen : Fragment() {
+class PlaylistScreen : BaseFragment(){
     interface DependencyResolver {
-        fun getPlaylistComponent(): PlaylistComponent
+        fun resolvePlaylistComponent(): BaseDependency
     }
 
-    private val component by lazy {
+
+    override val dependency by lazy {
         (requireActivity().application as DependencyResolver)
-            .getPlaylistComponent()
-    }
-    private val dependency: Dependency by lazy {
-        component.getDependency()
+            .resolvePlaylistComponent()
     }
 
     interface MediaChooserManager {
@@ -46,7 +47,7 @@ class PlaylistScreen : Fragment() {
         fun showPlaylistDialog()
     }
 
-    private lateinit var binding: ViewBinding
+
     private val binder by lazy {
         binding as PlaylistBinding
     }
@@ -58,11 +59,7 @@ class PlaylistScreen : Fragment() {
         activity as PlaylistManager
     }
 
-    private val viewModel: BaseViewModel<PlaylistContract.Event,
-            PlaylistContract.State,
-            PlaylistContract.Effect> by viewModels {
-        dependency.factory
-    }
+
     private val adapter by lazy {
         PlaylistAdapter{
             position ->
@@ -72,46 +69,12 @@ class PlaylistScreen : Fragment() {
 
         }
     }
-    private fun playItem(){
 
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): ViewBinding {
+        return PlaylistBinding.inflate(inflater)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = PlaylistBinding.inflate(inflater)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        observeViewModel()
-        setupView()
-    }
-
-    private fun observeViewModel() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect {
-                    renderUiState(it)
-                }
-            }
-        }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.effect.collect {
-                    when (it) {
-                        is PlaylistContract.Effect.UnknownException -> {
-                            showError(com.yes.coreui.R.string.UnknownException)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun setupView() {
+    override fun setUpView() {
         binder.btnMedia.setOnClickListener {
             mediaChooserManager.showMediaDialog()
         }
@@ -176,7 +139,8 @@ class PlaylistScreen : Fragment() {
 
     }
 
-    private fun renderUiState(state: PlaylistContract.State) {
+    override fun renderUiState(state: UiState) {
+        state as PlaylistContract.State
         when (state.playlistState) {
             is PlaylistContract.PlaylistState.Success -> {
                 state.mode?.let {
@@ -204,6 +168,11 @@ class PlaylistScreen : Fragment() {
 
         }
     }
+
+    override fun showEffect() {
+        TODO("Not yet implemented")
+    }
+
     private fun setAdaptersCurrentTrack(position:Int){
         adapter.setCurrent(position)
         binder.playList.layoutManager?.scrollToPosition(position)
@@ -237,9 +206,4 @@ class PlaylistScreen : Fragment() {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-
-    class Dependency(
-        val factory: PlaylistViewModel.Factory,
-       // val adapter: PlaylistAdapter
-    )
 }

@@ -6,6 +6,7 @@ import com.yes.core.di.module.MainDispatcher
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.core.data.dataSource.SettingsDataStore
+import com.yes.core.presentation.BaseDependency
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.playlistfeature.data.mapper.Mapper
 import com.yes.playlistfeature.data.repository.PlayListRepositoryImpl
@@ -202,12 +203,10 @@ class PlaylistModule {
 
     @Provides
     fun providesPlayListDialogDependency(
-        factory: PlaylistViewModel.Factory,
-       // adapter: PlaylistAdapter
-    ): PlaylistScreen.Dependency {
-        return PlaylistScreen.Dependency(
+        factory: PlaylistViewModel.Factory
+    ): BaseDependency {
+        return BaseDependency(
             factory
-           // adapter
         )
     }
 }

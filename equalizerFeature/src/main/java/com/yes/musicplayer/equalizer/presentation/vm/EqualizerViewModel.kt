@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yes.core.domain.models.DomainResult
 import com.yes.core.presentation.BaseViewModel
+import com.yes.musicplayer.equalizer.domain.entity.Equalizer
 import com.yes.musicplayer.equalizer.domain.usecase.GetAudioEffectUseCase
 import com.yes.musicplayer.equalizer.domain.usecase.SetEqualizerEnabledUseCase
 import com.yes.musicplayer.equalizer.domain.usecase.SetEqualizerValueUseCase
@@ -35,6 +36,7 @@ class EqualizerViewModel(
             )
             when (result) {
                 is DomainResult.Success -> {
+
                     setState {
                         copy(
                             state = EqualizerState.Success(
@@ -86,11 +88,29 @@ class EqualizerViewModel(
             when (result) {
                 is DomainResult.Success -> {
                     setState {
-                        copy(
+                        when(currentState.state){
+                            is EqualizerState.Success->{
+                                copy(
+                                    state = (currentState.state as EqualizerState.Success).copy(
+                                        equalizer=(currentState.state as EqualizerState.Success).equalizer.copy(
+                                            loudnessEnhancerEnabled = mapperUI.map(result.data).loudnessEnhancerEnabled
+                                        )
+                                    )
+                                )
+                            }
+                            else -> {
+                                copy(
+                                    state = EqualizerState.Success(
+                                        mapperUI.map(result.data)
+                                    )
+                                )
+                            }
+                        }
+                      /*  copy(
                             state = EqualizerState.Success(
                                 mapperUI.map(result.data)
                             )
-                        )
+                        )*/
                     }
                 }
 
@@ -111,11 +131,31 @@ class EqualizerViewModel(
             when (result) {
                 is DomainResult.Success -> {
                     setState {
+                        when(currentState.state){
+                            is EqualizerState.Success->{
+                                copy(
+                                    state = (currentState.state as EqualizerState.Success).copy(
+                                        equalizer=(currentState.state as EqualizerState.Success).equalizer.copy(
+                                            loudnessEnhancerValue = percent
+                                        )
+                                    )
+                                )
+                            }
+                            else -> {
+                                copy(
+                                    state = EqualizerState.Success(
+                                        mapperUI.map(result.data)
+                                    )
+                                )
+                            }
+                        }
+                      /*  currentState.state as EqualizerState.Success
+                        val t= (currentState.state as EqualizerState.Success).equalizer
                         copy(
                             state = EqualizerState.Success(
                                 mapperUI.map(result.data)
                             )
-                        )
+                        )*/
                     }
                 }
 
@@ -134,11 +174,29 @@ class EqualizerViewModel(
             when (result) {
                 is DomainResult.Success -> {
                     setState {
-                        copy(
+                        when(currentState.state){
+                            is EqualizerState.Success->{
+                                copy(
+                                    state = (currentState.state as EqualizerState.Success).copy(
+                                        equalizer=(currentState.state as EqualizerState.Success).equalizer.copy(
+                                            equalizerEnabled = mapperUI.map(result.data).equalizerEnabled
+                                        )
+                                    )
+                                )
+                            }
+                            else -> {
+                                copy(
+                                    state = EqualizerState.Success(
+                                        mapperUI.map(result.data)
+                                    )
+                                )
+                            }
+                        }
+                       /* copy(
                             state = EqualizerState.Success(
                                 mapperUI.map(result.data)
                             )
-                        )
+                        )*/
                     }
                 }
 
@@ -169,11 +227,31 @@ class EqualizerViewModel(
             when (result) {
                 is DomainResult.Success -> {
                     setState {
-                        copy(
+                        when(currentState.state){
+                            is EqualizerState.Success->{
+                                copy(
+                                    state = (currentState.state as EqualizerState.Success).copy(
+                                        equalizer=(currentState.state as EqualizerState.Success).equalizer.copy(
+                                            equalizerValuesInfo = mapperUI.map(result.data).equalizerValuesInfo,
+                                            equalizerValues = seekBarValues,
+                                            bandsLevelRange = maxLevelRange
+                                        )
+                                    )
+                                )
+                            }
+                            else -> {
+                                copy(
+                                    state = EqualizerState.Success(
+                                        mapperUI.map(result.data)
+                                    )
+                                )
+                            }
+                        }
+                       /* copy(
                             state = EqualizerState.Success(
                                 mapperUI.map(result.data)
                             )
-                        )
+                        )*/
                     }
                 }
 
@@ -193,11 +271,29 @@ class EqualizerViewModel(
             when (result) {
                 is DomainResult.Success -> {
                     setState {
-                        copy(
+                        when(currentState.state){
+                            is EqualizerState.Success->{
+                                copy(
+                                    state = (currentState.state as EqualizerState.Success).copy(
+                                        equalizer=(currentState.state as EqualizerState.Success).equalizer.copy(
+                                            currentPreset = mapperUI.map(result.data).currentPreset
+                                        )
+                                    )
+                                )
+                            }
+                            else -> {
+                                copy(
+                                    state = EqualizerState.Success(
+                                        mapperUI.map(result.data)
+                                    )
+                                )
+                            }
+                        }
+                       /* copy(
                             state = EqualizerState.Success(
                                 mapperUI.map(result.data)
                             )
-                        )
+                        )*/
                     }
                 }
 

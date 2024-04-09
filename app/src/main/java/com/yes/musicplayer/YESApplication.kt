@@ -14,6 +14,7 @@ import com.yes.core.di.component.MusicServiceComponent
 import com.yes.core.di.module.AudioModule
 import com.yes.core.di.module.DataModule
 import com.yes.core.di.module.MusicServiceModule
+import com.yes.core.presentation.BaseDependency
 import com.yes.core.presentation.MusicService
 import com.yes.musicplayer.di.components.DaggerMainActivityComponent
 import com.yes.musicplayer.di.components.MainActivityComponent
@@ -66,14 +67,14 @@ class YESApplication : Application(),
             .dataComponent(dataComponent)
             .build()
     }*/
-    private val dep by lazy {
+    private val playerFragmentDependency by lazy {
        DaggerPlayerFeatureComponent.builder()
            .audioComponent(audioComponent)
            .dataComponent(dataComponent)
            .build().getDependency()
    }
-   override fun getPlayerFragmentComponent(): PlayerScreen.Dependency {
-       return dep
+   override fun resolvePlayerFragmentDependency(): BaseDependency {
+       return playerFragmentDependency
    }
 
 
@@ -82,11 +83,13 @@ class YESApplication : Application(),
             .dataComponent(dataComponent)
             .build()
     }
-
-    override fun getPlaylistComponent(): PlaylistComponent {
-        return DaggerPlaylistComponent.builder()
+    private val playListDependency by lazy {
+        DaggerPlaylistComponent.builder()
             .dataComponent(dataComponent)
-            .build()
+            .build().getDependency()
+    }
+    override fun resolvePlaylistComponent(): BaseDependency {
+        return playListDependency
     }
 
     override fun getTrackDialogComponent(): TrackDialogComponent {
@@ -125,12 +128,15 @@ class YESApplication : Application(),
             .dataComponent(dataComponent)
             .build()
     }
-
-    override fun getEqualizerScreenComponent(): EqualizerComponent {
-        return DaggerEqualizerComponent.builder()
+    private val equalizerPlayListDependency by lazy {
+        DaggerEqualizerComponent.builder()
             .dataComponent(dataComponent)
             .audioComponent(audioComponent)
             .equalizerModule(EqualizerModule())
-            .build()
+            .build().getDependency()
+    }
+
+    override fun resolveEqualizerScreenComponent(): BaseDependency {
+        return equalizerPlayListDependency
     }
 }

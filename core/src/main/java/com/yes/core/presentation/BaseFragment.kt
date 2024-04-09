@@ -10,21 +10,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
-import com.yes.core.di.component.BaseComponent
 import kotlinx.coroutines.launch
 
 abstract class BaseFragment: Fragment() {
-    interface DependencyResolver {
-        fun getComponent(): BaseComponent
-    }
+
     protected lateinit var binding: ViewBinding
-    private val component by lazy {
-        (requireActivity().application as DependencyResolver)
-            .getComponent()
-    }
-    private val dependency: BaseDependency by lazy {
-        component.getDependency()
-    }
+    abstract val dependency:BaseDependency
     protected val viewModel: BaseViewModel<UiEvent,
             UiState,
             UiEffect> by viewModels {
@@ -41,7 +32,7 @@ abstract class BaseFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
-        setupView()
+        setUpView()
     }
     private fun observeViewModel() {
         lifecycleScope.launch {
@@ -59,7 +50,7 @@ abstract class BaseFragment: Fragment() {
             }
         }
     }
-    protected abstract fun setupView()
+    protected abstract fun setUpView()
     protected abstract fun renderUiState(state: UiState)
     protected abstract fun showEffect()
 

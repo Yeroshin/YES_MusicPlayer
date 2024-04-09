@@ -4,6 +4,7 @@ import android.media.audiofx.Visualizer
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.core.data.dataSource.SettingsDataStore
+import com.yes.core.presentation.BaseDependency
 import com.yes.player.data.mapper.Mapper
 import com.yes.player.data.repository.PlayerRepository
 import com.yes.player.data.repository.PlaylistRepositoryImpl
@@ -30,14 +31,14 @@ class PlayerModule {
     fun providesVisualizer(
         audioSessionId: Int
     ): Visualizer {
-        var visualizer=Visualizer( audioSessionId)
-       if (visualizer.enabled){
+      /*  var visualizer=Visualizer( audioSessionId)
+      if (visualizer.enabled){
            visualizer.release()
        }
         visualizer=Visualizer( audioSessionId)
         val e =visualizer.enabled
-        visualizer.enabled = false
-        return visualizer
+        visualizer.enabled = false*/
+        return Visualizer( audioSessionId)
     }
     @Provides
     @PlayerScope
@@ -127,8 +128,8 @@ class PlayerModule {
     @Provides
     fun providesDependency(
         factory: PlayerViewModel.Factory,
-    ): PlayerScreen.Dependency {
-        return PlayerScreen.Dependency(
+    ): BaseDependency {
+        return BaseDependency(
             factory
         )
     }
