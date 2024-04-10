@@ -26,6 +26,7 @@ class SetEqualizerValueUseCase(
             bands.forEach { band ->
                 levels.add(equalizerRepository.getBandLevel(band))
             }
+            println("SetEqualizerValueUseCase")
             DomainResult.Success(
                 Equalizer(
                     equalizerValuesInfo = levels

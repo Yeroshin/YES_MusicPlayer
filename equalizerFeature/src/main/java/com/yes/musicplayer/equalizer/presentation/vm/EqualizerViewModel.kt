@@ -15,6 +15,7 @@ import com.yes.musicplayer.equalizer.domain.usecase.SetPresetUseCase
 import com.yes.musicplayer.equalizer.presentation.contract.EqualizerContract.*
 import com.yes.musicplayer.equalizer.presentation.mapper.MapperUI
 import kotlinx.coroutines.launch
+import kotlin.math.max
 
 class EqualizerViewModel(
     private val mapperUI: MapperUI,
@@ -25,7 +26,7 @@ class EqualizerViewModel(
     private val setLoudnessEnhancerEnabledUseCase: SetLoudnessEnhancerEnabledUseCase,
     private val setLoudnessEnhancerValueUseCase: SetLoudnessEnhancerValueUseCase
 ) : BaseViewModel<Event, State, Effect>() {
-    private val frequencies= intArrayOf(60000, 230000, 910000, 3000000, 14000000)
+    private val frequencies = intArrayOf(60000, 230000, 910000, 3000000, 14000000)
 
     init {
         viewModelScope.launch {
@@ -39,9 +40,15 @@ class EqualizerViewModel(
 
                     setState {
                         copy(
-                            state = EqualizerState.Success(
-                                mapperUI.map(result.data)
-                            )
+                            state = EqualizerState.Success,
+                            equalizerEnabled = mapperUI.map(result.data).equalizerEnabled,
+                            currentPreset = mapperUI.map(result.data).currentPreset,
+                            presetsNames = mapperUI.map(result.data).presetsNames,
+                            bandsLevelRange = mapperUI.map(result.data).bandsLevelRange,
+                            equalizerValues = mapperUI.map(result.data).equalizerValues,
+                            equalizerValuesInfo = mapperUI.map(result.data).equalizerValuesInfo,
+                            loudnessEnhancerEnabled = mapperUI.map(result.data).loudnessEnhancerEnabled,
+                            loudnessEnhancerValue = mapperUI.map(result.data).loudnessEnhancerValue,
                         )
                     }
                 }
@@ -70,15 +77,42 @@ class EqualizerViewModel(
             }
 
             is Event.OnEqualizerValue -> {
-                setEqualizerValue(event.band, event.value, event.maxLevelRange,event.seekBarValues)
+                setEqualizerValue(event.band, event.value, event.maxLevelRange, event.seekBarValues)
             }
 
             is Event.OnEqualizerEnabled -> setEqualizerEnabled(event.enabled)
             is Event.OnLoudnessEnhancerEnabled -> setLoudnessEnhancerEnabled(event.enabled)
             is Event.OnLoudnessEnhancerTargetGain -> setLoudnessEnhancerTargetGain(event.percent)
+            is Event.OnEqualizerValueSet -> setEqualizerValueState(
+                event.maxLevelRange,
+                event.seekBarValues
+            )
+
+            is Event.OnLoudnessEnhancerTargetGainSet -> setLoudnessEnhancerState(event.percent)
         }
     }
-    private fun setLoudnessEnhancerEnabled(enabled: Boolean){
+
+    private fun setLoudnessEnhancerState(percent: Int) {
+        setState {
+            copy(
+                state = EqualizerState.Success,
+                loudnessEnhancerValue = percent
+            )
+        }
+    }
+
+    private fun setEqualizerValueState(maxLevelRange: Int, seekBarValues: IntArray) {
+        setState {
+            println("setEqualizerValueState")
+            copy(
+                state = EqualizerState.Success,
+                bandsLevelRange = maxLevelRange,
+                equalizerValues = seekBarValues
+            )
+        }
+    }
+
+    private fun setLoudnessEnhancerEnabled(enabled: Boolean) {
         viewModelScope.launch {
             val result = setLoudnessEnhancerEnabledUseCase(
                 SetLoudnessEnhancerEnabledUseCase.Params(
@@ -88,29 +122,15 @@ class EqualizerViewModel(
             when (result) {
                 is DomainResult.Success -> {
                     setState {
-                        when(currentState.state){
-                            is EqualizerState.Success->{
-                                copy(
-                                    state = (currentState.state as EqualizerState.Success).copy(
-                                        equalizer=(currentState.state as EqualizerState.Success).equalizer.copy(
-                                            loudnessEnhancerEnabled = mapperUI.map(result.data).loudnessEnhancerEnabled
-                                        )
-                                    )
-                                )
-                            }
-                            else -> {
-                                copy(
-                                    state = EqualizerState.Success(
-                                        mapperUI.map(result.data)
-                                    )
-                                )
-                            }
-                        }
-                      /*  copy(
-                            state = EqualizerState.Success(
-                                mapperUI.map(result.data)
-                            )
-                        )*/
+                        copy(
+                            state = EqualizerState.Success,
+                            loudnessEnhancerEnabled = mapperUI.map(result.data).loudnessEnhancerEnabled
+                        )
+                        /*  copy(
+                              state = EqualizerState.Success(
+                                  mapperUI.map(result.data)
+                              )
+                          )*/
                     }
                 }
 
@@ -119,7 +139,7 @@ class EqualizerViewModel(
         }
     }
 
-    private fun setLoudnessEnhancerTargetGain(percent:Int) {
+    private fun setLoudnessEnhancerTargetGain(percent: Int) {
         viewModelScope.launch {
             val result = setLoudnessEnhancerValueUseCase(
                 SetLoudnessEnhancerValueUseCase.Params(
@@ -129,35 +149,7 @@ class EqualizerViewModel(
                 )
             )
             when (result) {
-                is DomainResult.Success -> {
-                    setState {
-                        when(currentState.state){
-                            is EqualizerState.Success->{
-                                copy(
-                                    state = (currentState.state as EqualizerState.Success).copy(
-                                        equalizer=(currentState.state as EqualizerState.Success).equalizer.copy(
-                                            loudnessEnhancerValue = percent
-                                        )
-                                    )
-                                )
-                            }
-                            else -> {
-                                copy(
-                                    state = EqualizerState.Success(
-                                        mapperUI.map(result.data)
-                                    )
-                                )
-                            }
-                        }
-                      /*  currentState.state as EqualizerState.Success
-                        val t= (currentState.state as EqualizerState.Success).equalizer
-                        copy(
-                            state = EqualizerState.Success(
-                                mapperUI.map(result.data)
-                            )
-                        )*/
-                    }
-                }
+                is DomainResult.Success -> {}
 
                 is DomainResult.Error -> {}
             }
@@ -174,29 +166,15 @@ class EqualizerViewModel(
             when (result) {
                 is DomainResult.Success -> {
                     setState {
-                        when(currentState.state){
-                            is EqualizerState.Success->{
-                                copy(
-                                    state = (currentState.state as EqualizerState.Success).copy(
-                                        equalizer=(currentState.state as EqualizerState.Success).equalizer.copy(
-                                            equalizerEnabled = mapperUI.map(result.data).equalizerEnabled
-                                        )
-                                    )
-                                )
-                            }
-                            else -> {
-                                copy(
-                                    state = EqualizerState.Success(
-                                        mapperUI.map(result.data)
-                                    )
-                                )
-                            }
-                        }
-                       /* copy(
-                            state = EqualizerState.Success(
-                                mapperUI.map(result.data)
-                            )
-                        )*/
+                        copy(
+                            state = EqualizerState.Success,
+                            equalizerEnabled = mapperUI.map(result.data).equalizerEnabled
+                        )
+                        /* copy(
+                             state = EqualizerState.Success(
+                                 mapperUI.map(result.data)
+                             )
+                         )*/
                     }
                 }
 
@@ -205,7 +183,12 @@ class EqualizerViewModel(
         }
     }
 
-    private fun setEqualizerValue(band: Int, value: Int, maxLevelRange: Int,seekBarValues:IntArray) {
+    private fun setEqualizerValue(
+        band: Int,
+        value: Int,
+        maxLevelRange: Int,
+        seekBarValues: IntArray
+    ) {
         viewModelScope.launch {
             val result = setEqualizerValueUseCase(
 
@@ -226,32 +209,14 @@ class EqualizerViewModel(
             )
             when (result) {
                 is DomainResult.Success -> {
+                    println("setEqualizerValue")
                     setState {
-                        when(currentState.state){
-                            is EqualizerState.Success->{
-                                copy(
-                                    state = (currentState.state as EqualizerState.Success).copy(
-                                        equalizer=(currentState.state as EqualizerState.Success).equalizer.copy(
-                                            equalizerValuesInfo = mapperUI.map(result.data).equalizerValuesInfo,
-                                            equalizerValues = seekBarValues,
-                                            bandsLevelRange = maxLevelRange
-                                        )
-                                    )
-                                )
-                            }
-                            else -> {
-                                copy(
-                                    state = EqualizerState.Success(
-                                        mapperUI.map(result.data)
-                                    )
-                                )
-                            }
-                        }
-                       /* copy(
-                            state = EqualizerState.Success(
-                                mapperUI.map(result.data)
-                            )
-                        )*/
+                        copy(
+                            state = EqualizerState.Success,
+                            equalizerValuesInfo = mapperUI.map(result.data).equalizerValuesInfo,
+                            equalizerValues = null,
+                            bandsLevelRange = null
+                        )
                     }
                 }
 
@@ -260,40 +225,28 @@ class EqualizerViewModel(
         }
     }
 
-    private fun setPreset(preset: Short) {
+    private fun setPreset(preset: Int) {
         viewModelScope.launch {
             val result = setPresetUseCase(
                 SetPresetUseCase.Params(
-                    preset,
+                    preset.toShort(),
                     intArrayOf(60000, 230000, 910000, 3000000, 14000000)
                 )
             )
             when (result) {
                 is DomainResult.Success -> {
                     setState {
-                        when(currentState.state){
-                            is EqualizerState.Success->{
-                                copy(
-                                    state = (currentState.state as EqualizerState.Success).copy(
-                                        equalizer=(currentState.state as EqualizerState.Success).equalizer.copy(
-                                            currentPreset = mapperUI.map(result.data).currentPreset
-                                        )
-                                    )
-                                )
-                            }
-                            else -> {
-                                copy(
-                                    state = EqualizerState.Success(
-                                        mapperUI.map(result.data)
-                                    )
-                                )
-                            }
-                        }
-                       /* copy(
-                            state = EqualizerState.Success(
-                                mapperUI.map(result.data)
-                            )
-                        )*/
+                        copy(
+                            state = EqualizerState.Success,
+                            currentPreset = preset,
+                            equalizerValuesInfo = mapperUI.map(result.data).equalizerValuesInfo,
+                            equalizerValues = mapperUI.map(result.data).equalizerValues
+                        )
+                        /* copy(
+                             state = EqualizerState.Success(
+                                 mapperUI.map(result.data)
+                             )
+                         )*/
                     }
                 }
 

@@ -10,13 +10,10 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
-import android.graphics.Rect
 import android.graphics.RectF
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.util.TypedValue.applyDimension
 import android.view.MotionEvent
@@ -33,7 +30,8 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
     private var onProgressChangeListener: OnProgressChangeListener? = null
 
     interface OnProgressChangeListener {
-        fun onProgressChanged(progress: Int)
+        fun onStartTrackingTouch(progress: Int)
+        fun onStopTrackingTouch(progress: Int)
     }
 
     fun setOnProgressChangeListener(listener: OnProgressChangeListener) {
@@ -323,12 +321,17 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
                 /////////////////////
                 updateProgressBitmap()
                 //////////////////////
-                onProgressChangeListener?.onProgressChanged(
+                onProgressChangeListener?.onStartTrackingTouch(
                     (progressValue-startValue)*100/(endValue-startValue)
                 )
                 true
             }
-
+            MotionEvent.ACTION_UP ->{
+                onProgressChangeListener?.onStopTrackingTouch(
+                    (progressValue-startValue)*100/(endValue-startValue)
+                )
+                true
+            }
             else -> {
                 return false
             }

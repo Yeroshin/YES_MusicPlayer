@@ -2,8 +2,6 @@ package com.yes.musicplayer.equalizer.presentation.ui
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.widget.SeekBar
@@ -15,7 +13,8 @@ class VerticalSeekBar(
     attrs: AttributeSet? = null
 ) : AppCompatSeekBar(context, attrs) {
     interface OnVerticalSeekBarChangeListener {
-        fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean)
+        fun onStartTrackingTouch(seekBar: SeekBar, progress: Int, fromUser: Boolean)
+        fun onStopTrackingTouch(seekBar: SeekBar,progress: Int)
     }
     private var onVerticalSeekBarChangeListener: OnVerticalSeekBarChangeListener? = null
     fun setOnVerticalSeekBarChangeListener(listener: OnVerticalSeekBarChangeListener) {
@@ -50,15 +49,18 @@ class VerticalSeekBar(
             return false
         }
         when (event.action) {
-            MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
+            MotionEvent.ACTION_DOWN->{}
+             MotionEvent.ACTION_MOVE -> {
                // val progress = max - (max * event.y / height).toInt()
                 progress = max - (max * event.y / height).toInt()
                 onSizeChanged(width, height, 0, 0)
                 invalidate()
-                onVerticalSeekBarChangeListener?.onProgressChanged(this,progress,true)
+                onVerticalSeekBarChangeListener?.onStartTrackingTouch(this,progress,true)
             }
 
-            MotionEvent.ACTION_UP -> {}
+            MotionEvent.ACTION_UP -> {
+                onVerticalSeekBarChangeListener?.onStopTrackingTouch(this,progress)
+            }
             MotionEvent.ACTION_CANCEL -> {}
         }
         return true
