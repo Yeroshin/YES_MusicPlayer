@@ -14,6 +14,8 @@ import com.yes.musicplayer.equalizer.domain.usecase.SetLoudnessEnhancerValueUseC
 import com.yes.musicplayer.equalizer.domain.usecase.SetPresetUseCase
 import com.yes.musicplayer.equalizer.presentation.contract.EqualizerContract.*
 import com.yes.musicplayer.equalizer.presentation.mapper.MapperUI
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlin.math.max
 
@@ -76,16 +78,16 @@ class EqualizerViewModel(
                 setPreset(event.preset)
             }
 
-            is Event.OnEqualizerValue -> {
-                setEqualizerValue(event.band, event.value, event.maxLevelRange, event.seekBarValues)
-            }
+            is Event.OnEqualizerValue -> setEqualizerValue(
+                    event.band, event.value, event.maxLevelRange, event.seekBarValues
+                )
+
 
             is Event.OnEqualizerEnabled -> setEqualizerEnabled(event.enabled)
             is Event.OnLoudnessEnhancerEnabled -> setLoudnessEnhancerEnabled(event.enabled)
             is Event.OnLoudnessEnhancerTargetGain -> setLoudnessEnhancerTargetGain(event.percent)
             is Event.OnEqualizerValueSet -> setEqualizerValueState(
-                event.maxLevelRange,
-                event.seekBarValues
+                event.band, event.value, event.maxLevelRange, event.seekBarValues
             )
 
             is Event.OnLoudnessEnhancerTargetGainSet -> setLoudnessEnhancerState(event.percent)
@@ -101,17 +103,76 @@ class EqualizerViewModel(
         }
     }
 
-    private fun setEqualizerValueState(maxLevelRange: Int, seekBarValues: IntArray) {
-        setState {
-            println("setEqualizerValueState")
-            copy(
-                state = EqualizerState.Success,
-                bandsLevelRange = maxLevelRange,
-                equalizerValues = seekBarValues
-            )
+    private fun setEqualizerValueState(
+        band: Int,
+        value: Int,
+        maxLevelRange: Int,
+        seekBarValues: IntArray
+    ) {
+        val jobs=setEqualizerValue(
+            band,
+            value,
+            maxLevelRange,
+            seekBarValues
+        )
+        viewModelScope.launch {
+            jobs.joinAll()
+            setState {
+                println("setEqualizerValueState")
+                copy(
+                    state = EqualizerState.Success,
+                    bandsLevelRange = maxLevelRange,
+                    equalizerValues = seekBarValues
+                )
+            }
         }
-    }
 
+
+    }
+    private fun setEqualizerValue(
+        band: Int,
+        value: Int,
+        maxLevelRange: Int,
+        seekBarValues: IntArray
+    ):ArrayList<Job> {
+        val jobs = ArrayList<Job>()
+        viewModelScope.launch {
+            val result = setEqualizerValueUseCase(
+
+                SetEqualizerValueUseCase.Params(
+                    band,
+                    mapperUI.mapUiEqualizerValueToDomain(
+                        value,
+                        maxLevelRange,
+                    ),
+                    frequencies,
+                    seekBarValues.map {
+                        mapperUI.mapUiEqualizerValueToDomain(
+                            it,
+                            maxLevelRange,
+                        )
+                    }.toIntArray()
+                )
+            )
+            when (result) {
+                is DomainResult.Success -> {
+                    println("setEqualizerValue")
+                    setState {
+                        copy(
+                            state = EqualizerState.Success,
+                            equalizerValuesInfo = mapperUI.map(result.data).equalizerValuesInfo,
+                            equalizerValues = null,
+                            bandsLevelRange = null,
+                            currentPreset = mapperUI.map(result.data).currentPreset
+                        )
+                    }
+                }
+
+                is DomainResult.Error -> {}
+            }
+        }.also { jobs.add(it) }
+        return jobs
+    }
     private fun setLoudnessEnhancerEnabled(enabled: Boolean) {
         viewModelScope.launch {
             val result = setLoudnessEnhancerEnabledUseCase(
@@ -183,47 +244,7 @@ class EqualizerViewModel(
         }
     }
 
-    private fun setEqualizerValue(
-        band: Int,
-        value: Int,
-        maxLevelRange: Int,
-        seekBarValues: IntArray
-    ) {
-        viewModelScope.launch {
-            val result = setEqualizerValueUseCase(
 
-                SetEqualizerValueUseCase.Params(
-                    band,
-                    mapperUI.mapUiEqualizerValueToDomain(
-                        value,
-                        maxLevelRange,
-                    ),
-                    frequencies,
-                    seekBarValues.map {
-                        mapperUI.mapUiEqualizerValueToDomain(
-                            it,
-                            maxLevelRange,
-                        )
-                    }.toIntArray()
-                )
-            )
-            when (result) {
-                is DomainResult.Success -> {
-                    println("setEqualizerValue")
-                    setState {
-                        copy(
-                            state = EqualizerState.Success,
-                            equalizerValuesInfo = mapperUI.map(result.data).equalizerValuesInfo,
-                            equalizerValues = null,
-                            bandsLevelRange = null
-                        )
-                    }
-                }
-
-                is DomainResult.Error -> {}
-            }
-        }
-    }
 
     private fun setPreset(preset: Int) {
         viewModelScope.launch {

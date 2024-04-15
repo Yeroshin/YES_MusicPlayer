@@ -45,8 +45,10 @@ class EqualizerScreen : BaseFragment(), CircularSeekBar.OnProgressChangeListener
     private val verticalSeekBarChangeListener =
         object : VerticalSeekBar.OnVerticalSeekBarChangeListener {
             override fun onStartTrackingTouch(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-               println("onStartTrackingTouch")
+                println("onStartTrackingTouch")
+
                 if (fromUser) {
+
                     val seekBarValues = IntArray(5)
                     seekBarValues[0] = binder.one.progress
                     seekBarValues[1] = binder.two.progress
@@ -65,7 +67,8 @@ class EqualizerScreen : BaseFragment(), CircularSeekBar.OnProgressChangeListener
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar, progress: Int) {
-               println("onStopTrackingTouch")
+                spinnerValueIsFromUser = true
+                println("onStopTrackingTouch")
                 val seekBarValues = IntArray(5)
                 seekBarValues[0] = binder.one.progress
                 seekBarValues[1] = binder.two.progress
@@ -74,6 +77,8 @@ class EqualizerScreen : BaseFragment(), CircularSeekBar.OnProgressChangeListener
                 seekBarValues[4] = binder.five.progress
                 viewModel.setEvent(
                     EqualizerContract.Event.OnEqualizerValueSet(
+                        seekBar.tag as Int,
+                        progress,
                         seekBar.max,
                         seekBarValues
                     )
@@ -128,7 +133,7 @@ class EqualizerScreen : BaseFragment(), CircularSeekBar.OnProgressChangeListener
         }
         binder.circularSeekBar.setOnProgressChangeListener(this)
         //////////////////
-       presetsSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        presetsSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binder.presetsSpinner.adapter = presetsSpinnerAdapter
         binder.presetsSpinner.onItemSelectedListener = itemSelectedListener
 
@@ -148,47 +153,51 @@ class EqualizerScreen : BaseFragment(), CircularSeekBar.OnProgressChangeListener
             }
         }
     }
+    private val presetsSpinnerAdapter by lazy {
+        ArrayAdapter(
+            requireContext(),
+            R.layout.item_presets_spinner,
+            mutableListOf<String>()
+        )
+    }
 
-
+    private var spinnerValueIsFromUser = true
     private val itemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            // val selectedItem = parent?.getItemAtPosition(position)
-            viewModel.setEvent(
-                EqualizerContract.Event.OnPresetSelected(
-                    position
+           if (spinnerValueIsFromUser) {
+                viewModel.setEvent(
+                    EqualizerContract.Event.OnPresetSelected(
+                        position
+                    )
                 )
-            )
-            println("hello")
+            }
+           // spinnerValueIsFromUser = true
         }
 
         override fun onNothingSelected(parent: AdapterView<*>?) {
             // Обработка события, когда ничего не выбрано
         }
     }
-private val presetsSpinnerAdapter by lazy {
-    ArrayAdapter(
-        requireContext(),
-        R.layout.item_presets_spinner,
-        mutableListOf<String>()
-    )
-}
+
+
     private fun dataInit(state: EqualizerContract.State) {
-       /* state.presetsNames?.let { presets ->
-            ArrayAdapter(
-                requireContext(),
-                R.layout.item_presets_spinner,
-                presets
-            ).also { adapter ->
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                binder.presetsSpinner.adapter = adapter
-                binder.presetsSpinner.onItemSelectedListener = itemSelectedListener
-            }
-        }*/
+        /* state.presetsNames?.let { presets ->
+             ArrayAdapter(
+                 requireContext(),
+                 R.layout.item_presets_spinner,
+                 presets
+             ).also { adapter ->
+                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                 binder.presetsSpinner.adapter = adapter
+                 binder.presetsSpinner.onItemSelectedListener = itemSelectedListener
+             }
+         }*/
         state.presetsNames?.let {
             presetsSpinnerAdapter.clear()
             presetsSpinnerAdapter.addAll(it)
         }
         state.currentPreset?.let {
+            spinnerValueIsFromUser = false
             binder.presetsSpinner.setSelection(it)
         }
         state.bandsLevelRange?.let {
