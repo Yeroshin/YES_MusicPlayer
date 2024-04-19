@@ -7,6 +7,7 @@ import com.yes.musicplayer.equalizer.data.repository.EqualizerRepositoryImpl
 import com.yes.musicplayer.equalizer.data.repository.LoudnessEnhancerRepository
 import com.yes.musicplayer.equalizer.domain.entity.Equalizer
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.first
 
 class GetAudioEffectUseCase(
     dispatcher: CoroutineDispatcher,
@@ -17,6 +18,10 @@ class GetAudioEffectUseCase(
     override suspend fun run(params: Params?): DomainResult<Equalizer> {
         val presetsNames = mutableListOf<String>()
         val bands = mutableListOf<Int>()
+        val equalizerEnabled=settingsRepository.subscribeEqualizerEnabled().first()
+        equalizerRepository.setEnabled(
+            equalizerEnabled
+        )
         params?.frequencies?.forEach {
             bands.add(equalizerRepository.getBand(it))
         }
@@ -44,7 +49,7 @@ class GetAudioEffectUseCase(
 
         return DomainResult.Success(
             Equalizer(
-                settingsRepository.getEqualizerEnabled(),
+                settingsRepository.subscribeEqualizerEnabled().first(),
                 currentPreset,
                 presetsNames,
                 bandsLevelRange,

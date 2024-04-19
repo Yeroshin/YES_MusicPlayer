@@ -13,6 +13,7 @@ import com.yes.musicplayer.equalizer.data.mapper.Mapper
 import com.yes.musicplayer.equalizer.data.repository.EqualizerRepositoryImpl
 import com.yes.musicplayer.equalizer.data.repository.LoudnessEnhancerRepository
 import com.yes.musicplayer.equalizer.data.repository.SettingsRepositoryImpl
+import com.yes.musicplayer.equalizer.di.EqualizerScope
 import com.yes.musicplayer.equalizer.domain.usecase.GetAudioEffectUseCase
 import com.yes.musicplayer.equalizer.domain.usecase.SetEqualizerEnabledUseCase
 import com.yes.musicplayer.equalizer.domain.usecase.SetEqualizerValueUseCase
@@ -75,6 +76,13 @@ class EqualizerModule {
      }*/
     @OptIn(UnstableApi::class)
     @Provides
+    fun providesEqualizerFactory(
+        player: ExoPlayer
+    ): EqualizerRepositoryImpl.Factory {
+        return EqualizerRepositoryImpl.Factory()
+    }
+    @OptIn(UnstableApi::class)
+    @Provides
     fun providesEqualizer(
         player: ExoPlayer
     ): Equalizer {
@@ -130,12 +138,15 @@ class EqualizerModule {
 
     @OptIn(UnstableApi::class)
     @Provides
+    @EqualizerScope
     fun providesEqualizerRepositoryImpl(
-        equalizer: Equalizer,
+         equalizerFactory:EqualizerRepositoryImpl.Factory,
+       // equalizer: Equalizer,
         player: ExoPlayer
     ): EqualizerRepositoryImpl {
         return EqualizerRepositoryImpl(
-            equalizer,
+            equalizerFactory,
+           // equalizer,
             player.audioSessionId
         )
     }

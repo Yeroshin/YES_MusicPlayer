@@ -11,46 +11,44 @@ import androidx.media3.exoplayer.ExoPlayer
 
 
 class EqualizerRepositoryImpl(
-    private var equalizer:Equalizer,
+    private val equalizerFactory:EqualizerRepositoryImpl.Factory,
+   // private var equalizer:Equalizer,
     private val audioSessionId:Int
 ) {
-
+  //  private var equalizer:Equalizer?=null
+    private var equalizer:Equalizer?=equalizerFactory.create(audioSessionId)
     fun getPresets():List<String>{
-        val numberOfPresets =
-            equalizer.numberOfPresets.toInt() // Получение количества доступных предустановленных настроек
-        val presetsList: MutableList<String> = ArrayList()
-        for (i in 0 until numberOfPresets) {
-            val presetName =
-                equalizer.getPresetName(i.toShort()) // Получение имени предустановленной настройки
-            presetsList.add(presetName)
-        }
-        return presetsList
+        return equalizer?.run {
+            (0 until numberOfPresets.toInt()).mapNotNull { index ->
+                getPresetName(index.toShort())
+            }
+        } ?: emptyList()
     }
     fun usePreset(preset:Int){
         checkControl()
         try{
-            equalizer.usePreset(preset.toShort())
+            equalizer?.usePreset(preset.toShort())
         }catch (exception: Exception){
             val pr=exception
         }
     }
     fun getBand(frequency:Int):Int{
-        return equalizer.getBand(frequency).toInt()
+        return equalizer?.getBand(frequency)?.toInt()?:0
     }
     fun getBandFreqRange(band:Short):IntArray{
-        return equalizer.getBandFreqRange(band)
+        return equalizer?.getBandFreqRange(band)?: IntArray(0)
     }
     fun getBandLevelRange():IntArray{
-        return equalizer.bandLevelRange.map { it.toInt() }.toIntArray()
+        return equalizer?.bandLevelRange?.map { it.toInt() }?.toIntArray()?: IntArray(2)
     }
 
     fun getBandLevel(band:Int): Int {
-        return equalizer.getBandLevel(band.toShort()).toInt()
+        return equalizer?.getBandLevel(band.toShort())?.toInt()?:0
     }
     fun setBandLevel(band: Int,level:Int){
         checkControl()
         try{
-            equalizer.setBandLevel(
+            equalizer?.setBandLevel(
                 band.toShort(),
                 level.toShort()
             )
@@ -60,23 +58,34 @@ class EqualizerRepositoryImpl(
       //  equalizer.setBandLevel(band.toShort(),level.toShort())
     }
     fun setEnabled(enabled:Boolean){
-        checkControl()
-        equalizer.enabled=enabled
-        val a=equalizer.enabled
-      //  val b=equalizer.hasControl()
+       // checkControl()
 
+        if(!enabled){
+            equalizer?.enabled=enabled
+          /*  equalizer?.release()
+            equalizer=null*/
+        }else{
+          //  equalizer=equalizerFactory.create(audioSessionId)
+            equalizer?.enabled=enabled
+        }
     }
     private fun checkControl(){
-        if(!equalizer.hasControl()){
-            val a=equalizer.enabled
-            val b=equalizer.numberOfPresets
-            equalizer.release()
-            try{
-                equalizer=Equalizer(1000,audioSessionId)
-               equalizer.enabled=true//tmp TODO remove this
-            }catch (exception: Exception){
-                val pr=exception
+        equalizer?.let {
+            if(!it.hasControl()){
+                it.release()
+                try{
+                    equalizer=equalizerFactory.create(audioSessionId)
+                    // equalizer.enabled=true//tmp TODO remove this
+                }catch (exception: Exception){
+                    val pr=exception
+                }
             }
+        }
+
+    }
+    class Factory(){
+        fun create(audioSessionId:Int):Equalizer{
+            return Equalizer(0,audioSessionId)
         }
     }
 }

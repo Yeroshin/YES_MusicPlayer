@@ -11,7 +11,6 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import org.json.JSONArray
 
 class SettingsDataStore(
     private val dataStore: DataStore<Preferences>,
@@ -81,14 +80,14 @@ class SettingsDataStore(
             preferences[PreferencesKeys.CUSTOM_PRESET_NAME] = name
         }
     }
-    fun getEqualizerEnabled():Flow<Boolean>{
+    fun subscribeEqualizerEnabled():Flow<Boolean>{
         return dataStore.data
             .map { preferences ->
                 preferences[PreferencesKeys.EQUALIZER_ENABLED]?:run {
                     setEqualizerEnabled(false)
                     false
                 }
-            }
+            }.distinctUntilChanged()
     }
     suspend fun setEqualizerEnabled(enabled:Boolean){
         dataStore.edit { preferences ->

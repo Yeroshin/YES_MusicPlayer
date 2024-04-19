@@ -17,6 +17,7 @@ import com.yes.player.domain.usecase.SubscribeVisualizerUseCase
 import com.yes.player.presentation.contract.PlayerContract.*
 import com.yes.player.presentation.mapper.MapperUI
 import com.yes.player.presentation.model.PlayerStateUI
+import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
@@ -30,12 +31,12 @@ class PlayerViewModel(
     private val seekUseCase: SeekUseCase,
     private val subscribeVisualizerUseCase: SubscribeVisualizerUseCase,
 ) : BaseViewModel<Event, State, Effect>() {
-
+     private val frameRate:Long=16//60 frames per sec
     init {
         subscribeDurationCounter()
         subscribeCurrentPlaylist()
         subscribeCurrentTrack()
-        subscribeVisualizer()
+        subscribeVisualizer()// TODO enable this
     }
 
     private fun subscribeVisualizer() {
@@ -44,7 +45,10 @@ class PlayerViewModel(
                 val result = subscribeVisualizerUseCase()
             ) {
                 is DomainResult.Success -> {
-                    result.data.collect {
+
+                    result.data
+                        .sample(frameRate)
+                        .collect {
                         setState {
                             copy(
                                 playerState = PlayerState.Success,

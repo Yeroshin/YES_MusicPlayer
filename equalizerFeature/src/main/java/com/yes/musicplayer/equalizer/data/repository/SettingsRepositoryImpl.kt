@@ -1,7 +1,7 @@
 package com.yes.musicplayer.equalizer.data.repository
 
-import androidx.datastore.preferences.core.edit
 import com.yes.core.data.dataSource.SettingsDataStore
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 
 class SettingsRepositoryImpl(
@@ -11,8 +11,8 @@ class SettingsRepositoryImpl(
     suspend fun getEqualizerCustomPresetsName(): String {
         return settings.getEqualizerCustomPresetName().first()
     }
-    suspend fun getEqualizerEnabled():Boolean{
-        return settings.getEqualizerEnabled().first()
+     fun subscribeEqualizerEnabled(): Flow<Boolean> {
+        return settings.subscribeEqualizerEnabled()
     }
     suspend fun setEqualizerEnabled(enabled:Boolean){
         settings.setEqualizerEnabled(enabled)

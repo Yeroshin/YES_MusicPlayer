@@ -10,7 +10,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -72,8 +74,9 @@ class VisualizerRepository(
         if (!visualizer.enabled) {
             visualizer.enabled = true
         }
-
         return visualizerEntity
+
+       // return visualizerEntity.debounce(16)//60 frames per sec
     }
     data class VisualizerEntity(
         val fft: ByteArray?=null,
