@@ -67,7 +67,6 @@ class EqualizerScreen : BaseFragment(), CircularSeekBar.OnProgressChangeListener
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar, progress: Int) {
-                spinnerValueIsFromUser = true
                 println("onStopTrackingTouch")
                 val seekBarValues = IntArray(5)
                 seekBarValues[0] = binder.one.progress
@@ -89,13 +88,13 @@ class EqualizerScreen : BaseFragment(), CircularSeekBar.OnProgressChangeListener
     override fun setUpView() {
         //////////////////
         // val audioManager = requireActivity().getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        val effects = AudioEffect.queryEffects()
+      /*  val effects = AudioEffect.queryEffects()
         for (effectDescriptor in effects) {
             if (effectDescriptor.type == AudioEffect.EFFECT_TYPE_EQUALIZER) {
                 Log.d("Equalizer", "Equalizer is available")
                 // Здесь можно выполнить дополнительные действия, если эквалайзер доступен
             }
-        }
+        }*/
         /////////////////
         binder.one.tag = 0
         binder.one.setOnVerticalSeekBarChangeListener(verticalSeekBarChangeListener)
@@ -164,13 +163,13 @@ class EqualizerScreen : BaseFragment(), CircularSeekBar.OnProgressChangeListener
     private var spinnerValueIsFromUser = true
     private val itemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-           if (spinnerValueIsFromUser) {
+         //  if (spinnerValueIsFromUser) {
                 viewModel.setEvent(
                     EqualizerContract.Event.OnPresetSelected(
                         position
                     )
                 )
-            }
+           // }
            // spinnerValueIsFromUser = true
         }
 
@@ -197,7 +196,7 @@ class EqualizerScreen : BaseFragment(), CircularSeekBar.OnProgressChangeListener
             presetsSpinnerAdapter.addAll(it)
         }
         state.currentPreset?.let {
-            spinnerValueIsFromUser = false
+          //  spinnerValueIsFromUser = false
             binder.presetsSpinner.setSelection(it)
         }
         state.bandsLevelRange?.let {

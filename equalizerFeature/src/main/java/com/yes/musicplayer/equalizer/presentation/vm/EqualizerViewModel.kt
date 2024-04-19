@@ -117,14 +117,48 @@ class EqualizerViewModel(
         )
         viewModelScope.launch {
             jobs.joinAll()
-            setState {
+            val result = setEqualizerValueUseCase(
+
+                SetEqualizerValueUseCase.Params(
+                    band,
+                    mapperUI.mapUiEqualizerValueToDomain(
+                        value,
+                        maxLevelRange,
+                    ),
+                    frequencies,
+                    seekBarValues.map {
+                        mapperUI.mapUiEqualizerValueToDomain(
+                            it,
+                            maxLevelRange,
+                        )
+                    }.toIntArray()
+                )
+            )
+            when (result) {
+                is DomainResult.Success -> {
+                    println("setEqualizerValue")
+                    setState {
+                        copy(
+                            state = EqualizerState.Success,
+                            bandsLevelRange = maxLevelRange,
+                            equalizerValues = seekBarValues,
+                            currentPreset = mapperUI.map(result.data).currentPreset
+                        )
+                    }
+                }
+
+                is DomainResult.Error -> {}
+            }
+          /*  setState {
                 println("setEqualizerValueState")
                 copy(
                     state = EqualizerState.Success,
                     bandsLevelRange = maxLevelRange,
-                    equalizerValues = seekBarValues
+                    equalizerValues = seekBarValues,
+                    currentPreset = mapperUI.map(result.data).currentPreset
+
                 )
-            }
+            }*/
         }
 
 
@@ -163,7 +197,6 @@ class EqualizerViewModel(
                             equalizerValuesInfo = mapperUI.map(result.data).equalizerValuesInfo,
                             equalizerValues = null,
                             bandsLevelRange = null,
-                            currentPreset = mapperUI.map(result.data).currentPreset
                         )
                     }
                 }
@@ -250,7 +283,7 @@ class EqualizerViewModel(
         viewModelScope.launch {
             val result = setPresetUseCase(
                 SetPresetUseCase.Params(
-                    preset.toShort(),
+                    preset,
                     intArrayOf(60000, 230000, 910000, 3000000, 14000000)
                 )
             )
@@ -259,7 +292,7 @@ class EqualizerViewModel(
                     setState {
                         copy(
                             state = EqualizerState.Success,
-                            currentPreset = preset,
+                            currentPreset = mapperUI.map(result.data).currentPreset,
                             equalizerValuesInfo = mapperUI.map(result.data).equalizerValuesInfo,
                             equalizerValues = mapperUI.map(result.data).equalizerValues
                         )

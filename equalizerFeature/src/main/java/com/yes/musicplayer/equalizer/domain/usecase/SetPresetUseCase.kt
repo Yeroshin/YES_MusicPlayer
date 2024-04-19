@@ -36,13 +36,14 @@ class SetPresetUseCase (
                 Equalizer(
                     bandsLevelRange = equalizerRepository.getBandLevelRange(),
                     equalizerValuesInfo = levels,
-                    equalizerValues = levels
+                    equalizerValues = levels,
+                    currentPreset = params.preset
                 )
             )
         }?: return DomainResult.Error(DomainResult.UnknownException)
     }
     data class Params(
-        val preset:Short,
+        val preset:Int,
         val frequencies: IntArray
     )
 }
