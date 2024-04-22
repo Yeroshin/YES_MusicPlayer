@@ -256,14 +256,13 @@ class PlayerDataSource(
 
     fun setTracks(items: List<MediaItem>, index: Int) {
 
-        /*   if (controllerFuture.isDone) {
+           if (controllerFuture.isDone) {
                val controller = controllerFuture.get()
                controller.setMediaItems(items)
                controller.seekTo(index, TIME_UNSET)
            } else {
-               // Добавить команду приостановки в очередь
                commandQueue.add(QueuedCommand.SetTracks(items))
-           }*/
+           }
         //   controller.setMediaItems(items)
     }
 

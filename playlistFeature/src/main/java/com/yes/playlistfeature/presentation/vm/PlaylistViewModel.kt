@@ -86,7 +86,7 @@ class PlaylistViewModel(
                         setState {
                             copy(
 
-                                    currentTrack = trackIndex
+                                currentTrack = trackIndex
 
                             )
                         }
@@ -200,6 +200,7 @@ class PlaylistViewModel(
             }
         }
     }
+
     private fun subscribeTracks() {
 
         viewModelScope.launch {
@@ -209,27 +210,26 @@ class PlaylistViewModel(
                 )
             }
             val playListsFlow = subscribeCurrentPlaylistTracksUseCase()
-            val currentTrackIndexFlow=subscribePlayerCurrentTrackIndexUseCase()
+            val currentTrackIndexFlow = subscribePlayerCurrentTrackIndexUseCase()
             when (playListsFlow) {
                 is DomainResult.Success -> {
-                    when(currentTrackIndexFlow){
+                    when (currentTrackIndexFlow) {
                         is DomainResult.Success -> {
                             combine(
                                 playListsFlow.data,
                                 currentTrackIndexFlow.data
-                            ){playList, currentTrackIndex->
+                            ) { playList, currentTrackIndex ->
                                 setState {
                                     copy(
                                         playlistState = PlaylistContract.PlaylistState.Success,
-                                        tracks = playList.map {
-                                            mapperUI.map(it)
-                                        },
+                                        tracks = playList.map { mapperUI.map(it) },
                                         currentTrack = currentTrackIndex
                                     )
                                 }
                             }.collect()
 
                         }
+
                         is DomainResult.Error -> {}
                     }
                 }
@@ -239,43 +239,43 @@ class PlaylistViewModel(
         }
 
     }
-  /*  private fun subscribeTracks() {
+    /*  private fun subscribeTracks() {
 
-        viewModelScope.launch {
-            setState {
-                copy(
-                    playlistState = PlaylistContract.PlaylistState.Loading
-                )
-            }
-            val playListsFlow = subscribeCurrentPlaylistTracksUseCase()
-            val currentTrackIndexFlow=subscribePlayerCurrentTrackIndexUseCase()
-            when (playListsFlow) {
-                is DomainResult.Success -> {
-                    playListsFlow.data.collect { playlist ->
-                        setState {
-                            copy(
-                                playlistState = PlaylistContract.PlaylistState.Success,
-                                tracks = playlist.map {
-                                    mapperUI.map(it)
-                                }
-                            )
-                        }
-                        subscribePlayerCurrentTrackIndex()
-                    }
-                }
+          viewModelScope.launch {
+              setState {
+                  copy(
+                      playlistState = PlaylistContract.PlaylistState.Loading
+                  )
+              }
+              val playListsFlow = subscribeCurrentPlaylistTracksUseCase()
+              val currentTrackIndexFlow=subscribePlayerCurrentTrackIndexUseCase()
+              when (playListsFlow) {
+                  is DomainResult.Success -> {
+                      playListsFlow.data.collect { playlist ->
+                          setState {
+                              copy(
+                                  playlistState = PlaylistContract.PlaylistState.Success,
+                                  tracks = playlist.map {
+                                      mapperUI.map(it)
+                                  }
+                              )
+                          }
+                          subscribePlayerCurrentTrackIndex()
+                      }
+                  }
 
-                is DomainResult.Error -> {}
-            }
-        }
+                  is DomainResult.Error -> {}
+              }
+          }
 
-    }*/
+      }*/
 
     class Factory(
         private val espressoIdlingResource: EspressoIdlingResource?,
         private val subscribeCurrentPlaylistTracksUseCase: SubscribeCurrentPlaylistTracksUseCase,
         private val mapperUI: MapperUI,
         private val deleteTrackUseCase: DeleteTrackUseCase,
-         private val setModeUseCase: SetModeUseCase,
+        private val setModeUseCase: SetModeUseCase,
         private val changeTracksPositionUseCase: ChangeTracksPositionUseCase,
         private val playTrackUseCase: PlayTrackUseCase,
         private val setSettingsTrackIndexUseCase: SetSettingsTrackIndexUseCase,

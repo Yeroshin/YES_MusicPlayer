@@ -15,6 +15,7 @@ import androidx.media3.session.MediaSessionService
 import com.yes.core.data.entity.PlayerStateDataSourceEntity
 import com.yes.core.data.mapper.Mapper
 import com.yes.core.di.component.MusicServiceComponent
+import com.yes.core.domain.entity.Track
 import com.yes.core.domain.models.DomainResult
 import com.yes.core.domain.useCase.GetCurrentTrackIndexUseCase
 import com.yes.core.domain.useCase.SetSettingsTrackIndexUseCase
@@ -22,6 +23,9 @@ import com.yes.core.domain.useCase.SubscribeCurrentPlaylistTracksUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
@@ -80,44 +84,24 @@ class MusicService : MediaSessionService() {
                 is DomainResult.Success -> {
                     when (currentTrackIndex) {
                         is DomainResult.Success -> {
-                            playLists.data.zip(currentTrackIndex.data) { playList, trackIndex ->
-                                Pair(playList, trackIndex)
-
-                            }.collect {
-                                mediaSession.player.setMediaItems(
-                                    it.first.map { track ->
-                                        dependency.mapper.mapToMediaItem(track)
+                            combine(
+                                playLists.data,
+                                currentTrackIndex.data
+                            ) { playList:List<Track>, trackIndex:Int ->
+                                    mediaSession.player.setMediaItems(
+                                        playList.map { track ->
+                                            dependency.mapper.mapToMediaItem(track)
+                                        }
+                                    )
+                                    if (playList.isNotEmpty() || trackIndex != -1) {
+                                        mediaSession.player.seekTo(trackIndex, 0)
                                     }
-                                )
-                                if(it.first.isNotEmpty()||it.second!=-1){
-                                    mediaSession.player.seekTo(it.second, 0)
-                                }
+                            }.collect{}
 
-                            }
                         }
 
                         is DomainResult.Error -> {}
                     }
-                    /*
-                    playLists.data.collect {
-                        mediaSession.player.setMediaItems(
-                            it.map {track->
-                                dependency.mapper.mapToMediaItem(track)
-                            }
-                        )
-                        val currentTrackIndex=dependency.getCurrentTrackIndexUseCase()
-                        when(currentTrackIndex){
-                            is DomainResult.Success->{
-                                mediaSession.player.seekTo(currentTrackIndex.data,0)
-                            }
-                            is DomainResult.Error->{}
-
-                        }
-
-                    }
-                }
-
-                is DomainResult.Error -> {}*/
                 }
 
                 is DomainResult.Error -> {}
