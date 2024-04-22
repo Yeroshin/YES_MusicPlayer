@@ -12,7 +12,8 @@ import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.dataSource.MediaDataStore
 import com.yes.core.data.dataSource.YESDataBase
 import com.yes.core.data.dataSource.PlayerDataSource
-import com.yes.core.data.dataSource.SettingsDataStore
+import com.yes.core.data.dataSource.SettingsDataSource
+
 import com.yes.core.data.factory.RendererFactory
 import com.yes.core.domain.repository.IAlarmDao
 import com.yes.core.util.EspressoIdlingResource
@@ -24,7 +25,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import javax.inject.Qualifier
 import javax.inject.Singleton
-private const val USER_PREFERENCES = "user_preferences"
+private const val USER_PREFERENCES = "YES_preferences"
 @Module
 class DataModule(
     private val context: Context
@@ -86,15 +87,14 @@ class DataModule(
         )
     }
     @Provides
-    fun providesSettingsDataStore(
+    fun providesSettingsDataSource(
         dataStore: DataStore<Preferences>,
-        context: Context
-    ): SettingsDataStore {
-        return SettingsDataStore(
+    ): SettingsDataSource {
+        return SettingsDataSource(
             dataStore,
-            context
         )
     }
+
     @Provides
     @Singleton
     fun providesPlayerDataSource(

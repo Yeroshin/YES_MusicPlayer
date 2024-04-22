@@ -11,7 +11,6 @@ import com.yes.playlistfeature.domain.usecase.ChangeTracksPositionUseCase
 import com.yes.playlistfeature.domain.usecase.DeleteTrackUseCase
 import com.yes.playlistfeature.domain.usecase.SetModeUseCase
 import com.yes.playlistfeature.domain.usecase.SetSettingsTrackIndexUseCase
-import com.yes.playlistfeature.domain.usecase.SetTracksToPlayerPlaylistUseCase
 
 import com.yes.playlistfeature.domain.usecase.SubscribeCurrentPlaylistTracksUseCase
 import com.yes.playlistfeature.domain.usecase.SubscribePlayerCurrentTrackIndexUseCase
@@ -31,7 +30,6 @@ class PlaylistViewModel(
     private val mapperUI: MapperUI,
     private val espressoIdlingResource: EspressoIdlingResource?,
     private val deleteTrackUseCase: DeleteTrackUseCase,
-    private val setTracksToPlayerPlaylistUseCase: SetTracksToPlayerPlaylistUseCase,
     private val setModeUseCase: SetModeUseCase,
     private val changeTracksPositionUseCase: ChangeTracksPositionUseCase,
     private val playTrackUseCase: PlayTrackUseCase,
@@ -237,8 +235,7 @@ class PlaylistViewModel(
         private val subscribeCurrentPlaylistTracksUseCase: SubscribeCurrentPlaylistTracksUseCase,
         private val mapperUI: MapperUI,
         private val deleteTrackUseCase: DeleteTrackUseCase,
-        private val setTracksToPlayerPlaylistUseCase: SetTracksToPlayerPlaylistUseCase,
-        private val setModeUseCase: SetModeUseCase,
+         private val setModeUseCase: SetModeUseCase,
         private val changeTracksPositionUseCase: ChangeTracksPositionUseCase,
         private val playTrackUseCase: PlayTrackUseCase,
         private val setSettingsTrackIndexUseCase: SetSettingsTrackIndexUseCase,
@@ -251,7 +248,6 @@ class PlaylistViewModel(
                 mapperUI,
                 espressoIdlingResource,
                 deleteTrackUseCase,
-                setTracksToPlayerPlaylistUseCase,
                 setModeUseCase,
                 changeTracksPositionUseCase,
                 playTrackUseCase,

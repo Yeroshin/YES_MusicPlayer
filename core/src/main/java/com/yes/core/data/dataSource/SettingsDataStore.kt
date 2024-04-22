@@ -11,12 +11,12 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-
+@Deprecated("not used")
 class SettingsDataStore(
     private val dataStore: DataStore<Preferences>,
     private val context: Context
 ) {
-    private object PreferencesKeys {
+     object PreferencesKeys {
         val CURRENT_PLAYLIST_ID = longPreferencesKey("currentPlaylistId")
         val CURRENT_TRACK_INDEX = longPreferencesKey("currentTrackIndex")
         val CUSTOM_PRESET_NAME = stringPreferencesKey("customPresetNames")

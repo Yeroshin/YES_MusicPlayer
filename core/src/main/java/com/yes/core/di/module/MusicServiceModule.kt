@@ -3,6 +3,7 @@ package com.yes.core.di.module
 import android.content.Context
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
+import com.yes.core.data.dataSource.SettingsDataSource
 import com.yes.core.data.dataSource.SettingsDataStore
 import com.yes.core.data.mapper.Mapper
 import com.yes.core.data.repository.PlayListRepositoryImpl
@@ -46,10 +47,10 @@ class MusicServiceModule {
     }
     @Provides
     fun providesSettingsRepository(
-        dataStore: SettingsDataStore
+        settingsDataSource: SettingsDataSource
     ): SettingsRepositoryImpl {
         return SettingsRepositoryImpl(
-            dataStore
+            settingsDataSource
         )
     }
     @Provides

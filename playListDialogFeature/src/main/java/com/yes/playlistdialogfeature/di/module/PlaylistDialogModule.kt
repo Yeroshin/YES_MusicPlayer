@@ -1,8 +1,8 @@
 package com.yes.playlistdialogfeature.di.module
 
+import com.yes.core.data.dataSource.SettingsDataSource
 import com.yes.core.di.module.IoDispatcher
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.core.data.dataSource.SettingsDataStore
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.playlistdialogfeature.data.mapper.Mapper
 import com.yes.playlistdialogfeature.data.repository.PlayListDialogRepositoryImpl
@@ -105,10 +105,10 @@ class PlaylistDialogModule {
     }*/
     @Provides
     fun providesSettingsRepository(
-        dataStore: SettingsDataStore
+      settingsDataSource: SettingsDataSource
     ): SettingsRepositoryImpl {
         return SettingsRepositoryImpl(
-            dataStore
+            settingsDataSource
         )
     }
 

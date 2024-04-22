@@ -24,12 +24,12 @@ class VisualizerView(context: Context, attrs: AttributeSet?) : View(context, att
     }
 
     private var update: Boolean = false
-    private val value = mutableListOf<Float>()
-    val interpolationFactor = 0.4f
+
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         if (update) {
-
+            val interpolationFactor = 0.4f
             val rect = if (frequencies.size != 0) width / frequencies.size else 1
             val spacing = rect / 4
             val rectSide = rect - spacing
@@ -64,8 +64,7 @@ class VisualizerView(context: Context, attrs: AttributeSet?) : View(context, att
         }
 
     }
-    private var timer:Timer?=null
-    private var timerActive=false
+
     fun setValue(values: FloatArray) {
         if (values.isNotEmpty()) {
             if (oldFrequencies.isEmpty()) {

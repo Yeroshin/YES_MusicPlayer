@@ -6,7 +6,7 @@ import android.media.audiofx.LoudnessEnhancer
 import androidx.annotation.OptIn
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
-import com.yes.core.data.dataSource.SettingsDataStore
+import com.yes.core.data.dataSource.SettingsDataSource
 import com.yes.core.di.module.IoDispatcher
 import com.yes.core.presentation.BaseDependency
 import com.yes.musicplayer.equalizer.data.mapper.Mapper
@@ -129,10 +129,12 @@ class EqualizerModule {
 
     @Provides
     fun providesSettingsRepositoryImpl(
-        settings: SettingsDataStore
+        settingsDataSource: SettingsDataSource,
+        context:Context
     ): SettingsRepositoryImpl {
         return SettingsRepositoryImpl(
-            settings
+            settingsDataSource,
+            context
         )
     }
 

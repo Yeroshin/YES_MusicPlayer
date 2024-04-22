@@ -10,7 +10,7 @@ import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.dataSource.MediaDataStore
 import com.yes.core.data.dataSource.YESDataBase
 import com.yes.core.data.dataSource.PlayerDataSource
-import com.yes.core.data.dataSource.SettingsDataStore
+import com.yes.core.data.dataSource.SettingsDataSource
 import com.yes.core.data.factory.RendererFactory
 import com.yes.core.domain.repository.IAlarmDao
 import com.yes.core.util.EspressoIdlingResource
@@ -36,7 +36,9 @@ interface DataComponent {
     fun providesAlarmDao(): IAlarmDao
   //  fun providesSettingsSharedPreferences(): SettingsSharedPreferences
     fun provideDataStore(): DataStore<Preferences>
-    fun providesSettingsDataStore(): SettingsDataStore
+
+    fun providesSettingsDataSource(): SettingsDataSource
+
     fun providesPlayerDataSource(): PlayerDataSource
     fun providesMediaDataStore(): MediaDataStore
 

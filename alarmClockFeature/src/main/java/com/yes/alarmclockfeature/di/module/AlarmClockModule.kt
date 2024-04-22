@@ -22,7 +22,7 @@ import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
 import com.yes.alarmclockfeature.presentation.vm.AlarmClockViewModel
 import com.yes.alarmclockfeature.util.CalendarFactory
 import com.yes.core.data.dataSource.PlayerDataSource
-import com.yes.core.data.dataSource.SettingsDataStore
+import com.yes.core.data.dataSource.SettingsDataSource
 import com.yes.core.di.module.IoDispatcher
 import com.yes.core.di.module.MainDispatcher
 import com.yes.core.domain.repository.IAlarmDao
@@ -65,10 +65,10 @@ class AlarmClockModule(
 
     @Provides
     fun providesSettingsRepository(
-        dataStore: SettingsDataStore
+        settingsDataSource: SettingsDataSource
     ): SettingsRepositoryImpl {
         return SettingsRepositoryImpl(
-            dataStore
+            settingsDataSource
         )
     }
     @Provides

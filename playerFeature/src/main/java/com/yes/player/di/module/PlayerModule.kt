@@ -3,7 +3,8 @@ package com.yes.player.di.module
 import android.media.audiofx.Visualizer
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.dataSource.PlayerDataSource
-import com.yes.core.data.dataSource.SettingsDataStore
+import com.yes.core.data.dataSource.SettingsDataSource
+
 import com.yes.core.presentation.BaseDependency
 import com.yes.player.data.mapper.Mapper
 import com.yes.player.data.repository.PlayerRepository
@@ -52,10 +53,10 @@ class PlayerModule {
 
     @Provides
     fun providesSettingsRepository(
-        dataStore: SettingsDataStore
+        settingsDataSource: SettingsDataSource
     ): SettingsRepositoryImpl {
         return SettingsRepositoryImpl(
-            dataStore
+            settingsDataSource
         )
     }
 
