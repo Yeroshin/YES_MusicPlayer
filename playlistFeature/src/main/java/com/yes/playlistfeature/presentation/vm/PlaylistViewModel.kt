@@ -20,6 +20,7 @@ import com.yes.playlistfeature.presentation.contract.PlaylistContract.State
 import com.yes.playlistfeature.presentation.contract.PlaylistContract.Effect
 import com.yes.playlistfeature.presentation.mapper.MapperUI
 import com.yes.playlistfeature.presentation.model.TrackUI
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
@@ -199,7 +200,6 @@ class PlaylistViewModel(
             }
         }
     }
-
     private fun subscribeTracks() {
 
         viewModelScope.launch {
@@ -209,6 +209,46 @@ class PlaylistViewModel(
                 )
             }
             val playListsFlow = subscribeCurrentPlaylistTracksUseCase()
+            val currentTrackIndexFlow=subscribePlayerCurrentTrackIndexUseCase()
+            when (playListsFlow) {
+                is DomainResult.Success -> {
+                    when(currentTrackIndexFlow){
+                        is DomainResult.Success -> {
+                            combine(
+                                playListsFlow.data,
+                                currentTrackIndexFlow.data
+                            ){playList, currentTrackIndex->
+                                setState {
+                                    copy(
+                                        playlistState = PlaylistContract.PlaylistState.Success,
+                                        tracks = playList.map {
+                                            mapperUI.map(it)
+                                        },
+                                        currentTrack = currentTrackIndex
+                                    )
+                                }
+                            }.collect()
+
+                        }
+                        is DomainResult.Error -> {}
+                    }
+                }
+
+                is DomainResult.Error -> {}
+            }
+        }
+
+    }
+  /*  private fun subscribeTracks() {
+
+        viewModelScope.launch {
+            setState {
+                copy(
+                    playlistState = PlaylistContract.PlaylistState.Loading
+                )
+            }
+            val playListsFlow = subscribeCurrentPlaylistTracksUseCase()
+            val currentTrackIndexFlow=subscribePlayerCurrentTrackIndexUseCase()
             when (playListsFlow) {
                 is DomainResult.Success -> {
                     playListsFlow.data.collect { playlist ->
@@ -228,7 +268,7 @@ class PlaylistViewModel(
             }
         }
 
-    }
+    }*/
 
     class Factory(
         private val espressoIdlingResource: EspressoIdlingResource?,
