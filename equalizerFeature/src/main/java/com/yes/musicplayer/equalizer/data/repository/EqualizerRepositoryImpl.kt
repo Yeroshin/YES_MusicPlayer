@@ -1,22 +1,14 @@
 package com.yes.musicplayer.equalizer.data.repository
 
-import android.content.Context
-import android.media.AudioManager
-import android.media.audiofx.AudioEffect
 import android.media.audiofx.Equalizer
-import androidx.annotation.OptIn
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.exoplayer.ExoPlayer
 
 
 class EqualizerRepositoryImpl(
-    private val equalizerFactory:EqualizerRepositoryImpl.Factory,
-   // private var equalizer:Equalizer,
-    private val audioSessionId:Int
+  //  private val equalizerFactory:EqualizerRepositoryImpl.Factory,
+   private val equalizer:Equalizer,
 ) {
   //  private var equalizer:Equalizer?=null
-    private var equalizer:Equalizer?=equalizerFactory.create(audioSessionId)
+  //  private var equalizer:Equalizer?=equalizerFactory.create()
     fun getPresets():List<String>{
         return equalizer?.run {
             (0 until numberOfPresets.toInt()).mapNotNull { index ->
@@ -25,7 +17,7 @@ class EqualizerRepositoryImpl(
         } ?: emptyList()
     }
     fun usePreset(preset:Int){
-        checkControl()
+     //   checkControl()
         try{
             equalizer?.usePreset(preset.toShort())
         }catch (exception: Exception){
@@ -46,7 +38,7 @@ class EqualizerRepositoryImpl(
         return equalizer?.getBandLevel(band.toShort())?.toInt()?:0
     }
     fun setBandLevel(band: Int,level:Int){
-        checkControl()
+      //  checkControl()
         try{
             equalizer?.setBandLevel(
                 band.toShort(),
@@ -69,12 +61,12 @@ class EqualizerRepositoryImpl(
             equalizer?.enabled=enabled
         }
     }
-    private fun checkControl(){
+   /* private fun checkControl(){
         equalizer?.let {
             if(!it.hasControl()){
                 it.release()
                 try{
-                    equalizer=equalizerFactory.create(audioSessionId)
+                    equalizer=equalizerFactory.create()
                     // equalizer.enabled=true//tmp TODO remove this
                 }catch (exception: Exception){
                     val pr=exception
@@ -82,10 +74,10 @@ class EqualizerRepositoryImpl(
             }
         }
 
-    }
-    class Factory(){
-        fun create(audioSessionId:Int):Equalizer{
+    }*/
+  /*  class Factory(private val audioSessionId:Int){
+        fun create():Equalizer{
             return Equalizer(0,audioSessionId)
         }
-    }
+    }*/
 }

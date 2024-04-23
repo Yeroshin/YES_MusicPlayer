@@ -74,63 +74,57 @@ class EqualizerModule {
      ): Equalizer{
          return Equalizer(0,audioSessionId)
      }*/
-    @OptIn(UnstableApi::class)
-    @Provides
-    fun providesEqualizerFactory(
-        player: ExoPlayer
-    ): EqualizerRepositoryImpl.Factory {
-        return EqualizerRepositoryImpl.Factory()
-    }
-    @OptIn(UnstableApi::class)
-    @Provides
-    fun providesEqualizer(
-        player: ExoPlayer
-    ): Equalizer {
-        /*  var eq=Equalizer(1000,player.audioSessionId)
-         /* eq.setControlStatusListener { effect, controlGranted ->
-              if(!controlGranted){
-                // eq.release()
-                //  eq=Equalizer(1000,player.audioSessionId)
-                  val a=eq.hasControl()
-                  val b=eq.enabled
-                  eq.enabled=true
-                  val c=eq.hasControl()
-                  val d=eq.enabled
-                  val hasControl = controlGranted
-              }
 
-          }*/
-          try{
-              eq.usePreset(1)
-          }catch (exception: Exception){
-              // equalizer.release()
-              val pr=exception
-          }
-          val a=eq.hasControl()
-          val b=eq.enabled
-          eq.enabled=true
-          val c=eq.hasControl()
-          val d=eq.enabled
+    /*   @OptIn(UnstableApi::class)
+       @Provides
+       fun providesEqualizer(
+           player: ExoPlayer
+       ): Equalizer {
+           /*  var eq=Equalizer(1000,player.audioSessionId)
+            /* eq.setControlStatusListener { effect, controlGranted ->
+                 if(!controlGranted){
+                   // eq.release()
+                   //  eq=Equalizer(1000,player.audioSessionId)
+                     val a=eq.hasControl()
+                     val b=eq.enabled
+                     eq.enabled=true
+                     val c=eq.hasControl()
+                     val d=eq.enabled
+                     val hasControl = controlGranted
+                 }
 
-          try{
-              eq.usePreset(1)
-          }catch (exception: Exception){
-              // equalizer.release()
-              val pr=exception
-          }
-          val z=eq.hasControl()
-          return eq*/
-      /*  val eq = Equalizer(0, player.audioSessionId)
-        eq.enabled = true//tmp
-        return eq*/
-         return Equalizer(0,player.audioSessionId)
+             }*/
+             try{
+                 eq.usePreset(1)
+             }catch (exception: Exception){
+                 // equalizer.release()
+                 val pr=exception
+             }
+             val a=eq.hasControl()
+             val b=eq.enabled
+             eq.enabled=true
+             val c=eq.hasControl()
+             val d=eq.enabled
 
-    }
+             try{
+                 eq.usePreset(1)
+             }catch (exception: Exception){
+                 // equalizer.release()
+                 val pr=exception
+             }
+             val z=eq.hasControl()
+             return eq*/
+         /*  val eq = Equalizer(0, player.audioSessionId)
+           eq.enabled = true//tmp
+           return eq*/
+            return Equalizer(0,player.audioSessionId)
+
+       }*/
 
     @Provides
     fun providesSettingsRepositoryImpl(
         settingsDataSource: SettingsDataSource,
-        context:Context
+        context: Context
     ): SettingsRepositoryImpl {
         return SettingsRepositoryImpl(
             settingsDataSource,
@@ -138,25 +132,22 @@ class EqualizerModule {
         )
     }
 
-    @OptIn(UnstableApi::class)
-    @Provides
-    @EqualizerScope
-    fun providesEqualizerRepositoryImpl(
-         equalizerFactory:EqualizerRepositoryImpl.Factory,
-       // equalizer: Equalizer,
-        player: ExoPlayer
-    ): EqualizerRepositoryImpl {
-        return EqualizerRepositoryImpl(
-            equalizerFactory,
-           // equalizer,
-            player.audioSessionId
-        )
-    }
+      @Provides
+      @EqualizerScope
+      fun providesEqualizerRepositoryImpl(
+           equalizer:Equalizer,
+      ): EqualizerRepositoryImpl {
+          return EqualizerRepositoryImpl(
+              equalizer,
+          )
+      }
+
 
     @Provides
     fun providesMapperUI(): MapperUI {
         return MapperUI()
     }
+
     @Provides
     fun providesMapper(): Mapper {
         return Mapper()
@@ -176,19 +167,22 @@ class EqualizerModule {
             loudnessEnhancerRepository
         )
     }
-    @OptIn(UnstableApi::class) @Provides
+
+   /* @OptIn(UnstableApi::class)
+    @Provides
     fun providesLoudnessEnhancer(
         player: ExoPlayer
     ): LoudnessEnhancer {
         return LoudnessEnhancer(
             player.audioSessionId
         )
-    }
+    }*/
+
     @Provides
     fun providesLoudnessEnhancerRepository(
         loudnessEnhancer: LoudnessEnhancer,
         mapper: Mapper,
-        audioSessionId:Int
+        audioSessionId: Int
     ): LoudnessEnhancerRepository {
         return LoudnessEnhancerRepository(
             loudnessEnhancer,
@@ -196,6 +190,7 @@ class EqualizerModule {
             audioSessionId
         )
     }
+
     @Provides
     fun providesSetLoudnessEnhancerEnabledUseCase(
         @IoDispatcher dispatcher: CoroutineDispatcher,
@@ -208,6 +203,7 @@ class EqualizerModule {
             loudnessEnhancerRepository
         )
     }
+
     @Provides
     fun providesSetLoudnessEnhancerValueUseCase(
         @IoDispatcher dispatcher: CoroutineDispatcher,

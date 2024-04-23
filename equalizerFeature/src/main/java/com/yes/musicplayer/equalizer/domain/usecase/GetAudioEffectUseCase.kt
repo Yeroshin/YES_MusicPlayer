@@ -18,10 +18,10 @@ class GetAudioEffectUseCase(
     override suspend fun run(params: Params?): DomainResult<Equalizer> {
         val presetsNames = mutableListOf<String>()
         val bands = mutableListOf<Int>()
-        val equalizerEnabled=settingsRepository.subscribeEqualizerEnabled().first()
+      /*  val equalizerEnabled=settingsRepository.subscribeEqualizerEnabled().first()
         equalizerRepository.setEnabled(
             equalizerEnabled
-        )
+        )*/
         params?.frequencies?.forEach {
             bands.add(equalizerRepository.getBand(it))
         }
@@ -35,29 +35,30 @@ class GetAudioEffectUseCase(
         )
 
         val currentPreset = settingsRepository.getCurrentPreset()
-        equalizerRepository.usePreset(
-            currentPreset
-        )
+       /* if(currentPreset >0){
+            equalizerRepository.usePreset(
+                (currentPreset -1)
+            )
+        }else{
+            settingsRepository.getCustomPreset().forEachIndexed { index,value->
+                equalizerRepository.setBandLevel(bands[index],value)
+            }
+        }*/
         val levels = mutableListOf<Int>()
         bands.forEach {
             levels.add(equalizerRepository.getBandLevel(it))
         }
-        val loudnessEnhancerEnabled = settingsRepository.getLoudnessEnhancerEnabled()
-        loudnessEnhancerRepository.setEnabled(loudnessEnhancerEnabled)
-        val loudnessEnhancerValue = settingsRepository.getLoudnessEnhancerTargetGain()
-        loudnessEnhancerRepository.setTargetGain(loudnessEnhancerValue)
+
 
         return DomainResult.Success(
             Equalizer(
-                settingsRepository.subscribeEqualizerEnabled().first(),
-                currentPreset,
-                presetsNames,
-                bandsLevelRange,
+                equalizerEnabled = settingsRepository.subscribeEqualizerEnabled().first(),
+                currentPreset = settingsRepository.getCurrentPreset(),
+                presetsNames=presetsNames,
+                bandsLevelRange = bandsLevelRange,
                 equalizerValues = levels,
-                equalizerValuesInfo = levels,
-                loudnessEnhancerEnabled = loudnessEnhancerEnabled,
-                loudnessEnhancerValue = loudnessEnhancerValue
-
+                loudnessEnhancerEnabled = settingsRepository.getLoudnessEnhancerEnabled(),
+                loudnessEnhancerValue = settingsRepository.getLoudnessEnhancerTargetGain()
             )
         )
     }

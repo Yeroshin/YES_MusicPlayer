@@ -30,7 +30,7 @@ class SetEqualizerValueUseCase(
             println("SetEqualizerValueUseCase")
             DomainResult.Success(
                 Equalizer(
-                    equalizerValuesInfo = levels,
+                    equalizerValues = levels,
                     currentPreset = currentPreset
                 )
             )

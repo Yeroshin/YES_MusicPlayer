@@ -6,7 +6,7 @@ import com.yes.musicplayer.equalizer.data.mapper.Mapper
 import com.yes.musicplayer.equalizer.presentation.contract.EqualizerContract
 
 class LoudnessEnhancerRepository(
-    private var loudnessEnhancer: LoudnessEnhancer,
+    private val loudnessEnhancer: LoudnessEnhancer,
     private val mapper: Mapper,
     private val  audioSessionId:Int
 ) {
@@ -14,7 +14,7 @@ class LoudnessEnhancerRepository(
         return loudnessEnhancer.targetGain
     }
     fun setTargetGain(percent:Int){
-        checkControl()
+      //  checkControl()
         loudnessEnhancer.setTargetGain(
             mapper.mapPercentToMillibels(
                 percent,
@@ -36,7 +36,7 @@ class LoudnessEnhancerRepository(
         if(!loudnessEnhancer.hasControl()){
             loudnessEnhancer.release()
             try{
-                loudnessEnhancer= LoudnessEnhancer(audioSessionId)
+               // loudnessEnhancer= LoudnessEnhancer(audioSessionId)
                 loudnessEnhancer.enabled=true//tmp
             }catch (exception: Exception){
                 val pr=exception

@@ -116,14 +116,14 @@ class DataModule(
             context
         )
     }
-    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+  /*  @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     @Provides
     @Singleton
     fun providesRendererFactory(
         context: Context
     ): RendererFactory {
         return RendererFactory(context)
-    }
+    }*/
 
 }
 @Retention(AnnotationRetention.BINARY)

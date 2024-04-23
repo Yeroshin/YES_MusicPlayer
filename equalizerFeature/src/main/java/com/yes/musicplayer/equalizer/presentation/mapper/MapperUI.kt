@@ -38,7 +38,7 @@ class MapperUI {
                     }.toIntArray()
                 }
             },
-            equalizerValuesInfo = equalizer.equalizerValuesInfo?.map { it.toString() },
+            equalizerValuesInfo = equalizer.equalizerValues?.map { it.toString() },
             loudnessEnhancerEnabled = equalizer.loudnessEnhancerEnabled,
             loudnessEnhancerValue = equalizer.loudnessEnhancerValue
         )

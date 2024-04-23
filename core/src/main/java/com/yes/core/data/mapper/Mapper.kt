@@ -10,6 +10,9 @@ import java.io.File
 
 
 class Mapper {
+    fun mapPercentToMillibels(percentMb:Int,maxMb:Int):Int{
+        return percentMb*maxMb/100
+    }
     fun map(track: PlayListDataBaseTrackEntity): Track {
         return Track(
             track.id ?: 0,

@@ -11,6 +11,7 @@ import com.yes.core.data.mapper.Mapper
 import com.yes.core.di.component.MusicServiceComponent
 import com.yes.core.domain.models.DomainResult
 import com.yes.core.domain.useCase.GetCurrentTrackIndexUseCase
+import com.yes.core.domain.useCase.InitEqualizerUseCase
 import com.yes.core.domain.useCase.SetSettingsTrackIndexUseCase
 import com.yes.core.domain.useCase.SubscribeCurrentPlaylistTracksUseCase
 import kotlinx.coroutines.CoroutineScope
@@ -32,7 +33,8 @@ class MusicService : MediaSessionService() {
         val mapper: Mapper,
         val subscribeCurrentPlaylistTracksUseCase: SubscribeCurrentPlaylistTracksUseCase,
         val getCurrentTrackIndexUseCase: GetCurrentTrackIndexUseCase,
-        val setSettingsTrackIndexUseCase: SetSettingsTrackIndexUseCase
+        val setSettingsTrackIndexUseCase: SetSettingsTrackIndexUseCase,
+        val initEqualizerUseCase: InitEqualizerUseCase
     )
 
     private val dependency by lazy {
@@ -75,6 +77,7 @@ class MusicService : MediaSessionService() {
         )
         serviceScope.launch {
             var loaded=false
+            dependency.initEqualizerUseCase()
             val playLists = dependency.subscribeCurrentPlaylistTracksUseCase()
             val currentTrackIndex = dependency.getCurrentTrackIndexUseCase()
             when (playLists) {

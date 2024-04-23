@@ -42,7 +42,7 @@ interface DataComponent {
     fun providesPlayerDataSource(): PlayerDataSource
     fun providesMediaDataStore(): MediaDataStore
 
-    fun providesRendererFactory(): RendererFactory
+   // fun providesRendererFactory(): RendererFactory
 
 
 }
