@@ -12,14 +12,13 @@ class SetPlaylistUseCase(
 ) : UseCase<SetPlaylistUseCase.Params, Long>(dispatcher) {
     override suspend fun run(params: Params?): DomainResult<Long> {
         settingsRepository.updateCurrentTrackIndex(-1)
-        params?.items?.find { it.current }?.let {
+        return params?.items?.find { it.current }?.let {
             settingsRepository.updateCurrentPlaylistId(
                 it.id
             )
-            return DomainResult.Success(1)
-        }?: run {
-            return DomainResult.Error(DomainResult.UnknownException)
-        }
+             DomainResult.Success(1)
+        }?: DomainResult.Error(DomainResult.UnknownException)
+
     }
     data class Params(val items: List<Item>)
 

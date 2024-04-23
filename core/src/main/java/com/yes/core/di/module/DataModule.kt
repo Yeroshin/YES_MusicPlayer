@@ -87,6 +87,7 @@ class DataModule(
         )
     }
     @Provides
+    @Singleton
     fun providesSettingsDataSource(
         dataStore: DataStore<Preferences>,
     ): SettingsDataSource {

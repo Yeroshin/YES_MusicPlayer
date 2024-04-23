@@ -12,15 +12,20 @@ class AddPlayListUseCase (
     dispatcher: CoroutineDispatcher,
     private val playListDialogRepositoryImpl: PlayListDialogRepositoryImpl,
     private val settingsRepository: SettingsRepositoryImpl
-) : UseCase<AddPlayListUseCase.Params, Long>(dispatcher) {
-    override suspend fun run(params: Params?): DomainResult<Long> {
+) : UseCase<AddPlayListUseCase.Params, Boolean>(dispatcher) {
+    override suspend fun run(params: Params?): DomainResult<Boolean> {
+        params?.let {
+            settingsRepository.updateCurrentPlaylistId(
+                playListDialogRepositoryImpl.saveNewPlaylist(
+                    it.name
+                )
+            )
+        }
         val  id=playListDialogRepositoryImpl.saveNewPlaylist(
             params?.name?:""
         )
         settingsRepository.updateCurrentPlaylistId(id)
-        return DomainResult.Success(
-            id
-        )
+        return DomainResult.Success(true)
     }
     data class Params(val name: String)
 

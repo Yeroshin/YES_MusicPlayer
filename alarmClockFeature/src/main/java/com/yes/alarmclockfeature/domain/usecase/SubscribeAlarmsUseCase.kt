@@ -11,7 +11,7 @@ class SubscribeAlarmsUseCase(
     dispatcher: CoroutineDispatcher,
     private val alarmListRepository: AlarmListRepository,
 ) : UseCase<Alarm, Flow<List<Alarm>>>(dispatcher) {
-    override suspend fun run(alarm: Alarm?): DomainResult<Flow<List<Alarm>>> {
+    override suspend fun run(params: Alarm?): DomainResult<Flow<List<Alarm>>> {
         return DomainResult.Success(
             alarmListRepository.subscribeAlarms()
         )

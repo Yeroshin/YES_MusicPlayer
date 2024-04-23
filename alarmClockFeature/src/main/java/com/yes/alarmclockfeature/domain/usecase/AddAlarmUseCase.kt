@@ -12,9 +12,9 @@ class AddAlarmUseCase (
     private val alarmListRepository: AlarmListRepository,
     private val alarmManagerRepository: AlarmManagerRepository
 ) : UseCase<Alarm, Boolean>(dispatcher) {
-    override suspend fun run(alarm: Alarm?): DomainResult<Boolean> {
-        return alarm?.let {
-            alarmListRepository.addAlarm(alarm)
+    override suspend fun run(params: Alarm?): DomainResult<Boolean> {
+        return params?.let {
+            alarmListRepository.addAlarm(params)
            // alarmManagerRepository.setAlarm(alarm)
             DomainResult.Success(true)
         } ?: DomainResult.Error(DomainResult.UnknownException)

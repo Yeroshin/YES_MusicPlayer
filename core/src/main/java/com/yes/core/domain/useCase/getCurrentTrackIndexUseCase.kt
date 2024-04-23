@@ -13,7 +13,7 @@ class GetCurrentTrackIndexUseCase(
 ) : UseCase<Any, Flow<Int>>(dispatcher) {
     override suspend fun run(params: Any?): DomainResult<Flow<Int>> {
         return DomainResult.Success(
-            settingsRepositoryImpl.subscribeCurrentTrackIndex().map { it.toInt() }
+            settingsRepositoryImpl.subscribeCurrentTrackIndex()
         )
     }
 
