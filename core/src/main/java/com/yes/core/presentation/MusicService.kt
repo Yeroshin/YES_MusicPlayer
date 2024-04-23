@@ -68,7 +68,7 @@ class MusicService : MediaSessionService() {
 
         }
     }
-
+    private val frequencies = intArrayOf(60000, 230000, 910000, 3000000, 14000000)
     override fun onCreate() {
         super.onCreate()
         //  mediaSession =dependency.mediaSession
@@ -77,7 +77,11 @@ class MusicService : MediaSessionService() {
         )
         serviceScope.launch {
             var loaded=false
-            dependency.initEqualizerUseCase()
+            dependency.initEqualizerUseCase(
+                InitEqualizerUseCase.Params(
+                    frequencies=frequencies
+                )
+            )
             val playLists = dependency.subscribeCurrentPlaylistTracksUseCase()
             val currentTrackIndex = dependency.getCurrentTrackIndexUseCase()
             when (playLists) {

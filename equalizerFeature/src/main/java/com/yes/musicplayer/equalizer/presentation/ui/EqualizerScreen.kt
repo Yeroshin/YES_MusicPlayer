@@ -17,12 +17,29 @@ import com.yes.musicplayer.equalizer.R
 import com.yes.musicplayer.equalizer.databinding.EqualizerBinding
 import com.yes.musicplayer.equalizer.presentation.contract.EqualizerContract
 
-class EqualizerScreen : BaseFragment(), CircularSeekBar.OnProgressChangeListener {
+class EqualizerScreen : BaseFragment() {
     interface DependencyResolver {
         fun resolveEqualizerScreenComponent(): BaseDependency
     }
 
+val circularSeekBarListener=object:CircularSeekBar.OnProgressChangeListener{
+    override fun onStartTrackingTouch(progress: Int) {
+        viewModel.setEvent(
+            EqualizerContract.Event.OnLoudnessEnhancerTargetGain(
+                progress
+            )
+        )
+    }
 
+    override fun onStopTrackingTouch(progress: Int) {
+        viewModel.setEvent(
+            EqualizerContract.Event.OnLoudnessEnhancerTargetGainSet(
+                progress
+            )
+        )
+    }
+
+}
     override val dependency by lazy {
         (requireActivity().application as DependencyResolver)
             .resolveEqualizerScreenComponent()
@@ -130,7 +147,7 @@ class EqualizerScreen : BaseFragment(), CircularSeekBar.OnProgressChangeListener
                 )
             )
         }
-        binder.circularSeekBar.setOnProgressChangeListener(this)
+        binder.circularSeekBar.setOnProgressChangeListener(circularSeekBarListener)
         //////////////////
         presetsSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binder.presetsSpinner.adapter = presetsSpinnerAdapter
@@ -250,23 +267,4 @@ class EqualizerScreen : BaseFragment(), CircularSeekBar.OnProgressChangeListener
     }
 
 
-    private fun hideBuffering() {
-
-    }
-
-    override fun onStartTrackingTouch(progress: Int) {
-        viewModel.setEvent(
-            EqualizerContract.Event.OnLoudnessEnhancerTargetGain(
-                progress
-            )
-        )
-    }
-
-    override fun onStopTrackingTouch(progress: Int) {
-        viewModel.setEvent(
-            EqualizerContract.Event.OnLoudnessEnhancerTargetGainSet(
-                progress
-            )
-        )
-    }
 }

@@ -70,9 +70,6 @@ class EqualizerViewModel(
 
     override fun handleEvent(event: Event) {
         when (event) {
-            is Event.OnPlay -> {
-
-            }
 
             is Event.OnPresetSelected -> {
                 setPreset(event.preset)
@@ -81,7 +78,6 @@ class EqualizerViewModel(
             is Event.OnEqualizerValue -> setEqualizerValue(
                     event.band, event.value, event.maxLevelRange, event.seekBarValues
                 )
-
 
             is Event.OnEqualizerEnabled -> setEqualizerEnabled(event.enabled)
             is Event.OnLoudnessEnhancerEnabled -> setLoudnessEnhancerEnabled(event.enabled)

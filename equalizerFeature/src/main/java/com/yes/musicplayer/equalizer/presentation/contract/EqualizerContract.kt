@@ -10,7 +10,6 @@ class EqualizerContract {
     sealed class Event : UiEvent {
         data class OnPresetSelected(val preset:Int): Event()
         data class OnEqualizerEnabled(val enabled:Boolean): Event()
-        data object OnPlay : Event()
         data class OnEqualizerValue(val band:Int,val value:Int,val maxLevelRange: Int,val seekBarValues:IntArray): Event()
         data class OnEqualizerValueSet(val band:Int,val value:Int,val maxLevelRange: Int,val seekBarValues:IntArray): Event()
 

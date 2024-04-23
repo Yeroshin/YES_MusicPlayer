@@ -27,11 +27,12 @@ class AlarmDataSource(
     /* private val alarmManager: AlarmManager by lazy {
        context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
      }*/
+    private val alarmIntent = Intent(context, YESBroadcastReceiver::class.java)
     private val pendingIntent = PendingIntent
         .getBroadcast(
             context,
             0,
-            Intent(context, YESBroadcastReceiver::class.java),
+            alarmIntent,
             PendingIntent.FLAG_IMMUTABLE//PendingIntent.FLAG_UPDATE_CURRENT//
         )
 
@@ -39,14 +40,21 @@ class AlarmDataSource(
         alarmManager.cancel(pendingIntent)
     }
 
-    fun setAlarm(hour: Int, minute: Int, dayOfWeek: Int) {
+    fun setAlarm(alarmId:Long?,hour: Int, minute: Int, dayOfWeek: Int) {
         // notification(context)
         //  alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         /////////////////////
-        /* val alarmIntent = Intent(context, YESBroadcastReceiver::class.java).apply {
-             putExtra("hello","world")
-             action = "alarm"
-         }*/
+        val alarmIntent = Intent(context, YESBroadcastReceiver::class.java)
+        alarmIntent.putExtra("alarmId",alarmId)
+        val pendingIntent = PendingIntent
+            .getBroadcast(
+                context,
+                0,
+                alarmIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            //PendingIntent.FLAG_IMMUTABLE
+            )
+
 
         ////////////////////
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

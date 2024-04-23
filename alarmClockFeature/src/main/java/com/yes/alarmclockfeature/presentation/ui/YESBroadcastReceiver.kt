@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.yes.alarmclockfeature.domain.usecase.SetAndPlayTracksToPlayerPlaylistUseCase
+import com.yes.alarmclockfeature.domain.usecase.SetNearestAlarmUseCase
 import com.yes.core.domain.models.DomainResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,8 +31,8 @@ class YESBroadcastReceiver : BroadcastReceiver(){
 
     override fun onReceive(context: Context, intent: Intent) {
         this.context = context.applicationContext
-       // component = (this.context as AlarmsScreen.DependencyResolver).getAlarmsScreenComponent()
-         CoroutineScope(Dispatchers.Main).launch {
+        val tmp=intent.getLongExtra("alarmId",-1)
+        CoroutineScope(Dispatchers.Main).launch {
              when (val result = getCurrentPlaylistTracksUseCase()) {
                  is DomainResult.Success -> {
                      setAndPlayTracksToPlayerPlaylistUseCase(
@@ -42,7 +43,11 @@ class YESBroadcastReceiver : BroadcastReceiver(){
                  }
                  is DomainResult.Error -> {}
              }
-             when (val result = setNearestAlarmUseCase()) {
+             when (val result = setNearestAlarmUseCase(
+                 SetNearestAlarmUseCase.Params(
+                     intent.getLongExtra("alarmId",-1)
+                 )
+             )) {
                  is DomainResult.Success -> {}
                  is DomainResult.Error -> {}
              }
