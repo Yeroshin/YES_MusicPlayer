@@ -28,7 +28,7 @@ class SaveTracksToPlaylistUseCase(
             .maxByOrNull {
                 it.position
             }?.position ?: -1
-
+//TODO sort by artist name etc
         params?.items?.filter {
             it.selected
         }?.onEach { mediaItem ->
@@ -48,7 +48,7 @@ class SaveTracksToPlaylistUseCase(
                     mediaRepositoryImpl.getAudioItems(
                         menuRepository.getItem(mediaItem.id)?.type,
                         mediaItem.name
-                    ).map {
+                    ) .sortedWith(compareBy({ it.artist }, { it.title })).map {
                         lastPosition++
                         it.copy(
                             playlistId = playListId,

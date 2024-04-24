@@ -12,14 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@drawable/button_space"
-        android:padding="4dp">
+        android:background="@drawable/display"
+        android:padding="12dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/playList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@color/black"
             tools:itemCount="30"
             tools:listitem="@layout/item_track" />
 

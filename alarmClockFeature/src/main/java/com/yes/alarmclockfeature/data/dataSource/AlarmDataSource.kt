@@ -40,19 +40,20 @@ class AlarmDataSource(
         alarmManager.cancel(pendingIntent)
     }
 
-    fun setAlarm(alarmId:Long?,hour: Int, minute: Int, dayOfWeek: Int) {
+    fun setAlarm(alarmId: Long?, hour: Int, minute: Int, dayOfWeek: Int) {
         // notification(context)
         //  alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         /////////////////////
         val alarmIntent = Intent(context, YESBroadcastReceiver::class.java)
-        alarmIntent.putExtra("alarmId",alarmId)
+        alarmIntent.putExtra("alarmId", alarmId)
         val pendingIntent = PendingIntent
             .getBroadcast(
                 context,
                 0,
                 alarmIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-            //PendingIntent.FLAG_IMMUTABLE
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                //  PendingIntent.FLAG_UPDATE_CURRENT
+                //PendingIntent.FLAG_IMMUTABLE
             )
 
 
@@ -74,11 +75,11 @@ class AlarmDataSource(
         ///////////////////////
         //  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-           /* alarmManager.setExactAndAllowWhileIdle(
-                AlarmManager.RTC_WAKEUP,
-                calendar.timeInMillis,
-                pendingIntent
-            )*/
+            /* alarmManager.setExactAndAllowWhileIdle(
+                 AlarmManager.RTC_WAKEUP,
+                 calendar.timeInMillis,
+                 pendingIntent
+             )*/
 
             alarmManager.setAlarmClock(
                 AlarmManager.AlarmClockInfo(
