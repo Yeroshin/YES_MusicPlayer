@@ -1,12 +1,67 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.MusicPlayer" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.MusicPlayer" parent="Theme.MaterialComponents.DayNight.NoActionBar">
        <!-- Customize your theme here. -->
         <item name="android:windowBackground">@drawable/splash</item>
-
+        <item name="branded_color">@color/branded_color</item>
     </style>
-    <style name="Theme.YESActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+    <style name="Theme.YESActivityDark" parent="Theme.MusicPlayer">
         <!-- Customize your theme here. -->
-        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:windowBackground">@color/branded_color</item>
+
+        <item name="tint">@color/tint</item>
+        <item name="branded_color">@color/branded_color</item>
+        <item name="branded_light">@color/branded_light</item>
+        <item name="branded_dark">@color/branded_dark</item>
+        <item name="text_gray">@color/text_gray</item>
+        <item name="transparent">@color/transparent</item>
+
+        <item name="shadow">@color/shadow</item>
+        <item name="gray">@color/gray</item>
+        <item name="light">@color/light</item>
+        <item name="black">@color/black</item>
+        <item name="white">@color/white</item>
+
+        <item name="green">@color/green</item>
+        <item name="red">@color/red</item>
+
+        <item name="button_startColor">@color/button_startColor</item>
+        <item name="button_centerColor">@color/button_centerColor</item>
+        <item name="button_endColor">@color/button_endColor</item>
+        <item name="button_startColor_pressed">@color/button_startColor_pressed</item>
+        <item name="button_centerColor_pressed">@color/button_centerColor_pressed</item>
+        <item name="button_endColor_pressed">@color/button_endColor_pressed</item>
+
+        <item name="launcher_background" >@color/branded_color</item>
+    </style>
+    <style name="Theme.YESActivityLight" parent="Theme.MusicPlayer">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/branded_color</item>
+
+        <item name="tint">@color/red</item>
+        <item name="branded_color">@color/red</item>
+        <item name="branded_light">@color/red</item>
+        <item name="branded_dark">@color/red</item>
+        <item name="text_gray">@color/red</item>
+        <item name="transparent">@color/red</item>
+
+        <item name="shadow">@color/red</item>
+        <item name="gray">@color/red</item>
+        <item name="light">@color/red</item>
+        <item name="black">@color/red</item>
+        <item name="white">@color/red</item>
+
+        <item name="green">@color/red</item>
+        <item name="red">@color/red</item>
+
+        <item name="button_startColor">@color/red</item>
+        <item name="button_centerColor">@color/red</item>
+        <item name="button_endColor">@color/red</item>
+        <item name="button_startColor_pressed">@color/red</item>
+        <item name="button_centerColor_pressed">@color/red</item>
+        <item name="button_endColor_pressed">@color/red</item>
+
+        <item name="launcher_background" >@color/red</item>
     </style>
 </resources>

@@ -13,14 +13,14 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@drawable/display"
-        android:padding="12dp">
+        android:padding="10dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/playList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/black"
+            android:background="?attr/black"
             tools:itemCount="30"
             tools:listitem="@layout/item_track" />
 
@@ -29,7 +29,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:indeterminateTint="@color/tint"
+            android:indeterminateTint="?attr/tint"
             android:visibility="gone" />
 
         <View

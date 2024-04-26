@@ -12,7 +12,7 @@
                         android:right="0dp"
                         android:bottom="0dp" />
                     <solid
-                        android:color="@color/light" />
+                        android:color="?attr/light" />
                 </shape>
             </item>
             <item >
@@ -21,9 +21,9 @@
 
                     <gradient
                         android:angle="90"
-                        android:startColor="@color/button_startColor"
-                        android:centerColor="@color/button_centerColor"
-                        android:endColor="@color/button_endColor"
+                        android:startColor="?attr/button_startColor"
+                        android:centerColor="?attr/button_centerColor"
+                        android:endColor="?attr/button_endColor"
                         android:type="linear" />
                 </shape>
             </item>
@@ -37,9 +37,9 @@
                     <corners android:radius="10dp" />
                     <gradient
                         android:angle="90"
-                        android:startColor="@color/button_startColor_pressed"
-                        android:centerColor="@color/button_centerColor_pressed"
-                        android:endColor="@color/button_endColor_pressed"
+                        android:startColor="?attr/button_startColor_pressed"
+                        android:centerColor="?attr/button_centerColor_pressed"
+                        android:endColor="?attr/button_endColor_pressed"
                         android:type="linear" />
                 </shape>
             </item>

@@ -33,10 +33,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/black"
+                    android:background="?attr/black"
                     android:gravity="center_horizontal|center_vertical"
                     android:text="@string/playList"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/white"
                     android:textSize="@dimen/font_size_regular" />
 
                 <TextView
@@ -52,18 +52,18 @@
                     android:marqueeRepeatLimit="marquee_forever"
                     android:singleLine="true"
 
-                    android:textColor="@color/black"
+                    android:textColor="?attr/black"
                     android:textSize="@dimen/font_size_large"
                     tools:text="hello" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/black"
+                    android:background="?attr/black"
                     android:gravity="center_horizontal|center_vertical"
                     android:text="@string/song"
 
-                    android:textColor="@color/white"
+                    android:textColor="?attr/white"
                     android:textSize="@dimen/font_size_regular"
                     app:autoSizeTextType="uniform" />
 
@@ -82,7 +82,7 @@
                     android:marqueeRepeatLimit="marquee_forever"
                     android:singleLine="true"
 
-                    android:textColor="@color/black"
+                    android:textColor="?attr/black"
                     android:textSize="@dimen/font_size_large"
                     tools:text="привет" />
 
@@ -119,11 +119,11 @@
             android:layout_height="wrap_content"
 
 
-            android:background="@color/black"
+            android:background="?attr/black"
             android:gravity="center_horizontal|center_vertical"
 
             android:text="@string/duration"
-            android:textColor="@color/white"
+            android:textColor="?attr/white"
             android:textSize="14sp" />
 
         <LinearLayout
@@ -148,7 +148,7 @@
                 android:maxLines="1"
 
                 android:text="00:00"
-                android:textColor="@color/black"
+                android:textColor="?attr/black"
                 android:textSize="@dimen/font_size_coloss"
                 tools:text="BUFFERING..." />
 
@@ -174,7 +174,7 @@
                 android:fontFamily="@font/a_lcdnova_allfont_ru"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="00:00"
-                android:textColor="@color/black"
+                android:textColor="?attr/black"
                 android:textSize="@dimen/font_size_coloss" />
         </LinearLayout>
     </LinearLayout>

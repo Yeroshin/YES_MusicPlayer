@@ -7,7 +7,7 @@
         android:bottom="2dp">
         <shape
             android:shape="rectangle">
-            <solid android:color="@color/light" />
+            <solid android:color="?attr/light" />
 
         </shape>
     </item>
@@ -16,7 +16,7 @@
         android:top="2dp">
         <shape
             android:shape="rectangle">
-            <solid android:color="@color/black" />
+            <solid android:color="?attr/black" />
 
         </shape>
     </item>
@@ -25,18 +25,18 @@
         android:bottom="2dp">
         <shape
             android:shape="rectangle">
-            <solid android:color="@color/branded_color" />
+            <solid android:color="?attr/branded_color" />
 
         </shape>
     </item>
-    <item
-        >
+    <item >
+
         <shape
             android:shape="rectangle">
 
             <stroke
                 android:width="2dp"
-                android:color="@color/item_selectable_state_list"
+                android:color="@color/selectable_color"
                 android:dashWidth="2dp"
                 android:dashGap="2dp" />
 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+        <attr name="tint" format="color"/>
+        <attr name="branded_color" format="color"/>
+        <attr name="branded_light" format="color"/>
+        <attr name="branded_dark" format="color"/>
+        <attr name="text_gray" format="color"/>
+        <attr name="transparent" format="color"/>
+
+        <attr name="shadow" format="color"/>
+        <attr name="gray" format="color"/>
+        <attr name="light" format="color"/>
+        <attr name="black" format="color"/>
+        <attr name="white" format="color"/>
+
+        <attr name="green" format="color"/>
+        <attr name="red" format="color"/>
+
+        <attr name="button_startColor" format="color"/>
+        <attr name="button_centerColor" format="color"/>
+        <attr name="button_endColor" format="color"/>
+        <attr name="button_startColor_pressed" format="color"/>
+        <attr name="button_centerColor_pressed" format="color"/>
+        <attr name="button_endColor_pressed" format="color"/>
+        <attr name="launcher_background" format="color"/>
+
+</resources>

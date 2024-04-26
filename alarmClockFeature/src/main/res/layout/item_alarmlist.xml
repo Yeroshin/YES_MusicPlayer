@@ -6,15 +6,15 @@
     android:layout_height="wrap_content"
     android:background="@drawable/background"
     android:descendantFocusability="blocksDescendants"
-    android:gravity="center_vertical"
-    android:padding="@dimen/padding_small">
+    android:gravity="center_vertical">
 
 
     <TextView
         android:id="@+id/alarm_time"
+        style="@style/leadingIcon"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
 
+        android:layout_height="wrap_content"
         android:text="00:00"
         android:textAlignment="viewEnd"
         android:textColor="#918F8F"
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
-            android:textColor="@color/text_gray" />
+            android:textColor="?attr/text_gray" />
 
         <TextView
             android:id="@+id/alarm_repeat_days"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:text="TextView"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/text_gray"
+            android:textColor="?attr/text_gray"
             android:textSize="8sp" />
     </LinearLayout>
 

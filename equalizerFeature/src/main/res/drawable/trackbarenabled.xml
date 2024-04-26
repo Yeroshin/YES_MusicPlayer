@@ -3,7 +3,7 @@
     android:width="171.74dp"
     android:height="761.71dp"
     android:viewportWidth="171.74"
-    android:tint="@color/trackbar_state"
+    android:tint="?attr/green"
     android:tintMode="multiply"
     android:viewportHeight="761.71">
   <path

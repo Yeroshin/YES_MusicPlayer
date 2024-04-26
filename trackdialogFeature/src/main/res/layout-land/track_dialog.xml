@@ -51,7 +51,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="8dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="@color/green"
+                        android:textColor="?attr/green"
                         tools:text="hello"
                         tools:visibility="visible" />
                 </FrameLayout>
@@ -72,7 +72,7 @@
                         android:checked="true"
                         android:foreground="@drawable/wan"
                         android:foregroundGravity="center"
-                        android:foregroundTint="@color/tint_pressed_state_list" />
+                        android:foregroundTint="@color/selectable_color" />
 
                 </FrameLayout>
 

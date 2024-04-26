@@ -34,6 +34,7 @@ import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.google.android.play.core.ktx.startUpdateFlowForResult
 import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
+import com.yes.musicplayer.R
 import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.MainActivityComponent
 import com.yes.musicplayer.equalizer.presentation.ui.EqualizerScreen
@@ -113,6 +114,7 @@ class MainActivity :
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(com.yes.coreui.R.style.Theme_YESActivityDark)
         super.onCreate(savedInstanceState)
         appUpdateManager=AppUpdateManagerFactory.create(applicationContext)
         if(updateType==AppUpdateType.FLEXIBLE){

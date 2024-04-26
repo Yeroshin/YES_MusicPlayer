@@ -37,7 +37,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:theme="@style/Theme.YESActivity"
+
             android:name=".presentation.MainActivity"
             android:exported="true">
             <intent-filter>
@@ -64,12 +64,12 @@
 
             </intent-filter>
         </receiver>
-        <activity
+        <!--<activity
             android:name="com.yes.alarmclockfeature.presentation.ui.AlarmActivity"
             android:exported="true"
             android:theme="@style/Theme.YESActivity"
             android:showOnLockScreen="true"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"/>-->
     </application>
 
 </manifest>

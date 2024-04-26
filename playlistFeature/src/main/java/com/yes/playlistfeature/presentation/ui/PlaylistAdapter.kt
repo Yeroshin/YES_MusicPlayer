@@ -44,17 +44,6 @@ class PlaylistAdapter(
         return itemList[position]
     }
 
-    fun removeItem(position: Int) {
-        //  itemList.removeAt(position)
-        itemList.removeAt(position)
-        notifyItemRemoved(position)
-        /*val size = itemList.size
-        itemList.clear()
-        notifyItemRangeRemoved(0, size)*/
-        //notifyDataSetChanged()
-        //  notifyItemRangeRemoved(0,itemList.size)
-    }
-
     fun moveItem(fromPosition: Int, toPosition: Int) {
         if (fromPosition < toPosition) {
             for (i in fromPosition until toPosition) {

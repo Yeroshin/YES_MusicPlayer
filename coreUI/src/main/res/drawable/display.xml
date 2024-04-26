@@ -15,7 +15,7 @@
                 android:radius="10dp" />
 
             <solid
-                android:color="@color/light" />
+                android:color="?attr/light" />
         </shape>
     </item>
     <item>
@@ -31,7 +31,7 @@
                 android:radius="10dp" />
             <stroke
                 android:width="3dp"
-                android:color="@color/black" />
+                android:color="?attr/black" />
         </shape>
     </item>
     <item>
@@ -47,7 +47,7 @@
                 android:radius="10dp" />
 
             <solid
-                android:color="@color/light" />
+                android:color="?attr/light" />
         </shape>
     </item>
     <item>
@@ -79,7 +79,7 @@
                 android:radius="0dp" />
             <stroke
                 android:width="2dp"
-                android:color="@color/black" />
+                android:color="?attr/black" />
             <gradient
                 android:angle="90"
                 android:startColor="#888d86"

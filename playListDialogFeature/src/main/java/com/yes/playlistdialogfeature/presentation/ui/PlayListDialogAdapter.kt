@@ -45,9 +45,11 @@ class PlayListDialogAdapter:
             binding.root.setOnClickListener {
                 itemsList.find { it.selected }?.let {
                     it.selected=false
+                    notifyItemChanged(itemsList.indexOf(it))
+
                 }
                 item.selected=true
-                notifyDataSetChanged()
+                notifyItemChanged(position)
             }
         }
     }

@@ -17,13 +17,13 @@
     </style >
 
     <style name="textLabel" parent="margin">
-        <item name="android:textColor">@color/text_gray</item>
+        <item name="android:textColor">?attr/text_gray</item>
         <item name="android:textSize">14sp</item>
         <item name="android:singleLine">true</item>
     </style >
     <style name="textSmall" parent="margin">
 
-        <item name="android:textColor">@color/text_gray</item>
+        <item name="android:textColor">?attr/text_gray</item>
         <item name="android:textSize">12sp</item>
         <item name="android:singleLine">true</item>
     </style >
@@ -55,7 +55,7 @@
         <item name="android:layout_marginTop">1dp</item>
         <item name="android:layout_marginBottom">2dp</item>
         <item name="android:layout_weight">1</item>
-        <item name="tint">@color/tint_pressed_state_list</item>
+        <item name="tint">@color/selectable_color</item>
         <item name="android:layout_width">match_parent</item>
     </style>
     <style name="buttonStyleTall" parent="buttonStyle">
@@ -97,7 +97,7 @@
         <item name="android:marqueeRepeatLimit">marquee_forever</item>
         <item name="android:scrollHorizontally">true</item>
         <item name="android:singleLine">true</item>
-        <item name="android:textColor">@color/item_activatable_state_list</item>
+        <item name="android:textColor">@color/selectable_color</item>
         <item name="android:textStyle">bold</item>
     </style>
     <style name="textInListLarge">
@@ -108,7 +108,7 @@
         <item name="android:focusable">true</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:singleLine">true</item>
-        <item name="android:textColor">@color/item_activatable_state_list</item>
+        <item name="android:textColor">@color/selectable_color</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -118,7 +118,7 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
-        <item name="android:buttonTint">@color/tint</item>
+        <item name="android:buttonTint">?attr/tint</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">false</item>
@@ -132,11 +132,5 @@
         <item name="android:layout_marginBottom">8dp</item>
     </style>
 
-
-    <declare-styleable name="CustomDrawable">
-        <attr name="customText" format="string" />
-        <attr name="customColor" format="color" />
-        <attr name="customTextSize" format="dimension" />
-    </declare-styleable>
 
 </resources>

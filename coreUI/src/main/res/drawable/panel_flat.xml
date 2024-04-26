@@ -6,7 +6,7 @@
             <corners
                 android:radius="5dp" />
             <solid
-                android:color="@color/light" />
+                android:color="?attr/light" />
             <padding
                 android:left="0dp"
                 android:top="1dp"
@@ -25,7 +25,7 @@
                 android:right="2dp"
                 android:bottom="0dp" />
                 <solid
-                    android:color="@color/black" />
+                    android:color="?attr/black" />
         </shape>
     </item>
 
@@ -40,7 +40,7 @@
                 android:right="0dp"
                 android:bottom="2dp" />
             <solid
-                android:color="@color/black" />
+                android:color="?attr/black" />
         </shape>
     </item>
     <item>
@@ -54,7 +54,7 @@
                 android:right="0dp"
                 android:bottom="0dp" />
             <solid
-                android:color="@color/branded_color" />
+                android:color="?attr/branded_color" />
         </shape>
     </item>
 </layer-list>
