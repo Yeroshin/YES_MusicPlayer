@@ -76,11 +76,12 @@
                     android:ellipsize="marquee"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
 
                     android:fontFamily="@font/a_lcdnova_allfont_ru"
                     android:gravity="center_vertical"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:singleLine="true"
+
 
                     android:textColor="?attr/black"
                     android:textSize="@dimen/font_size_large"

@@ -60,6 +60,7 @@ dependencies {
     implementation project(path: ':playListDialogFeature')
     implementation project(path: ':alarmClockFeature')
     implementation project(path: ':equalizerFeature')
+    implementation project(path: ':settingsFeature')
     //tmp
    // implementation project(path: ':shared-test')
 
