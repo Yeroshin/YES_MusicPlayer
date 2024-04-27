@@ -40,12 +40,10 @@
                 <CheckBox
                     android:id="@+id/network_btn"
                     style="@style/buttonSingleLow"
-                    android:background="@drawable/button_single"
-                    android:button="@null"
+                    android:buttonTint="@color/checkable_color"
+                    android:button="@drawable/wan"
                     android:checked="true"
-                    android:foreground="@drawable/wan"
-                    android:foregroundGravity="center"
-                    android:foregroundTint="@color/selectable_color" />
+                     />
 
             </FrameLayout>
 
@@ -63,8 +61,9 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="8dp"
+                    android:inputType="text|textAutoComplete|textNoSuggestions"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="?attr/green"
+                    android:textColor="@color/activatable_color_text"
                     tools:text="hello"
                     tools:visibility="visible" />
             </FrameLayout>

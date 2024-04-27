@@ -60,7 +60,8 @@ class MapperUI {
             durationInt = playerState.duration?.toInt(),
             duration = playerState.duration?.let {
                 formatTime(playerState.duration)
-            }
+            },
+            isPlaying = playerState.isPlaying
         )
     }
     private fun formatTime(milliseconds: Long): String {

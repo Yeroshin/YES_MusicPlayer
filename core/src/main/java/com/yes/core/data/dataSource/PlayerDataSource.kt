@@ -131,6 +131,7 @@ class PlayerDataSource(
         controller.addListener(
             object : Player.Listener {
 
+
                 override fun onTracksChanged(tracks: Tracks) {
                     super.onTracksChanged(tracks)
 
@@ -164,13 +165,16 @@ class PlayerDataSource(
                         }
 
                         Player.STATE_ENDED -> {
-
+                            val tmp = 0
                         }
                     }
                 }
 
                 override fun onIsPlayingChanged(isPlaying: Boolean) {
                     _isPlaying.value = isPlaying
+                    _mediaMetadataFlow.value = _mediaMetadataFlow.value.copy(
+                        isPlaying = isPlaying
+                    )
                 }
 
                 override fun onPlayerError(error: PlaybackException) {
@@ -256,13 +260,13 @@ class PlayerDataSource(
 
     fun setTracks(items: List<MediaItem>, index: Int) {
 
-           if (controllerFuture.isDone) {
-               val controller = controllerFuture.get()
-               controller.setMediaItems(items)
-               controller.seekTo(index, TIME_UNSET)
-           } else {
-               commandQueue.add(QueuedCommand.SetTracks(items))
-           }
+        if (controllerFuture.isDone) {
+            val controller = controllerFuture.get()
+            controller.setMediaItems(items)
+            controller.seekTo(index, TIME_UNSET)
+        } else {
+            commandQueue.add(QueuedCommand.SetTracks(items))
+        }
         //   controller.setMediaItems(items)
     }
 

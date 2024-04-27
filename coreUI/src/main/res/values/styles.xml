@@ -55,7 +55,7 @@
         <item name="android:layout_marginTop">1dp</item>
         <item name="android:layout_marginBottom">2dp</item>
         <item name="android:layout_weight">1</item>
-        <item name="tint">@color/selectable_color</item>
+        <item name="tint">@color/pressable_color</item>
         <item name="android:layout_width">match_parent</item>
     </style>
     <style name="buttonStyleTall" parent="buttonStyle">
@@ -73,6 +73,7 @@
         <item name="android:layout_marginRight">2dp</item>
     </style>
     <style name="buttonSingleLow" parent="buttonStyleLow">
+        <item name="android:background">@drawable/button_single</item>
         <item name="android:layout_marginLeft">1dp</item>
         <item name="android:layout_marginRight">1dp</item>
     </style>
@@ -97,7 +98,7 @@
         <item name="android:marqueeRepeatLimit">marquee_forever</item>
         <item name="android:scrollHorizontally">true</item>
         <item name="android:singleLine">true</item>
-        <item name="android:textColor">@color/selectable_color</item>
+        <item name="android:textColor">@color/activatable_color</item>
         <item name="android:textStyle">bold</item>
     </style>
     <style name="textInListLarge">
@@ -108,7 +109,7 @@
         <item name="android:focusable">true</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:singleLine">true</item>
-        <item name="android:textColor">@color/selectable_color</item>
+        <item name="android:textColor">@color/activatable_color</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
     </style>

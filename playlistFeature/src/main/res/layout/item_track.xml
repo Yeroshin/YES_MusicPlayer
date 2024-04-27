@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:gravity="center"
-        android:textColor="@color/selectable_color"
+        android:textColor="@color/activatable_color"
         android:textStyle="bold"
         tools:text="12345" />
 
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="16dp"
-        android:textColor="@color/selectable_color"
+        android:textColor="@color/activatable_color"
         android:textSize="@dimen/font_size_regular"
         tools:text="3:30" />
 

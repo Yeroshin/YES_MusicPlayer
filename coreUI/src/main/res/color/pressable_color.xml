@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_selected="true"
+    <item android:state_pressed="true"
+        android:color="?attr/branded_light"/>
+    <item android:state_pressed="false"
         android:color="?attr/tint"/>
-    <item android:state_selected="false"
-        android:color="?attr/transparent"/>
 </selector>

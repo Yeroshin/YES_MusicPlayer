@@ -1,31 +1,23 @@
 package com.yes.player.presentation.ui
 
 
-import android.os.Bundle
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.yes.core.presentation.BaseDependency
 import com.yes.core.presentation.BaseFragment
-import com.yes.core.presentation.BaseViewModel
 import com.yes.core.presentation.UiState
 import com.yes.player.databinding.PlayerBinding
 import com.yes.player.presentation.contract.PlayerContract
 import com.yes.player.presentation.model.PlayerStateUI
-import com.yes.player.presentation.vm.PlayerViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -137,6 +129,9 @@ class PlayerScreen :  BaseFragment() {
                         playerState.visualizerData
                     )
                 }
+                playerState.isPlaying?.let {
+                    binder.btnPlay.isActivated=it
+                }
             }
             /* playerState.visualizerData?.let {
                  binder.composeView.setContent {
@@ -166,7 +161,7 @@ class PlayerScreen :  BaseFragment() {
     }
 
     private val animateTextJob = Job()
-    private val animateTextcoroutineScope =
+    private val animateTextCoroutineScope =
         CoroutineScope(lifecycleScope.coroutineContext + animateTextJob)
 
     private fun showBuffering() {
@@ -183,7 +178,7 @@ class PlayerScreen :  BaseFragment() {
             repeatMode = Animation.REVERSE
         }
 
-        animateTextcoroutineScope.launch {
+        animateTextCoroutineScope.launch {
             binder.durationCounter.startAnimation(animation)
             var dotCount = 0
             while (true) {

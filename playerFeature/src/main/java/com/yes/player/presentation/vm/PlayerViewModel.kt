@@ -86,7 +86,8 @@ class PlayerViewModel(
                                     trackTitle = state.trackTitle,
                                     stateBuffering = state.stateBuffering,
                                     durationInt = state.durationInt,
-                                    duration = state.duration
+                                    duration = state.duration,
+                                    isPlaying = state.isPlaying
                                 )?:state
 
                             )

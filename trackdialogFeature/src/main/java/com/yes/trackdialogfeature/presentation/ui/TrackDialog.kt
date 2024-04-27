@@ -188,33 +188,10 @@ class TrackDialog : BaseDialog() {
     private fun setNetworkPathStatus(status: Boolean) {
         binder.buttons.okBtn.isClickable= status
         binder.buttons.okBtn.isPressed = !status
-        if (status) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                binder.networkPath.setTextColor(
-                    resources.getColor(
-                        com.yes.coreui.R.color.green,
-                        activity?.theme
-                    )
-                );
-            } else {
-                binder.networkPath.setTextColor(resources.getColor(com.yes.coreui.R.color.green))
-            }
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                binder.networkPath.setTextColor(
-                    resources.getColor(
-                        com.yes.coreui.R.color.red,
-                        activity?.theme
-                    )
-                );
-            } else {
-                binder.networkPath.setTextColor(resources.getColor(com.yes.coreui.R.color.red))
-            }
-        }
+        binder.networkPath.isActivated=status
     }
 
     private fun idleView() {
-        // binder.recyclerViewContainer.dialogTitle.text = ""
         binder.recyclerViewContainer.progressBar.visibility = GONE
         binder.recyclerViewContainer.disableView.visibility = GONE
     }
@@ -241,13 +218,6 @@ class TrackDialog : BaseDialog() {
     class Dependency(
         val factory: TrackDialogViewModel.Factory,
     )
-
-    /* class TrackDialogDependency(
-         val viewModel: IBaseViewModel<TrackDialogContract.Event, TrackDialogContract.State, TrackDialogContract.Effect>,
-         val adapter: TrackDialogAdapter
-     )*/
-
-
 }
 
 
