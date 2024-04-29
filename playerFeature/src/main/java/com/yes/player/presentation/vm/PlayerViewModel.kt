@@ -17,7 +17,6 @@ import com.yes.player.domain.usecase.SubscribeVisualizerUseCase
 import com.yes.player.presentation.contract.PlayerContract.*
 import com.yes.player.presentation.mapper.MapperUI
 import com.yes.player.presentation.model.PlayerStateUI
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
 

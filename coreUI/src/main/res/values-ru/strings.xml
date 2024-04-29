@@ -22,6 +22,7 @@
     <string name="playList">ПЛЕЙЛИСТ</string>
     <string name="alarm">БУДИЛЬНИК</string>
     <string name="equalizer">ЭКВАЛАЙЗЕР</string>
+    <string name="settings">НАСТРОЙКИ</string>
     <string name="custom">Пользовательский</string>
 
     <string name="preset">ПРЕДУСТАНОВКИ</string>
@@ -62,4 +63,6 @@
     <string name="notification_channel">Now Playing</string>
     <string name="notification_channel_description">Shows what music is currently playing</string>
 
+    <string name="dark_theme">темная тема</string>
+    <string name="light_theme">светлая тема</string>
 </resources>

@@ -32,14 +32,13 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
-import com.google.android.play.core.ktx.startUpdateFlowForResult
 import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
-import com.yes.musicplayer.R
 import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.MainActivityComponent
 import com.yes.musicplayer.equalizer.presentation.ui.EqualizerScreen
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
 import com.yes.playlistfeature.presentation.ui.PlaylistScreen
+import com.yes.settings.presentation.ui.SettingsScreen
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -222,33 +221,7 @@ class MainActivity :
                 setFragments()
             }
 
-            // checkPermissions()
         }
-        ////////////////
-        /*  val deniedResults=permissions.filterIndexed { index, _ ->
-              grantResults[index] == PackageManager.PERMISSION_DENIED
-          }
-          ActivityCompat.requestPermissions(this, deniedResults.toTypedArray(), 0)*/
-        ////////////////
-
-
-        /*   var granted = 0
-           val notGranted= mutableListOf<String>()
-           for (i in grantResults.indices) {
-               if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                   granted++
-               }else{
-                 notGranted.add(permissions[i])
-               }
-           }
-           if (granted != grantResults.size) {
-               Toast.makeText(this, "error Permissions", Toast.LENGTH_LONG).show()
-               ActivityCompat.requestPermissions((this as Activity), notGranted.toTypedArray(), 1)
-
-             //  finish()//show explain why you need permission
-           } else {
-               setFragments()
-           }*/
     }
 
     private fun setFragments() {
@@ -261,7 +234,8 @@ class MainActivity :
         val fragmentsList = listOf(
             PlaylistScreen::class.java,
             EqualizerScreen::class.java,
-            AlarmsScreen::class.java
+            AlarmsScreen::class.java,
+            SettingsScreen::class.java
         )
         binder.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrollStateChanged(state: Int) {
@@ -281,6 +255,7 @@ class MainActivity :
                     0 -> tab.text = getString(com.yes.coreui.R.string.playList)
                     1 -> tab.text = getString(com.yes.coreui.R.string.equalizer)
                     2 -> tab.text = getString(com.yes.coreui.R.string.alarm)
+                    3->tab.text=getString(com.yes.coreui.R.string.settings)
                 }
             }
         }.attach()

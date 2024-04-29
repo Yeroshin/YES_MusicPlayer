@@ -24,6 +24,7 @@
     <string name="playList">PLAYLIST</string>
     <string name="alarm">ALARM</string>
     <string name="equalizer">EQUALIZER</string>
+    <string name="settings">SETTINGS</string>
     <string name="custom">CUSTOM</string>
 
     <string name="preset">PRESET</string>
@@ -62,5 +63,8 @@
     <string name="PlaylistsSizeLimit">there must be at least one playlist</string>
     <string name="notification_channel">Now Playing</string>
     <string name="notification_channel_description">Shows what music is currently playing</string>
+
+    <string name="dark_theme">dark theme</string>
+    <string name="light_theme">light theme</string>
 
 </resources>
