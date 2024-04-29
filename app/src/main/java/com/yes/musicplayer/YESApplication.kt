@@ -29,6 +29,7 @@ import com.yes.playlistdialogfeature.di.component.PlayListDialogComponent
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
 import com.yes.playlistfeature.di.component.DaggerPlaylistComponent
 import com.yes.playlistfeature.presentation.ui.PlaylistScreen
+import com.yes.settings.di.components.DaggerSettingsComponent
 import com.yes.settings.presentation.ui.SettingsScreen
 import com.yes.trackdialogfeature.di.component.DaggerTrackDialogComponent
 import com.yes.trackdialogfeature.di.component.TrackDialogComponent

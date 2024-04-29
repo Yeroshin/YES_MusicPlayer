@@ -12,10 +12,13 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
+
 import com.yes.core.presentation.BaseDependency
 import com.yes.core.presentation.BaseFragment
 import com.yes.core.presentation.UiState
 import com.yes.player.databinding.PlayerBinding
+
+
 import com.yes.player.presentation.contract.PlayerContract
 import com.yes.player.presentation.model.PlayerStateUI
 import kotlinx.coroutines.CoroutineScope
@@ -133,19 +136,7 @@ class PlayerScreen :  BaseFragment() {
                     binder.btnPlay.isActivated=it
                 }
             }
-            /* playerState.visualizerData?.let {
-                 binder.composeView.setContent {
-                  /* AdaptiveGrid(playerState.visualizerData)*/
-                    /* EqualizerView(
-                         playerState.visualizerData
-                     )*/
-                     DimensionLayout(
-                         values = playerState.visualizerData,
-                         mainContent = { MainContent() },
-                         dependentContent = { maxSize,values -> DependentContent(maxSize,values) } // Передаем DependentContent в качестве dependentContent
-                     )
-                 }
-             }*/
+
         }
 
 

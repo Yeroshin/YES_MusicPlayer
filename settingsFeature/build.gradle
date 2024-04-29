@@ -33,7 +33,6 @@ android {
     }
     buildFeatures {
         viewBinding = true
-        // compose true
     }
 }
 
@@ -46,8 +45,21 @@ dependencies {
     implementation libs.material
     androidTestImplementation libs.androidx.test.ext.junit
     androidTestImplementation libs.espresso.core
+    //fragment
+    debugImplementation libs.androidx.fragment.testing
+    implementation libs.androidx.fragment.ktx
+    //viewModel
+    implementation libs.androidx.lifecycle.runtime.ktx
+    implementation libs.androidx.lifecycle.viewmodel.ktx
+    implementation libs.androidx.fragment.ktx
     //Dagger/////////////////////
     implementation libs.dagger
+    androidTestImplementation libs.dagger
     kapt libs.dagger.compiler
     kaptAndroidTest libs.dagger.compiler
+    //Preferences DataStore
+    implementation libs.androidx.datastore.preferences
+    androidTestImplementation libs.androidx.datastore.preferences.core
+    androidTestImplementation libs.androidx.preference.ktx
+
 }

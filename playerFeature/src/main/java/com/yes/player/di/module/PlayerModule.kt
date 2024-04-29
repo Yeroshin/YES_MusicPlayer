@@ -21,7 +21,6 @@ import com.yes.player.domain.usecase.SubscribePlayerStateUseCase
 import com.yes.player.domain.usecase.SubscribeDurationCounterUseCase
 import com.yes.player.domain.usecase.SubscribeVisualizerUseCase
 import com.yes.player.presentation.mapper.MapperUI
-import com.yes.player.presentation.ui.PlayerScreen
 import com.yes.player.presentation.vm.PlayerViewModel
 import dagger.Module
 import dagger.Provides

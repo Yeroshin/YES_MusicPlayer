@@ -1,6 +1,5 @@
 package com.yes.settings.di.components
 
-import com.yes.core.di.component.AudioComponent
 import com.yes.core.di.component.DataComponent
 import com.yes.core.presentation.BaseDependency
 import com.yes.settings.di.SettingsScope
@@ -9,7 +8,7 @@ import dagger.Component
 
 @Component(
     dependencies = [
-      //  DataComponent::class,
+        DataComponent::class,
     ],
     modules = [
         SettingsModule::class
@@ -17,6 +16,6 @@ import dagger.Component
     ]
 )
 @SettingsScope
-interface SettingsFeatureComponent {
+interface SettingsComponent {
     fun getDependency(): BaseDependency
 }
