@@ -1,18 +1,15 @@
-package com.yes.core.presentation
+package com.yes.core.presentation.ui
 
 import android.graphics.BlendMode
 import android.graphics.BlendModeColorFilter
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Log
-import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import kotlin.math.abs
 
 
 class ItemTouchHelperCallback(

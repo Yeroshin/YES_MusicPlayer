@@ -1,14 +1,6 @@
 package com.yes.musicplayer.di.module
 
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentFactory
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
-import com.yes.musicplayer.presentation.UniversalFragmentAdapter
-import com.yes.playlistfeature.presentation.ui.PlaylistScreen
-
 import dagger.Module
-import dagger.Provides
 
 
 private const val USER_PREFERENCES = "user_preferences"

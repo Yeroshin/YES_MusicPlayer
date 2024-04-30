@@ -2,8 +2,8 @@ package com.yes.playlistfeature.data.repository
 
 
 import com.yes.core.data.dataSource.SettingsDataSource
-import com.yes.core.data.dataSource.SettingsDataSource.PreferencesKeys.CURRENT_PLAYLIST_ID
-import com.yes.core.data.dataSource.SettingsDataSource.PreferencesKeys.CURRENT_TRACK_INDEX
+import com.yes.core.data.repository.SettingsRepositoryImpl.PreferencesKeys.CURRENT_PLAYLIST_ID
+import com.yes.core.data.repository.SettingsRepositoryImpl.PreferencesKeys.CURRENT_TRACK_INDEX
 import com.yes.playlistfeature.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

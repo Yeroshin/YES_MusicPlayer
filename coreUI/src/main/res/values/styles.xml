@@ -5,6 +5,10 @@
         <!-- для Android 5+ вы можете поменять цвет colorPrimaryDark, чтобы соответствовать цвету windowBackground -->
         <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
     </style>
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
     <!-- Base application theme. -->
     <style name="text" >
         <item name="android:textSize">14sp</item>

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yes.core.domain.models.DomainResult
-import com.yes.core.presentation.BaseViewModel
+import com.yes.core.presentation.ui.BaseViewModel
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.playlistdialogfeature.domain.entity.PlaylistException
 import com.yes.playlistdialogfeature.domain.usecase.AddPlayListUseCase

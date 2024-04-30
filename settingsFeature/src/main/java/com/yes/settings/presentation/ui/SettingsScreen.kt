@@ -2,16 +2,21 @@ package com.yes.settings.presentation.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.RadioGroup
 import androidx.viewbinding.ViewBinding
-import com.yes.core.presentation.BaseDependency
-import com.yes.core.presentation.BaseFragment
-import com.yes.core.presentation.UiState
+import com.yes.core.presentation.model.Theme
+import com.yes.core.presentation.ui.BaseDependency
+import com.yes.core.presentation.ui.BaseFragment
+import com.yes.core.presentation.ui.UiState
 import com.yes.settings.databinding.SettingsBinding
+import com.yes.settings.presentation.contract.SettingsContract
 
-class SettingsScreen: BaseFragment() {
+
+class SettingsScreen : BaseFragment() {
     interface DependencyResolver {
         fun resolveSettingsDependency(): BaseDependency
     }
+
     override val dependency by lazy {
         (requireActivity().application as DependencyResolver)
             .resolveSettingsDependency()
@@ -21,15 +26,64 @@ class SettingsScreen: BaseFragment() {
     }
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): ViewBinding {
-        return  SettingsBinding.inflate(inflater, container, false)
+        return SettingsBinding.inflate(inflater, container, false)
     }
+
 
     override fun setUpView() {
 
+        binder.themeRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+
+            when (checkedId) {
+
+                binder.darkThemeRadioButton.id -> {
+                    viewModel.setEvent(
+                        SettingsContract.Event.OnSetTheme(Theme.DarkTheme)
+                    )
+                }
+
+                binder.lightThemeRadioButton.id -> {
+                    renderUiState(
+                        SettingsContract.State(
+                            SettingsContract.SettingsState.Success,
+                            Theme.LightTheme
+                        )
+                    )
+                    viewModel.setEvent(
+                        SettingsContract.Event.OnSetTheme(Theme.LightTheme)
+                    )
+                }
+            }
+        }
     }
 
     override fun renderUiState(state: UiState) {
-        TODO("Not yet implemented")
+        state as SettingsContract.State
+        when (state.settingsState) {
+            is SettingsContract.SettingsState.Success -> {
+                dataLoaded(state)
+            }
+
+            is SettingsContract.SettingsState.Idle -> {}
+        }
+    }
+
+    private fun dataLoaded(state: SettingsContract.State) {
+        state.theme?.let {
+            when (it) {
+                Theme.DarkTheme -> {
+                    // binder.darkThemeRadioButton.isChecked=true
+                  //  activity?.setTheme(com.yes.coreui.R.style.Theme_YESActivityDark)
+                  //  activity?.recreate()
+                }
+
+                Theme.LightTheme -> {
+                    //  binder.lightThemeRadioButton.isChecked=true
+
+                }
+            }
+        }
+
     }
 
     override fun showEffect() {

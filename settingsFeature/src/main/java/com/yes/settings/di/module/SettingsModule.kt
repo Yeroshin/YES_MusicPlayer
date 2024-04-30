@@ -1,6 +1,6 @@
 package com.yes.settings.di.module
 
-import com.yes.core.presentation.BaseDependency
+import com.yes.core.presentation.ui.BaseDependency
 import com.yes.settings.presentation.vm.SettingsViewModel
 import dagger.Module
 import dagger.Provides

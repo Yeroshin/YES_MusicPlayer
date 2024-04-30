@@ -1,11 +1,10 @@
 package com.yes.alarmclockfeature.presentation.contract
 
 import com.yes.alarmclockfeature.presentation.model.AlarmUI
-import com.yes.alarmclockfeature.presentation.model.DayOfWeek
 import com.yes.alarmclockfeature.presentation.ui.datepicker.DatePickerManager
-import com.yes.core.presentation.UiEffect
-import com.yes.core.presentation.UiEvent
-import com.yes.core.presentation.UiState
+import com.yes.core.presentation.ui.UiEffect
+import com.yes.core.presentation.ui.UiEvent
+import com.yes.core.presentation.ui.UiState
 
 class AlarmClockContract {
     sealed class Event : UiEvent {

@@ -8,7 +8,7 @@ import androidx.fragment.app.testing.launchFragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.shared_test.UiFixtures
-import com.yes.core.presentation.BaseViewModel
+import com.yes.core.presentation.ui.BaseViewModel
 import com.yes.trackdialogfeature.presentation.contract.TrackDialogContract
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 import com.yes.trackdialogfeature.trackDialog

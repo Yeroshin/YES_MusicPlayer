@@ -2,18 +2,23 @@ package com.yes.settings.presentation.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.yes.core.presentation.BaseViewModel
+import com.yes.core.presentation.ui.BaseViewModel
 import com.yes.settings.presentation.contract.SettingsContract
 
 class SettingsViewModel(
 
 ): BaseViewModel<SettingsContract.Event, SettingsContract.State, SettingsContract.Effect>() {
     override fun createInitialState(): SettingsContract.State {
-        TODO("Not yet implemented")
+        return SettingsContract.State(
+            SettingsContract.SettingsState.Idle
+        )
     }
 
     override fun handleEvent(event: SettingsContract.Event) {
-        TODO("Not yet implemented")
+        when(event){
+            is SettingsContract.Event.OnSetTheme -> {}
+            is SettingsContract.Event.OnPlay  -> {}
+        }
     }
     class Factory(
     ) : ViewModelProvider.Factory {

@@ -4,8 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yes.core.domain.models.DomainResult
-import com.yes.core.presentation.BaseViewModel
-import com.yes.musicplayer.equalizer.domain.entity.Equalizer
+import com.yes.core.presentation.ui.BaseViewModel
 import com.yes.musicplayer.equalizer.domain.usecase.GetAudioEffectUseCase
 import com.yes.musicplayer.equalizer.domain.usecase.SetEqualizerEnabledUseCase
 import com.yes.musicplayer.equalizer.domain.usecase.SetEqualizerValueUseCase
@@ -17,7 +16,6 @@ import com.yes.musicplayer.equalizer.presentation.mapper.MapperUI
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
-import kotlin.math.max
 
 class EqualizerViewModel(
     private val mapperUI: MapperUI,

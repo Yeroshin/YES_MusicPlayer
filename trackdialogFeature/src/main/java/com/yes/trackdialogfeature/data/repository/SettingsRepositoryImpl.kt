@@ -2,7 +2,7 @@ package com.yes.trackdialogfeature.data.repository
 
 
 import com.yes.core.data.dataSource.SettingsDataSource
-import com.yes.core.data.dataSource.SettingsDataSource.PreferencesKeys.CURRENT_PLAYLIST_ID
+import com.yes.core.data.repository.SettingsRepositoryImpl.PreferencesKeys.CURRENT_PLAYLIST_ID
 import com.yes.trackdialogfeature.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 

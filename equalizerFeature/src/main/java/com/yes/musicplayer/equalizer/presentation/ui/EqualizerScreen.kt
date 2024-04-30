@@ -1,7 +1,5 @@
 package com.yes.musicplayer.equalizer.presentation.ui
 
-import android.media.audiofx.AudioEffect
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,16 +8,16 @@ import android.widget.ArrayAdapter
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.viewbinding.ViewBinding
-import com.yes.core.presentation.BaseDependency
-import com.yes.core.presentation.BaseFragment
-import com.yes.core.presentation.UiState
+import com.yes.core.presentation.ui.BaseDependency
+import com.yes.core.presentation.ui.BaseFragment
+import com.yes.core.presentation.ui.UiState
 import com.yes.musicplayer.equalizer.R
 import com.yes.musicplayer.equalizer.databinding.EqualizerBinding
 import com.yes.musicplayer.equalizer.presentation.contract.EqualizerContract
 
 class EqualizerScreen : BaseFragment() {
     interface DependencyResolver {
-        fun resolveEqualizerScreenComponent(): BaseDependency
+        fun resolveEqualizerScreenDependency(): BaseDependency
     }
 
 val circularSeekBarListener=object:CircularSeekBar.OnProgressChangeListener{
@@ -42,7 +40,7 @@ val circularSeekBarListener=object:CircularSeekBar.OnProgressChangeListener{
 }
     override val dependency by lazy {
         (requireActivity().application as DependencyResolver)
-            .resolveEqualizerScreenComponent()
+            .resolveEqualizerScreenDependency()
     }
 
     private val binder by lazy {

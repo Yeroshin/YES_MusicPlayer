@@ -4,9 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yes.core.domain.models.DomainResult
-import com.yes.core.presentation.BaseViewModel
+import com.yes.core.presentation.ui.BaseViewModel
 import com.yes.core.util.EspressoIdlingResource
-import com.yes.playlistfeature.domain.entity.Track
 import com.yes.playlistfeature.domain.usecase.ChangeTracksPositionUseCase
 import com.yes.playlistfeature.domain.usecase.DeleteTrackUseCase
 import com.yes.playlistfeature.domain.usecase.SetModeUseCase
@@ -22,7 +21,6 @@ import com.yes.playlistfeature.presentation.mapper.MapperUI
 import com.yes.playlistfeature.presentation.model.TrackUI
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
 

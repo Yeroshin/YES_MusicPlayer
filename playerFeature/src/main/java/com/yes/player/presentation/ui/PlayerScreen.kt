@@ -13,9 +13,9 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 
-import com.yes.core.presentation.BaseDependency
-import com.yes.core.presentation.BaseFragment
-import com.yes.core.presentation.UiState
+import com.yes.core.presentation.ui.BaseDependency
+import com.yes.core.presentation.ui.BaseFragment
+import com.yes.core.presentation.ui.UiState
 import com.yes.player.databinding.PlayerBinding
 
 
@@ -87,7 +87,7 @@ class PlayerScreen :  BaseFragment() {
 
 
 
-    override fun renderUiState(state:UiState) {
+    override fun renderUiState(state: UiState) {
         state as PlayerContract.State
         when (state.playerState) {
             is PlayerContract.PlayerState.Success -> {

@@ -13,7 +13,7 @@ import com.yes.alarmclockfeature.presentation.mapper.MapperUI
 import com.yes.alarmclockfeature.presentation.model.AlarmUI
 import com.yes.alarmclockfeature.presentation.ui.datepicker.DatePickerManager
 import com.yes.core.domain.models.DomainResult
-import com.yes.core.presentation.BaseViewModel
+import com.yes.core.presentation.ui.BaseViewModel
 import kotlinx.coroutines.launch
 
 class AlarmClockViewModel(

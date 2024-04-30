@@ -4,7 +4,7 @@ package com.yes.trackdialogfeature.presentation.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.yes.core.presentation.BaseViewModel
+import com.yes.core.presentation.ui.BaseViewModel
 
 import com.yes.core.domain.models.DomainResult
 import com.yes.trackdialogfeature.domain.entity.Menu

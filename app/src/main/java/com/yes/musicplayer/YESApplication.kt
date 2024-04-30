@@ -14,14 +14,14 @@ import com.yes.core.di.component.MusicServiceComponent
 import com.yes.core.di.module.AudioModule
 import com.yes.core.di.module.DataModule
 import com.yes.core.di.module.MusicServiceModule
-import com.yes.core.presentation.BaseDependency
-import com.yes.core.presentation.MusicService
+import com.yes.core.presentation.ui.BaseDependency
+import com.yes.core.presentation.ui.MusicService
 import com.yes.musicplayer.di.components.DaggerMainActivityComponent
 import com.yes.musicplayer.di.components.MainActivityComponent
 import com.yes.musicplayer.equalizer.di.components.DaggerEqualizerComponent
 import com.yes.musicplayer.equalizer.di.module.EqualizerModule
 import com.yes.musicplayer.equalizer.presentation.ui.EqualizerScreen
-import com.yes.musicplayer.presentation.MainActivity
+import com.yes.musicplayer.presentation.ui.MainActivity
 import com.yes.player.di.components.DaggerPlayerFeatureComponent
 import com.yes.player.presentation.ui.PlayerScreen
 import com.yes.playlistdialogfeature.di.component.DaggerPlayListDialogComponent
@@ -55,9 +55,9 @@ class YESApplication : Application(),
             .build()
     }
 
-    override fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent {
+    override fun resolveMainActivityDependency(): BaseDependency {
         return DaggerMainActivityComponent.builder()
-            .build()
+            .build().getDependency()
     }
 
     /* override fun getPlayerFragmentComponent(): PlayerFeatureComponent {
@@ -140,7 +140,7 @@ class YESApplication : Application(),
             .build().getDependency()
     }
 
-    override fun resolveEqualizerScreenComponent(): BaseDependency {
+    override fun resolveEqualizerScreenDependency(): BaseDependency {
         return equalizerPlayListDependency
     }
 

@@ -16,7 +16,7 @@ import com.yes.core.domain.useCase.GetCurrentTrackIndexUseCase
 import com.yes.core.domain.useCase.InitEqualizerUseCase
 import com.yes.core.domain.useCase.SetSettingsTrackIndexUseCase
 import com.yes.core.domain.useCase.SubscribeCurrentPlaylistTracksUseCase
-import com.yes.core.presentation.MusicService
+import com.yes.core.presentation.ui.MusicService
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher

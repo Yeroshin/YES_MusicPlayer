@@ -15,9 +15,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.yes.core.presentation.BaseDialog
-import com.yes.core.presentation.BaseViewModel
-import com.yes.core.presentation.ItemTouchHelperCallback
+import com.yes.core.presentation.ui.BaseDialog
+import com.yes.core.presentation.ui.BaseViewModel
+import com.yes.core.presentation.ui.ItemTouchHelperCallback
 import com.yes.playlistdialogfeature.R
 import com.yes.playlistdialogfeature.databinding.PlaylistDialogBinding
 import com.yes.playlistdialogfeature.di.component.PlayListDialogComponent

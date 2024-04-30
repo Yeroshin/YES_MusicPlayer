@@ -1,4 +1,4 @@
-package com.yes.core.presentation
+package com.yes.core.presentation.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 abstract class BaseFragment: Fragment() {
 
     protected lateinit var binding: ViewBinding
-    abstract val dependency:BaseDependency
+    abstract val dependency: BaseDependency
     protected val viewModel: BaseViewModel<UiEvent,
             UiState,
             UiEffect> by viewModels {

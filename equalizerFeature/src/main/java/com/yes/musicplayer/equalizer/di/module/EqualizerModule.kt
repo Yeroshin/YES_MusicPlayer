@@ -3,12 +3,9 @@ package com.yes.musicplayer.equalizer.di.module
 import android.content.Context
 import android.media.audiofx.Equalizer
 import android.media.audiofx.LoudnessEnhancer
-import androidx.annotation.OptIn
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.exoplayer.ExoPlayer
 import com.yes.core.data.dataSource.SettingsDataSource
 import com.yes.core.di.module.IoDispatcher
-import com.yes.core.presentation.BaseDependency
+import com.yes.core.presentation.ui.BaseDependency
 import com.yes.musicplayer.equalizer.data.mapper.Mapper
 import com.yes.musicplayer.equalizer.data.repository.EqualizerRepositoryImpl
 import com.yes.musicplayer.equalizer.data.repository.LoudnessEnhancerRepository
@@ -21,7 +18,6 @@ import com.yes.musicplayer.equalizer.domain.usecase.SetLoudnessEnhancerEnabledUs
 import com.yes.musicplayer.equalizer.domain.usecase.SetLoudnessEnhancerValueUseCase
 import com.yes.musicplayer.equalizer.domain.usecase.SetPresetUseCase
 import com.yes.musicplayer.equalizer.presentation.mapper.MapperUI
-import com.yes.musicplayer.equalizer.presentation.ui.EqualizerScreen
 import com.yes.musicplayer.equalizer.presentation.vm.EqualizerViewModel
 import dagger.Module
 import dagger.Provides

@@ -1,17 +1,12 @@
-package com.yes.musicplayer.presentation
+package com.yes.musicplayer.presentation.ui
 
 
 import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PermissionInfo
-import android.net.Uri
 import android.os.Build
 
 import android.os.Bundle
-import android.os.PowerManager
-import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +28,9 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
+import com.yes.core.presentation.ui.BaseActivity
+import com.yes.core.presentation.ui.BaseDependency
+import com.yes.core.presentation.ui.UiState
 import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.MainActivityComponent
 import com.yes.musicplayer.equalizer.presentation.ui.EqualizerScreen
@@ -46,14 +44,15 @@ import kotlin.time.Duration.Companion.seconds
 
 
 class MainActivity :
-    AppCompatActivity(),
+    BaseActivity(),
     PlaylistScreen.MediaChooserManager,
     PlaylistScreen.PlaylistManager {
     interface DependencyResolver {
-        fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent
+        fun resolveMainActivityDependency(): BaseDependency
     }
+
     private lateinit var appUpdateManager: AppUpdateManager
-    private val updateType=AppUpdateType.IMMEDIATE
+    private val updateType = AppUpdateType.IMMEDIATE
     private val updateLauncher = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
@@ -61,28 +60,29 @@ class MainActivity :
 
         }
     }
-    private val installStateUpdatedListener=InstallStateUpdatedListener{state->
-        if(state.installStatus()==InstallStatus.DOWNLOADED){
-             Toast.makeText(
-                 applicationContext,
-                 "Download successful. Restarting app in 5 seconds",
-                 Toast.LENGTH_LONG
-             ).show()
+    private val installStateUpdatedListener = InstallStateUpdatedListener { state ->
+        if (state.installStatus() == InstallStatus.DOWNLOADED) {
+            Toast.makeText(
+                applicationContext,
+                "Download successful. Restarting app in 5 seconds",
+                Toast.LENGTH_LONG
+            ).show()
             lifecycleScope.launch {
                 delay(5.seconds)
                 appUpdateManager.completeUpdate()
             }
         }
     }
-    private fun checkForUpdates(){
-        appUpdateManager.appUpdateInfo.addOnSuccessListener {info->
-            val isUpdateAvailable=info.updateAvailability()==UpdateAvailability.UPDATE_AVAILABLE
-            val isUpdateAllowed=when(updateType){
-                AppUpdateType.FLEXIBLE->info.isFlexibleUpdateAllowed
-                AppUpdateType.IMMEDIATE->info.isImmediateUpdateAllowed
-                else->false
+
+    private fun checkForUpdates() {
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
+            val isUpdateAvailable = info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+            val isUpdateAllowed = when (updateType) {
+                AppUpdateType.FLEXIBLE -> info.isFlexibleUpdateAllowed
+                AppUpdateType.IMMEDIATE -> info.isImmediateUpdateAllowed
+                else -> false
             }
-            if(isUpdateAvailable&&isUpdateAllowed){
+            if (isUpdateAvailable && isUpdateAllowed) {
                 appUpdateManager.startUpdateFlowForResult(
                     info,
                     updateLauncher,
@@ -96,54 +96,42 @@ class MainActivity :
     private val binder by lazy {
         binding as ActivityMainBinding
     }
-    private val dependencyResolver by lazy {
-        application as DependencyResolver
+
+    override val dependency by lazy {
+        (application as DependencyResolver)
+            .resolveMainActivityDependency()
     }
-    private val mainActivityComponent by lazy {
-        dependencyResolver.getMainActivityComponent(this)
-    }
-
-    /*  private val fragmentAdapter: FragmentStateAdapter by lazy {
-          mainActivityComponent.getFragmentAdapter()
-      }
-
-      private val fragmentFactory: FragmentFactory by lazy {
-          mainActivityComponent.getFragmentFactory()
-      }*/
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(com.yes.coreui.R.style.Theme_YESActivityDark)
         super.onCreate(savedInstanceState)
-        appUpdateManager=AppUpdateManagerFactory.create(applicationContext)
-        if(updateType==AppUpdateType.FLEXIBLE){
+        appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
+        if (updateType == AppUpdateType.FLEXIBLE) {
             appUpdateManager.registerListener(installStateUpdatedListener)
         }
         checkForUpdates()
         checkPermissions()
-      //  checkBatteryOptimizations()
-       // createNotificationChannel(this)
 
     }
-    private fun checkBatteryOptimizations(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val intent = Intent();
-            val packageName = packageName;
-            val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
-            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                intent.setData(Uri.parse("package:$packageName"))
-                startActivity(intent)
-            }
 
-        }
+    override fun renderUiState(state: UiState) {
+
     }
+
+    override fun showEffect() {
+
+    }
+
+    override fun setUpView() {
+
+    }
+
 
     override fun onResume() {
         super.onResume()
-        if(updateType==AppUpdateType.IMMEDIATE){
-            appUpdateManager.appUpdateInfo.addOnSuccessListener{info->
-                if(info.updateAvailability()==UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS){
+        if (updateType == AppUpdateType.IMMEDIATE) {
+            appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
+                if (info.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
                     appUpdateManager.startUpdateFlowForResult(
                         info,
                         updateLauncher,
@@ -255,57 +243,19 @@ class MainActivity :
                     0 -> tab.text = getString(com.yes.coreui.R.string.playList)
                     1 -> tab.text = getString(com.yes.coreui.R.string.equalizer)
                     2 -> tab.text = getString(com.yes.coreui.R.string.alarm)
-                    3->tab.text=getString(com.yes.coreui.R.string.settings)
+                    3 -> tab.text = getString(com.yes.coreui.R.string.settings)
                 }
             }
         }.attach()
-
-        /*  val playerFragment = supportFragmentManager.fragmentFactory.instantiate(
-              classLoader,
-              PlayerFragment::class.java.name
-          )*/
-        /*  supportFragmentManager.commit {
-              setReorderingAllowed(true)
-              add<PlayerFragment>(R.id.player_controls)
-          }*/
 
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if(updateType==AppUpdateType.FLEXIBLE){
+        if (updateType == AppUpdateType.FLEXIBLE) {
             appUpdateManager.unregisterListener(installStateUpdatedListener)
         }
     }
-
-   /* private fun createNotificationChannel(context: Context){
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-            val name:CharSequence="music"
-            val description="music alarm"
-            val importance=NotificationManager.IMPORTANCE_HIGH
-            val channel=NotificationChannel("yes",name, importance)
-            channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-            channel.description=description
-            val notificationManager=
-                context.getSystemService( NotificationManager::class.java)
-            notificationManager.createNotificationChannel(channel)
-
-        }
-    }*/
-
-   /* class MainActivityFragmentFactory(
-
-    ) : FragmentFactory() {
-        override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
-            return when (loadFragmentClass(classLoader, className)) {
-                PlayListDialog::class.java -> PlayListDialog()
-                TrackDialog::class.java -> TrackDialog()
-                PlaylistScreen::class.java -> PlaylistScreen()
-                PlayerFragment::class.java -> PlayerFragment()
-                else -> super.instantiate(classLoader, className)
-            }
-        }
-    }*/
 
     override fun showMediaDialog() {
         TrackDialog().show(supportFragmentManager, null)

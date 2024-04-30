@@ -1,6 +1,5 @@
 package com.yes.trackdialogfeature.presentation.ui
 
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,8 +14,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.yes.core.presentation.BaseDialog
-import com.yes.core.presentation.BaseViewModel
+import com.yes.core.presentation.ui.BaseDialog
+import com.yes.core.presentation.ui.BaseViewModel
 import com.yes.trackdialogfeature.R
 import com.yes.trackdialogfeature.databinding.TrackDialogBinding
 import com.yes.trackdialogfeature.di.component.TrackDialogComponent

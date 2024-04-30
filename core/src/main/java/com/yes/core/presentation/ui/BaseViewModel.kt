@@ -1,8 +1,7 @@
-package com.yes.core.presentation
+package com.yes.core.presentation.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yes.core.util.EspressoIdlingResource
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

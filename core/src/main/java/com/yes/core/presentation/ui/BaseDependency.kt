@@ -1,4 +1,4 @@
-package com.yes.core.presentation
+package com.yes.core.presentation.ui
 
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView

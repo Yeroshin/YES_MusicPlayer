@@ -1,4 +1,4 @@
-package com.yes.musicplayer.presentation
+package com.yes.musicplayer.presentation.ui
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -11,15 +11,12 @@ class UniversalFragmentAdapter<T : Fragment>(
     private val fragmentFactory: FragmentFactory
 ) : FragmentStateAdapter(fragmentActivity) {
 
-    init {
-      //  fragmentActivity.supportFragmentManager.fragmentFactory = fragmentFactory
-    }
-
-
     override fun getItemCount(): Int = fragmentList.size
 
     override fun createFragment(position: Int): Fragment {
-        val fragmentClass = fragmentList[position]
-        return fragmentFactory.instantiate(fragmentActivity.classLoader, fragmentClass.name)
+        return fragmentFactory.instantiate(
+            fragmentActivity.classLoader,
+            fragmentList[position].name
+        )
     }
 }

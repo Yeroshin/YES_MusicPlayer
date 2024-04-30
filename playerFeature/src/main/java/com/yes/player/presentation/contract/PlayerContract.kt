@@ -1,8 +1,8 @@
 package com.yes.player.presentation.contract
 
-import com.yes.core.presentation.UiEffect
-import com.yes.core.presentation.UiEvent
-import com.yes.core.presentation.UiState
+import com.yes.core.presentation.ui.UiEffect
+import com.yes.core.presentation.ui.UiEvent
+import com.yes.core.presentation.ui.UiState
 import com.yes.player.presentation.model.PlayerStateUI
 
 class PlayerContract {

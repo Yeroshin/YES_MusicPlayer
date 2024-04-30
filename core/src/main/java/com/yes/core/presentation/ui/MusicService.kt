@@ -1,4 +1,4 @@
-package com.yes.core.presentation
+package com.yes.core.presentation.ui
 
 import android.content.Context
 import android.content.Intent
@@ -16,9 +16,6 @@ import com.yes.core.domain.useCase.SetSettingsTrackIndexUseCase
 import com.yes.core.domain.useCase.SubscribeCurrentPlaylistTracksUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch

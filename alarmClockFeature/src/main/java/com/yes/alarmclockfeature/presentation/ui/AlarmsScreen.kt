@@ -33,11 +33,11 @@ import com.yes.alarmclockfeature.presentation.contract.AlarmClockContract.*
 import com.yes.alarmclockfeature.presentation.mapper.MapperUI
 import com.yes.alarmclockfeature.presentation.model.AlarmUI
 import com.yes.alarmclockfeature.presentation.vm.AlarmClockViewModel
-import com.yes.core.presentation.BaseViewModel
+import com.yes.core.presentation.ui.BaseViewModel
 
 
-import com.yes.core.presentation.ItemTouchHelperCallback
-import com.yes.core.presentation.UiState
+import com.yes.core.presentation.ui.ItemTouchHelperCallback
+import com.yes.core.presentation.ui.UiState
 import kotlinx.coroutines.launch
 
 class AlarmsScreen : Fragment() {

@@ -5,7 +5,7 @@ import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.core.data.dataSource.SettingsDataSource
 
-import com.yes.core.presentation.BaseDependency
+import com.yes.core.presentation.ui.BaseDependency
 import com.yes.player.data.mapper.Mapper
 import com.yes.player.data.repository.PlayerRepository
 import com.yes.player.data.repository.PlaylistRepositoryImpl

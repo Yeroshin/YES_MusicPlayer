@@ -1,30 +1,20 @@
 package com.yes.playlistfeature.presentation.ui
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
-import com.yes.core.presentation.BaseDependency
-import com.yes.core.presentation.BaseFragment
-import com.yes.core.presentation.BaseViewModel
-import com.yes.core.presentation.ItemTouchHelperCallback
-import com.yes.core.presentation.UiState
+import com.yes.core.presentation.ui.BaseDependency
+import com.yes.core.presentation.ui.BaseFragment
+import com.yes.core.presentation.ui.ItemTouchHelperCallback
+import com.yes.core.presentation.ui.UiState
 import com.yes.playlistfeature.databinding.PlaylistBinding
-import com.yes.playlistfeature.di.component.PlaylistComponent
 import com.yes.playlistfeature.presentation.contract.PlaylistContract
 import com.yes.playlistfeature.presentation.model.TrackUI
-import com.yes.playlistfeature.presentation.vm.PlaylistViewModel
-import kotlinx.coroutines.launch
 
 
 class PlaylistScreen : BaseFragment(){

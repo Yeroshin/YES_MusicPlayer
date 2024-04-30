@@ -14,16 +14,7 @@ import kotlinx.coroutines.flow.map
 class SettingsDataSource(
     private val dataStore: DataStore<Preferences>
 ) {
-    object PreferencesKeys {
-        val CURRENT_PLAYLIST_ID = longPreferencesKey("currentPlaylistId")
-        val CURRENT_TRACK_INDEX = intPreferencesKey("currentTrackIndex")
-        val CUSTOM_PRESET_NAME = stringPreferencesKey("customPresetNames")
-        val EQUALIZER_ENABLED = booleanPreferencesKey("equalizerEnabled")
-        val CURRENT_PRESET = intPreferencesKey("currentPreset")
-        val CUSTOM_PRESET = stringPreferencesKey("customPreset")
-        val LOUDNESS_ENHANCER_ENABLED = booleanPreferencesKey("loudnessEnhancerEnabled")
-        val LOUDNESS_ENHANCER_TARGET_GAIN = intPreferencesKey("loudnessEnhancerTargetGain")
-    }
+
     suspend fun <T>set(value:T,key:Preferences.Key<T>){
         dataStore.edit { preferences ->
             preferences[key] = value

@@ -7,7 +7,7 @@ import com.yes.core.di.module.MainDispatcher
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.core.data.dataSource.SettingsDataSource
-import com.yes.core.presentation.BaseDependency
+import com.yes.core.presentation.ui.BaseDependency
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.playlistfeature.data.mapper.Mapper
 import com.yes.playlistfeature.data.repository.PlayListRepositoryImpl

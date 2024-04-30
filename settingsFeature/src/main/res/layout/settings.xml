@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/padding"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/panel_flat"
     android:orientation="vertical">
 
     <RadioGroup
+        android:id="@+id/themeRadioGroup"
+        style="@style/margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/darkThemeRadioButton"
+            style="@style/textInListSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="RadioButton" />
+            android:text="@string/dark_theme" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/lightThemeRadioButton"
+            style="@style/textInListSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="RadioButton" />
+            android:text="@string/light_theme" />
 
     </RadioGroup>
 
