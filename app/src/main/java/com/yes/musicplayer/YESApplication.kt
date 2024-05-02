@@ -14,10 +14,10 @@ import com.yes.core.di.component.MusicServiceComponent
 import com.yes.core.di.module.AudioModule
 import com.yes.core.di.module.DataModule
 import com.yes.core.di.module.MusicServiceModule
+import com.yes.core.presentation.ui.ActivityDependency
 import com.yes.core.presentation.ui.BaseDependency
 import com.yes.core.presentation.ui.MusicService
 import com.yes.musicplayer.di.components.DaggerMainActivityComponent
-import com.yes.musicplayer.di.components.MainActivityComponent
 import com.yes.musicplayer.equalizer.di.components.DaggerEqualizerComponent
 import com.yes.musicplayer.equalizer.di.module.EqualizerModule
 import com.yes.musicplayer.equalizer.presentation.ui.EqualizerScreen
@@ -55,8 +55,9 @@ class YESApplication : Application(),
             .build()
     }
 
-    override fun resolveMainActivityDependency(): BaseDependency {
+    override fun resolveMainActivityDependency(): ActivityDependency {
         return DaggerMainActivityComponent.builder()
+            .dataComponent(dataComponent)
             .build().getDependency()
     }
 

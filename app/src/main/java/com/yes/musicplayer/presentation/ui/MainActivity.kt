@@ -14,6 +14,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.testing.FragmentScenario.Companion.launch
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import androidx.viewpager2.widget.ViewPager2
@@ -28,18 +30,30 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
+import com.yes.core.presentation.model.Theme
+import com.yes.core.presentation.ui.ActivityDependency
 import com.yes.core.presentation.ui.BaseActivity
 import com.yes.core.presentation.ui.BaseDependency
 import com.yes.core.presentation.ui.UiState
+import com.yes.coreui.R
 import com.yes.musicplayer.databinding.ActivityMainBinding
 import com.yes.musicplayer.di.components.MainActivityComponent
 import com.yes.musicplayer.equalizer.presentation.ui.EqualizerScreen
+import com.yes.musicplayer.presentation.contract.MainActivityContract
+import com.yes.player.presentation.contract.PlayerContract
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
 import com.yes.playlistfeature.presentation.ui.PlaylistScreen
+import com.yes.settings.presentation.contract.SettingsContract
 import com.yes.settings.presentation.ui.SettingsScreen
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.seconds
 
 
@@ -48,7 +62,7 @@ class MainActivity :
     PlaylistScreen.MediaChooserManager,
     PlaylistScreen.PlaylistManager {
     interface DependencyResolver {
-        fun resolveMainActivityDependency(): BaseDependency
+        fun resolveMainActivityDependency(): ActivityDependency
     }
 
     private lateinit var appUpdateManager: AppUpdateManager
@@ -75,6 +89,10 @@ class MainActivity :
     }
 
     private fun checkForUpdates() {
+        appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
+        if (updateType == AppUpdateType.FLEXIBLE) {
+            appUpdateManager.registerListener(installStateUpdatedListener)
+        }
         appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
             val isUpdateAvailable = info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
             val isUpdateAllowed = when (updateType) {
@@ -103,19 +121,63 @@ class MainActivity :
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(com.yes.coreui.R.style.Theme_YESActivityDark)
+        //////////////////////
+      /*  CoroutineScope(Dispatchers.Main). launch {
+            viewModel.uiState.collect {
+                renderUiState(it)
+                checkPermissions()
+            }
+
+            cancel() // Завершение жизненного цикла корутины
+        }*/
+        //////////////////////
+        //  setTheme(com.yes.coreui.R.style.Theme_YESActivityDark)
         super.onCreate(savedInstanceState)
-        appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
-        if (updateType == AppUpdateType.FLEXIBLE) {
-            appUpdateManager.registerListener(installStateUpdatedListener)
-        }
+        setTheme()
         checkForUpdates()
-        checkPermissions()
+         //  checkPermissions()
+        setFragments()
+    }
+    private fun setTheme(){
+        runBlocking {
+            when (dependency.settingsRepositoryImpl.getTheme()) {
+                Theme.DarkTheme -> {
+                    setTheme(R.style.Theme_YESActivityDark)
+                }
+
+                Theme.LightTheme -> {
+                    setTheme(R.style.Theme_YESActivityLight)
+                }
+            }
+        }
 
     }
 
     override fun renderUiState(state: UiState) {
+        state as MainActivityContract.State
+        when (state.state) {
+            is MainActivityContract.ActivityState.Success -> {
+                render(state)
+            }
 
+            is MainActivityContract.ActivityState.Idle -> {}
+        }
+    }
+
+    private fun render(state: MainActivityContract.State) {
+       /* state.theme?.let {
+            when (it) {
+                Theme.DarkTheme -> {
+                    setTheme(R.style.Theme_YESActivityDark)
+                }
+
+                Theme.LightTheme -> {
+                    setTheme(R.style.Theme_YESActivityLight)
+                }
+            }
+            checkPermissions()
+
+        }*/
     }
 
     override fun showEffect() {
@@ -123,6 +185,11 @@ class MainActivity :
     }
 
     override fun setUpView() {
+       /* viewModel.setEvent(
+            MainActivityContract.Event.OnGetTheme {
+              //  checkPermissions()
+            }
+        )*/
 
     }
 
@@ -183,7 +250,7 @@ class MainActivity :
                     ActivityCompat.requestPermissions((this as Activity), it.toTypedArray(), 1)
                 }
             } else {
-                setFragments()
+              //  setFragments()//TODO do something wit this
             }
         }
     }

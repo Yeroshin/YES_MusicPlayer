@@ -9,12 +9,13 @@ import com.yes.core.presentation.ui.UiState
 class SettingsContract {
     sealed class Event : UiEvent {
         data class OnSetTheme(val heme: Theme) : Event()
-        data object OnPlay : Event()
+        data object OnGetTheme : Event()
+        data object OnIdle:Event()
 
     }
 
     data class State(
-        val settingsState: SettingsState,
+        val state: SettingsState,
         val theme: Theme?=null
         ) : UiState
 
@@ -22,6 +23,7 @@ class SettingsContract {
     sealed class SettingsState {
         data object Success:SettingsState()
         data object Idle : SettingsState()
+        data object Recreate:SettingsState()
     }
 
     sealed class Effect : UiEffect {
