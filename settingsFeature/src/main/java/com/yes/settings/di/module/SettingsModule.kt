@@ -13,14 +13,14 @@ import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 class SettingsModule {
-    @Provides
+   /* @Provides
     fun providesSettingsRepositoryImpl(
         settingsDataSource: SettingsDataSource
     ): SettingsRepositoryImpl {
         return SettingsRepositoryImpl(
             settingsDataSource
         )
-    }
+    }*/
     @Provides
     fun providesSetThemeUseCase(
         @IoDispatcher dispatcher: CoroutineDispatcher,

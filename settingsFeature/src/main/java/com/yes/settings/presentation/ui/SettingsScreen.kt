@@ -29,49 +29,49 @@ class SettingsScreen : BaseFragment() {
         return SettingsBinding.inflate(inflater, container, false)
     }
 
-   /* private val themeRadioGroupOnCheckedChangeListener=
-        RadioGroup.OnCheckedChangeListener { _, checkedId ->
-            binder.themeRadioGroup.setOnCheckedChangeListener(null)
-            when (checkedId) {
+    /* private val themeRadioGroupOnCheckedChangeListener=
+         RadioGroup.OnCheckedChangeListener { _, checkedId ->
+             binder.themeRadioGroup.setOnCheckedChangeListener(null)
+             when (checkedId) {
 
-                binder.darkThemeRadioButton.id -> {
-                    viewModel.setEvent(
-                        SettingsContract.Event.OnSetTheme(Theme.DarkTheme)
-                    )
-                }
+                 binder.darkThemeRadioButton.id -> {
+                     viewModel.setEvent(
+                         SettingsContract.Event.OnSetTheme(Theme.DarkTheme)
+                     )
+                 }
 
-                binder.lightThemeRadioButton.id -> {
-                    viewModel.setEvent(
-                        SettingsContract.Event.OnSetTheme(Theme.LightTheme)
-                    )
-                }
-            }
-        }*/
+                 binder.lightThemeRadioButton.id -> {
+                     viewModel.setEvent(
+                         SettingsContract.Event.OnSetTheme(Theme.LightTheme)
+                     )
+                 }
+             }
+         }*/
     override fun setUpView() {
 
-      /*  binder.themeRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+        /*  binder.themeRadioGroup.setOnCheckedChangeListener { group, checkedId ->
 
-            when (checkedId) {
+              when (checkedId) {
 
-                binder.darkThemeRadioButton.id -> {
-                    viewModel.setEvent(
-                        SettingsContract.Event.OnSetTheme(Theme.DarkTheme)
-                    )
-                }
+                  binder.darkThemeRadioButton.id -> {
+                      viewModel.setEvent(
+                          SettingsContract.Event.OnSetTheme(Theme.DarkTheme)
+                      )
+                  }
 
-                binder.lightThemeRadioButton.id -> {
-                    renderUiState(
-                        SettingsContract.State(
-                            SettingsContract.SettingsState.Success,
-                            Theme.LightTheme
-                        )
-                    )
-                    viewModel.setEvent(
-                        SettingsContract.Event.OnSetTheme(Theme.LightTheme)
-                    )
-                }
-            }
-        }*/
+                  binder.lightThemeRadioButton.id -> {
+                      renderUiState(
+                          SettingsContract.State(
+                              SettingsContract.SettingsState.Success,
+                              Theme.LightTheme
+                          )
+                      )
+                      viewModel.setEvent(
+                          SettingsContract.Event.OnSetTheme(Theme.LightTheme)
+                      )
+                  }
+              }
+          }*/
     }
 
     override fun renderUiState(state: UiState) {
@@ -87,51 +87,72 @@ class SettingsScreen : BaseFragment() {
             }
         }
     }
-    private fun recreate(){
-        viewModel.setEvent(
-            SettingsContract.Event.OnIdle
-        )
+
+    private fun recreate() {
+          viewModel.setEvent(
+              SettingsContract.Event.OnIdle
+          )
         activity?.recreate()
     }
+
+   /* private val themeRadioGroupOnCheckedChangeListener: RadioGroup.OnCheckedChangeListener? =
+        RadioGroup.OnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+
+                binder.darkThemeRadioButton.id -> {
+                    viewModel.setEvent(
+                        SettingsContract.Event.OnSetTheme(
+                            Theme.DarkTheme
+                        )
+                    )
+                }
+
+                binder.lightThemeRadioButton.id -> {
+                    viewModel.setEvent(
+                        SettingsContract.Event.OnSetTheme(
+                            Theme.LightTheme
+                        )
+                    )
+                }
+            }
+        }*/
 
     private fun dataLoaded(state: SettingsContract.State) {
         state.theme?.let {
             binder.themeRadioGroup.setOnCheckedChangeListener(null)
+            //  themeRadioGroupOnCheckedChangeListener=null
 
             when (it) {
                 Theme.DarkTheme -> {
-                     binder.darkThemeRadioButton.isChecked=true
-                  //  activity?.setTheme(com.yes.coreui.R.style.Theme_YESActivityDark)
-                  //  activity?.recreate()
+                    binder.darkThemeRadioButton.isChecked = true
+                    //  activity?.setTheme(com.yes.coreui.R.style.Theme_YESActivityDark)
+                    //  activity?.recreate()
                 }
 
                 Theme.LightTheme -> {
-                      binder.lightThemeRadioButton.isChecked=true
-
+                    binder.lightThemeRadioButton.isChecked = true
                 }
             }
-            val themeRadioGroupOnCheckedChangeListener=
-                RadioGroup.OnCheckedChangeListener { _, checkedId ->
-                    when (checkedId) {
 
-                        binder.darkThemeRadioButton.id -> {
-                            viewModel.setEvent(
-                                SettingsContract.Event.OnSetTheme(Theme.DarkTheme)
+            binder.themeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+                when (checkedId) {
+                    binder.darkThemeRadioButton.id -> {
+                        viewModel.setEvent(
+                            SettingsContract.Event.OnSetTheme(
+                                Theme.DarkTheme
                             )
-                        }
-
-                        binder.lightThemeRadioButton.id -> {
-                            viewModel.setEvent(
-                                SettingsContract.Event.OnSetTheme(Theme.LightTheme)
+                        )
+                    }
+                    binder.lightThemeRadioButton.id -> {
+                        viewModel.setEvent(
+                            SettingsContract.Event.OnSetTheme(
+                                Theme.LightTheme
                             )
-                        }
+                        )
                     }
                 }
-            binder.themeRadioGroup.setOnCheckedChangeListener(
-                themeRadioGroupOnCheckedChangeListener
-            )
+            }
         }
-
     }
 
     override fun showEffect() {

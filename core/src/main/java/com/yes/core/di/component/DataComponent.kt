@@ -12,6 +12,7 @@ import com.yes.core.data.dataSource.YESDataBase
 import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.core.data.dataSource.SettingsDataSource
 import com.yes.core.data.factory.RendererFactory
+import com.yes.core.data.repository.SettingsRepositoryImpl
 import com.yes.core.domain.repository.IAlarmDao
 import com.yes.core.util.EspressoIdlingResource
 import dagger.Component
@@ -31,14 +32,14 @@ interface DataComponent {
     @MainDispatcher
     fun providesMainDispatcher(): CoroutineDispatcher
     fun providesActivity(): Context
-    fun providesDatabase(): YESDataBase
+  //  fun providesDatabase(): YESDataBase
     fun providesPlayListDao(): IPlayListDao
     fun providesAlarmDao(): IAlarmDao
   //  fun providesSettingsSharedPreferences(): SettingsSharedPreferences
-    fun provideDataStore(): DataStore<Preferences>
+  //  fun provideDataStore(): DataStore<Preferences>
 
     fun providesSettingsDataSource(): SettingsDataSource
-
+    fun providesSettingsRepositoryImpl():SettingsRepositoryImpl
     fun providesPlayerDataSource(): PlayerDataSource
     fun providesMediaDataStore(): MediaDataStore
 

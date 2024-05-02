@@ -135,7 +135,7 @@ class MainActivity :
         super.onCreate(savedInstanceState)
         setTheme()
         checkForUpdates()
-         //  checkPermissions()
+           checkPermissions()
         setFragments()
     }
     private fun setTheme(){

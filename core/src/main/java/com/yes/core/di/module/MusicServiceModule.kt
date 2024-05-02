@@ -52,14 +52,14 @@ class MusicServiceModule {
         return Mapper()
     }
 
-    @Provides
-    fun providesSettingsRepository(
+  /*  @Provides
+    fun providesSettingsRepositoryImpl(
         settingsDataSource: SettingsDataSource
     ): SettingsRepositoryImpl {
         return SettingsRepositoryImpl(
             settingsDataSource
         )
-    }
+    }*/
 
     @Provides
     fun providesPlayListRepository(

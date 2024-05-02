@@ -15,6 +15,7 @@ import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.core.data.dataSource.SettingsDataSource
 
 import com.yes.core.data.factory.RendererFactory
+import com.yes.core.data.repository.SettingsRepositoryImpl
 import com.yes.core.domain.repository.IAlarmDao
 import com.yes.core.util.EspressoIdlingResource
 import dagger.Module
@@ -93,6 +94,15 @@ class DataModule(
     ): SettingsDataSource {
         return SettingsDataSource(
             dataStore,
+        )
+    }
+    @Provides
+    @Singleton
+    fun providesSettingsRepositoryImpl(
+        settingsDataSource: SettingsDataSource
+    ):SettingsRepositoryImpl{
+        return SettingsRepositoryImpl(
+            settingsDataSource
         )
     }
 

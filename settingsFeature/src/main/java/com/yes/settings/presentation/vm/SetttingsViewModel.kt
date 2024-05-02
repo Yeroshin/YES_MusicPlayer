@@ -75,7 +75,8 @@ class SettingsViewModel(
                 is DomainResult.Success -> {
                     setState {
                         copy(
-                            state=SettingsContract.SettingsState.Recreate
+                            state=SettingsContract.SettingsState.Recreate,
+                            theme=theme
                         )
                     }
                 }

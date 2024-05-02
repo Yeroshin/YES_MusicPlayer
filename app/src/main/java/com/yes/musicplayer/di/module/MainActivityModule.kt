@@ -59,14 +59,14 @@ class MainActivityModule {
         )
         return UniversalFragmentAdapter(activity, fragmentsList, fragmentFactory)
     }*/
-   @Provides
+ /*  @Provides
    fun providesSettingsRepositoryImpl(
        settingsDataSource: SettingsDataSource
    ): SettingsRepositoryImpl {
        return SettingsRepositoryImpl(
            settingsDataSource
        )
-   }
+   }*/
 
    @Provides
    fun providesGetThemeUseCase(

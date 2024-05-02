@@ -86,7 +86,7 @@ class SettingsRepositoryImpl(
                 Theme.DarkTheme -> 0
                 Theme.LightTheme -> 1
             },
-            CURRENT_TRACK_INDEX
+            THEME
         )
     }
 }
