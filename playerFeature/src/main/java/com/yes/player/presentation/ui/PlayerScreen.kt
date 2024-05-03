@@ -1,6 +1,13 @@
 package com.yes.player.presentation.ui
 
 
+import android.content.Intent
+import android.media.AudioFormat
+import android.os.Bundle
+import android.os.ParcelFileDescriptor
+import android.speech.RecognitionListener
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -12,19 +19,19 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
-
 import com.yes.core.presentation.ui.BaseDependency
 import com.yes.core.presentation.ui.BaseFragment
 import com.yes.core.presentation.ui.UiState
 import com.yes.player.databinding.PlayerBinding
-
-
 import com.yes.player.presentation.contract.PlayerContract
 import com.yes.player.presentation.model.PlayerStateUI
+import com.yes.player.presentation.ui.tmp.AndroidAudioRecorder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileNotFoundException
 
 
 class PlayerScreen :  BaseFragment() {
@@ -54,15 +61,192 @@ class PlayerScreen :  BaseFragment() {
     override fun showEffect() {
 
     }
+    var speechRecognizer:SpeechRecognizer?=null
+    var rec:AndroidAudioRecorder?= null
+    val filePath="audio_record.pcm"
+    override fun onResume() {
+        super.onResume()
+        /////////////////////////
+        val sampleRate=44100
+        val channelConfig=AudioFormat.CHANNEL_IN_MONO
+        val audioFormat=AudioFormat.ENCODING_PCM_16BIT
+      //  val bufferSize = AudioRecord.getMinBufferSize(sampleRate, channelConfig, audioFormat)
+        val bufferSize =441000
 
-    override fun setUpView() {
 
+      //
+
+      //  recorder.startRecording()
+
+/////////////////////////////
+
+        ///////////////
+        val c=context
+         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context)
+
+
+
+        speechRecognizer?.setRecognitionListener(
+            object : RecognitionListener {
+                override fun onReadyForSpeech(params: Bundle?) {
+                    println("onReadyForSpeech")
+                }
+
+                override fun onBeginningOfSpeech() {
+                    println("onBeginningOfSpeech")
+                }
+
+                override fun onRmsChanged(rmsdB: Float) {
+                    println("onReadyForSpeech")
+                }
+
+                override fun onBufferReceived(buffer: ByteArray?) {
+                    println("onBufferReceived")
+                }
+
+                override fun onEndOfSpeech() {
+                    println("onEndOfSpeech")
+                }
+
+                override fun onError(error: Int) {
+                    println("onError$error")
+
+                }
+
+                override fun onResults(results: Bundle?) {
+                    val data: ArrayList<String>? =
+                        results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+                    println(data)
+                  // speechRecognizer?.startListening(intent)
+                }
+
+                override fun onPartialResults(partialResults: Bundle?) {
+                    println("onPartialResults")
+                    val data: ArrayList<String>? =
+                        partialResults?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+                    println(data)
+                }
+
+                override fun onEvent(eventType: Int, params: Bundle?) {
+                    println(" onEvent")
+                }
+
+
+            }
+        )
+
+      //  speechRecognizer?.startListening(intent)
         binder.btnPlay.setOnClickListener {
+
+            val file = File(context?.filesDir, filePath)
+            file.createNewFile()
+            context?.let {
+                rec=AndroidAudioRecorder()
+            }
+
+            rec?.start(file)
+
+
+        }
+        binder.btnRew.setOnClickListener {
+            rec?.stop()
+
+            val f = File(requireContext().filesDir, filePath)
+            val pfd = ParcelFileDescriptor.open(
+                f,
+                ParcelFileDescriptor.MODE_READ_ONLY
+            )
+
+
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            intent.putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
+            intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
+            intent.putExtra(RecognizerIntent.EXTRA_AUDIO_SOURCE, pfd)
+            intent.putExtra(RecognizerIntent.EXTRA_AUDIO_SOURCE_CHANNEL_COUNT, 1)
+            intent.putExtra(RecognizerIntent.EXTRA_AUDIO_SOURCE_ENCODING, AudioFormat.ENCODING_PCM_16BIT)
+            intent.putExtra(RecognizerIntent.EXTRA_AUDIO_SOURCE_SAMPLING_RATE, 16000)
+           // intent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS,true)
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speech to text")
+            speechRecognizer?.startListening(intent)
+           // speechRecognizer?.stopListening()
+
+        }
+    }
+////////////////////
+
+
+    //////////////////////
+    override fun setUpView() {
+        ///////////////////////////////
+      /*  speechRecognizer?.setRecognitionListener(
+            object : RecognitionListener {
+                override fun onReadyForSpeech(params: Bundle?) {
+                    println("onReadyForSpeech")
+                }
+
+                override fun onBeginningOfSpeech() {
+                    println("onReadyForSpeech")
+                }
+
+                override fun onRmsChanged(rmsdB: Float) {
+                    println("onReadyForSpeech")
+                }
+
+                override fun onBufferReceived(buffer: ByteArray?) {
+                    println("onReadyForSpeech")
+                }
+
+                override fun onEndOfSpeech() {
+                    println("onReadyForSpeech")
+                }
+
+                override fun onError(error: Int) {
+                    println("onReadyForSpeech")
+                }
+
+                override fun onResults(results: Bundle?) {
+                    val data: ArrayList<String>? =
+                        results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+
+                }
+
+                override fun onPartialResults(partialResults: Bundle?) {
+                    println("onReadyForSpeech")
+                }
+
+                override fun onEvent(eventType: Int, params: Bundle?) {
+                    println("onReadyForSpeech")
+                }
+
+
+            }
+        )
+
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+        )
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
+        binder.btnPlay.setOnClickListener {
+            speechRecognizer?.startListening(intent)
+
+        }
+        binder.btnRew.setOnClickListener {
+            speechRecognizer?.stopListening()
+
+        }*/
+        ///////////////////////////////
+
+       /* binder.btnPlay.setOnClickListener {
             viewModel.setEvent(PlayerContract.Event.OnPlay)
         }
         binder.btnRew.setOnClickListener {
             viewModel.setEvent(PlayerContract.Event.OnSeekToPrevious)
-        }
+        }*/
         binder.btnFwd.setOnClickListener {
             viewModel.setEvent(PlayerContract.Event.OnSeekToNext)
         }

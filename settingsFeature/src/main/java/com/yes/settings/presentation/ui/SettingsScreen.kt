@@ -89,33 +89,33 @@ class SettingsScreen : BaseFragment() {
     }
 
     private fun recreate() {
-          viewModel.setEvent(
-              SettingsContract.Event.OnIdle
-          )
+        viewModel.setEvent(
+            SettingsContract.Event.OnIdle
+        )
         activity?.recreate()
     }
 
-   /* private val themeRadioGroupOnCheckedChangeListener: RadioGroup.OnCheckedChangeListener? =
-        RadioGroup.OnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
+    /* private val themeRadioGroupOnCheckedChangeListener: RadioGroup.OnCheckedChangeListener? =
+         RadioGroup.OnCheckedChangeListener { _, checkedId ->
+             when (checkedId) {
 
-                binder.darkThemeRadioButton.id -> {
-                    viewModel.setEvent(
-                        SettingsContract.Event.OnSetTheme(
-                            Theme.DarkTheme
-                        )
-                    )
-                }
+                 binder.darkThemeRadioButton.id -> {
+                     viewModel.setEvent(
+                         SettingsContract.Event.OnSetTheme(
+                             Theme.DarkTheme
+                         )
+                     )
+                 }
 
-                binder.lightThemeRadioButton.id -> {
-                    viewModel.setEvent(
-                        SettingsContract.Event.OnSetTheme(
-                            Theme.LightTheme
-                        )
-                    )
-                }
-            }
-        }*/
+                 binder.lightThemeRadioButton.id -> {
+                     viewModel.setEvent(
+                         SettingsContract.Event.OnSetTheme(
+                             Theme.LightTheme
+                         )
+                     )
+                 }
+             }
+         }*/
 
     private fun dataLoaded(state: SettingsContract.State) {
         state.theme?.let {
@@ -143,6 +143,7 @@ class SettingsScreen : BaseFragment() {
                             )
                         )
                     }
+
                     binder.lightThemeRadioButton.id -> {
                         viewModel.setEvent(
                             SettingsContract.Event.OnSetTheme(

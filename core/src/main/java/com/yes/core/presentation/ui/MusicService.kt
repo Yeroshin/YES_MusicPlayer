@@ -2,6 +2,10 @@ package com.yes.core.presentation.ui
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import android.speech.RecognitionListener
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 import android.util.Log
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
@@ -19,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+
 
 class MusicService : MediaSessionService() {
     interface DependencyResolver {
@@ -115,7 +120,63 @@ class MusicService : MediaSessionService() {
                 is DomainResult.Error -> {}
             }
         }
-    }
+        /////////////////////////
+        ////speech
+
+        val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
+        speechRecognizer.setRecognitionListener(
+            object : RecognitionListener{
+                override fun onReadyForSpeech(params: Bundle?) {
+                    println("onReadyForSpeech")
+                }
+
+                override fun onBeginningOfSpeech() {
+                    println("onReadyForSpeech")
+                }
+
+                override fun onRmsChanged(rmsdB: Float) {
+                    println("onReadyForSpeech")
+                }
+
+                override fun onBufferReceived(buffer: ByteArray?) {
+                    println("onReadyForSpeech")
+                }
+
+                override fun onEndOfSpeech() {
+                    println("onReadyForSpeech")
+                }
+
+                override fun onError(error: Int) {
+                    println("onReadyForSpeech")
+                }
+
+                override fun onResults(results: Bundle?) {
+                    val data: ArrayList<String>? =
+                        results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+
+                }
+
+                override fun onPartialResults(partialResults: Bundle?) {
+                    println("onReadyForSpeech")
+                }
+
+                override fun onEvent(eventType: Int, params: Bundle?) {
+                    println("onReadyForSpeech")
+                }
+
+
+            }
+        )
+
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+        )
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
+     //   speechRecognizer.startListening(intent)
+
+        }
 
     override fun onGetSession(
 
