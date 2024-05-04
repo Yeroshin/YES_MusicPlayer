@@ -56,24 +56,29 @@ class PlayerScreen : BaseFragment() {
     override fun showEffect() {
 
     }
-
-
-    val filePath = "audio_record.pcm"
+    private var speechRecognizer:YESSpeechRecognizer?=null
     override fun onResume() {
         super.onResume()
-        val speechRecognizer = YESSpeechRecognizer(requireContext())
-        val rec = YESAudioRecorder()
-        val file = File(context?.filesDir, filePath)
-        file.createNewFile()
+        val rec = YESAudioRecorder(
+            onRecorded = {
+                it?.let {
+                    speechRecognizer?.start(
+                        it
+                    )
+                }
+            }
+        )
+         speechRecognizer = YESSpeechRecognizer(
+            requireContext(),
+            onPartialResults = { rec.start() }
+        )
+
+
         binder.btnPlay.setOnClickListener {
             rec.start()
         }
         binder.btnRew.setOnClickListener {
-            rec.stop()?.let {
-                speechRecognizer.start(
-                   it
-                )
-            }
+            rec.stop()
 
 
 
