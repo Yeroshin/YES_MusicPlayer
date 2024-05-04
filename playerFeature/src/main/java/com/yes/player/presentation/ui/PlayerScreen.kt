@@ -66,11 +66,17 @@ class PlayerScreen : BaseFragment() {
         val file = File(context?.filesDir, filePath)
         file.createNewFile()
         binder.btnPlay.setOnClickListener {
-            rec.start(file)
+            rec.start()
         }
         binder.btnRew.setOnClickListener {
-            rec.stop()
-            speechRecognizer.start(file)
+            rec.stop()?.let {
+                speechRecognizer.start(
+                   it
+                )
+            }
+
+
+
         }
     }
 ////////////////////

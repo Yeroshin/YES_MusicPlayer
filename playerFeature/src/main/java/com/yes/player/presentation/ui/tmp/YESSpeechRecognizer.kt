@@ -62,11 +62,11 @@ class YESSpeechRecognizer(context: Context) {
         )
     }
 
-    fun start(file: File) {
-        val pfd = ParcelFileDescriptor.open(
+    fun start(pfd: ParcelFileDescriptor) {
+       /* val pfd = ParcelFileDescriptor.open(
             file,
             ParcelFileDescriptor.MODE_READ_ONLY
-        )
+        )*/
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         intent.putExtra(
             RecognizerIntent.EXTRA_LANGUAGE_MODEL,

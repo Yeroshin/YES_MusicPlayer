@@ -4,12 +4,14 @@ import android.annotation.SuppressLint
 import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
+import android.os.ParcelFileDescriptor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.io.ByteArrayInputStream
 import java.io.File
-import java.io.FileOutputStream
+import java.io.InputStream
 
 
 class YESAudioRecorder {
@@ -18,7 +20,6 @@ class YESAudioRecorder {
     private val channelConfig = AudioFormat.CHANNEL_IN_MONO
     private val audioFormat = AudioFormat.ENCODING_PCM_16BIT
     private var isReading = false
-    private var myBufferSize = 441000
     private val minInternalBufferSize = AudioRecord.getMinBufferSize(
         sampleRate,
         channelConfig,
@@ -26,36 +27,44 @@ class YESAudioRecorder {
     ) * 10
 
     private var job: Job? = null
+    private val byteArray = ByteArray(minInternalBufferSize)
+    private var pipe:Array<ParcelFileDescriptor>?=null
+    private var outputStream:ParcelFileDescriptor.AutoCloseOutputStream?=null
     @SuppressLint("MissingPermission")
-    fun start(outputFile: File) {
-        val outputStream = FileOutputStream(outputFile.absolutePath)
-        val rec = AudioRecord(
+    fun start() {
+         pipe = ParcelFileDescriptor.createPipe()
+        pipe?.get(1).let {
+            outputStream = ParcelFileDescriptor.AutoCloseOutputStream(it)
+        }
+
+
+        rec = AudioRecord(
             MediaRecorder.AudioSource.MIC,
             sampleRate,
             channelConfig,
             audioFormat,
             minInternalBufferSize
         )
-        rec.startRecording()
+        rec?.startRecording()
         isReading = true
         job = CoroutineScope(Dispatchers.IO).launch {
-            val data = ByteArray(minInternalBufferSize )
             while (isReading) {
-                val readCount = rec.read(data, 0, data.size)
-                outputStream.write(data, 0, readCount)
+                val bytesRead =rec?.read(byteArray, 0, byteArray.size) ?: 0
+                if (bytesRead > 0) {
+                    outputStream?.write(byteArray, 0, bytesRead)
+                }
             }
-            outputStream.flush()
-            outputStream.close()
+            outputStream?.flush();
+            outputStream?.close();
         }
     }
 
-    fun stop() {
+    fun stop(): ParcelFileDescriptor? {
         isReading = false
         job?.cancel()
         rec?.stop()
         rec?.release()
         rec = null
+        return pipe?.get(0)
     }
-
-
 }
