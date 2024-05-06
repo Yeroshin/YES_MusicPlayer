@@ -19,8 +19,9 @@ class YESSpeechRecognizer(
 ) {
   //  private val language="en-EN"
     private val language="ru-RU"
-  // private val speechRecognizer = SpeechRecognizer.createOnDeviceSpeechRecognizer(context).apply {
-    private val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context).apply {
+  @RequiresApi(Build.VERSION_CODES.S)
+  private val speechRecognizer = SpeechRecognizer.createOnDeviceSpeechRecognizer(context).apply {
+  //  private val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context).apply {
         setRecognitionListener(
             object : RecognitionListener {
                 override fun onReadyForSpeech(params: Bundle?) {

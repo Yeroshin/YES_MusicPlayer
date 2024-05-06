@@ -2,11 +2,13 @@ package com.yes.musicplayer.presentation.ui
 
 
 import android.app.Activity
+import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.content.pm.PermissionInfo
 import android.os.Build
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -101,12 +104,18 @@ class MainActivity :
                 else -> false
             }
             if (isUpdateAvailable && isUpdateAllowed) {
+                try {
                 appUpdateManager.startUpdateFlowForResult(
                     info,
                     updateLauncher,
                     AppUpdateOptions.newBuilder(updateType).build()
                 )
+                } catch (e: IntentSender.SendIntentException) {
+                    e.printStackTrace()
+                }
             }
+        }.addOnFailureListener {
+            println("onFailure: onResume")
         }
     }
 

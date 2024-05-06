@@ -53,7 +53,7 @@ class YESAudioRecorder(
         var bytesWrite = 0
         job = coroutineScope.launch {
             //while (isReading && ((bytesWrite + byteArray.size) < maxRecordSize)) {
-             while (true) {
+             while (isReading) {
                 val bytesRead = rec?.read(byteArray, 0, byteArray.size) ?: 0
                 bytesWrite += bytesRead
               //  println("bytesWrite$bytesWrite")
@@ -73,25 +73,20 @@ class YESAudioRecorder(
             }*/
 
         }
-
-
         val tmp = 0
-
         onRecorded(pipe?.get(0))
     }
 
     fun stop() {
         isReading = false
-        job?.cancel()
-        ///////////////
-        val c=job?.isCancelled
-        val a=job?.isActive
-        val co=job?.isCompleted
-        //////////////
         rec?.stop()
         rec?.release()
         rec = null
-        onRecorded(pipe?.get(0))
+        ///////////////
+        job?.cancel()
+        //////////////
+
+      //  onRecorded(pipe?.get(0))
         // return pipe?.get(0)
     }
 }

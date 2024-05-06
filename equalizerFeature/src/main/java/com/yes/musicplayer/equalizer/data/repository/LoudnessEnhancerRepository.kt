@@ -10,11 +10,13 @@ class LoudnessEnhancerRepository(
     private val mapper: Mapper,
     private val  audioSessionId:Int
 ) {
+
     fun getTargetGain():Float{
         return loudnessEnhancer.targetGain
     }
     fun setTargetGain(percent:Int){
       //  checkControl()
+
         loudnessEnhancer.setTargetGain(
             mapper.mapPercentToMillibels(
                 percent,
