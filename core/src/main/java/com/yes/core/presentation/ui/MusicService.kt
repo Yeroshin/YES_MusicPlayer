@@ -2,13 +2,18 @@ package com.yes.core.presentation.ui
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.util.Log
+import androidx.annotation.OptIn
+import androidx.annotation.RequiresApi
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.audio.TeeAudioProcessor
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import com.yes.core.data.mapper.Mapper
@@ -18,6 +23,8 @@ import com.yes.core.domain.useCase.GetCurrentTrackIndexUseCase
 import com.yes.core.domain.useCase.InitEqualizerUseCase
 import com.yes.core.domain.useCase.SetSettingsTrackIndexUseCase
 import com.yes.core.domain.useCase.SubscribeCurrentPlaylistTracksUseCase
+import com.yes.core.presentation.ui.tmp.AudioProcessor
+import com.yes.core.presentation.ui.tmp.Speech
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flatMapLatest
@@ -36,7 +43,8 @@ class MusicService : MediaSessionService() {
         val subscribeCurrentPlaylistTracksUseCase: SubscribeCurrentPlaylistTracksUseCase,
         val getCurrentTrackIndexUseCase: GetCurrentTrackIndexUseCase,
         val setSettingsTrackIndexUseCase: SetSettingsTrackIndexUseCase,
-        val initEqualizerUseCase: InitEqualizerUseCase
+        val initEqualizerUseCase: InitEqualizerUseCase,
+        val audioProcessor: AudioProcessor
     )
 
     private val dependency by lazy {
@@ -71,6 +79,7 @@ class MusicService : MediaSessionService() {
         }
     }
     private val frequencies = intArrayOf(60000, 230000, 910000, 3000000, 14000000)
+    @OptIn(UnstableApi::class) @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate() {
         super.onCreate()
         //  mediaSession =dependency.mediaSession
@@ -123,58 +132,10 @@ class MusicService : MediaSessionService() {
         /////////////////////////
         ////speech
 
-        val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
-        speechRecognizer.setRecognitionListener(
-            object : RecognitionListener{
-                override fun onReadyForSpeech(params: Bundle?) {
-                    println("onReadyForSpeech")
-                }
-
-                override fun onBeginningOfSpeech() {
-                    println("onReadyForSpeech")
-                }
-
-                override fun onRmsChanged(rmsdB: Float) {
-                    println("onReadyForSpeech")
-                }
-
-                override fun onBufferReceived(buffer: ByteArray?) {
-                    println("onReadyForSpeech")
-                }
-
-                override fun onEndOfSpeech() {
-                    println("onReadyForSpeech")
-                }
-
-                override fun onError(error: Int) {
-                    println("onReadyForSpeech")
-                }
-
-                override fun onResults(results: Bundle?) {
-                    val data: ArrayList<String>? =
-                        results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-
-                }
-
-                override fun onPartialResults(partialResults: Bundle?) {
-                    println("onReadyForSpeech")
-                }
-
-                override fun onEvent(eventType: Int, params: Bundle?) {
-                    println("onReadyForSpeech")
-                }
-
-
-            }
-        )
-
-        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        intent.putExtra(
-            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-        )
-        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
-     //   speechRecognizer.startListening(intent)
+        val speech=Speech(this)
+        dependency.audioProcessor.setListener {byteBuffer->
+            println()
+        }
 
         }
 
@@ -183,7 +144,6 @@ class MusicService : MediaSessionService() {
         controllerInfo: MediaSession.ControllerInfo
     ): MediaSession {
         println("MusicService onGetSession")
-        Log.d("alarm", "MusicService!")
         return mediaSession
     }
 

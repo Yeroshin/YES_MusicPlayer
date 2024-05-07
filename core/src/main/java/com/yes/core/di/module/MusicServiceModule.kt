@@ -4,6 +4,7 @@ import android.content.Context
 import android.media.audiofx.Equalizer
 import android.media.audiofx.LoudnessEnhancer
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.audio.TeeAudioProcessor
 import androidx.media3.session.MediaSession
 import com.yes.core.data.dataSource.SettingsDataSource
 import com.yes.core.data.mapper.Mapper
@@ -17,6 +18,7 @@ import com.yes.core.domain.useCase.InitEqualizerUseCase
 import com.yes.core.domain.useCase.SetSettingsTrackIndexUseCase
 import com.yes.core.domain.useCase.SubscribeCurrentPlaylistTracksUseCase
 import com.yes.core.presentation.ui.MusicService
+import com.yes.core.presentation.ui.tmp.AudioProcessor
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
@@ -158,7 +160,9 @@ class MusicServiceModule {
         subscribeCurrentPlaylistTracksUseCase: SubscribeCurrentPlaylistTracksUseCase,
         getCurrentTrackIndexUseCase: GetCurrentTrackIndexUseCase,
         setSettingsTrackIndexUseCase: SetSettingsTrackIndexUseCase,
-        initEqualizerUseCase: InitEqualizerUseCase
+        initEqualizerUseCase: InitEqualizerUseCase,
+        audioProcessor: AudioProcessor
+
     ): MusicService.Dependency {
         return MusicService.Dependency(
             mediaSession,
@@ -166,7 +170,8 @@ class MusicServiceModule {
             subscribeCurrentPlaylistTracksUseCase,
             getCurrentTrackIndexUseCase,
             setSettingsTrackIndexUseCase,
-            initEqualizerUseCase
+            initEqualizerUseCase,
+            audioProcessor
         )
     }
 }

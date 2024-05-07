@@ -7,6 +7,7 @@ import com.yes.core.data.repository.EqualizerRepositoryImpl
 import com.yes.core.di.AudioScope
 import com.yes.core.di.module.AudioEffectModule
 import com.yes.core.di.module.AudioModule
+import com.yes.core.presentation.ui.tmp.AudioProcessor
 import dagger.Component
 
 @AudioScope
@@ -24,4 +25,5 @@ interface AudioComponent {
     fun getExoPlayer(): ExoPlayer
     fun getEqualizer(): Equalizer
     fun getLoudnessEnhancer(): LoudnessEnhancer
+    fun getAudioProcessor():AudioProcessor
 }

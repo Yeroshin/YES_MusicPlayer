@@ -14,10 +14,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
-        ndkVersion = "25.2.9519653"
-        ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86_64', 'x86'
-        }
+
     }
 
     sourceSets {
@@ -52,10 +49,7 @@ dependencies {
     implementation project(path: ':coreUI')
     implementation project(path: ':core')
 
-//vosk
-    implementation 'net.java.dev.jna:jna:5.13.0@aar'
-    implementation 'com.alphacephei:vosk-android:0.3.47@aar'
-  //  implementation libs.media3//tmp
+ //  implementation libs.media3//tmp
     implementation libs.androidx.media3.session
     implementation libs.androidx.media3.exoplayer
     implementation libs.androidx.media3.exoplayer.dash
@@ -95,14 +89,3 @@ dependencies {
     androidTestImplementation libs.androidx.rules
 
 }
-tasks.register('genUUID') {
-    def uuid = UUID.randomUUID().toString()
-    def odir = file("$buildDir/generated/assets/model")
-    def ofile = file("$odir/uuid")
-    doLast {
-        mkdir odir
-        ofile.text = uuid
-    }
-}
-
-preBuild.dependsOn(genUUID)
