@@ -132,10 +132,11 @@ class MusicService : MediaSessionService() {
         /////////////////////////
         ////speech
 
-        val speech=Speech(this)
-        dependency.audioProcessor.setListener {byteBuffer->
+        val speech=Speech(this,dependency.audioProcessor)
+       /* dependency.audioProcessor.setListener {byteBuffer->
+            val s=byteBuffer.capacity()
             println()
-        }
+        }*/
 
         }
 
@@ -160,7 +161,7 @@ class MusicService : MediaSessionService() {
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
-        val player = mediaSession.player!!
+        val player = mediaSession.player
         if (!player.playWhenReady || player.mediaItemCount == 0) {
             // Stop the service if not playing, continue playing in the background
             // otherwise.
