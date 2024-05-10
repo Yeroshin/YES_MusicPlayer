@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/playlistFeature" />
             <option value="$PROJECT_DIR$/settingsFeature" />
             <option value="$PROJECT_DIR$/shared-test" />
+            <option value="$PROJECT_DIR$/speechManagerFeature" />
             <option value="$PROJECT_DIR$/trackdialogFeature" />
           </set>
         </option>

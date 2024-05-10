@@ -3,17 +3,11 @@ package com.yes.core.presentation.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.os.Bundle
-import android.speech.RecognitionListener
-import android.speech.RecognizerIntent
-import android.speech.SpeechRecognizer
-import android.util.Log
 import androidx.annotation.OptIn
 import androidx.annotation.RequiresApi
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.exoplayer.audio.TeeAudioProcessor
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import com.yes.core.data.mapper.Mapper
@@ -24,7 +18,7 @@ import com.yes.core.domain.useCase.InitEqualizerUseCase
 import com.yes.core.domain.useCase.SetSettingsTrackIndexUseCase
 import com.yes.core.domain.useCase.SubscribeCurrentPlaylistTracksUseCase
 import com.yes.core.presentation.ui.tmp.AudioProcessor
-import com.yes.core.presentation.ui.tmp.Speech
+import com.yes.speechmanagerfeature.data.Speech
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flatMapLatest
@@ -132,7 +126,7 @@ class MusicService : MediaSessionService() {
         /////////////////////////
         ////speech
 
-        val speech=Speech(this,dependency.audioProcessor)
+        val speech= Speech(this)
        /* dependency.audioProcessor.setListener {byteBuffer->
             val s=byteBuffer.capacity()
             println()

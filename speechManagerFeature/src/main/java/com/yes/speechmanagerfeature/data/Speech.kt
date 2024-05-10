@@ -1,4 +1,4 @@
- package com.yes.core.presentation.ui.tmp
+ package com.yes.speechmanagerfeature.data
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,7 +12,6 @@ import androidx.media3.common.util.UnstableApi
 import org.vosk.Model
 import org.vosk.Recognizer
 import org.vosk.android.RecognitionListener
-import org.vosk.android.SpeechService
 import org.vosk.android.SpeechStreamService
 import org.vosk.android.StorageService
 import java.io.IOException
@@ -22,7 +21,7 @@ import java.io.InputStream
  @OptIn(UnstableApi::class)
 @SuppressLint("SuspiciousIndentation")
 @RequiresApi(Build.VERSION_CODES.P)
-class Speech(private val context: Context,private val processor: AudioProcessor) {
+class Speech(private val context: Context) {
     private var model: Model? = null
    // private var speechService: VoskSpeechService? = null
    private var speechService: SpeechStreamService? = null
@@ -62,9 +61,9 @@ class Speech(private val context: Context,private val processor: AudioProcessor)
                 println("Failed to unpack the model" + exception.message)
             }
         )
-        processor.setListener {byteBuffer->
+      /*  processor.setListener {byteBuffer->
           //  speechService?.setNoiseBuffer(byteBuffer)
-        }
+        }*/
     }
     private fun recognizeMicrophone() {
 
@@ -79,7 +78,7 @@ class Speech(private val context: Context,private val processor: AudioProcessor)
                 rec.setMaxAlternatives(10)
                 rec.setPartialWords(true)
                 val ais: InputStream = context.assets.open(
-                    "Recording_15.wav"
+                    "Recording_16.wav"
                 )
               //  speechService = VoskSpeechService(rec, 16000.0f)
                 speechService = SpeechStreamService(rec,ais, 16000.0f)

@@ -14,10 +14,7 @@ android {
         // multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
-        ndkVersion = "25.2.9519653"
-        ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86_64', 'x86'
-        }
+
     }
 
     buildTypes {
@@ -41,10 +38,9 @@ android {
 
 dependencies {
     implementation project(path: ':coreUI')
+    implementation project(path: ':speechManagerFeature')
     // androidTestImplementation 'androidx.multidex:multidex:2.0.1'
-//vosk
-    implementation 'net.java.dev.jna:jna:5.13.0@aar'
-    implementation 'com.alphacephei:vosk-android:0.3.47@aar'
+
 ////////////////
     implementation libs.core.ktx
     implementation libs.appcompat
@@ -84,14 +80,3 @@ dependencies {
 
 
 }
-tasks.register('genUUID') {
-    def uuid = UUID.randomUUID().toString()
-    def odir = file("$buildDir/generated/assets/model")
-    def ofile = file("$odir/uuid")
-    doLast {
-        mkdir odir
-        ofile.text = uuid
-    }
-}
-
-preBuild.dependsOn(genUUID)

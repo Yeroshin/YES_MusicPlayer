@@ -1,4 +1,4 @@
-package com.yes.core.presentation.ui.tmp
+package com.yes.speechmanagerfeature.data
 
 import android.annotation.SuppressLint
 import android.media.AudioFormat
@@ -11,7 +11,6 @@ import org.vosk.android.RecognitionListener
 import org.vosk.android.SpeechService
 import java.io.IOException
 import java.nio.ByteBuffer
-import java.nio.ByteOrder
 
 @SuppressLint("MissingPermission")
 class VoskSpeechService(
@@ -23,8 +22,8 @@ class VoskSpeechService(
 ) {
 
     private val bufferSizeSeconds = 0.2f
-   // private val bufferSize: Int = (sampleRate * bufferSizeSeconds).toInt()
-   private val bufferSize: Int =3342
+    private val bufferSize: Int = (sampleRate * bufferSizeSeconds).toInt()
+  // private val bufferSize: Int =3342
     private val recorder: AudioRecord = AudioRecord(
         MediaRecorder.AudioSource.CAMCORDER,
         sampleRate.toInt(),
@@ -32,71 +31,7 @@ class VoskSpeechService(
         AudioFormat.ENCODING_PCM_16BIT,
         bufferSize * 2
     )
-
-
-    private var recognizerThread: RecognizerThread? = null
-
     private val mainHandler = Handler(Looper.getMainLooper())
-
-    init {
-
-        if (recorder.state == AudioRecord.STATE_UNINITIALIZED) {
-            recorder.release()
-            throw IOException("Failed to initialize recorder. Microphone might be already in use.")
-        }
-    }
-
-    override fun startListening(listener: RecognitionListener): Boolean {
-        if (recognizerThread != null) return false
-
-        recognizerThread = RecognizerThread(listener)
-        recognizerThread?.start()
-        return true
-    }
-
-    override fun startListening(listener: RecognitionListener, timeout: Int): Boolean {
-        if (recognizerThread != null) return false
-
-        recognizerThread = RecognizerThread(listener, timeout)
-        recognizerThread?.start()
-        return true
-    }
-
-    private fun stopRecognizerThread(): Boolean {
-        if (recognizerThread == null) return false
-
-        try {
-            recognizerThread?.interrupt()
-            recognizerThread?.join()
-        } catch (e: InterruptedException) {
-            Thread.currentThread().interrupt()
-        }
-
-        recognizerThread = null
-        return true
-    }
-
-    override fun stop(): Boolean {
-        return stopRecognizerThread()
-    }
-
-    override fun cancel(): Boolean {
-        recognizerThread?.setPause(true)
-        return stopRecognizerThread()
-    }
-
-    override fun shutdown() {
-        recorder.release()
-    }
-
-    override fun setPause(paused: Boolean) {
-        recognizerThread?.setPause(paused)
-    }
-
-    override fun reset() {
-        recognizerThread?.reset()
-    }
-
     /////////////
 
 
@@ -198,14 +133,6 @@ class VoskSpeechService(
                     mainHandler.post { listener.onFinalResult(finalResult) }
                 }
             }
-        }
-
-        fun setPause(paused: Boolean) {
-            this.paused = paused
-        }
-
-        fun reset() {
-            reset = true
         }
     }
 }
