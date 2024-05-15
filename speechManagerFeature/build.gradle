@@ -39,6 +39,8 @@ dependencies {
     //vosk
     implementation 'net.java.dev.jna:jna:5.13.0@aar'
     implementation 'com.alphacephei:vosk-android:0.3.47@aar'
+    ///JTransforms
+    implementation 'com.github.wendykierp:JTransforms:3.1'
 //////
     implementation libs.core.ktx
     implementation libs.appcompat

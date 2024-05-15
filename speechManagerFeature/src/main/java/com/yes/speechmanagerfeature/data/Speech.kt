@@ -78,10 +78,10 @@ class Speech(private val context: Context) {
                 rec.setMaxAlternatives(10)
                 rec.setPartialWords(true)
                 val ais: InputStream = context.assets.open(
-                    "Recording_16.wav"
+                    "Recording_18.wav"
                 )
               //  speechService = VoskSpeechService(rec, 16000.0f)
-                speechService = SpeechStreamService(rec,ais, 16000.0f)
+                speechService = VoskSpeechStreamService(rec,ais, 16000.0f,context)
               //  speechService?.startListening(speechListener)
                 speechService!!.start(speechListener)
             } catch (e: IOException) {
