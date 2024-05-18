@@ -2,9 +2,11 @@ package com.yes.core.presentation.ui
 
 import android.content.Context
 import android.content.Intent
+import android.media.AudioManager
 import android.os.Build
 import androidx.annotation.OptIn
 import androidx.annotation.RequiresApi
+import androidx.media3.common.C.VOLUME_FLAG_SHOW_UI
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
@@ -73,7 +75,9 @@ class MusicService : MediaSessionService() {
         }
     }
     private val frequencies = intArrayOf(60000, 230000, 910000, 3000000, 14000000)
-    @OptIn(UnstableApi::class) @RequiresApi(Build.VERSION_CODES.P)
+
+    @OptIn(UnstableApi::class)
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate() {
         super.onCreate()
         //  mediaSession =dependency.mediaSession
@@ -81,10 +85,10 @@ class MusicService : MediaSessionService() {
             playerListener
         )
         serviceScope.launch {
-            var loaded=false
+            var loaded = false
             dependency.initEqualizerUseCase(
                 InitEqualizerUseCase.Params(
-                    frequencies=frequencies
+                    frequencies = frequencies
                 )
             )
             val playLists = dependency.subscribeCurrentPlaylistTracksUseCase()
@@ -93,25 +97,25 @@ class MusicService : MediaSessionService() {
                 is DomainResult.Success -> {
                     when (currentTrackIndex) {
                         is DomainResult.Success -> {
-                            playLists.data.flatMapLatest {playList ->
+                            playLists.data.flatMapLatest { playList ->
                                 mediaSession.player.setMediaItems(
                                     playList.map { track ->
                                         dependency.mapper.mapToMediaItem(track)
                                     }
                                 )
 
-                                if (playList.isNotEmpty()){
+                                if (playList.isNotEmpty()) {
                                     currentTrackIndex.data
-                                }else{
+                                } else {
                                     flow {
                                         emit(-1)
                                     }
                                 }
-                            }.collect{trackIndex ->
-                                if (trackIndex != -1&&!loaded) {
+                            }.collect { trackIndex ->
+                                if (trackIndex != -1 && !loaded) {
                                     mediaSession.player.seekTo(trackIndex, 0)
                                 }
-                                loaded=true
+                                loaded = true
                             }
 
                         }
@@ -126,13 +130,42 @@ class MusicService : MediaSessionService() {
         /////////////////////////
         ////speech
 
-        val speech= Speech(this)
-       /* dependency.audioProcessor.setListener {byteBuffer->
-            val s=byteBuffer.capacity()
-            println()
-        }*/
+        val speech = Speech(
+            this,
+            onVoiceCommand = { play() },
+            onGetVolume = { volume -> setVolume(volume) }
+        )
+        /* dependency.audioProcessor.setListener {byteBuffer->
+             val s=byteBuffer.capacity()
+             println()
+         }*/
 
+    }
+
+    private fun setVolume(volume: Double?) {
+        volume?.let {
+            if (volume>-30){
+                val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+                audioManager.adjustStreamVolume(
+                    AudioManager.STREAM_MUSIC,
+                    AudioManager.ADJUST_LOWER,
+                    AudioManager.FLAG_SHOW_UI
+                )
+                mediaSession.player.decreaseDeviceVolume(VOLUME_FLAG_SHOW_UI)
+            }
         }
+
+
+    }
+
+    private fun play() {
+        if (mediaSession.player.isPlaying) {
+            mediaSession.player.pause()
+        } else {
+            mediaSession.player.play()
+        }
+
+    }
 
     override fun onGetSession(
 

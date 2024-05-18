@@ -40,6 +40,7 @@ class VoskSpeechStreamService(
         audioRecordchannelConfig,
         audioFormat
     )
+    //val audioRecordBufferSize=16000*2
     var recognizerThread: Thread? = null
     val mainHandler = Handler(Looper.getMainLooper())
 
@@ -209,7 +210,13 @@ class VoskSpeechStreamService(
         }
 
         override fun run() {
-            val mediaDir =
+            val wavRecorder=WavRecorder(
+                sampleRate,
+                1,
+                16,
+                "fileName.wav"
+            )
+           /* val mediaDir =
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC)
             val outputFile = File(mediaDir, "fileName.wav")
 
@@ -224,100 +231,68 @@ class VoskSpeechStreamService(
                 448324
             )
             val outputStream = FileOutputStream(outputFile)
-            outputStream.write(headerBytes)
+            outputStream.write(headerBytes)*/
 
-            val stereoChannel = ByteArray(audioRecordBufferSize)
-            val rightbuf = ByteArray(audioRecordBufferSize / 2)
-            val leftbuf = ByteArray(audioRecordBufferSize / 2)
-            val leftChannel = DoubleArray(audioRecordBufferSize/2)
+            val channel = ByteArray(audioRecordBufferSize)
             val rightChannel = DoubleArray(audioRecordBufferSize/2)
+            val leftChannel = DoubleArray(audioRecordBufferSize/2)
             val monoChannel = DoubleArray(audioRecordBufferSize)
 
-            val fft = DoubleFFT_1D(audioRecordBufferSize.toLong())
-            val inverseTransform = DoubleFFT_1D(audioRecordBufferSize.toLong())
             audioTrack.play()
             while (!interrupted()
                 && (timeoutSamples == Companion.NO_TIMEOUT || remainingSamples > 0)
             ) {
                 try {
-                    val nread = inputStream.read(stereoChannel, 0, audioRecordBufferSize)
+                    val nread = inputStream.read(channel, 0, audioRecordBufferSize)
                     ///////////////////////////////////////
-                    getMonoChannels(stereoChannel, leftChannel, rightChannel)
-
-
-                    ///////////////////////////
-                  /*  fft.realForward(leftChannel)
-                    fft.realForward(rightChannel)*/
-                    ////////////////////////////
-
+                    getMonoChannels(channel, rightChannel, leftChannel)
+                    ////////////////////
                     val amplitudesLeft = DoubleArray(leftChannel.size / 2)
                     val phasesLeft = DoubleArray(leftChannel.size / 2)
-                    getAmplitudesAndPhases(leftChannel, amplitudesLeft, phasesLeft)
                     val amplitudesRight = DoubleArray(rightChannel.size / 2)
                     val phasesRight = DoubleArray(rightChannel.size / 2)
                     getAmplitudesAndPhases(rightChannel, amplitudesRight, phasesRight)
-                    /* for (i in 0 until leftChannel.size step 2){
-                         val re=leftChannel[i]
-                         val im=leftChannel[i+1]
-                         amplitudes[i/2]=sqrt(re*re+im*im)
-                         phases[i/2]= atan2(im,re)
 
-                     }*/
-
-                    /* for (i in 0 until rightChannel.size step 2){
-                         val re=rightChannel[i]
-                         val im=rightChannel[i+1]
-                         amplitudesRight[i/2]=sqrt(re*re+im*im)
-                         phasesRight[i/2]= atan2(im,re)
-
-                     }*/
-                    ////////////
+                    getAmplitudesAndPhases(leftChannel, amplitudesLeft, phasesLeft)
                     /////////////
-                  /*  for (i in amplitudes.indices) {
-                          amplitudes[i] = amplitudes[i] - amplitudesRight[i]
-                        //  phases[i] = phases[i] - phasesRight[i]
-                     /*   if (amplitudes[i] - amplitudesRight[i] < 0) {
-                            amplitudes[i] = 0.0
-                            //  phases[i]=0.0
-                        } else {
-                            amplitudes[i] = amplitudes[i] - amplitudesRight[i]
-                            //   phases[i] = phases[i] - phasesRight[i]
-                        }*/
+                   /*   for (i in amplitudesRight.indices) {
+                          val delta=amplitudesLeft[i] - amplitudesRight[i]
+                          amplitudesRight[i] =amplitudesRight[i]-delta
+                       //   amplitudesLeft[i] = amplitudesLeft[i] - amplitudesRight[i]
+                         // phasesLeft[i] = phasesLeft[i] - phasesRight[i]
+                         /* if (amplitudesLeft[i] - amplitudesRight[i] < 0) {
+                              amplitudesLeft[i] = 0.0
+                              //  phases[i]=0.0
+                          } else {
+                              amplitudesLeft[i] =amplitudesLeft[i] - amplitudesRight[i]
+                              //   phases[i] = phases[i] - phasesRight[i]
+                          }*/
 
+                      }*/
+
+                  /*  for (i in 0 until leftChannel.size step 2) {
+
+                        if (amplitudeSecondChannel > threshold) {
+                            firstChannelData[i] = 0.0 // Действительная часть
+                            firstChannelData[i + 1] = 0.0 // Мнимая часть
+                        }
                     }*/
                     /////////////
-                    ////////////
-
                     //////////////////
-                   /* val output = ByteArray(leftChannel.size)
-                    for (i in leftChannel.indices) {
-                        output[i] = leftChannel[i].toInt().toByte()
+                   /* val output = ByteArray(rightChannel.size)
+                    for (i in rightChannel.indices) {
+                        output[i] = rightChannel[i].toInt().toByte()
                     }*/
 
                     val output=getOutputFromAmplitudesAndPhases(
-                        leftChannel,
-                        amplitudesLeft,
-                        phasesLeft
+                        rightChannel,
+                        amplitudesRight,
+                        phasesRight
                     )
-                    //////////////////
-                  /*  for (i in amplitudes.indices) {
-                        leftChannel[i * 2] = amplitudes[i] * cos(phases[i])
-                        leftChannel[i * 2 + 1] = amplitudes[i] * sin(phases[i])
-                    }
-                    //////////////
-                    inverseTransform.realInverse(leftChannel, true)
-                    inverseTransform.realInverse(rightChannel, true)
-                    ////////////////////////////////////
-                    val outputLeft = ByteArray(audioRecordBufferSize)
-                    val outputRight = ByteArray(audioRecordBufferSize)
-                    for (i in leftChannel.indices) {
-                        outputLeft[i] = leftChannel[i].toInt().toByte()
-                        outputRight[i] = rightChannel[i].toInt().toByte()
-                    }*/
 
 
                     ////////normalize
-                    //   normalizeAudio(outputLeft , Short.MAX_VALUE.toDouble() )
+                       normalizeAudio(output , Short.MAX_VALUE.toDouble() )
                     //   normalize(outputLeft)
                     //////////////////////////
 
@@ -336,7 +311,8 @@ class VoskSpeechStreamService(
 
                         //  audioTrack.write(leftbuf, 0, rightbuf.size)
                         //   val byteArray = convertDoubleArrayToByteArray(leftChannel)
-                        outputStream.write(output, 0, output.size)
+                       wavRecorder.write(output)
+                      //  outputStream.write(output, 0, output.size)
                         // audioTrack.write(outputRight, 0, audioRecordBufferSize / 2)
                         //  audioTrack.write(buffer, 0, buffer.size)
                         /////////////////////////
@@ -356,8 +332,9 @@ class VoskSpeechStreamService(
                     mainHandler.post { listener.onError(e) }
                 }
             }
-            outputStream.flush()
-            outputStream.close()
+            wavRecorder.close()
+           /* outputStream.flush()
+            outputStream.close()*/
 
             // If we met timeout signal that speech ended
             if (timeoutSamples != Companion.NO_TIMEOUT && remainingSamples <= 0) {
@@ -461,5 +438,5 @@ class VoskSpeechStreamService(
     companion object {
         private const val NO_TIMEOUT = -1
     }
-
+   // vosk.SetLogLevel(-1) disabled logs
 }
