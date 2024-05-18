@@ -161,7 +161,6 @@ class MusicServiceModule {
         getCurrentTrackIndexUseCase: GetCurrentTrackIndexUseCase,
         setSettingsTrackIndexUseCase: SetSettingsTrackIndexUseCase,
         initEqualizerUseCase: InitEqualizerUseCase,
-        audioProcessor: AudioProcessor
 
     ): MusicService.Dependency {
         return MusicService.Dependency(
@@ -171,7 +170,6 @@ class MusicServiceModule {
             getCurrentTrackIndexUseCase,
             setSettingsTrackIndexUseCase,
             initEqualizerUseCase,
-            audioProcessor
         )
     }
 }

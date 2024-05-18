@@ -38,7 +38,7 @@ android {
 
 dependencies {
     implementation project(path: ':coreUI')
-    implementation project(path: ':speechManagerFeature')
+
     // androidTestImplementation 'androidx.multidex:multidex:2.0.1'
 
 ////////////////

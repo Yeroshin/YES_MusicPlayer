@@ -20,7 +20,6 @@ import com.yes.core.domain.useCase.InitEqualizerUseCase
 import com.yes.core.domain.useCase.SetSettingsTrackIndexUseCase
 import com.yes.core.domain.useCase.SubscribeCurrentPlaylistTracksUseCase
 import com.yes.core.presentation.ui.tmp.AudioProcessor
-import com.yes.speechmanagerfeature.data.Speech
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flatMapLatest
@@ -40,7 +39,6 @@ class MusicService : MediaSessionService() {
         val getCurrentTrackIndexUseCase: GetCurrentTrackIndexUseCase,
         val setSettingsTrackIndexUseCase: SetSettingsTrackIndexUseCase,
         val initEqualizerUseCase: InitEqualizerUseCase,
-        val audioProcessor: AudioProcessor
     )
 
     private val dependency by lazy {
@@ -127,45 +125,10 @@ class MusicService : MediaSessionService() {
                 is DomainResult.Error -> {}
             }
         }
-        /////////////////////////
-        ////speech
-
-        val speech = Speech(
-            this,
-            onVoiceCommand = { play() },
-            onGetVolume = { volume -> setVolume(volume) }
-        )
-        /* dependency.audioProcessor.setListener {byteBuffer->
-             val s=byteBuffer.capacity()
-             println()
-         }*/
-
-    }
-
-    private fun setVolume(volume: Double?) {
-        volume?.let {
-            if (volume>-30){
-                val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-                audioManager.adjustStreamVolume(
-                    AudioManager.STREAM_MUSIC,
-                    AudioManager.ADJUST_LOWER,
-                    AudioManager.FLAG_SHOW_UI
-                )
-                mediaSession.player.decreaseDeviceVolume(VOLUME_FLAG_SHOW_UI)
-            }
-        }
 
 
     }
 
-    private fun play() {
-        if (mediaSession.player.isPlaying) {
-            mediaSession.player.pause()
-        } else {
-            mediaSession.player.play()
-        }
-
-    }
 
     override fun onGetSession(
 

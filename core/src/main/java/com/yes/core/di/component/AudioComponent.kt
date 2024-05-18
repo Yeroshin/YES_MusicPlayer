@@ -25,5 +25,4 @@ interface AudioComponent {
     fun getExoPlayer(): ExoPlayer
     fun getEqualizer(): Equalizer
     fun getLoudnessEnhancer(): LoudnessEnhancer
-    fun getAudioProcessor():AudioProcessor
 }

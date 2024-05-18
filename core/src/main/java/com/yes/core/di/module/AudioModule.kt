@@ -37,7 +37,7 @@ class AudioModule {
       return player.audioSessionId
   }
 
-   /* @OptIn(androidx.media3.common.util.UnstableApi::class)
+    @OptIn(androidx.media3.common.util.UnstableApi::class)
     @Provides
     @AudioScope
     fun  providesExoPlayer(
@@ -45,9 +45,9 @@ class AudioModule {
        // audioSessionId:Int
     ): ExoPlayer {
         return ExoPlayer.Builder(context).build()
-    }*/
+    }
 
-    @OptIn(UnstableApi::class) @Provides
+   /* @OptIn(UnstableApi::class) @Provides
     @AudioScope
     fun providesAudioProcessor(): AudioProcessor {
         return  AudioProcessor()
@@ -64,6 +64,6 @@ class AudioModule {
        return ExoPlayer.Builder(context)
            .setRenderersFactory(rendererFactory)
            .build()
-    }
+    }*/
 
 }
