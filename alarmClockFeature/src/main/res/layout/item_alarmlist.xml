@@ -14,10 +14,10 @@
         style="@style/leadingIcon"
         android:layout_width="wrap_content"
 
-        android:layout_height="wrap_content"
+
         android:text="00:00"
-        android:textAlignment="viewEnd"
-        android:textColor="#918F8F"
+
+        android:textColor="?attr/on_primary"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -26,23 +26,24 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
+        android:textStyle="bold"
         android:padding="@dimen/padding_small">
 
         <TextView
+            android:textSize="16sp"
             android:id="@+id/alarm_time_left"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
-            android:textColor="?attr/text_gray" />
+            android:textColor="?attr/on_primary" />
 
         <TextView
             android:id="@+id/alarm_repeat_days"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="?attr/text_gray"
-            android:textSize="8sp" />
+            android:textColor="?attr/on_primary"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <Switch

@@ -34,10 +34,10 @@
             android:theme="@style/text"
             app:tabGravity="center"
             app:tabIndicator="@android:drawable/menuitem_background"
-            app:tabIndicatorColor="?attr/tint"
+            app:tabIndicatorColor="?attr/on_primary"
             app:tabIndicatorHeight="5dp"
             app:tabMode="scrollable"
-            app:tabSelectedTextColor="?attr/tint"
+            app:tabSelectedTextColor="?attr/on_primary"
             app:tabTextColor="#000000" />
 
 

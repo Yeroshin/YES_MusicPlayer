@@ -13,15 +13,15 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@drawable/display"
-        android:padding="10dp">
+        android:padding="11dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/playList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="?attr/black"
-            tools:itemCount="30"
+            android:background="?attr/tertiary"
+            tools:itemCount="10"
             tools:listitem="@layout/item_track" />
 
         <ProgressBar
@@ -29,7 +29,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:indeterminateTint="?attr/tint"
+            android:indeterminateTint="?attr/on_primary"
             android:visibility="gone" />
 
         <View

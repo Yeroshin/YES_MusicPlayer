@@ -19,6 +19,7 @@ import com.yes.playlistfeature.presentation.contract.PlaylistContract.State
 import com.yes.playlistfeature.presentation.contract.PlaylistContract.Effect
 import com.yes.playlistfeature.presentation.mapper.MapperUI
 import com.yes.playlistfeature.presentation.model.TrackUI
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -207,15 +208,15 @@ class PlaylistViewModel(
                     playlistState = PlaylistContract.PlaylistState.Loading
                 )
             }
-            val playListsFlow = subscribeCurrentPlaylistTracksUseCase()
-            val currentTrackIndexFlow = subscribePlayerCurrentTrackIndexUseCase()
-            when (playListsFlow) {
+            val playListsFlow = async {  subscribeCurrentPlaylistTracksUseCase()}
+            val currentTrackIndexFlow = async {  subscribePlayerCurrentTrackIndexUseCase()}
+            when (val playListsResult = playListsFlow.await()) {
                 is DomainResult.Success -> {
-                    when (currentTrackIndexFlow) {
+                    when (val currentTrackIndexResult = currentTrackIndexFlow.await()) {
                         is DomainResult.Success -> {
                             combine(
-                                playListsFlow.data,
-                                currentTrackIndexFlow.data
+                                playListsResult.data,
+                                currentTrackIndexResult.data
                             ) { playList, currentTrackIndex ->
                                 setState {
                                     copy(

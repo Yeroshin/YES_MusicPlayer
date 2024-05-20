@@ -18,33 +18,32 @@
     </androidx.fragment.app.FragmentContainerView>
 
     <LinearLayout
-        style="@style/margin"
+        style="@style/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:background="@drawable/panel_flat"
         android:orientation="vertical">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
+            style="@style/margin"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height_regular"
-            android:background="#00FFFFFF"
+            android:background="@drawable/panel_flat"
             android:theme="@style/text"
             app:tabGravity="center"
-            app:tabIndicator="@android:drawable/menuitem_background"
-            app:tabIndicatorColor="?attr/tint"
+            app:tabIndicatorColor="?attr/on_primary"
             app:tabIndicatorHeight="5dp"
             app:tabMode="scrollable"
-            app:tabSelectedTextColor="?attr/tint"
+            app:tabSelectedTextColor="?attr/on_primary"
             app:tabTextColor="#000000" />
 
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
+            style="@style/margin"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_height="match_parent">
 
         </androidx.viewpager2.widget.ViewPager2>
 

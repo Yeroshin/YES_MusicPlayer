@@ -25,9 +25,9 @@
                 android:bottom="3dp" />
             <gradient
                 android:angle="270"
-                android:startColor="#000000"
-                android:centerColor="#222222"
-                android:endColor="#424242"
+                android:startColor="?attr/tertiary_startColor"
+                android:centerColor="?attr/tertiary_centerColor"
+                android:endColor="?attr/tertiary_endColor"
                 android:type="linear"
                 android:useLevel="false"  />
             <corners android:radius="100dp"/>
@@ -41,7 +41,7 @@
             android:shape="rectangle">
 
             <corners android:radius="100dp" />
-            <solid android:color="#00ff00" />
+            <solid android:color="?attr/on_primary_activated" />
 
         </shape>
     </item>

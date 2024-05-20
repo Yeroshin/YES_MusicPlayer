@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:top="0dp"
-        android:bottom="0dp"
-        android:right="0dp"
-        android:left="0dp">
+    <item>
         <shape android:shape="rectangle"
             >
             <corners
                 android:radius="12dp" />
             <gradient
                 android:angle="270"
-                android:startColor="#000000"
-                android:centerColor="#222222"
-                android:endColor="#444444"
+                android:startColor="?attr/tertiary_startColor"
+                android:centerColor="?attr/tertiary_centerColor"
+                android:endColor="?attr/tertiary_endColor"
                 android:type="linear"
             />
         </shape>
@@ -26,9 +22,13 @@
         android:left="1dp">
         <shape
             android:shape="rectangle">
-            <solid
-                android:color="#000000">
-            </solid>
+            <gradient
+                android:angle="90"
+                android:startColor="?attr/on_tertiary_startColor"
+                android:centerColor="?attr/on_tertiary_centerColor"
+                android:endColor="?attr/on_tertiary_endColor"
+                android:type="linear"
+                />
             <corners
                 android:radius="12dp">
             </corners>

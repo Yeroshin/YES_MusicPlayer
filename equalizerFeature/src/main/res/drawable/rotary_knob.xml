@@ -35,8 +35,8 @@
                 android:gradientRadius="30dp"
                 android:centerX="0.5"
                 android:centerY="0.8"
-                android:startColor="?attr/black"
-                android:centerColor="?attr/black"
+                android:startColor="?attr/shadow"
+                android:centerColor="?attr/shadow"
                 android:endColor="?attr/transparent"
                 android:type="radial"
                 android:useLevel="false" />
@@ -50,7 +50,7 @@
         >
         <shape android:shape="oval">
 
-            <solid android:color="?attr/branded_color" />
+            <solid android:color="?attr/surface" />
         </shape>
     </item>
     <item
@@ -90,7 +90,7 @@
         >
         <shape android:shape="oval">
 
-            <solid android:color="?attr/black" />
+            <solid android:color="?attr/shadow" />
         </shape>
     </item>
     <item

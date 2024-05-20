@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/padding"
@@ -19,32 +17,22 @@
             android:id="@+id/alarmsList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/black" />
+            android:background="?attr/tertiary" />
     </FrameLayout>
 
-    <LinearLayout
+    <FrameLayout
         style="@style/margin"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_margin="5dp"
-        android:background="@drawable/button_space"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_space">
 
         <androidx.appcompat.widget.AppCompatImageButton
+            app:srcCompat="@drawable/alarm_plus"
             android:id="@+id/add_alarm_button"
             style="@style/buttonSingleTall"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="1dp"
-            android:layout_marginBottom="3dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_single"
-            android:tint="#A3B3CE"
-            app:srcCompat="@drawable/alarm_plus" />
+            android:background="@drawable/button_single" />
 
-    </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>
 

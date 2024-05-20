@@ -3,6 +3,6 @@
     <item android:state_enabled="false"
         android:color="@android:color/transparent"/> <!-- pressed -->
     <item android:state_enabled="true"
-        android:color="?attr/white"/>
+        android:color="?attr/light"/>
 
 </selector>
