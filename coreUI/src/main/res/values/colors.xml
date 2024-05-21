@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="branded_tint">#A3B3CE</color>
+    <color name="screen_green_55">#8b9089</color>
+    <color name="screen_green_45">#71766f</color>
+    <color name="screen_green_35">#585c57</color>
+
+    <color name="screen_green_85">#d8dad8</color>
+    <color name="screen_green_75">#bec1bd</color>
+    <color name="screen_green_65">#a5a8a3</color>
+
+
+    <color name="branded_tint_72">#A3B3CE</color>
+    <color name="branded_tint_40">#475e85</color>
+    <color name="branded_tint_20">#242f42</color>
 
     <color name="branded_25">#3f3f4e</color>
     <color name="branded_15">#22222a</color>
@@ -17,12 +28,13 @@
 
 
 
+    <color name="blue_50">#0099ff</color>
     <color name="green">#4CAF50</color>
     <color name="red">#FF00ff</color>
 
-    <color name="button_startColor">#222228</color>
+    <color name="button_startColor">#353539</color>
     <color name="button_centerColor">#1c1c22</color>
-    <color name="button_endColor">#353539</color>
+    <color name="button_endColor">#222228</color>
     <color name="button_startColor_pressed">#151419</color>
     <color name="button_centerColor_pressed">#111115</color>
     <color name="button_endColor_pressed">#1f1f25</color>

@@ -40,7 +40,7 @@ class TrackDialog : BaseDialog() {
     private val binder by lazy {
         binding as TrackDialogBinding
     }
-    override val layout: Int = R.layout.track_dialog
+  //  override val layout: Int = R.layout.track_dialog
     private val adapter: TrackDialogAdapter = TrackDialogAdapter()
     private val viewModel: BaseViewModel<TrackDialogContract.Event,
             TrackDialogContract.State,
@@ -151,6 +151,8 @@ class TrackDialog : BaseDialog() {
                         is TrackDialogContract.Effect.UnknownException -> {
                             showError(com.yes.coreui.R.string.UnknownException)
                         }
+
+                        TrackDialogContract.Effect.UnknownException -> TODO()
                     }
                 }
             }

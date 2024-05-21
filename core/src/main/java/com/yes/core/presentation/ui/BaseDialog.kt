@@ -23,7 +23,7 @@ abstract class BaseDialog (): DialogFragment() {
         setStyle(STYLE_NO_FRAME, 0);
     }
 
-    abstract val layout: Int
+  //  abstract val layout: Int
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,8 +41,8 @@ abstract class BaseDialog (): DialogFragment() {
         ///////////////////
 
         ///////////////////
-        dialog!!.setContentView(layout)
-
+     //   dialog!!.setContentView(binding.root)
+////////////////////
       /*  val disp: Display =
             (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
         val outSmallestSize = Point()

@@ -160,7 +160,7 @@ class AlarmsScreen : Fragment() {
             requireContext(),
             com.yes.coreui.R.drawable.trash_can_outline,
         )
-        val deleteIconColor = ContextCompat.getColor(requireContext(), com.yes.coreui.R.color.branded_tint)
+        val deleteIconColor = ContextCompat.getColor(requireContext(), com.yes.coreui.R.color.branded_tint_72)
         val backgroundColor = ContextCompat.getColor(
             requireContext(),
             com.yes.coreui.R.color.button_centerColor_pressed

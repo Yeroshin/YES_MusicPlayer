@@ -21,13 +21,10 @@
     </style >
 
     <style name="textLabel" parent="margin">
-        <item name="android:textColor">?attr/text_gray</item>
         <item name="android:textSize">14sp</item>
         <item name="android:singleLine">true</item>
     </style >
     <style name="textSmall" parent="margin">
-
-        <item name="android:textColor">?attr/text_gray</item>
         <item name="android:textSize">12sp</item>
         <item name="android:singleLine">true</item>
     </style >

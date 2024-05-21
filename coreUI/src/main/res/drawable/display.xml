@@ -51,11 +51,7 @@
         </shape>
     </item>
     <item>
-
-            <shape
-            android:shape="rectangle"
-
-            >
+        <shape android:shape="rectangle">
                 <padding
                     android:left="7dp"
                     android:top="7dp"
@@ -65,16 +61,10 @@
                 android:radius="10dp" />
                 <solid
                     android:color="?attr/primary" />
-
-
         </shape>
     </item>
-    <item
-        >
-        <shape
-            android:shape="rectangle"
-            >
-
+    <item>
+        <shape android:shape="rectangle">
             <corners
                 android:radius="0dp" />
             <stroke
@@ -82,9 +72,9 @@
                 android:color="?attr/shadow" />
             <gradient
                 android:angle="90"
-                android:startColor="#888d86"
-                android:centerColor="#737570"
-                android:endColor="#41423d"
+                android:startColor="?attr/secondary_startColor"
+                android:centerColor="?attr/secondary_centerColor"
+                android:endColor="?attr/secondary_endColor"
                 android:type="linear" />
 
         </shape>

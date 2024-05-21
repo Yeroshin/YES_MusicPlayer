@@ -12,6 +12,11 @@
         <attr name="on_tertiary" format="color"/>
         <attr name="surface" format="color"/>
 
+        <attr name="secondary_startColor" format="color"/>
+        <attr name="secondary_centerColor" format="color"/>
+        <attr name="secondary_endColor" format="color"/>
+        <attr name="secondary" format="color"/>
+        <attr name="on_secondary" format="color"/>
 
 
 

@@ -33,6 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
+                android:textColor="?attr/on_primary"
                 android:textAlignment="center"
                 tools:text="40Hz" />
 
@@ -46,7 +47,7 @@
                 android:thumb="@drawable/thumb_layer" />
 
             <TextView
-
+                android:textColor="?attr/on_primary"
                 style="@style/textSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,7 +64,7 @@
             android:padding="4dp">
 
             <TextView
-
+                android:textColor="?attr/on_primary"
                 android:id="@+id/twoValue"
                 style="@style/textSmall"
                 android:layout_width="match_parent"
@@ -82,7 +83,7 @@
                 android:thumb="@drawable/thumb_layer" />
 
             <TextView
-
+                android:textColor="?attr/on_primary"
                 style="@style/textSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -100,7 +101,7 @@
             android:padding="4dp">
 
             <TextView
-
+                android:textColor="?attr/on_primary"
                 android:id="@+id/threeValue"
                 style="@style/textSmall"
                 android:layout_width="match_parent"
@@ -119,7 +120,7 @@
                 android:thumb="@drawable/thumb_layer" />
 
             <TextView
-
+                android:textColor="?attr/on_primary"
                 style="@style/textSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -137,13 +138,13 @@
             android:padding="4dp">
 
             <TextView
-
                 android:id="@+id/fourValue"
                 style="@style/textSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textAlignment="center"
+                android:textColor="?attr/on_primary"
                 tools:text="40Hz" />
 
             <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
@@ -156,7 +157,7 @@
                 android:thumb="@drawable/thumb_layer" />
 
             <TextView
-
+                android:textColor="?attr/on_primary"
                 style="@style/textSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -174,7 +175,7 @@
             android:padding="4dp">
 
             <TextView
-
+                android:textColor="?attr/on_primary"
                 android:id="@+id/fiveValue"
                 style="@style/textSmall"
                 android:layout_width="match_parent"
@@ -193,7 +194,7 @@
                 android:thumb="@drawable/thumb_layer" />
 
             <TextView
-
+                android:textColor="?attr/on_primary"
                 style="@style/textSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -210,8 +211,10 @@
         style="@style/margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-       android:background="@drawable/panel_flat"
-        android:orientation="horizontal">
+        android:background="@drawable/panel_flat"
+        android:orientation="horizontal"
+        android:paddingRight="4dp"
+        android:paddingBottom="4dp">
 
         <com.yes.musicplayer.equalizer.presentation.ui.CircularSeekBar
             android:id="@+id/circularSeekBar"
@@ -244,6 +247,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textColor="?attr/on_primary"
                     android:text="@string/loudness_enhancer" />
             </LinearLayout>
 
@@ -262,6 +266,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textColor="?attr/on_primary"
                     android:text="@string/equalizer" />
 
             </LinearLayout>
