@@ -239,7 +239,9 @@
 
                 <Switch
                     android:id="@+id/loudness_switch"
-                    style="@style/yesSwitch" />
+                    style="@style/yesSwitch"
+                    android:layout_width="52dp"
+                    tools:checked="true" />
 
                 <TextView
                     android:id="@+id/textView2"

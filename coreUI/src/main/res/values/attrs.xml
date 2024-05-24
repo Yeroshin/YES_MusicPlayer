@@ -28,9 +28,7 @@
         <attr name="primary_startColor" format="color"/>
         <attr name="primary_centerColor" format="color"/>
         <attr name="primary_endColor" format="color"/>
-        <attr name="button_startColor_pressed" format="color"/>
-        <attr name="button_centerColor_pressed" format="color"/>
-        <attr name="button_endColor_pressed" format="color"/>
+
         <attr name="launcher_background" format="color"/>
 
         <attr name="tertiary_startColor" format="color"/>
