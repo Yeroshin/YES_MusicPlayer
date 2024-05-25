@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@drawable/display"
-        android:padding="11dp">
+        android:padding="10dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/playList"
@@ -46,8 +46,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_space"
+        android:backgroundTint="#000000"
         android:orientation="horizontal"
-        >
+        android:padding="1dp">
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_media"

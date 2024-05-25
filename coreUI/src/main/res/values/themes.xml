@@ -17,13 +17,17 @@
         <item name="on_primary">@color/text_gray</item>
         <item name="primary">@color/branded_color</item>
 
+        <item name="primary_startColor">@color/branded_20</item>
+        <item name="primary_centerColor">@color/branded_15</item>
+        <item name="primary_endColor">@color/branded_10</item>
+
 
         <item name="branded_light">@color/branded_light</item>
         <item name="branded_dark">@color/branded_dark</item>
         <item name="text_gray">@color/text_gray</item>
         <item name="transparent">@color/transparent</item>
 
-        <item name="shadow">@color/white_10</item>
+        <item name="shadow">@color/white_0</item>
         <item name="gray">@color/gray</item>
         <item name="light">@color/white_30</item>
 
@@ -31,9 +35,7 @@
         <item name="green">@color/green</item>
         <item name="red">@color/red</item>
 
-        <item name="primary_startColor">@color/button_startColor</item>
-        <item name="primary_centerColor">@color/button_centerColor</item>
-        <item name="primary_endColor">@color/button_endColor</item>
+
 
 
         <item name="launcher_background" >@color/branded_color</item>
@@ -41,13 +43,13 @@
         <item name="tertiary_startColor">@color/blue_27</item>
         <item name="tertiary_centerColor">@color/white_10</item>
         <item name="tertiary_endColor">@color/blue_19</item>
-        <item name="on_tertiary_startColor">@color/white_10</item>
-        <item name="on_tertiary_centerColor">@color/white_10</item>
+        <item name="on_tertiary_startColor">@color/white_20</item>
+        <item name="on_tertiary_centerColor">@color/white_15</item>
         <item name="on_tertiary_endColor">@color/white_10</item>
 
         <!--<item name="surface">@color/branded_15</item>-->
         <item name="surface">@color/red</item>
-        <item name="tertiary">@color/blue_19</item>
+        <item name="tertiary">@color/white_15</item>
         <item name="on_tertiary">@color/white_50</item>
 
 
@@ -70,7 +72,7 @@
 
         <item name="branded_light">@color/branded_25</item>
         <item name="branded_dark">@color/branded_15</item>
-        <item name="text_gray">@color/green</item>
+        <item name="text_gray">@color/gray</item>
         <item name="transparent">@color/transparent</item>
 
 
@@ -87,19 +89,20 @@
         <item name="primary_centerColor">@color/white_55</item>
         <item name="primary_endColor">@color/white_40</item>
 
-        <item name="tertiary_startColor">@color/white_10</item>
+        <item name="tertiary">@color/white_50</item>
+        <item name="tertiary_startColor">@color/white_5</item>
         <item name="tertiary_centerColor">@color/white_20</item>
         <item name="tertiary_endColor">@color/white_40</item>
         <item name="on_tertiary_startColor">@color/white_80</item>
-        <item name="on_tertiary_centerColor">@color/white_70</item>
-        <item name="on_tertiary_endColor">@color/white_60</item>
+        <item name="on_tertiary_centerColor">@color/white_65</item>
+        <item name="on_tertiary_endColor">@color/white_50</item>
 
         <item name="light">@color/white_100</item>
         <item name="gray">@color/white_35</item>
         <item name="shadow">@color/white_0</item>
 
         <item name="surface">@color/white_85</item>
-        <item name="tertiary">@color/white_50</item>
+
         <item name="on_tertiary">@color/white_50</item>
 
         <item name="secondary_startColor">@color/screen_green_85</item>

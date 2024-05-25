@@ -2,43 +2,32 @@
 
 <layer-list
     xmlns:android="http://schemas.android.com/apk/res/android" >
+
     <item>
         <shape android:shape="rectangle">
+            <stroke
+                android:width="1dp"
+                android:color="?attr/shadow" />
             <padding
-                android:left="1dp"
-                android:top="1dp"
-                android:right="1dp"
-                android:bottom="1dp" />
-
-            <corners android:radius="100dp"/>
-            <solid android:color="#000000" />
-
-        </shape>
-
-    </item>
-    <item>
-        <shape android:shape="rectangle">
-            <padding
-                android:left="3dp"
-                android:top="3dp"
-                android:right="3dp"
-                android:bottom="3dp" />
+                android:left="5dp"
+                android:top="4dp"
+                android:right="5dp"
+                android:bottom="4dp" />
             <gradient
                 android:angle="270"
-                android:startColor="?attr/tertiary_startColor"
-                android:centerColor="?attr/tertiary_centerColor"
-                android:endColor="?attr/tertiary_endColor"
+                android:startColor= "?attr/primary_endColor"
+                android:endColor="?attr/primary_startColor"
                 android:type="linear"
                 android:useLevel="false"  />
             <corners android:radius="100dp"/>
-
         </shape>
-
     </item>
     <item >
         <shape
-
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:shape="rectangle">
+
 
             <corners android:radius="100dp" />
             <solid android:color="?attr/on_primary_activated" />

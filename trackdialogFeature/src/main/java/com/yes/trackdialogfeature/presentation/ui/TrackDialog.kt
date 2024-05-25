@@ -1,13 +1,18 @@
 package com.yes.trackdialogfeature.presentation.ui
 
+import android.content.Context
+import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Display
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
+import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -95,7 +100,7 @@ class TrackDialog : BaseDialog() {
         }
         binder.networkBtn.setOnCheckedChangeListener { _, isChecked ->
             // write here your code for example ...
-            if (isChecked) {
+            if (!isChecked) {
                 binder.recyclerViewContainer.disableView.visibility = GONE
                 binder.networkPath.isEnabled = false
                 binder.buttons.okBtn.isClickable= true
@@ -185,35 +190,49 @@ class TrackDialog : BaseDialog() {
             )
         }
     }
+    fun tmp(){
+        val screeSize1 = Point()
+        val disp: Display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+        disp.getSize(screeSize1)
+        binding.root.minimumWidth = (screeSize1.x * 0.9f).toInt()
+        binding.root.minimumHeight = (screeSize1.y * 0.9f).toInt()
+    }
 
     private fun setNetworkPathStatus(status: Boolean) {
         binder.buttons.okBtn.isClickable= status
         binder.buttons.okBtn.isPressed = !status
         binder.networkPath.isActivated=status
+        tmp()
     }
 
     private fun idleView() {
         binder.recyclerViewContainer.progressBar.visibility = GONE
         binder.recyclerViewContainer.disableView.visibility = GONE
+        tmp()
     }
 
     private fun showLoading() {
+        println("loading")
         binder.recyclerViewContainer.progressBar.visibility = VISIBLE
         binder.recyclerViewContainer.disableView.visibility = VISIBLE
+        tmp()
     }
 
     private fun dataLoaded(title: String, items: List<MenuUi.ItemUi>) {
+        println("loaded")
 
-        binder.recyclerViewContainer.dialogTitle.text = title
-        adapter.setItems(items)
         binder.recyclerViewContainer.progressBar.visibility = GONE
         binder.recyclerViewContainer.disableView.visibility = GONE
+        binder.recyclerViewContainer.dialogTitle.text = title
+        adapter.setItems(items)
+        tmp()
     }
 
     private fun showError(message: Int) {
         binder.recyclerViewContainer.progressBar.visibility = GONE
         binder.recyclerViewContainer.disableView.visibility = GONE
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+
     }
 
     class Dependency(

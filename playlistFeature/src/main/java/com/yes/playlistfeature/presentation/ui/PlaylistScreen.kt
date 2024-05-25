@@ -2,6 +2,7 @@ package com.yes.playlistfeature.presentation.ui
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.*
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -176,23 +177,23 @@ class PlaylistScreen : BaseFragment(){
         binder.playList.layoutManager?.removeAllViews()
         adapter.setItems(tracks)
 
-        binder.progressBar.visibility = View.GONE
-        binder.disableView.visibility = View.GONE
+        binder.progressBar.visibility = GONE
+        binder.disableView.visibility = INVISIBLE
     }
 
     private fun idleView() {
-          binder.progressBar.visibility = View.GONE
-          binder.disableView.visibility = View.GONE
+          binder.progressBar.visibility = GONE
+          binder.disableView.visibility = INVISIBLE
     }
 
     private fun showLoading() {
-          binder.progressBar.visibility = View.VISIBLE
-          binder.disableView.visibility = View.VISIBLE
+          binder.progressBar.visibility = VISIBLE
+          binder.disableView.visibility = VISIBLE
     }
 
     private fun showError(message: Int) {
-         binder.progressBar.visibility = View.GONE
-         binder.disableView.visibility = View.GONE
+         binder.progressBar.visibility = GONE
+         binder.disableView.visibility = INVISIBLE
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 

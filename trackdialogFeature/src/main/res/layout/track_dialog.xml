@@ -19,30 +19,28 @@
         <include
             android:id="@+id/recyclerViewContainer"
             layout="@layout/dialog"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+             />
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <FrameLayout
-                android:id="@+id/frameLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:background="@drawable/button_space">
+                android:background="@drawable/button_space"
+                android:padding="1dp">
 
                 <CheckBox
                     android:id="@+id/network_btn"
                     style="@style/buttonSingleLow"
                     android:button="@drawable/wan"
                     android:buttonTint="@color/checkable_color"
-                    android:checked="true" />
+                    android:checked="false" />
 
             </FrameLayout>
 

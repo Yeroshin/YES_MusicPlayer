@@ -14,11 +14,19 @@
     <color name="branded_tint_20">#242f42</color>
 
     <color name="branded_25">#3f3f4e</color>
+    <color name="branded_20">#2d2d39</color>
     <color name="branded_15">#22222a</color>
+    <color name="branded_10">#17171c</color>
 
     <color name="branded_color">#22222a</color>
     <color name="branded_light">#FF3F3F4E</color>
     <color name="branded_dark">#242424</color>
+
+
+
+
+
+
     <color name="text_gray">#939292</color>
     <color name="transparent">#00000000</color>
 

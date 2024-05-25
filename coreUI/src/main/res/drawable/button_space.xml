@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
-        <shape android:shape="rectangle"
-            >
-            <corners
-                android:radius="12dp" />
-            <gradient
-                android:angle="270"
-                android:startColor="?attr/tertiary_startColor"
-                android:centerColor="?attr/tertiary_centerColor"
-                android:endColor="?attr/tertiary_endColor"
-                android:type="linear"
-            />
-        </shape>
-    </item>
     <item
         android:top="1dp"
         android:bottom="1dp"
@@ -22,6 +8,9 @@
         android:left="1dp">
         <shape
             android:shape="rectangle">
+            <stroke
+                android:width="1dp"
+                android:color="?attr/shadow" />
             <gradient
                 android:angle="90"
                 android:startColor="?attr/on_tertiary_startColor"

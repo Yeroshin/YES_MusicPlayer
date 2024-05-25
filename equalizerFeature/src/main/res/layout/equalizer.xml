@@ -33,8 +33,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textColor="?attr/on_primary"
                 android:textAlignment="center"
+                android:textColor="?attr/on_primary"
                 tools:text="40Hz" />
 
             <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
@@ -47,12 +47,12 @@
                 android:thumb="@drawable/thumb_layer" />
 
             <TextView
-                android:textColor="?attr/on_primary"
                 style="@style/textSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="60Hz"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textColor="?attr/on_primary" />
         </LinearLayout>
 
         <LinearLayout
@@ -64,13 +64,13 @@
             android:padding="4dp">
 
             <TextView
-                android:textColor="?attr/on_primary"
                 android:id="@+id/twoValue"
                 style="@style/textSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textAlignment="center"
+                android:textColor="?attr/on_primary"
                 tools:text="40Hz" />
 
             <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
@@ -83,12 +83,12 @@
                 android:thumb="@drawable/thumb_layer" />
 
             <TextView
-                android:textColor="?attr/on_primary"
                 style="@style/textSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="230Hz"
                 android:textAlignment="center"
+                android:textColor="?attr/on_primary"
                 tools:text="40Hz" />
         </LinearLayout>
 
@@ -101,13 +101,13 @@
             android:padding="4dp">
 
             <TextView
-                android:textColor="?attr/on_primary"
                 android:id="@+id/threeValue"
                 style="@style/textSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textAlignment="center"
+                android:textColor="?attr/on_primary"
                 tools:text="40Hz" />
 
             <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
@@ -120,12 +120,12 @@
                 android:thumb="@drawable/thumb_layer" />
 
             <TextView
-                android:textColor="?attr/on_primary"
                 style="@style/textSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="910Hz"
                 android:textAlignment="center"
+                android:textColor="?attr/on_primary"
                 tools:text="40Hz" />
         </LinearLayout>
 
@@ -157,12 +157,12 @@
                 android:thumb="@drawable/thumb_layer" />
 
             <TextView
-                android:textColor="?attr/on_primary"
                 style="@style/textSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="3kHz"
                 android:textAlignment="center"
+                android:textColor="?attr/on_primary"
                 tools:text="40Hz" />
         </LinearLayout>
 
@@ -175,13 +175,13 @@
             android:padding="4dp">
 
             <TextView
-                android:textColor="?attr/on_primary"
                 android:id="@+id/fiveValue"
                 style="@style/textSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textAlignment="center"
+                android:textColor="?attr/on_primary"
                 tools:text="40Hz" />
 
             <com.yes.musicplayer.equalizer.presentation.ui.VerticalSeekBar
@@ -194,12 +194,12 @@
                 android:thumb="@drawable/thumb_layer" />
 
             <TextView
-                android:textColor="?attr/on_primary"
                 style="@style/textSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="14kHz"
                 android:textAlignment="center"
+                android:textColor="?attr/on_primary"
                 tools:text="40Hz" />
         </LinearLayout>
 
@@ -240,7 +240,6 @@
                 <Switch
                     android:id="@+id/loudness_switch"
                     style="@style/yesSwitch"
-                    android:layout_width="52dp"
                     tools:checked="true" />
 
                 <TextView
@@ -249,8 +248,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="?attr/on_primary"
-                    android:text="@string/loudness_enhancer" />
+                    android:text="@string/loudness_enhancer"
+                    android:textColor="?attr/on_primary" />
             </LinearLayout>
 
             <LinearLayout
@@ -268,8 +267,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="?attr/on_primary"
-                    android:text="@string/equalizer" />
+                    android:text="@string/equalizer"
+                    android:textColor="?attr/on_primary" />
 
             </LinearLayout>
 

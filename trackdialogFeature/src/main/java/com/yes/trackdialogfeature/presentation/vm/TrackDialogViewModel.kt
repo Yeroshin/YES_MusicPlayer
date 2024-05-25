@@ -191,6 +191,7 @@ open class TrackDialogViewModel(
                     trackDialogState = TrackDialogContract.TrackDialogState.Loading
                 )
             }
+            println("vmLoading")
             val params = id?.let {
                 GetMenuUseCase.Params(
                     it,

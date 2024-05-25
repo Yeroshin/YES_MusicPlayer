@@ -63,9 +63,13 @@ abstract class BaseDialog (): DialogFragment() {
              val disp: Display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
               disp.getSize(screeSize1)
           }
+      //////////////
+
         //////////////////////
 
         //disp.getSize(screeSize1)
+
+
         binding.root.minimumWidth = (screeSize1.x * 0.9f).toInt()
         binding.root.minimumHeight = (screeSize1.y * 0.9f).toInt()
 
@@ -73,10 +77,11 @@ abstract class BaseDialog (): DialogFragment() {
             (screeSize1.x * 0.9f).toInt(),
             (screeSize1.y * 0.9f).toInt()
         )
-
+      val tmp=binding.root.minimumWidth
+println("screenSize:$tmp")
         isCancelable = false
         /////////////////////////
-        dialog!!.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+       // dialog!!.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         /////////////////////////////
         return binding.root
     }

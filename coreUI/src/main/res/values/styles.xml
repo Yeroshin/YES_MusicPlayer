@@ -13,10 +13,10 @@
     <style name="text" >
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#00ff00</item>
-        <item name="android:shadowColor">#333333</item>
-        <item name="android:shadowDx">5</item>
-        <item name="android:shadowDy">5</item>
-        <item name="android:shadowRadius">2</item>
+        <item name="android:shadowColor">?attr/shadow</item>
+        <item name="android:shadowDx">3</item>
+        <item name="android:shadowDy">3</item>
+        <item name="android:shadowRadius">5</item>
         <item name="android:singleLine">true</item>
     </style >
 

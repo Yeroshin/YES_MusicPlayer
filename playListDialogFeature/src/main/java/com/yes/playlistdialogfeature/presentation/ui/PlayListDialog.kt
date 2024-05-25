@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.*
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -174,20 +175,20 @@ class PlayListDialog: BaseDialog(),SwipeToDeleteCallback.Callback{
     private fun dataLoaded( items: List<ItemUi>) {
         adapter.setItems(items)
         binder.recyclerViewContainer.dialogTitle.text=items.find { it.current }?.name
-        binder.recyclerViewContainer.progressBar.visibility = View.GONE
-        binder.recyclerViewContainer.disableView.visibility = View.GONE
+        binder.recyclerViewContainer.progressBar.visibility = GONE
+        binder.recyclerViewContainer.disableView.visibility = INVISIBLE
     }
     private fun showLoading() {
-        binder.recyclerViewContainer.progressBar.visibility = View.VISIBLE
-        binder.recyclerViewContainer.disableView.visibility = View.VISIBLE
+        binder.recyclerViewContainer.progressBar.visibility = VISIBLE
+        binder.recyclerViewContainer.disableView.visibility = VISIBLE
     }
     private fun idleView() {
-        binder.recyclerViewContainer.progressBar.visibility = View.GONE
-        binder.recyclerViewContainer.disableView.visibility = View.GONE
+        binder.recyclerViewContainer.progressBar.visibility = GONE
+        binder.recyclerViewContainer.disableView.visibility = INVISIBLE
     }
     private fun showError(message: Int) {
-        binder.recyclerViewContainer.progressBar.visibility = View.GONE
-        binder.recyclerViewContainer.disableView.visibility = View.GONE
+        binder.recyclerViewContainer.progressBar.visibility = GONE
+        binder.recyclerViewContainer.disableView.visibility = INVISIBLE
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
     class Dependency(

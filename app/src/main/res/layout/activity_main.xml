@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/LinearLayout1"
     style="@style/padding"
     android:layout_width="match_parent"
@@ -32,11 +33,11 @@
             android:background="@drawable/panel_flat"
             android:theme="@style/text"
             app:tabGravity="center"
-            app:tabIndicatorColor="?attr/on_primary"
+            app:tabIndicatorColor="?attr/on_primary_activated"
             app:tabIndicatorHeight="5dp"
             app:tabMode="scrollable"
-            app:tabSelectedTextColor="?attr/on_primary"
-            app:tabTextColor="#000000" />
+            app:tabSelectedTextColor="?attr/on_primary_activated"
+            app:tabTextColor="?attr/on_primary" />
 
 
         <androidx.viewpager2.widget.ViewPager2
