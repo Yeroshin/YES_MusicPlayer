@@ -9,20 +9,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/player_controls"
-        android:name="com.yes.player.presentation.ui.PlayerScreen"
-        style="@style/margin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-    </androidx.fragment.app.FragmentContainerView>
 
     <LinearLayout
         style="@style/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/panel_flat"
+
         android:orientation="vertical">
 
         <com.google.android.material.tabs.TabLayout
@@ -30,7 +23,7 @@
             style="@style/margin"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height_regular"
-            android:background="@drawable/panel_flat"
+
             android:theme="@style/text"
             app:tabGravity="center"
             app:tabIndicatorColor="?attr/on_primary_activated"

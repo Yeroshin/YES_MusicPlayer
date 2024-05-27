@@ -10,10 +10,6 @@ import androidx.viewbinding.ViewBinding
 
 
 abstract class BaseDialog (): DialogFragment() {
-   /* protected var _binding: ViewBinding? = null
-    // This property is only valid between onCreateView and
-// onDestroyView.
-    protected val binding get() = _binding!!*/
    lateinit var binding: ViewBinding
    //////////////////
    // private var myDialog: Dialog = dialog!!
@@ -23,7 +19,7 @@ abstract class BaseDialog (): DialogFragment() {
         setStyle(STYLE_NO_FRAME, 0);
     }
 
-  //  abstract val layout: Int
+    abstract val layout: Int
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,7 +37,7 @@ abstract class BaseDialog (): DialogFragment() {
         ///////////////////
 
         ///////////////////
-     //   dialog!!.setContentView(binding.root)
+        dialog!!.setContentView(layout)
 ////////////////////
       /*  val disp: Display =
             (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
@@ -77,8 +73,7 @@ abstract class BaseDialog (): DialogFragment() {
             (screeSize1.x * 0.9f).toInt(),
             (screeSize1.y * 0.9f).toInt()
         )
-      val tmp=binding.root.minimumWidth
-println("screenSize:$tmp")
+
         isCancelable = false
         /////////////////////////
        // dialog!!.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)

@@ -11,30 +11,33 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.appcompat.widget.AppCompatImageView
+import kotlin.math.acos
+import kotlin.math.cos
+import kotlin.math.sin
 
-
+@Deprecated("doesent used")
 class RotaryKnob(context: Context, attrs: AttributeSet?) :
     AppCompatImageView(context, attrs) {
     private var background: Drawable? = null
-    var mPaint: Paint? = null
-    var Rad = 0.0
-    var innerR = 0.0
-    var outerR = 0.0
+    private var mPaint = Paint()
+    private var Rad = 0.0
+    private var innerR = 0.0
+    private var outerR = 0.0
     var startX = 0
     var startY = 0
-    var stopX = 0
-    var stopY = 0
-    var knobAngle = 269.0
-    var initAngle = 1.0
-    var MAX = 270
-    var positionX = 0
-    var positionY = 0
-    var viewWidth = 0
-    var viewHeight = 0
-    var Mywidth = 0
-    var w = 0
-    var h = 0
-    var Myenabled = false
+    private var stopX = 0
+    private var stopY = 0
+    private var knobAngle = 269.0
+    private var initAngle = 1.0
+    private var MAX = 270
+    private var positionX = 0
+    private var positionY = 0
+    private var viewWidth = 0
+    private var viewHeight = 0
+    private var Mywidth = 0
+    private var w = 0
+    private var h = 0
+    private var Myenabled = false
 
     interface OnRotaryKnobChangeListener {
         fun onProgress(rotaryKnob: RotaryKnob?)
@@ -87,8 +90,8 @@ class RotaryKnob(context: Context, attrs: AttributeSet?) :
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val action = event.action
         var delta: Double
-        val f = Math.cos(Math.toRadians(45.0))
-        val t = Math.toDegrees(Math.acos(f))
+        val f = cos(Math.toRadians(45.0))
+        val t = Math.toDegrees(acos(f))
         return if (event.y < Mywidth && event.x < Mywidth) {
             when (action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -99,7 +102,7 @@ class RotaryKnob(context: Context, attrs: AttributeSet?) :
                         )
                     )
                     if (initAngle < 0) {
-                        initAngle = initAngle + 360
+                        initAngle += 360
                     }
                     // float a=Math.atan2();
                     true
@@ -113,15 +116,15 @@ class RotaryKnob(context: Context, attrs: AttributeSet?) :
                         )
                     )
                     if (movedAngle < 0) {
-                        movedAngle = movedAngle + 360
+                        movedAngle += 360
                     }
                     //////////////////////////////
                     delta = movedAngle - initAngle
                     if (delta < -MAX) {
-                        delta = 360 + delta
+                        delta += 360
                     }
                     if (delta > MAX) {
-                        delta = delta - 360
+                        delta -= 360
                     }
                     knobAngle = if (knobAngle + delta >= MAX) {
                         MAX.toDouble()
@@ -158,9 +161,9 @@ class RotaryKnob(context: Context, attrs: AttributeSet?) :
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-        mPaint = Paint()
-        mPaint!!.style = Paint.Style.STROKE
-        mPaint!!.strokeWidth = 5f
+
+        mPaint.style = Paint.Style.STROKE
+        mPaint.strokeWidth = 5f
         ////////////////////////////////
         /*  Bitmap back = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(back);
@@ -171,11 +174,21 @@ class RotaryKnob(context: Context, attrs: AttributeSet?) :
         setBackground(drawable);*/
         ///////////////////////////////
     }
-
+    private val shader = LinearGradient(
+        (positionX - Rad / 13).toFloat(),
+        (positionY - Rad / 13).toFloat(),
+        (positionX + Rad / 13).toFloat(),
+        (positionY + Rad / 13).toFloat(),
+        intArrayOf(
+            Color.BLACK, Color.WHITE
+        ),
+        null,
+        Shader.TileMode.CLAMP
+    )
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         /////////////////////////////////
-        val back = Bitmap.createBitmap(Mywidth, Mywidth, Bitmap.Config.ARGB_8888)
+      //  val back = Bitmap.createBitmap(Mywidth, Mywidth, Bitmap.Config.ARGB_8888)
         // Canvas c = new Canvas(back);
         val l = (Mywidth.toFloat() / 100 * 90).toInt()
         val s = (Mywidth.toFloat() / 100 * 10).toInt()
@@ -197,52 +210,42 @@ class RotaryKnob(context: Context, attrs: AttributeSet?) :
                 outerR = Rad / 100 * 98
             }
             if (i < knobAngle) {
-                mPaint!!.color = Color.rgb(20, 20, 20)
+                mPaint.color = Color.rgb(20, 20, 20)
             } else if (Myenabled && i > MAX * 0.3f) {
-                mPaint!!.color = Color.rgb(0, 255, 0)
+                mPaint.color = Color.rgb(0, 255, 0)
             } else if (Myenabled) {
-                mPaint!!.color = Color.rgb(255, 0, 0)
+                mPaint.color = Color.rgb(255, 0, 0)
             }
-            startX = Mywidth / 2 + (innerR * Math.cos(Math.toRadians(i.toDouble()))).toInt()
-            startY = Mywidth / 2 - (innerR * Math.sin(Math.toRadians(i.toDouble()))).toInt()
-            stopX = Mywidth / 2 + (outerR * Math.cos(Math.toRadians(i.toDouble()))).toInt()
-            stopY = Mywidth / 2 - (outerR * Math.sin(Math.toRadians(i.toDouble()))).toInt()
+            startX = Mywidth / 2 + (innerR * cos(Math.toRadians(i.toDouble()))).toInt()
+            startY = Mywidth / 2 - (innerR * sin(Math.toRadians(i.toDouble()))).toInt()
+            stopX = Mywidth / 2 + (outerR * cos(Math.toRadians(i.toDouble()))).toInt()
+            stopY = Mywidth / 2 - (outerR * sin(Math.toRadians(i.toDouble()))).toInt()
             canvas.drawLine(
                 startX.toFloat(), startY.toFloat(), stopX.toFloat(), stopY.toFloat(),
-                mPaint!!
+                mPaint
             )
-            i = i + 6
+            i += 6
         }
         /////pointer
-        positionX = Mywidth / 2 + (Rad / 100 * 25 * Math.cos(Math.toRadians(knobAngle))).toInt()
-        positionY = Mywidth / 2 - (Rad / 100 * 25 * Math.sin(Math.toRadians(knobAngle))).toInt()
+        positionX = Mywidth / 2 + (Rad / 100 * 25 * cos(Math.toRadians(knobAngle))).toInt()
+        positionY = Mywidth / 2 - (Rad / 100 * 25 * sin(Math.toRadians(knobAngle))).toInt()
         // RectF rect=new RectF((int)(positionX-Rad/20), (int)(positionX+Rad/20), positionX, (int)(positionY+Rad/20));
-        val shader = LinearGradient(
-            (positionX - Rad / 13).toFloat(),
-            (positionY - Rad / 13).toFloat(),
-            (positionX + Rad / 13).toFloat(),
-            (positionY + Rad / 13).toFloat(),
-            intArrayOf(
-                Color.BLACK, Color.WHITE
-            ),
-            null,
-            Shader.TileMode.CLAMP
-        )
-        mPaint!!.setShader(shader)
-        mPaint!!.style = Paint.Style.FILL
+
+        mPaint.setShader(shader)
+        mPaint.style = Paint.Style.FILL
         // mPaint.setColor(Color.rgb(0, 0, 0));
 
 
         //  canvas.drawOval(rect,mPaint);
-        canvas.drawCircle(positionX.toFloat(), positionY.toFloat(), Rad.toFloat() / 13, mPaint!!)
-        mPaint!!.setShader(null)
+        canvas.drawCircle(positionX.toFloat(), positionY.toFloat(), Rad.toFloat() / 13, mPaint)
+        mPaint.setShader(null)
         if (Myenabled) {
-            mPaint!!.color = Color.rgb(0, 255, 0)
+            mPaint.color = Color.rgb(0, 255, 0)
         } else {
-            mPaint!!.color = Color.rgb(100, 100, 100)
+            mPaint.color = Color.rgb(100, 100, 100)
         }
-        positionX = Mywidth / 2 + (Rad / 100 * 25 * Math.cos(Math.toRadians(knobAngle))).toInt()
-        positionY = Mywidth / 2 - (Rad / 100 * 25 * Math.sin(Math.toRadians(knobAngle))).toInt()
-        canvas.drawCircle(positionX.toFloat(), positionY.toFloat(), Rad.toFloat() / 20, mPaint!!)
+        positionX = Mywidth / 2 + (Rad / 100 * 25 * cos(Math.toRadians(knobAngle))).toInt()
+        positionY = Mywidth / 2 - (Rad / 100 * 25 * sin(Math.toRadians(knobAngle))).toInt()
+        canvas.drawCircle(positionX.toFloat(), positionY.toFloat(), Rad.toFloat() / 20, mPaint)
     }
 }

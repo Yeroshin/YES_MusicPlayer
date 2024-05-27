@@ -39,7 +39,7 @@ class PlayListDialog: BaseDialog(),SwipeToDeleteCallback.Callback{
     private val dependency: Dependency by lazy {
         component.getDependency()
     }
-  //  override val layout = R.layout.playlist_dialog
+    override val layout = R.layout.playlist_dialog
     private val adapter = PlayListDialogAdapter()
     private val binder by lazy {
         binding as PlaylistDialogBinding

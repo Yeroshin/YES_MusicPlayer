@@ -17,6 +17,7 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.util.TypedValue.applyDimension
 import android.view.MotionEvent
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -63,9 +64,9 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
         ).apply {
 
             try {
-                attrProgressDrawable = resources.getDrawable(
-                    getResourceId(0, 0),
-                    context.theme
+                attrProgressDrawable = ContextCompat.getDrawable(
+                    context,
+                    getResourceId(0, 0)
                 ) as LayerDrawable
 
 

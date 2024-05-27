@@ -9,11 +9,11 @@ android {
     compileSdk 33
 
     defaultConfig {
-        minSdk 21
+        minSdk 19
         targetSdk 33
-        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -41,7 +41,7 @@ android {
 }
 
 dependencies {
-    // androidTestImplementation 'androidx.multidex:multidex:2.0.1'
+     androidTestImplementation 'androidx.multidex:multidex:2.0.1'
 
     implementation project(path: ':core')
     implementation project(path: ':coreUI')

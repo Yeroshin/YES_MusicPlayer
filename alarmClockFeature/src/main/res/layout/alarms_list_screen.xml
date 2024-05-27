@@ -27,13 +27,14 @@
         style="@style/margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_space">
+        android:background="@drawable/button_space"
+        android:padding="1dp">
 
         <androidx.appcompat.widget.AppCompatImageButton
-            app:srcCompat="@drawable/alarm_plus"
             android:id="@+id/add_alarm_button"
             style="@style/buttonSingleTall"
-            android:background="@drawable/button_single" />
+            android:background="@drawable/button_single"
+            app:srcCompat="@drawable/alarm_plus" />
 
     </FrameLayout>
 

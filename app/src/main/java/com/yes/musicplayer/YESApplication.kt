@@ -3,6 +3,7 @@ package com.yes.musicplayer
 import android.app.Application
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
+import androidx.multidex.MultiDexApplication
 import com.yes.alarmclockfeature.di.components.AlarmClockComponent
 import com.yes.alarmclockfeature.di.components.DaggerAlarmClockComponent
 import com.yes.alarmclockfeature.di.module.AlarmClockModule
@@ -35,7 +36,7 @@ import com.yes.trackdialogfeature.di.component.DaggerTrackDialogComponent
 import com.yes.trackdialogfeature.di.component.TrackDialogComponent
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
 
-class YESApplication : Application(),
+class YESApplication : MultiDexApplication(),
     MainActivity.DependencyResolver,
     PlayerScreen.DependencyResolver,
     PlayListDialog.DependencyResolver,
