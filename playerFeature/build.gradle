@@ -14,7 +14,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
-
+        multiDexEnabled = true
     }
 
     sourceSets {
@@ -48,6 +48,8 @@ android {
 dependencies {
     implementation project(path: ':coreUI')
     implementation project(path: ':core')
+    //multidex
+    implementation 'androidx.multidex:multidex:2.0.1'
 
  //  implementation libs.media3//tmp
     implementation libs.androidx.media3.session

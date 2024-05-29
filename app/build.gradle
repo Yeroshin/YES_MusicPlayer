@@ -17,6 +17,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
+
+        multiDexKeepProguard file("multidex-config.pro")
     }
 
     buildTypes {

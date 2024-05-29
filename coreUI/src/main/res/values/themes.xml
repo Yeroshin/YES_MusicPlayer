@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.MusicPlayer" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.MusicPlayer" parent="Theme.AppCompat">
        <!-- Customize your theme here. -->
         <item name="android:windowBackground">@drawable/splash</item>
 

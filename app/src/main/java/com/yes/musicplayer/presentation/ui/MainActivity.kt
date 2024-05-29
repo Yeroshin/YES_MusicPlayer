@@ -141,17 +141,20 @@ class MainActivity :
         }*/
         //////////////////////
         //  setTheme(com.yes.coreui.R.style.Theme_YESActivityDark)
-        super.onCreate(savedInstanceState)
+
         setTheme()
+        super.onCreate(savedInstanceState)
         checkForUpdates()
            checkPermissions()
         setFragments()
     }
     private fun setTheme(){
+        val tmp = theme
         runBlocking {
             when (dependency.settingsRepositoryImpl.getTheme()) {
                 Theme.DarkTheme -> {
                     setTheme(R.style.Theme_YESActivityDark)
+
                 }
 
                 Theme.LightTheme -> {
@@ -159,6 +162,8 @@ class MainActivity :
                 }
             }
         }
+        val tmp1 = theme
+
 
     }
 
