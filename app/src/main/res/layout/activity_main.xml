@@ -30,7 +30,7 @@
             style="@style/margin"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height_regular"
-            android:background="@drawable/panel_flat_tmp"
+            android:background="@drawable/panel_flat"
 
             android:theme="@style/text"
             app:tabGravity="center"

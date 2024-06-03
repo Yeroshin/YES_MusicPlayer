@@ -9,16 +9,16 @@ android {
 
 
     defaultConfig {
-        applicationId "com.yes.musicplayer"
-        minSdk 19
+        applicationId "com.ys.musicplayer.free"
+        minSdk 21
         targetSdk 34
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        multiDexEnabled = true
 
-        multiDexKeepProguard file("multidex-config.pro")
+
+
     }
 
     buildTypes {
@@ -64,8 +64,7 @@ dependencies {
     implementation project(path: ':alarmClockFeature')
     implementation project(path: ':equalizerFeature')
     implementation project(path: ':settingsFeature')
-    //multidex
-    implementation 'androidx.multidex:multidex:2.0.1'
+
 
     //tmp
    // implementation project(path: ':shared-test')
