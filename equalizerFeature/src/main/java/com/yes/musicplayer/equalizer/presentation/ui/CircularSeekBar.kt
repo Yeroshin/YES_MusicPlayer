@@ -24,7 +24,8 @@ import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
 
-@SuppressLint("UseCompatLoadingForDrawables", "ResourceType")
+
+@SuppressLint("ResourceType")
 class CircularSeekBar(context: Context, attrs: AttributeSet) :
     androidx.appcompat.widget.AppCompatSeekBar(context, attrs) {
 

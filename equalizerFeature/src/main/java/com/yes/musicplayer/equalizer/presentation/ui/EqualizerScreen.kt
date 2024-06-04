@@ -20,24 +20,24 @@ class EqualizerScreen : BaseFragment() {
         fun resolveEqualizerScreenDependency(): BaseDependency
     }
 
-val circularSeekBarListener=object:CircularSeekBar.OnProgressChangeListener{
-    override fun onStartTrackingTouch(progress: Int) {
-        viewModel.setEvent(
-            EqualizerContract.Event.OnLoudnessEnhancerTargetGain(
-                progress
+    private val circularSeekBarListener = object : CircularSeekBar.OnProgressChangeListener {
+        override fun onStartTrackingTouch(progress: Int) {
+            viewModel.setEvent(
+                EqualizerContract.Event.OnLoudnessEnhancerTargetGain(
+                    progress
+                )
             )
-        )
-    }
+        }
 
-    override fun onStopTrackingTouch(progress: Int) {
-        viewModel.setEvent(
-            EqualizerContract.Event.OnLoudnessEnhancerTargetGainSet(
-                progress
+        override fun onStopTrackingTouch(progress: Int) {
+            viewModel.setEvent(
+                EqualizerContract.Event.OnLoudnessEnhancerTargetGainSet(
+                    progress
+                )
             )
-        )
-    }
+        }
 
-}
+    }
     override val dependency by lazy {
         (requireActivity().application as DependencyResolver)
             .resolveEqualizerScreenDependency()
@@ -103,13 +103,13 @@ val circularSeekBarListener=object:CircularSeekBar.OnProgressChangeListener{
     override fun setUpView() {
         //////////////////
         // val audioManager = requireActivity().getSystemService(Context.AUDIO_SERVICE) as AudioManager
-      /*  val effects = AudioEffect.queryEffects()
-        for (effectDescriptor in effects) {
-            if (effectDescriptor.type == AudioEffect.EFFECT_TYPE_EQUALIZER) {
-                Log.d("Equalizer", "Equalizer is available")
-                // Здесь можно выполнить дополнительные действия, если эквалайзер доступен
-            }
-        }*/
+        /*  val effects = AudioEffect.queryEffects()
+          for (effectDescriptor in effects) {
+              if (effectDescriptor.type == AudioEffect.EFFECT_TYPE_EQUALIZER) {
+                  Log.d("Equalizer", "Equalizer is available")
+                  // Здесь можно выполнить дополнительные действия, если эквалайзер доступен
+              }
+          }*/
         /////////////////
         binder.one.tag = 0
         binder.one.setOnVerticalSeekBarChangeListener(verticalSeekBarChangeListener)
@@ -167,6 +167,7 @@ val circularSeekBarListener=object:CircularSeekBar.OnProgressChangeListener{
             }
         }
     }
+
     private val presetsSpinnerAdapter by lazy {
         ArrayAdapter(
             requireContext(),
@@ -178,14 +179,14 @@ val circularSeekBarListener=object:CircularSeekBar.OnProgressChangeListener{
     private var spinnerValueIsFromUser = true
     private val itemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-         //  if (spinnerValueIsFromUser) {
-                viewModel.setEvent(
-                    EqualizerContract.Event.OnPresetSelected(
-                        position
-                    )
+            //  if (spinnerValueIsFromUser) {
+            viewModel.setEvent(
+                EqualizerContract.Event.OnPresetSelected(
+                    position
                 )
-           // }
-           // spinnerValueIsFromUser = true
+            )
+            // }
+            // spinnerValueIsFromUser = true
         }
 
         override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -211,7 +212,7 @@ val circularSeekBarListener=object:CircularSeekBar.OnProgressChangeListener{
             presetsSpinnerAdapter.addAll(it)
         }
         state.currentPreset?.let {
-          //  spinnerValueIsFromUser = false
+            //  spinnerValueIsFromUser = false
             binder.presetsSpinner.setSelection(it)
         }
         state.bandsLevelRange?.let {
