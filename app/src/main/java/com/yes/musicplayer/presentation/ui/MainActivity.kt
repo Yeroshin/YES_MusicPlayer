@@ -146,7 +146,7 @@ class MainActivity :
         super.onCreate(savedInstanceState)
         checkForUpdates()
            checkPermissions()
-        setFragments()
+       // setFragments()
     }
     private fun setTheme(){
         val tmp = theme
@@ -264,7 +264,7 @@ class MainActivity :
                     ActivityCompat.requestPermissions((this as Activity), it.toTypedArray(), 1)
                 }
             } else {
-              //  setFragments()//TODO do something wit this
+                setFragments()//TODO do something wit this
             }
         }
     }

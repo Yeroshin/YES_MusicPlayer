@@ -8,7 +8,7 @@ import com.yes.playlistdialogfeature.data.repository.SettingsRepositoryImpl
 import kotlinx.coroutines.CoroutineDispatcher
 
 
-class AddPlayListUseCase (
+class AddPlayListUseCase(
     dispatcher: CoroutineDispatcher,
     private val playListDialogRepositoryImpl: PlayListDialogRepositoryImpl,
     private val settingsRepository: SettingsRepositoryImpl
@@ -20,13 +20,20 @@ class AddPlayListUseCase (
                     it.name
                 )
             )
-        }
-        val  id=playListDialogRepositoryImpl.saveNewPlaylist(
-            params?.name?:""
+        } ?:run {
+            settingsRepository.updateCurrentPlaylistId(
+                playListDialogRepositoryImpl.saveNewPlaylist(
+                    ""
+                )
+            )
+        }//TODO make check for unique playlist name
+       /* val id = playListDialogRepositoryImpl.saveNewPlaylist(
+            params?.name ?: ""
         )
-        settingsRepository.updateCurrentPlaylistId(id)
+        settingsRepository.updateCurrentPlaylistId(id)*/
         return DomainResult.Success(true)
     }
+
     data class Params(val name: String)
 
 

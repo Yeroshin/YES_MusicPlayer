@@ -1,6 +1,9 @@
 package com.yes.player.di.module
 
 import android.media.audiofx.Visualizer
+import androidx.annotation.OptIn
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.ExoPlayer
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.core.data.dataSource.SettingsDataSource
@@ -27,9 +30,9 @@ import dagger.Provides
 
 @Module
 class PlayerModule {
-    @Provides
+    @OptIn(UnstableApi::class) @Provides
     fun providesVisualizer(
-        audioSessionId: Int
+        exoPlayer: ExoPlayer
     ): Visualizer {
       /*  var visualizer=Visualizer( audioSessionId)
       if (visualizer.enabled){
@@ -38,7 +41,7 @@ class PlayerModule {
         visualizer=Visualizer( audioSessionId)
         val e =visualizer.enabled
         visualizer.enabled = false*/
-        return Visualizer( audioSessionId)
+        return Visualizer( exoPlayer.audioSessionId)
     }
     @Provides
     @PlayerScope

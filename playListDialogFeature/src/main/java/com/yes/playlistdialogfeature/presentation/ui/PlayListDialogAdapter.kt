@@ -9,7 +9,7 @@ import com.yes.playlistdialogfeature.presentation.model.ItemUi
 class PlayListDialogAdapter:
     RecyclerView.Adapter<PlayListDialogAdapter.PlayListHolder>() {
 
-    private var itemsList = mutableListOf<ItemUi>()
+    private var itemsList = listOf<ItemUi>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayListHolder {
         val binding = ItemPlaylistBinding
@@ -21,7 +21,7 @@ class PlayListDialogAdapter:
         return itemsList.size
     }
     fun setItems(items: List<ItemUi>) {
-        itemsList = items.toMutableList()
+        itemsList = items
         notifyDataSetChanged()
     }
     fun getItems():List<ItemUi>{

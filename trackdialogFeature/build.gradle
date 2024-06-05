@@ -31,7 +31,7 @@ android {
      }*/
 
     defaultConfig {
-        minSdk 19
+        minSdk 24
         targetSdk 33
         multiDexEnabled true
         // testInstrumentationRunner "com.yes.trackdialogfeature.DexOpeningTestRunner"

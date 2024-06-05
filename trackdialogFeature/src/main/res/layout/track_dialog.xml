@@ -38,9 +38,12 @@
                 <CheckBox
                     android:id="@+id/network_btn"
                     style="@style/buttonSingleLow"
-                    android:button="@drawable/wan"
-                    android:buttonTint="@color/checkable_color"
-                    android:checked="false" />
+                    android:checked="false"
+                    android:button="@null"
+                    android:foreground="@drawable/wan"
+                    android:foregroundTint="@color/checkable_color"
+                    android:foregroundGravity="center"
+                    />
 
             </FrameLayout>
 

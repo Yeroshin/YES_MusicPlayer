@@ -175,6 +175,9 @@ class PlayListDialog: BaseDialog(),SwipeToDeleteCallback.Callback{
     private fun dataLoaded( items: List<ItemUi>) {
         adapter.setItems(items)
         binder.recyclerViewContainer.dialogTitle.text=items.find { it.current }?.name
+        binder.recyclerViewContainer.recyclerView.layoutManager?.scrollToPosition(
+            items.indexOfFirst { it.current }
+        )
         binder.recyclerViewContainer.progressBar.visibility = GONE
         binder.recyclerViewContainer.disableView.visibility = INVISIBLE
     }

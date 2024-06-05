@@ -11,17 +11,13 @@
 
     <TextView
         android:id="@+id/id"
-        style="@style/leadingIcon"
-        android:layout_width="match_parent"
+        style="@style/leadingText"
 
-        android:layout_height="wrap_content"
 
         android:layout_weight="7"
         android:gravity="center"
         android:textColor="@color/activatable_color"
-        android:textSize="@dimen/font_size_regular"
-        android:textStyle="bold"
-        tools:text="id" />
+        tools:text="1111" />
 
     <TextView
         android:id="@+id/playlist_title"
