@@ -8,7 +8,9 @@
     <string name="thursday">чтв</string>
     <string name="friday">птн</string>
     <string name="saturday">сбт</string>
-    <string name="label">Метка</string>
+
+    <string name="label">Музыка</string>
+
     <string name="repeat">ПОВТОР</string>
     <string name="hour">ч</string>
     <string name="minute">м</string>
