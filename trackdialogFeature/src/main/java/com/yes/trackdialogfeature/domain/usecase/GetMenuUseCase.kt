@@ -21,7 +21,7 @@ class GetMenuUseCase(
             val currentMenu=menuRepository.getItem(params.id)?:return DomainResult.Error(
                 DomainResult.UnknownException)
             val childMenu=menuRepository.getChildItem(params.id)?:return DomainResult.Error(MenuException.Empty)
-            val childItems=mediaRepository.getMenuItems(
+            val childItems=mediaRepository.getMediaItems(
                 childMenu.type?:return DomainResult.Error(DomainResult.UnknownException),
                 currentMenu.type,
                 params.name

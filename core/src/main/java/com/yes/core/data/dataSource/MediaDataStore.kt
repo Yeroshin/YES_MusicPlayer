@@ -102,7 +102,8 @@ class MediaDataStore(private val context: Context) {
         val sortOrder = "$type ASC"
         /////////////////////////
         val projection = arrayOf(
-            type
+            "DISTINCT $type"
+
         )
         val select = selection?.let { "$it = ?" } //?: "${MediaStore.Audio.Media.SIZE} = %"
         ///////////////////////

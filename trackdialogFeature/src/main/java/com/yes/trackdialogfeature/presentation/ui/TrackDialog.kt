@@ -82,7 +82,7 @@ class TrackDialog : BaseDialog() {
         binder.buttons.okBtn.setOnClickListener {
             viewModel.setEvent(
                 TrackDialogContract.Event.OnButtonOkClicked(
-                    if (binder.networkBtn.isChecked) {
+                    if (!binder.networkBtn.isChecked) {
                         adapter.getItems()
                     } else {
                         listOf(

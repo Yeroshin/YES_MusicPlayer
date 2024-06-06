@@ -50,7 +50,7 @@ class TrackDialogAdapter :
             }else{
                 binding.checkBox.visibility= VISIBLE
             }
-            binding.checkBox.setOnCheckedChangeListener{ buttonView, isChecked ->
+            binding.checkBox.setOnCheckedChangeListener{ _, isChecked ->
                 mediaList[position].selected=isChecked
             }
             binding.icon.setImageLevel(
