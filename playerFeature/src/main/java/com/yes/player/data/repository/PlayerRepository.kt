@@ -58,7 +58,4 @@ class PlayerRepository(
         }
     }
 
-    fun subscribeAudioSessionId(): Flow<Int> {
-        return playerDataSource.subscribeAudioSessionId()
-    }
 }
