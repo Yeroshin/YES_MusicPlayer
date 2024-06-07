@@ -9,13 +9,13 @@ android {
 
 
     defaultConfig {
-        applicationId "com.yes.musicplayer"
-        minSdk 21
+        applicationId "com.ys.musicplayer.free"
+        minSdk 24
         targetSdk 34
-        versionCode 1
-        versionName "1.0"
-
+        versionCode 10
+        versionName "3.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -60,6 +60,9 @@ dependencies {
     implementation project(path: ':playListDialogFeature')
     implementation project(path: ':alarmClockFeature')
     implementation project(path: ':equalizerFeature')
+    implementation project(path: ':settingsFeature')
+
+
     //tmp
    // implementation project(path: ':shared-test')
 
