@@ -2,6 +2,7 @@ package com.yes.trackdialogfeature.di.module
 
 import com.yes.core.di.module.IoDispatcher
 import com.yes.core.data.dataSource.MediaDataStore
+import com.yes.core.data.dataSource.SettingsDataSource
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.trackdialogfeature.data.mapper.MediaRepositoryMapper
 import com.yes.trackdialogfeature.data.mapper.MenuRepositoryMapper
@@ -11,7 +12,6 @@ import com.yes.trackdialogfeature.data.repository.SettingsRepositoryImpl
 import com.yes.trackdialogfeature.data.repository.dataSource.MenuDataStore
 
 import com.yes.core.domain.repository.IPlayListDao
-import com.yes.core.data.dataSource.SettingsDataStore
 import com.yes.trackdialogfeature.data.repository.NetworkRepository
 import com.yes.trackdialogfeature.data.repository.dataSource.NetworkDataSource
 import com.yes.trackdialogfeature.domain.usecase.CheckNetworkPathAvailableUseCase
@@ -85,20 +85,13 @@ class TrackDialogModule {
             mediaRepository,
         )
     }
-   /* @Provides
-    fun providesSettingsDataStore(
-        dataStore: DataStore<Preferences>
-    ): SettingsDataStore {
-        return SettingsDataStore(
-            dataStore
-        )
-    }*/
+
     @Provides
     fun providesSettingsRepository(
-        settings: SettingsDataStore
+        settingsDataSource: SettingsDataSource
     ): SettingsRepositoryImpl {
         return SettingsRepositoryImpl(
-            settings
+            settingsDataSource
         )
     }
 

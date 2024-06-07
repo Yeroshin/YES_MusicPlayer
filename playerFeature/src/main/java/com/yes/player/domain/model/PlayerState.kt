@@ -5,5 +5,6 @@ data class PlayerState (
     val artist:String?,
     val title:String?,
     val stateBuffering:Boolean,
-    val duration:Long?
+    val duration:Long?,
+    val isPlaying:Boolean?
 )

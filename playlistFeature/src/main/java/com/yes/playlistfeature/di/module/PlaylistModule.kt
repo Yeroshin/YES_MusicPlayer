@@ -1,11 +1,13 @@
 package com.yes.playlistfeature.di.module
 
 
+
 import com.yes.core.di.module.IoDispatcher
 import com.yes.core.di.module.MainDispatcher
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.dataSource.PlayerDataSource
-import com.yes.core.data.dataSource.SettingsDataStore
+import com.yes.core.data.dataSource.SettingsDataSource
+import com.yes.core.presentation.ui.BaseDependency
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.playlistfeature.data.mapper.Mapper
 import com.yes.playlistfeature.data.repository.PlayListRepositoryImpl
@@ -15,12 +17,10 @@ import com.yes.playlistfeature.domain.usecase.ChangeTracksPositionUseCase
 import com.yes.playlistfeature.domain.usecase.DeleteTrackUseCase
 import com.yes.playlistfeature.domain.usecase.SetModeUseCase
 import com.yes.playlistfeature.domain.usecase.SetSettingsTrackIndexUseCase
-import com.yes.playlistfeature.domain.usecase.SetTracksToPlayerPlaylistUseCase
 import com.yes.playlistfeature.domain.usecase.SubscribeCurrentPlaylistTracksUseCase
 import com.yes.playlistfeature.domain.usecase.SubscribePlayerCurrentTrackIndexUseCase
 import com.yes.playlistfeature.domain.usecase.PlayTrackUseCase
 import com.yes.playlistfeature.presentation.mapper.MapperUI
-import com.yes.playlistfeature.presentation.ui.PlaylistScreen
 import com.yes.playlistfeature.presentation.vm.PlaylistViewModel
 import dagger.Module
 import dagger.Provides
@@ -28,20 +28,13 @@ import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 class PlaylistModule {
-   /* @Provides
-    fun providesSettingsDataStore(
-        dataStore: DataStore<Preferences>
-    ): SettingsDataStore {
-        return SettingsDataStore(
-            dataStore
-        )
-    }*/
+
     @Provides
     fun providesSettingsRepository(
-        dataStore: SettingsDataStore
+       settingsDataSource: SettingsDataSource
     ): SettingsRepositoryImpl {
         return SettingsRepositoryImpl(
-            dataStore
+            settingsDataSource
         )
     }
 
@@ -114,18 +107,7 @@ class PlaylistModule {
             playerDataSource
         )
     }
-    @Provides
-    fun providesSetTracksToPlayerPlaylistUseCase(
-        @MainDispatcher dispatcher: CoroutineDispatcher,
-        playerRepository: PlayerRepository,
-        settingsRepository: SettingsRepositoryImpl
-        ): SetTracksToPlayerPlaylistUseCase {
-        return SetTracksToPlayerPlaylistUseCase(
-            dispatcher,
-            playerRepository,
-            settingsRepository
-        )
-    }
+
     @Provides
     fun providesSetModeUseCase(
         @MainDispatcher dispatcher: CoroutineDispatcher,
@@ -174,7 +156,6 @@ class PlaylistModule {
         subscribeCurrentPlaylistTracksUseCase: SubscribeCurrentPlaylistTracksUseCase,
         mapperUI: MapperUI,
         deleteTrackUseCase: DeleteTrackUseCase,
-        setTracksToPlayerPlaylistUseCase: SetTracksToPlayerPlaylistUseCase,
         setModeUseCase:SetModeUseCase,
         changeTracksPositionUseCase:ChangeTracksPositionUseCase,
         playTrackUseCase: PlayTrackUseCase,
@@ -186,7 +167,6 @@ class PlaylistModule {
             subscribeCurrentPlaylistTracksUseCase,
             mapperUI,
             deleteTrackUseCase,
-            setTracksToPlayerPlaylistUseCase,
             setModeUseCase,
             changeTracksPositionUseCase,
             playTrackUseCase,
@@ -202,12 +182,10 @@ class PlaylistModule {
 
     @Provides
     fun providesPlayListDialogDependency(
-        factory: PlaylistViewModel.Factory,
-       // adapter: PlaylistAdapter
-    ): PlaylistScreen.Dependency {
-        return PlaylistScreen.Dependency(
+        factory: PlaylistViewModel.Factory
+    ): BaseDependency {
+        return BaseDependency(
             factory
-           // adapter
         )
     }
 }

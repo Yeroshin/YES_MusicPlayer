@@ -1,108 +1,96 @@
 package com.yes.musicplayer.equalizer.presentation.ui
 
-import android.content.Context
-import android.media.AudioManager
-import android.media.audiofx.AudioEffect
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.CompoundButton
-import android.widget.RadioGroup.OnCheckedChangeListener
 import android.widget.SeekBar
 import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
-import com.yes.core.presentation.BaseViewModel
+import com.yes.core.presentation.ui.BaseDependency
+import com.yes.core.presentation.ui.BaseFragment
+import com.yes.core.presentation.ui.UiState
 import com.yes.musicplayer.equalizer.R
 import com.yes.musicplayer.equalizer.databinding.EqualizerBinding
-import com.yes.musicplayer.equalizer.di.components.EqualizerComponent
 import com.yes.musicplayer.equalizer.presentation.contract.EqualizerContract
-import com.yes.musicplayer.equalizer.presentation.model.EqualizerUI
-import com.yes.musicplayer.equalizer.presentation.vm.EqualizerViewModel
-import kotlinx.coroutines.launch
 
-class EqualizerScreen : Fragment() ,CircularSeekBar.OnProgressChangeListener{
+class EqualizerScreen : BaseFragment() {
     interface DependencyResolver {
-        fun getEqualizerScreenComponent(): EqualizerComponent
+        fun resolveEqualizerScreenDependency(): BaseDependency
     }
 
-    private val component by lazy {
+    private val circularSeekBarListener = object : CircularSeekBar.OnProgressChangeListener {
+        override fun onStartTrackingTouch(progress: Int) {
+            viewModel.setEvent(
+                EqualizerContract.Event.OnLoudnessEnhancerTargetGain(
+                    progress
+                )
+            )
+        }
+
+        override fun onStopTrackingTouch(progress: Int) {
+            viewModel.setEvent(
+                EqualizerContract.Event.OnLoudnessEnhancerTargetGainSet(
+                    progress
+                )
+            )
+        }
+
+    }
+    override val dependency by lazy {
         (requireActivity().application as DependencyResolver)
-            .getEqualizerScreenComponent()
-    }
-    private val dependency by lazy {
-        component.getDependency()
+            .resolveEqualizerScreenDependency()
     }
 
-    private lateinit var binding: ViewBinding
     private val binder by lazy {
         binding as EqualizerBinding
     }
-    private val viewModel: BaseViewModel<EqualizerContract.Event,
-            EqualizerContract.State,
-            EqualizerContract.Effect> by viewModels {
-        dependency.factory
+
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): ViewBinding {
+        return EqualizerBinding.inflate(inflater, container, false)
+
     }
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = EqualizerBinding.inflate(inflater, container, false)
-        //migration
-
-        ///////////////////////
-        return binder.root
+    override fun showEffect() {
+        TODO("Not yet implemented")
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setUpView()
-        observeViewModel()
-    }
+    private val verticalSeekBarChangeListener =
+        object : VerticalSeekBar.OnVerticalSeekBarChangeListener {
+            override fun onStartTrackingTouch(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                println("onStartTrackingTouch")
 
-    private fun observeViewModel() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect {
-                    renderUiState(it)
+                if (fromUser) {
+
+                    val seekBarValues = IntArray(5)
+                    seekBarValues[0] = binder.one.progress
+                    seekBarValues[1] = binder.two.progress
+                    seekBarValues[2] = binder.three.progress
+                    seekBarValues[3] = binder.four.progress
+                    seekBarValues[4] = binder.five.progress
+                    viewModel.setEvent(
+                        EqualizerContract.Event.OnEqualizerValue(
+                            seekBar.tag as Int,
+                            progress,
+                            seekBar.max,
+                            seekBarValues
+                        )
+                    )
                 }
             }
-        }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.effect.collect {
-                    when (it) {
-                        is EqualizerContract.Effect.UnknownException -> {
-                            showError(com.yes.coreui.R.string.UnknownException)
-                        }
-                    }
-                }
-            }
-        }
-    }
-    private val verticalSeekBarChangeListener=object :VerticalSeekBar.OnVerticalSeekBarChangeListener{
-        override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-            if (fromUser) {
-                val seekBarValues= IntArray(5)
-                seekBarValues[0]=binder.one.progress
-                seekBarValues[1]=binder.two.progress
-                seekBarValues[2]=binder.three.progress
-                seekBarValues[3]=binder.four.progress
-                seekBarValues[4]=binder.five.progress
+
+            override fun onStopTrackingTouch(seekBar: SeekBar, progress: Int) {
+                println("onStopTrackingTouch")
+                val seekBarValues = IntArray(5)
+                seekBarValues[0] = binder.one.progress
+                seekBarValues[1] = binder.two.progress
+                seekBarValues[2] = binder.three.progress
+                seekBarValues[3] = binder.four.progress
+                seekBarValues[4] = binder.five.progress
                 viewModel.setEvent(
-                    EqualizerContract.Event.OnEqualizerValue(
+                    EqualizerContract.Event.OnEqualizerValueSet(
                         seekBar.tag as Int,
                         progress,
                         seekBar.max,
@@ -111,36 +99,35 @@ class EqualizerScreen : Fragment() ,CircularSeekBar.OnProgressChangeListener{
                 )
             }
         }
-    }
 
-    private fun setUpView() {
+    override fun setUpView() {
         //////////////////
-        val audioManager = requireActivity().getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        val effects = AudioEffect.queryEffects()
-        for (effectDescriptor in effects) {
-            if (effectDescriptor.type == AudioEffect.EFFECT_TYPE_EQUALIZER) {
-                Log.d("Equalizer", "Equalizer is available")
-                // Здесь можно выполнить дополнительные действия, если эквалайзер доступен
-            }
-        }
+        // val audioManager = requireActivity().getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        /*  val effects = AudioEffect.queryEffects()
+          for (effectDescriptor in effects) {
+              if (effectDescriptor.type == AudioEffect.EFFECT_TYPE_EQUALIZER) {
+                  Log.d("Equalizer", "Equalizer is available")
+                  // Здесь можно выполнить дополнительные действия, если эквалайзер доступен
+              }
+          }*/
         /////////////////
-        binder.one.tag=0
+        binder.one.tag = 0
         binder.one.setOnVerticalSeekBarChangeListener(verticalSeekBarChangeListener)
-       // binder.one.setOnSeekBarChangeListener(seekBarChangeListener)
-        binder.two.tag=1
+        // binder.one.setOnSeekBarChangeListener(seekBarChangeListener)
+        binder.two.tag = 1
         binder.two.setOnVerticalSeekBarChangeListener(verticalSeekBarChangeListener)
         // binder.two.setOnSeekBarChangeListener(seekBarChangeListener)
-        binder.three.tag=2
+        binder.three.tag = 2
         binder.three.setOnVerticalSeekBarChangeListener(verticalSeekBarChangeListener)
         //binder.three.setOnSeekBarChangeListener(seekBarChangeListener)
-        binder.four.tag=3
+        binder.four.tag = 3
         binder.four.setOnVerticalSeekBarChangeListener(verticalSeekBarChangeListener)
-      //  binder.four.setOnSeekBarChangeListener(seekBarChangeListener)
-        binder.five.tag=4
+        //  binder.four.setOnSeekBarChangeListener(seekBarChangeListener)
+        binder.five.tag = 4
         binder.five.setOnVerticalSeekBarChangeListener(verticalSeekBarChangeListener)
-      //  binder.five.setOnSeekBarChangeListener(seekBarChangeListener)
+        //  binder.five.setOnSeekBarChangeListener(seekBarChangeListener)
 
-        binder.equalizerSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+        binder.equalizerSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setEvent(
                 EqualizerContract.Event.OnEqualizerEnabled(
                     isChecked
@@ -149,21 +136,26 @@ class EqualizerScreen : Fragment() ,CircularSeekBar.OnProgressChangeListener{
         }
         binder.circularSeekBar.setMinValue(144)
         binder.circularSeekBar.setMaxValue(396)
-     //   binder.circularSeekBar.setProgressValue(250)
+        //   binder.circularSeekBar.setProgressValue(250)
         binder.loudnessSwitch.setOnCheckedChangeListener { _, isChecked ->
-          //  binder.circularSeekBar.isEnabled=isChecked
+            //  binder.circularSeekBar.isEnabled=isChecked
             viewModel.setEvent(
                 EqualizerContract.Event.OnLoudnessEnhancerEnabled(
                     isChecked
                 )
             )
         }
-        binder.circularSeekBar.setOnProgressChangeListener(this)
+        binder.circularSeekBar.setOnProgressChangeListener(circularSeekBarListener)
+        //////////////////
+        presetsSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binder.presetsSpinner.adapter = presetsSpinnerAdapter
+        binder.presetsSpinner.onItemSelectedListener = itemSelectedListener
 
     }
 
 
-    private fun renderUiState(state: EqualizerContract.State) {
+    override fun renderUiState(state: UiState) {
+        state as EqualizerContract.State
         when (state.state) {
 
             is EqualizerContract.EqualizerState.Idle -> {
@@ -171,20 +163,30 @@ class EqualizerScreen : Fragment() ,CircularSeekBar.OnProgressChangeListener{
             }
 
             is EqualizerContract.EqualizerState.Success -> {
-                dataInit(state.state.equalizer)
+                dataInit(state)
             }
         }
     }
 
+    private val presetsSpinnerAdapter by lazy {
+        ArrayAdapter(
+            requireContext(),
+            R.layout.item_presets_spinner,
+            mutableListOf<String>()
+        )
+    }
 
+    private var spinnerValueIsFromUser = true
     private val itemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            // val selectedItem = parent?.getItemAtPosition(position)
+            //  if (spinnerValueIsFromUser) {
             viewModel.setEvent(
                 EqualizerContract.Event.OnPresetSelected(
-                    position.toShort()
+                    position
                 )
             )
+            // }
+            // spinnerValueIsFromUser = true
         }
 
         override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -192,44 +194,51 @@ class EqualizerScreen : Fragment() ,CircularSeekBar.OnProgressChangeListener{
         }
     }
 
-    private fun dataInit(equalizer: EqualizerUI) {
-        equalizer.presetsNames?.let { presets ->
-            ArrayAdapter(
-                requireContext(),
-                R.layout.item_presets_spinner,
-                presets
-            ).also { adapter ->
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                binder.presetsSpinner.adapter = adapter
-                binder.presetsSpinner.onItemSelectedListener = itemSelectedListener
-            }
+
+    private fun dataInit(state: EqualizerContract.State) {
+        /* state.presetsNames?.let { presets ->
+             ArrayAdapter(
+                 requireContext(),
+                 R.layout.item_presets_spinner,
+                 presets
+             ).also { adapter ->
+                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                 binder.presetsSpinner.adapter = adapter
+                 binder.presetsSpinner.onItemSelectedListener = itemSelectedListener
+             }
+         }*/
+        state.presetsNames?.let {
+            presetsSpinnerAdapter.clear()
+            presetsSpinnerAdapter.addAll(it)
         }
-        equalizer.currentPreset?.let {
+        state.currentPreset?.let {
+            //  spinnerValueIsFromUser = false
             binder.presetsSpinner.setSelection(it)
         }
-        equalizer.equalizerValues?.let {
-            binder.one.setValue(it[0])
-            binder.two.setValue(it[1])
-            binder.three.setValue(it[2])
-            binder.four.setValue(it[3])
-            binder.five.setValue(it[4])
-        }
-        equalizer.equalizerValuesInfo?.let {
-            binder.oneValue.text = it.elementAt(0)
-            binder.twoValue.text = it.elementAt(1)
-            binder.threeValue.text = it.elementAt(2)
-            binder.fourValue.text = it.elementAt(3)
-            binder.fiveValue.text = it.elementAt(4)
-        }
-        equalizer.bandsLevelRange?.let {
+        state.bandsLevelRange?.let {
             binder.one.max = it
             binder.two.max = it
             binder.three.max = it
             binder.four.max = it
             binder.five.max = it
         }
-        equalizer.equalizerEnabled?.let {
-            binder.equalizerSwitch.isChecked=it
+        state.equalizerValues?.let {
+            binder.one.setValue(it[0])
+            binder.two.setValue(it[1])
+            binder.three.setValue(it[2])
+            binder.four.setValue(it[3])
+            binder.five.setValue(it[4])
+        }
+        state.equalizerValuesInfo?.let {
+            binder.oneValue.text = it.elementAt(0)
+            binder.twoValue.text = it.elementAt(1)
+            binder.threeValue.text = it.elementAt(2)
+            binder.fourValue.text = it.elementAt(3)
+            binder.fiveValue.text = it.elementAt(4)
+        }
+
+        state.equalizerEnabled?.let {
+            binder.equalizerSwitch.isChecked = it
             binder.one.isEnabled = it
             binder.two.isEnabled = it
             binder.three.isEnabled = it
@@ -237,11 +246,11 @@ class EqualizerScreen : Fragment() ,CircularSeekBar.OnProgressChangeListener{
             binder.five.isEnabled = it
         }
 
-        equalizer.loudnessEnhancerEnabled?.let {
-            binder.loudnessSwitch.isChecked=it
-            binder.circularSeekBar.isEnabled=it
+        state.loudnessEnhancerEnabled?.let {
+            binder.loudnessSwitch.isChecked = it
+            binder.circularSeekBar.isEnabled = it
         }
-        equalizer.loudnessEnhancerValue?.let {
+        state.loudnessEnhancerValue?.let {
 
             binder.circularSeekBar.setProgressValue(it)
         }
@@ -257,19 +266,4 @@ class EqualizerScreen : Fragment() ,CircularSeekBar.OnProgressChangeListener{
     }
 
 
-    private fun hideBuffering() {
-
-    }
-
-    class Dependency(
-        val factory: EqualizerViewModel.Factory,
-    )
-
-    override fun onProgressChanged(progress: Int) {
-        viewModel.setEvent(
-            EqualizerContract.Event.OnLoudnessEnhancerTargetGain(
-                progress
-            )
-        )
-    }
 }

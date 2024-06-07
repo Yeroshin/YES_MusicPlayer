@@ -1,0 +1,3 @@
+-keep class values.themes.** { *; }
+-keep class values.attr.** { *; }
+-keep class values.colors.** { *; }

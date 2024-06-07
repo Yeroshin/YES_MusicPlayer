@@ -1,29 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item android:state_pressed="false">
         <layer-list>
+
             <item >
                 <shape
                     android:shape="rectangle">
-                    <corners android:radius="10dp" />
-                    <padding
-                        android:left="0dp"
-                        android:top="1dp"
-                        android:right="0dp"
-                        android:bottom="0dp" />
-                    <solid
-                        android:color="@color/light" />
+                    <corners
+                        android:topLeftRadius="10dp"
+                        android:bottomLeftRadius="10dp"
+                        android:topRightRadius="10dp"
+                        android:bottomRightRadius="10dp" />
+                    <gradient
+                        android:angle="90"
+                        android:startColor="?attr/shadow"
+                        android:endColor="?attr/light"
+                        android:type="linear" />
                 </shape>
             </item>
-            <item >
+            <item
+                android:bottom="1dp"
+                android:left="1dp"
+                android:right="1dp"
+                android:top="1dp"
+                >
                 <shape android:shape="rectangle">
-                    <corners android:radius="10dp" />
+                    <corners
+                        android:topLeftRadius="10dp"
+                        android:bottomLeftRadius="10dp"
+                        android:topRightRadius="10dp"
+                        android:bottomRightRadius="10dp" />
 
                     <gradient
                         android:angle="90"
-                        android:startColor="@color/button_startColor"
-                        android:centerColor="@color/button_centerColor"
-                        android:endColor="@color/button_endColor"
+                        android:startColor="?attr/primary_endColor"
+                        android:endColor="?attr/primary_startColor"
                         android:type="linear" />
                 </shape>
             </item>
@@ -31,18 +43,44 @@
     </item>
     <item android:state_pressed="true">
         <layer-list>
+
             <item >
                 <shape
                     android:shape="rectangle">
-                    <corners android:radius="10dp" />
+                    <corners
+                        android:topLeftRadius="10dp"
+                        android:bottomLeftRadius="10dp"
+                        android:topRightRadius="10dp"
+                        android:bottomRightRadius="10dp" />
                     <gradient
                         android:angle="90"
-                        android:startColor="@color/button_startColor_pressed"
-                        android:centerColor="@color/button_centerColor_pressed"
-                        android:endColor="@color/button_endColor_pressed"
+                        android:startColor="?attr/shadow"
+                        android:endColor="?attr/light"
+                        android:type="linear" />
+                </shape>
+            </item>
+            <item
+                android:bottom="1dp"
+                android:left="1dp"
+                android:right="1dp"
+                android:top="1dp"
+                >
+                <shape android:shape="rectangle">
+                    <corners
+                        android:topLeftRadius="10dp"
+                        android:bottomLeftRadius="10dp"
+                        android:topRightRadius="10dp"
+                        android:bottomRightRadius="10dp" />
+
+                    <gradient
+                        android:angle="90"
+                        android:startColor="?attr/primary_startColor"
+                        android:endColor="?attr/primary_endColor"
                         android:type="linear" />
                 </shape>
             </item>
         </layer-list>
+
     </item>
+
 </selector>

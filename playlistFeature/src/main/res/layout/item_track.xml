@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:gravity="center"
-        android:textColor="@color/item_activatable_state_list"
+        android:textColor="@color/activatable_color"
         android:textStyle="bold"
         tools:text="12345" />
 
@@ -31,7 +31,7 @@
 
         <TextView
             android:id="@+id/playlist_title"
-            style="@style/textInListSmall"
+            style="@style/textInListLarge"
             android:layout_weight="1"
             tools:text="Song title" />
 
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="16dp"
-        android:textColor="@color/item_activatable_state_list"
+        android:textColor="@color/activatable_color"
         android:textSize="@dimen/font_size_regular"
         tools:text="3:30" />
 

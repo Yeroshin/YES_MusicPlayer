@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <attr name="on_primary_activated" format="color"/>
+        <attr name="on_primary" format="color"/>
+        <attr name="primary" format="color"/>
+        <attr name="branded_light" format="color"/>
+        <attr name="branded_dark" format="color"/>
+        <attr name="text_gray" format="color"/>
+        <attr name="transparent" format="color"/>
+
+        <attr name="tertiary" format="color"/>
+        <attr name="on_tertiary" format="color"/>
+        <attr name="surface" format="color"/>
+
+        <attr name="secondary_startColor" format="color"/>
+        <attr name="secondary_centerColor" format="color"/>
+        <attr name="secondary_endColor" format="color"/>
+        <attr name="secondary" format="color"/>
+        <attr name="on_secondary" format="color"/>
+
+
+
+
+
+        <attr name="green" format="color"/>
+        <attr name="red" format="color"/>
+
+        <attr name="primary_startColor" format="color"/>
+        <attr name="primary_centerColor" format="color"/>
+        <attr name="primary_endColor" format="color"/>
+
+        <attr name="launcher_background" format="color"/>
+
+        <attr name="tertiary_startColor" format="color"/>
+        <attr name="tertiary_centerColor" format="color"/>
+        <attr name="tertiary_endColor" format="color"/>
+        <attr name="on_tertiary_startColor" format="color"/>
+        <attr name="on_tertiary_centerColor" format="color"/>
+        <attr name="on_tertiary_endColor" format="color"/>
+
+        <attr name="shadow" format="color"/>
+        <attr name="gray" format="color"/>
+        <attr name="light" format="color"/>
+
+</resources>

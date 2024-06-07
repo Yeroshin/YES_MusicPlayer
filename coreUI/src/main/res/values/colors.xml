@@ -1,26 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="tint">#A3B3CE</color>
-    <color name="branded_color">#22222B</color>
+    <color name="screen_green_55">#8b9089</color>
+    <color name="screen_green_45">#71766f</color>
+    <color name="screen_green_35">#585c57</color>
+
+    <color name="screen_green_85">#d8dad8</color>
+    <color name="screen_green_75">#bec1bd</color>
+    <color name="screen_green_65">#a5a8a3</color>
+
+
+    <color name="branded_tint_72">#A3B3CE</color>
+    <color name="branded_tint_40">#475e85</color>
+    <color name="branded_tint_20">#242f42</color>
+
+    <color name="branded_25">#3f3f4e</color>
+    <color name="branded_20">#2d2d39</color>
+    <color name="branded_15">#22222a</color>
+    <color name="branded_10">#17171c</color>
+
+    <color name="branded_color">#22222a</color>
     <color name="branded_light">#FF3F3F4E</color>
     <color name="branded_dark">#242424</color>
+
+
+
+
+
+
     <color name="text_gray">#939292</color>
     <color name="transparent">#00000000</color>
 
     <color name="shadow">#111111</color>
     <color name="gray">#888888</color>
-    <color name="light">#888888</color>
-    <color name="black">#000000</color>
-    <color name="white">#ffffff</color>
+    <color name="light">#48484e</color>
 
+
+
+    <color name="blue_50">#0099ff</color>
     <color name="green">#4CAF50</color>
-    <color name="red">#FF0000</color>
+    <color name="red">#ff0000</color>
 
-    <color name="button_startColor">#222228</color>
+    <color name="button_startColor">#353539</color>
     <color name="button_centerColor">#1c1c22</color>
-    <color name="button_endColor">#353539</color>
+    <color name="button_endColor">#222228</color>
     <color name="button_startColor_pressed">#151419</color>
     <color name="button_centerColor_pressed">#111115</color>
     <color name="button_endColor_pressed">#1f1f25</color>
+
+
+    <color name="blue_27">#353F54</color>
+    <color name="blue_19">#242C3B</color>
+    <color name="blue_17">#222834</color>
+
+    <color name="black_100">#000000</color>
+
+    <color name="white_100">#ffffff</color>
+    <color name="white_95">#f2f2f2</color>
+    <color name="white_90">#e6e6e6</color>
+    <color name="white_85">#d9d9d9</color>
+    <color name="white_80">#cccccc</color>
+    <color name="white_75">#bfbfbf</color>
+    <color name="white_70">#b3b3b3</color>
+    <color name="white_65">#a6a6a6</color>
+    <color name="white_60">#999999</color>
+    <color name="white_55">#8c8c8c</color>
+    <color name="white_50">#808080</color>
+    <color name="white_45">#737373</color>
+    <color name="white_40">#666666</color>
+    <color name="white_35">#595959</color>
+    <color name="white_30">#4d4d4d</color>
+    <color name="white_25">#404040</color>
+    <color name="white_20">#333333</color>
+    <color name="white_15">#262626</color>
+    <color name="white_10">#1a1a1a</color>
+    <color name="white_5">#0d0d0d</color>
+    <color name="white_0">#000000</color>
+
 
 </resources>

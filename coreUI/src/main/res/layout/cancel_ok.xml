@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/button_space"
-    android:orientation="horizontal">
+    android:backgroundTint="#000000"
+    android:orientation="horizontal"
+    android:padding="1dp">
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/cancel_btn"

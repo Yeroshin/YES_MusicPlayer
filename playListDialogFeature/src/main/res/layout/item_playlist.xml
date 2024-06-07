@@ -11,31 +11,31 @@
 
     <TextView
         android:id="@+id/id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/leadingText"
+
 
         android:layout_weight="7"
-
         android:gravity="center"
-        android:textColor="@color/item_activatable_state_list"
-        android:textSize="@dimen/font_size_regular"
-        android:textStyle="bold"
-        tools:text="id" />
+        android:textColor="@color/activatable_color"
+        tools:text="1111" />
 
     <TextView
         android:id="@+id/playlist_title"
+        style="@style/textInListLarge"
         android:layout_width="match_parent"
+
         android:layout_height="wrap_content"
 
+        android:layout_gravity="center"
         android:layout_weight="1"
 
         android:ellipsize="marquee"
+        android:gravity="center_vertical"
         android:marqueeRepeatLimit="marquee_forever"
         android:paddingStart="10dp"
         android:scrollHorizontally="true"
         android:singleLine="true"
-
-        android:textColor="@color/item_activatable_state_list"
+        android:textColor="@color/activatable_color"
         android:textStyle="bold"
         tools:text="Playlist title" />
 

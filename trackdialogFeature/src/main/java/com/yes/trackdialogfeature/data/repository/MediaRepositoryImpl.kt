@@ -10,7 +10,7 @@ class MediaRepositoryImpl(
     private val mediaDataStore: MediaDataStore,
     private val mediaRepositoryMapper: MediaRepositoryMapper,
 ) {
-    fun getMenuItems(
+    fun getMediaItems(
         type: String,
         selectionType: String?,
         selectionName: String

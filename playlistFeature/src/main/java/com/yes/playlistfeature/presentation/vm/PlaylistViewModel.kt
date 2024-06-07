@@ -4,13 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yes.core.domain.models.DomainResult
-import com.yes.core.presentation.BaseViewModel
+import com.yes.core.presentation.ui.BaseViewModel
 import com.yes.core.util.EspressoIdlingResource
 import com.yes.playlistfeature.domain.usecase.ChangeTracksPositionUseCase
 import com.yes.playlistfeature.domain.usecase.DeleteTrackUseCase
 import com.yes.playlistfeature.domain.usecase.SetModeUseCase
 import com.yes.playlistfeature.domain.usecase.SetSettingsTrackIndexUseCase
-import com.yes.playlistfeature.domain.usecase.SetTracksToPlayerPlaylistUseCase
 
 import com.yes.playlistfeature.domain.usecase.SubscribeCurrentPlaylistTracksUseCase
 import com.yes.playlistfeature.domain.usecase.SubscribePlayerCurrentTrackIndexUseCase
@@ -20,14 +19,17 @@ import com.yes.playlistfeature.presentation.contract.PlaylistContract.State
 import com.yes.playlistfeature.presentation.contract.PlaylistContract.Effect
 import com.yes.playlistfeature.presentation.mapper.MapperUI
 import com.yes.playlistfeature.presentation.model.TrackUI
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+
 
 class PlaylistViewModel(
     private val subscribeCurrentPlaylistTracksUseCase: SubscribeCurrentPlaylistTracksUseCase,
     private val mapperUI: MapperUI,
     private val espressoIdlingResource: EspressoIdlingResource?,
     private val deleteTrackUseCase: DeleteTrackUseCase,
-    private val setTracksToPlayerPlaylistUseCase: SetTracksToPlayerPlaylistUseCase,
     private val setModeUseCase: SetModeUseCase,
     private val changeTracksPositionUseCase: ChangeTracksPositionUseCase,
     private val playTrackUseCase: PlayTrackUseCase,
@@ -49,18 +51,23 @@ class PlaylistViewModel(
         when (event) {
             is PlaylistContract.Event.OnDeleteTrack -> deleteTrack(event.track)
             is PlaylistContract.Event.OnModeChange -> setMode()
-            is PlaylistContract.Event.OnMoveItemPosition -> moveItemPosition(event.fromPosition, event.toPosition)
+            is PlaylistContract.Event.OnMoveItemPosition -> moveItemPosition(
+                event.fromPosition,
+                event.toPosition
+            )
+
             is PlaylistContract.Event.OnPlayTrack -> playTrack(event.position)
         }
     }
 
-    private fun playTrack(position:Int) {
+    private fun playTrack(position: Int) {
         viewModelScope.launch {
             val result = playTrackUseCase(
                 PlayTrackUseCase.Params(position)
             )
             when (result) {
                 is DomainResult.Success -> {
+                    // setSettingsTrackIndex(position)
                 }
 
                 is DomainResult.Error -> {}
@@ -73,13 +80,13 @@ class PlaylistViewModel(
             val result = subscribePlayerCurrentTrackIndexUseCase()
             when (result) {
                 is DomainResult.Success -> {
-                    result.data.collect {
-                        setSettingsTrackIndex(it)
+                    result.data.collect { trackIndex ->
+
                         setState {
                             copy(
-                                playlistState = PlaylistContract.PlaylistState.CurrentTrack(
-                                    it
-                                )
+
+                                currentTrack = trackIndex
+
                             )
                         }
                     }
@@ -153,9 +160,9 @@ class PlaylistViewModel(
                 is DomainResult.Success -> {
                     setState {
                         copy(
-                            playlistState = PlaylistContract.PlaylistState.Success(
-                                mode = mapperUI.map(result.data)
-                            )
+
+                            mode = mapperUI.map(result.data)
+
                         )
                     }
                 }
@@ -194,48 +201,79 @@ class PlaylistViewModel(
     }
 
     private fun subscribeTracks() {
-        espressoIdlingResource?.increment()
+
         viewModelScope.launch {
             setState {
                 copy(
                     playlistState = PlaylistContract.PlaylistState.Loading
                 )
             }
-            val playLists = subscribeCurrentPlaylistTracksUseCase()
-            espressoIdlingResource?.decrement()
-            when (playLists) {
+            val playListsFlow = async {  subscribeCurrentPlaylistTracksUseCase()}
+            val currentTrackIndexFlow = async {  subscribePlayerCurrentTrackIndexUseCase()}
+            when (val playListsResult = playListsFlow.await()) {
                 is DomainResult.Success -> {
+                    when (val currentTrackIndexResult = currentTrackIndexFlow.await()) {
+                        is DomainResult.Success -> {
+                            combine(
+                                playListsResult.data,
+                                currentTrackIndexResult.data
+                            ) { playList, currentTrackIndex ->
+                                setState {
+                                    copy(
+                                        playlistState = PlaylistContract.PlaylistState.Success,
+                                        tracks = playList.map { mapperUI.map(it) },
+                                        currentTrack = currentTrackIndex
+                                    )
+                                }
+                            }.collect()
 
-                    playLists.data.collect {
-                        setTracksToPlayerPlaylistUseCase(
-                            SetTracksToPlayerPlaylistUseCase.Params(
-                                it
-                            )
-                        )
-                        setState {
-                            copy(
-                                playlistState = PlaylistContract.PlaylistState.Success(
-                                    it.map { item ->
-                                        mapperUI.map(item)
-                                    }
-                                )
-                            )
                         }
-                        subscribePlayerCurrentTrackIndex()
+
+                        is DomainResult.Error -> {}
                     }
                 }
 
-                is DomainResult.Error -> TODO()
+                is DomainResult.Error -> {}
             }
         }
+
     }
+    /*  private fun subscribeTracks() {
+
+          viewModelScope.launch {
+              setState {
+                  copy(
+                      playlistState = PlaylistContract.PlaylistState.Loading
+                  )
+              }
+              val playListsFlow = subscribeCurrentPlaylistTracksUseCase()
+              val currentTrackIndexFlow=subscribePlayerCurrentTrackIndexUseCase()
+              when (playListsFlow) {
+                  is DomainResult.Success -> {
+                      playListsFlow.data.collect { playlist ->
+                          setState {
+                              copy(
+                                  playlistState = PlaylistContract.PlaylistState.Success,
+                                  tracks = playlist.map {
+                                      mapperUI.map(it)
+                                  }
+                              )
+                          }
+                          subscribePlayerCurrentTrackIndex()
+                      }
+                  }
+
+                  is DomainResult.Error -> {}
+              }
+          }
+
+      }*/
 
     class Factory(
         private val espressoIdlingResource: EspressoIdlingResource?,
         private val subscribeCurrentPlaylistTracksUseCase: SubscribeCurrentPlaylistTracksUseCase,
         private val mapperUI: MapperUI,
         private val deleteTrackUseCase: DeleteTrackUseCase,
-        private val setTracksToPlayerPlaylistUseCase: SetTracksToPlayerPlaylistUseCase,
         private val setModeUseCase: SetModeUseCase,
         private val changeTracksPositionUseCase: ChangeTracksPositionUseCase,
         private val playTrackUseCase: PlayTrackUseCase,
@@ -249,7 +287,6 @@ class PlaylistViewModel(
                 mapperUI,
                 espressoIdlingResource,
                 deleteTrackUseCase,
-                setTracksToPlayerPlaylistUseCase,
                 setModeUseCase,
                 changeTracksPositionUseCase,
                 playTrackUseCase,

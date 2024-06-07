@@ -9,12 +9,20 @@ android {
     compileSdk 34
 
     defaultConfig {
-        minSdk 21
+        minSdk 19
         targetSdk 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+        multiDexEnabled = true
     }
+
+    sourceSets {
+        main {
+            assets.srcDirs += "$buildDir/generated/assets"
+        }
+    }
+
 
     buildTypes {
         release {
@@ -25,11 +33,8 @@ android {
 
     buildFeatures {
         viewBinding = true
-        compose true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion '1.5.3'
-    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
@@ -43,10 +48,10 @@ android {
 dependencies {
     implementation project(path: ':coreUI')
     implementation project(path: ':core')
+    //multidex
+    implementation 'androidx.multidex:multidex:2.0.1'
 
-    
-
-  //  implementation libs.media3//tmp
+ //  implementation libs.media3//tmp
     implementation libs.androidx.media3.session
     implementation libs.androidx.media3.exoplayer
     implementation libs.androidx.media3.exoplayer.dash
@@ -84,16 +89,5 @@ dependencies {
     implementation libs.espresso.idling.resource
     androidTestImplementation libs.androidx.runner
     androidTestImplementation libs.androidx.rules
-    //Compose
-    // Android Studio Preview support
 
-    def composeBom = platform("androidx.compose:compose-bom:2023.10.01")
-    implementation(composeBom)
-
-    implementation libs.androidx.ui.tooling.preview
-    implementation libs.androidx.ui
-    implementation libs.androidx.runtime
-    implementation libs.androidx.foundation
-    implementation libs.androidx.material
-    implementation libs.androidx.ui.tooling
 }

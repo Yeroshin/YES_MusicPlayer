@@ -14,23 +14,23 @@ import com.yes.core.di.component.MusicServiceComponent
 import com.yes.core.di.module.AudioModule
 import com.yes.core.di.module.DataModule
 import com.yes.core.di.module.MusicServiceModule
-import com.yes.core.presentation.MusicService
+import com.yes.core.presentation.ui.ActivityDependency
+import com.yes.core.presentation.ui.BaseDependency
+import com.yes.core.presentation.ui.MusicService
 import com.yes.musicplayer.di.components.DaggerMainActivityComponent
-import com.yes.musicplayer.di.components.MainActivityComponent
 import com.yes.musicplayer.equalizer.di.components.DaggerEqualizerComponent
-import com.yes.musicplayer.equalizer.di.components.EqualizerComponent
 import com.yes.musicplayer.equalizer.di.module.EqualizerModule
 import com.yes.musicplayer.equalizer.presentation.ui.EqualizerScreen
-import com.yes.musicplayer.presentation.MainActivity
+import com.yes.musicplayer.presentation.ui.MainActivity
 import com.yes.player.di.components.DaggerPlayerFeatureComponent
-import com.yes.player.di.components.PlayerFeatureComponent
 import com.yes.player.presentation.ui.PlayerScreen
 import com.yes.playlistdialogfeature.di.component.DaggerPlayListDialogComponent
 import com.yes.playlistdialogfeature.di.component.PlayListDialogComponent
 import com.yes.playlistdialogfeature.presentation.ui.PlayListDialog
 import com.yes.playlistfeature.di.component.DaggerPlaylistComponent
-import com.yes.playlistfeature.di.component.PlaylistComponent
 import com.yes.playlistfeature.presentation.ui.PlaylistScreen
+import com.yes.settings.di.components.DaggerSettingsComponent
+import com.yes.settings.presentation.ui.SettingsScreen
 import com.yes.trackdialogfeature.di.component.DaggerTrackDialogComponent
 import com.yes.trackdialogfeature.di.component.TrackDialogComponent
 import com.yes.trackdialogfeature.presentation.ui.TrackDialog
@@ -43,28 +43,39 @@ class YESApplication : Application(),
     TrackDialog.DependencyResolver,
     MusicService.DependencyResolver,
     AlarmsScreen.DependencyResolver,
-    EqualizerScreen.DependencyResolver
-{
+    EqualizerScreen.DependencyResolver,
+    SettingsScreen.DependencyResolver {
 
     private val dataModule by lazy {
         DataModule(this)
     }
-     private val dataComponent by lazy {
+    private val dataComponent by lazy {
         DaggerDataComponent.builder()
             .dataModule(dataModule)
             .build()
     }
 
-    override fun getMainActivityComponent(activity: FragmentActivity): MainActivityComponent {
+    override fun resolveMainActivityDependency(): ActivityDependency {
         return DaggerMainActivityComponent.builder()
-            .build()
+            .dataComponent(dataComponent)
+            .build().getDependency()
     }
 
-    override fun getPlayerFragmentComponent(): PlayerFeatureComponent {
-        return DaggerPlayerFeatureComponent.builder()
+    /* override fun getPlayerFragmentComponent(): PlayerFeatureComponent {
+         return DaggerPlayerFeatureComponent.builder()
+             .audioComponent(audioComponent)
+             .dataComponent(dataComponent)
+             .build()
+     }*/
+    private val playerFragmentDependency by lazy {
+        DaggerPlayerFeatureComponent.builder()
             .audioComponent(audioComponent)
             .dataComponent(dataComponent)
-            .build()
+            .build().getDependency()
+    }
+
+    override fun resolvePlayerFragmentDependency(): BaseDependency {
+        return playerFragmentDependency
     }
 
 
@@ -74,10 +85,14 @@ class YESApplication : Application(),
             .build()
     }
 
-    override fun getPlaylistComponent(): PlaylistComponent {
-        return DaggerPlaylistComponent.builder()
+    private val playListDependency by lazy {
+        DaggerPlaylistComponent.builder()
             .dataComponent(dataComponent)
-            .build()
+            .build().getDependency()
+    }
+
+    override fun resolvePlaylistComponent(): BaseDependency {
+        return playListDependency
     }
 
     override fun getTrackDialogComponent(): TrackDialogComponent {
@@ -95,19 +110,20 @@ class YESApplication : Application(),
             .audioModule(AudioModule())
             .build()
     }
-/*private val musicServiceComponent by lazy{
-    DaggerMusicServiceComponent.builder()
-        .coreComponent(coreComponent)
-        .musicServiceModule(musicServiceModule)
-        .build()
-}*/
+
+    /*private val musicServiceComponent by lazy{
+        DaggerMusicServiceComponent.builder()
+            .coreComponent(coreComponent)
+            .musicServiceModule(musicServiceModule)
+            .build()
+    }*/
     override fun getMusicServiceComponent(context: Context): MusicServiceComponent {
         return DaggerMusicServiceComponent.builder()
             .dataComponent(dataComponent)
             .musicServiceModule(musicServiceModule)
             .audioComponent(audioComponent)
-           .build()
-      //  return musicServiceComponent
+            .build()
+        //  return musicServiceComponent
     }
 
     override fun getAlarmsScreenComponent(): AlarmClockComponent {
@@ -117,11 +133,21 @@ class YESApplication : Application(),
             .build()
     }
 
-    override fun getEqualizerScreenComponent(): EqualizerComponent {
-        return DaggerEqualizerComponent.builder()
+    private val equalizerPlayListDependency by lazy {
+        DaggerEqualizerComponent.builder()
             .dataComponent(dataComponent)
             .audioComponent(audioComponent)
             .equalizerModule(EqualizerModule())
-            .build()
+            .build().getDependency()
+    }
+
+    override fun resolveEqualizerScreenDependency(): BaseDependency {
+        return equalizerPlayListDependency
+    }
+
+    override fun resolveSettingsDependency(): BaseDependency {
+       return DaggerSettingsComponent.builder()
+           .dataComponent(dataComponent)
+           .build().getDependency()
     }
 }

@@ -17,9 +17,6 @@ class SubscribeVisualizerUseCase(
     dispatcher: CoroutineDispatcher,
     private val visualizerRepository: VisualizerRepository
 ) : UseCase<Unit?, Flow<VisualizerData>>(dispatcher) {
-    data class Complex(val real: Double, val imaginary: Double)
-
-
     override suspend fun run(params: Unit?): DomainResult<Flow<VisualizerData>> {
        // val sampleRate = 44100000/2000
         return DomainResult.Success(

@@ -67,7 +67,7 @@ internal class GetMenuUseCaseTest {
                 childMenu?.let {
                     childItems?.let {
                         every {
-                            mediaRepository.getMenuItems(
+                            mediaRepository.getMediaItems(
                                 childMenu.type!!,
                                 currentMenu.type,
                                 params.name

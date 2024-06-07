@@ -4,5 +4,4 @@
         android:drawable="@drawable/rotaryknob_progress" />
     <item android:state_enabled="false"
         android:drawable="@drawable/rotaryknob_progress" />
-    />
 </selector>

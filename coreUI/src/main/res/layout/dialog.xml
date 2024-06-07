@@ -10,6 +10,8 @@
 
 
     <FrameLayout
+
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/display"
@@ -17,17 +19,16 @@
 
         <TextView
             android:id="@+id/dialogTitle"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:layout_marginLeft="4dp"
+            android:layout_margin="4dp"
             android:fontFamily="@font/a_lcdnova_allfont_ru"
-            android:gravity="center_vertical"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:textColor="@color/black"
-            android:textSize="@dimen/font_size_large"
+            android:textColor="?attr/shadow"
+            android:textSize="14sp"
             tools:text="hello" />
     </FrameLayout>
 
@@ -36,17 +37,14 @@
         android:layout_height="match_parent"
         android:layout_marginTop="5dp"
         android:layout_weight="1"
-        android:background="@drawable/button_space"
-        android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:paddingRight="5dp"
-        android:paddingBottom="5dp">
+        android:background="@drawable/display"
+        android:padding="11dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:background="?attr/tertiary"
             tools:itemCount="30" />
 
         <ProgressBar
@@ -54,15 +52,15 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:indeterminateTint="@color/tint"
+            android:indeterminateTint="?attr/on_primary"
             android:visibility="gone" />
 
         <View
             android:id="@+id/disableView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="#88000000"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
     </FrameLayout>
 

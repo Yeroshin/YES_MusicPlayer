@@ -1,14 +1,20 @@
 package com.yes.alarmclockfeature.data.repository
 
-import com.yes.core.data.dataSource.SettingsDataStore
+import com.yes.core.data.dataSource.SettingsDataSource
+import com.yes.core.data.repository.SettingsRepositoryImpl.PreferencesKeys.CURRENT_PLAYLIST_ID
+import com.yes.core.data.repository.SettingsRepositoryImpl.PreferencesKeys.CURRENT_TRACK_INDEX
 import kotlinx.coroutines.flow.Flow
 
 
 class SettingsRepositoryImpl(
-    private val dataStore: SettingsDataStore
+    private val settingsDataSource: SettingsDataSource
 ) {
+
+
     suspend fun subscribeCurrentPlaylistId(): Flow<Long> =
-        dataStore.subscribeCurrentPlaylistId()
+        settingsDataSource.subscribe(CURRENT_PLAYLIST_ID,1)
+
     suspend fun subscribeCurrentTrackIndex(): Flow<Int> =
-        dataStore.subscribeTrackIndex()
+        settingsDataSource.subscribe(CURRENT_TRACK_INDEX,-1)
+
 }

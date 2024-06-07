@@ -15,7 +15,39 @@
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-04-02T11:23:42.420909200Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-05-18T10:36:02.897080300Z" />
+        </State>
+      </entry>
+      <entry key="settingsFeature">
+        <State>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="E:\ANDROIDavd\.android\avd\Medium_Phone_API_29.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-04-27T11:54:20.601067300Z" />
+        </State>
+      </entry>
+      <entry key="settingsfeature">
+        <State>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="E:\ANDROIDavd\.android\avd\Medium_Phone_API_29.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-04-27T11:41:05.709745200Z" />
         </State>
       </entry>
     </value>

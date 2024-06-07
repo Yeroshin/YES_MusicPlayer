@@ -1,7 +1,12 @@
 package com.yes.alarmclockfeature.presentation.ui
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,11 +33,11 @@ import com.yes.alarmclockfeature.presentation.contract.AlarmClockContract.*
 import com.yes.alarmclockfeature.presentation.mapper.MapperUI
 import com.yes.alarmclockfeature.presentation.model.AlarmUI
 import com.yes.alarmclockfeature.presentation.vm.AlarmClockViewModel
-import com.yes.core.presentation.BaseViewModel
+import com.yes.core.presentation.ui.BaseViewModel
 
 
-import com.yes.core.presentation.ItemTouchHelperCallback
-import com.yes.core.presentation.UiState
+import com.yes.core.presentation.ui.ItemTouchHelperCallback
+import com.yes.core.presentation.ui.UiState
 import kotlinx.coroutines.launch
 
 class AlarmsScreen : Fragment() {
@@ -70,8 +75,22 @@ class AlarmsScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         observeViewModel()
         setupView()
+    }
+    private fun checkBatteryOptimizations(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val intent = Intent();
+            val packageName = context?.packageName;
+            val pm = context?.getSystemService(Context.POWER_SERVICE) as PowerManager
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                intent.setData(Uri.parse("package:$packageName"))
+                startActivity(intent)
+            }
+
+        }
     }
 
     private fun observeViewModel() {
@@ -141,7 +160,7 @@ class AlarmsScreen : Fragment() {
             requireContext(),
             com.yes.coreui.R.drawable.trash_can_outline,
         )
-        val deleteIconColor = ContextCompat.getColor(requireContext(), com.yes.coreui.R.color.tint)
+        val deleteIconColor = ContextCompat.getColor(requireContext(), com.yes.coreui.R.color.branded_tint_72)
         val backgroundColor = ContextCompat.getColor(
             requireContext(),
             com.yes.coreui.R.color.button_centerColor_pressed
@@ -168,6 +187,7 @@ class AlarmsScreen : Fragment() {
         binder.alarmsList.layoutManager = LinearLayoutManager(context)
         binder.alarmsList.adapter = adapter
         binder.addAlarmButton.setOnClickListener {
+            checkBatteryOptimizations()
             alarmClockDialog = AlarmClockDialog(
                 { date, repeating ->
                     viewModel.setEvent(

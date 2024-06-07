@@ -23,54 +23,65 @@ class AlarmDataSource(
     private val calendar: Calendar,
     private val alarmManager: AlarmManager
 ) {
-  //  private var alarmManager: AlarmManager? = null
-   /* private val alarmManager: AlarmManager by lazy {
-      context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    }*/
+    //  private var alarmManager: AlarmManager? = null
+    /* private val alarmManager: AlarmManager by lazy {
+       context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+     }*/
+    private val alarmIntent = Intent(context, YESBroadcastReceiver::class.java)
     private val pendingIntent = PendingIntent
         .getBroadcast(
             context,
             0,
-            Intent(context, YESBroadcastReceiver::class.java),
+            alarmIntent,
             PendingIntent.FLAG_IMMUTABLE//PendingIntent.FLAG_UPDATE_CURRENT//
         )
-    fun cancelAlarm(){
+
+    fun cancelAlarm() {
         alarmManager.cancel(pendingIntent)
     }
 
-    fun setAlarm(hour: Int, minute: Int,dayOfWeek:Int) {
-       // notification(context)
-      //  alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    fun setAlarm(alarmId: Long?, hour: Int, minute: Int, dayOfWeek: Int) {
+        // notification(context)
+        //  alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         /////////////////////
-       /* val alarmIntent = Intent(context, YESBroadcastReceiver::class.java).apply {
-            putExtra("hello","world")
-            action = "alarm"
-        }*/
+        val alarmIntent = Intent(context, YESBroadcastReceiver::class.java)
+        alarmIntent.putExtra("alarmId", alarmId)
+        val pendingIntent = PendingIntent
+            .getBroadcast(
+                context,
+                0,
+                alarmIntent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                //  PendingIntent.FLAG_UPDATE_CURRENT
+                //PendingIntent.FLAG_IMMUTABLE
+            )
+
 
         ////////////////////
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val can=alarmManager.canScheduleExactAlarms()
-            if (!can){
-                Toast.makeText(context, "canScheduleExactAlarms ERROR!!!", Toast.LENGTH_SHORT).show()
+            val can = alarmManager.canScheduleExactAlarms()
+            if (!can) {
+                Toast.makeText(context, "canScheduleExactAlarms ERROR!!!", Toast.LENGTH_SHORT)
+                    .show()
             }
         } else {
-         //   Toast.makeText(context, "canScheduleExactAlarms ERROR!!!", Toast.LENGTH_SHORT).show()
+            //   Toast.makeText(context, "canScheduleExactAlarms ERROR!!!", Toast.LENGTH_SHORT).show()
         }
-         calendar.set(Calendar.HOUR_OF_DAY, hour)
-        calendar.set(Calendar.MINUTE,minute)
-        calendar.set(Calendar.DAY_OF_WEEK,dayOfWeek)
-        calendar.set(Calendar.SECOND,0)
+        calendar.set(Calendar.HOUR_OF_DAY, hour)
+        calendar.set(Calendar.MINUTE, minute)
+        calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek)
+        calendar.set(Calendar.SECOND, 0)
+        alarmManager.cancel(pendingIntent)
         ///////////////////////
-      //  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        //  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.cancel(pendingIntent)
-             alarmManager.setExactAndAllowWhileIdle(
+            /* alarmManager.setExactAndAllowWhileIdle(
                  AlarmManager.RTC_WAKEUP,
                  calendar.timeInMillis,
                  pendingIntent
-             )
+             )*/
 
-           alarmManager.setAlarmClock(
+            alarmManager.setAlarmClock(
                 AlarmManager.AlarmClockInfo(
                     calendar.timeInMillis,
                     null
@@ -83,21 +94,22 @@ class AlarmDataSource(
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
         }
     }
-    fun notification(context: Context){
-        val intent=Intent(context, AlarmActivity::class.java).apply {
+
+    fun notification(context: Context) {
+        val intent = Intent(context, AlarmActivity::class.java).apply {
             flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK /*or
                 FLAG_INCLUDE_STOPPED_PACKAGES*/
         }
-        val pendingIntent= PendingIntent.getActivity(context,0,intent,0)
-        val builder= NotificationCompat.Builder(context,"yes")
+        val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+        val builder = NotificationCompat.Builder(context, "yes")
             .setSmallIcon(com.yes.coreui.R.drawable.app_icon)
             .setContentTitle("My notification")
             .setContentText("Hello World!")
             .setContentIntent(pendingIntent)
 
-        val notificationManager=
+        val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(123,builder.build())
+        notificationManager.notify(123, builder.build())
     }
 }
 //testing commands

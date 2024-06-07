@@ -1,61 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-   android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/padding"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="7dp"
-    >
+    android:orientation="vertical">
 
-    <LinearLayout
+    <FrameLayout
+        style="@style/margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_weight="1"
+        android:background="@drawable/display"
+        android:padding="11dp">
 
-        <FrameLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/alarmsList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/display">
+            android:background="?attr/tertiary"
+            tools:listitem="@layout/item_alarmlist" />
+    </FrameLayout>
 
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="12dp"
-                android:layout_weight="1"
-                android:background="#050505"
-                android:visibility="gone" />
+    <FrameLayout
+        style="@style/margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_space"
+        android:padding="1dp">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/alarmsList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#000000" />
-        </FrameLayout>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/add_alarm_button"
+            style="@style/buttonSingleTall"
+            android:background="@drawable/button_single"
+            app:srcCompat="@drawable/alarm_plus" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_margin="5dp"
-            android:background="@drawable/button_space"
-            android:orientation="horizontal">
+    </FrameLayout>
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/add_alarm_button"
-                style="@style/buttonSingleTall"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="2dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="1dp"
-                android:layout_marginBottom="3dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_single"
-                android:tint="#A3B3CE"
-                app:srcCompat="@drawable/alarm_plus" />
+</LinearLayout>
 
-        </LinearLayout>
-
-    </LinearLayout>
-
-</FrameLayout>

@@ -1,28 +1,23 @@
 package com.yes.musicplayer.di.components
 
+import com.yes.core.di.component.DataComponent
+import com.yes.core.di.module.DataModule
+import com.yes.core.presentation.ui.ActivityDependency
+import com.yes.core.presentation.ui.BaseDependency
 import com.yes.musicplayer.di.MainActivityScope
 import com.yes.musicplayer.di.module.MainActivityModule
 import dagger.Component
 
 
 @Component(
+    dependencies = [
+        DataComponent::class,
+    ],
    modules = [
         MainActivityModule::class,
-      /*  PlayListModule::class,
-        TrackDialogModule::class,
-        DataModule::class,
-        PlayListDialogModule::class,*/
-
     ]
 )
 @MainActivityScope
 interface MainActivityComponent {
-
-  //  fun getPlayerFragment(): Fragment
-   /* fun getFragmentAdapter(): FragmentStateAdapter
-    fun getFragmentFactory(): FragmentFactory*/
-   /* fun getTrackDialogFeatureDependency(): TrackDialog.Dependency
-    fun getPlayListDialogFeatureDependency(): PlayListDialog.Dependency
-    fun getPlaylistFeatureDependency(): Playlist.Dependency*/
-  //  fun getPlayerDependency(): PlayerFragment.Dependency
+    fun getDependency(): ActivityDependency
 }

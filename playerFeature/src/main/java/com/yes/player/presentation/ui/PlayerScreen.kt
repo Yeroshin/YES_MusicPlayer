@@ -1,106 +1,63 @@
 package com.yes.player.presentation.ui
 
-
-import android.os.Bundle
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
-import com.yes.core.presentation.BaseViewModel
+import com.yes.core.presentation.ui.BaseDependency
+import com.yes.core.presentation.ui.BaseFragment
+import com.yes.core.presentation.ui.UiState
 import com.yes.player.databinding.PlayerBinding
-import com.yes.player.di.components.PlayerFeatureComponent
 import com.yes.player.presentation.contract.PlayerContract
 import com.yes.player.presentation.model.PlayerStateUI
-import com.yes.player.presentation.vm.PlayerViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class PlayerScreen : Fragment() {
+
+class PlayerScreen : BaseFragment() {
+
     interface DependencyResolver {
-        fun getPlayerFragmentComponent(): PlayerFeatureComponent
+        fun resolvePlayerFragmentDependency(): BaseDependency
     }
 
-    private val component by lazy {
+    override val dependency by lazy {
         (requireActivity().application as DependencyResolver)
-            .getPlayerFragmentComponent()
-    }
-    private val dependency by lazy {
-        component.getDependency()
+            .resolvePlayerFragmentDependency()
     }
 
-    private lateinit var binding: ViewBinding
+
     private val binder by lazy {
         binding as PlayerBinding
     }
-    private val viewModel: BaseViewModel<PlayerContract.Event,
-            PlayerContract.State,
-            PlayerContract.Effect> by viewModels {
-        dependency.factory
+
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): ViewBinding {
+        return PlayerBinding.inflate(inflater, container, false)
     }
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = PlayerBinding.inflate(inflater, container, false)
-        //migration
+    override fun showEffect() {
 
-        ///////////////////////
-        return binder.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setUpView()
-        observeViewModel()
-    }
+    override fun setUpView() {
 
-    private fun observeViewModel() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect {
-                    renderUiState(it)
-                }
-            }
-        }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.effect.collect {
-                    when (it) {
-                        is PlayerContract.Effect.UnknownException -> {
-                            showError(com.yes.coreui.R.string.UnknownException)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun setUpView() {
-
-        binder.btnPlay.setOnClickListener {
-            viewModel.setEvent(PlayerContract.Event.OnPlay)
-        }
-        binder.btnRew.setOnClickListener {
-            viewModel.setEvent(PlayerContract.Event.OnSeekToPrevious)
-        }
+         binder.btnPlay.setOnClickListener {
+             viewModel.setEvent(PlayerContract.Event.OnPlay)
+         }
+         binder.btnRew.setOnClickListener {
+             viewModel.setEvent(PlayerContract.Event.OnSeekToPrevious)
+         }
         binder.btnFwd.setOnClickListener {
             viewModel.setEvent(PlayerContract.Event.OnSeekToNext)
         }
@@ -123,11 +80,12 @@ class PlayerScreen : Fragment() {
     }
 
 
-    private fun renderUiState(state: PlayerContract.State) {
+    override fun renderUiState(state: UiState) {
+        state as PlayerContract.State
         when (state.playerState) {
             is PlayerContract.PlayerState.Success -> {
                 dataLoaded(
-                    state.playerState.info
+                    state.info
                 )
             }
 
@@ -138,45 +96,40 @@ class PlayerScreen : Fragment() {
         }
     }
 
-    private fun dataLoaded(playerState: PlayerStateUI) {
-        if (playerState.stateBuffering) {
-            showBuffering()
-        } else {
-            hideBuffering()
-            playerState.playListName?.let { binder.playListName.text = playerState.playListName }
-            playerState.trackTitle?.let {
-                binder.trackTitle.text = playerState.trackTitle
-            }
-            playerState.durationCounter?.let {
-                binder.durationCounter.gravity = Gravity.CENTER_HORIZONTAL
-                binder.durationCounter.gravity = Gravity.CENTER_VERTICAL
-                binder.durationCounter.text = playerState.durationCounter
-            }
-            playerState.duration?.let { binder.duration.text = playerState.duration }
-            playerState.progress?.let {
-                binder.seekBar.progress = playerState.progress
-            }
-            playerState.durationInt?.let {
-                binder.seekBar.max = playerState.durationInt
-            }
-            playerState.visualizerData?.let {
-                binder.visualizerView.setValue(
-                    playerState.visualizerData
-                )
-            }
-           /* playerState.visualizerData?.let {
-                binder.composeView.setContent {
-                 /* AdaptiveGrid(playerState.visualizerData)*/
-                   /* EqualizerView(
+    private fun dataLoaded(playerState: PlayerStateUI?) {
+        playerState?.let {
+            if (playerState.stateBuffering) {
+                showBuffering()
+            } else {
+                hideBuffering()
+                playerState.playListName?.let {
+                    binder.playListName.text = playerState.playListName
+                }
+                playerState.trackTitle?.let {
+                    binder.trackTitle.text = playerState.trackTitle
+                }
+                playerState.durationCounter?.let {
+                    binder.durationCounter.gravity = Gravity.CENTER_HORIZONTAL
+                    binder.durationCounter.gravity = Gravity.CENTER_VERTICAL
+                    binder.durationCounter.text = playerState.durationCounter
+                }
+                playerState.duration?.let { binder.duration.text = playerState.duration }
+                playerState.progress?.let {
+                    binder.seekBar.progress = playerState.progress
+                }
+                playerState.durationInt?.let {
+                    binder.seekBar.max = playerState.durationInt
+                }
+                playerState.visualizerData?.let {
+                    binder.visualizerView.setValue(
                         playerState.visualizerData
-                    )*/
-                    DimensionLayout(
-                        values = playerState.visualizerData,
-                        mainContent = { MainContent() },
-                        dependentContent = { maxSize,values -> DependentContent(maxSize,values) } // Передаем DependentContent в качестве dependentContent
                     )
                 }
-            }*/
+                playerState.isPlaying?.let {
+                    binder.btnPlay.isActivated = it
+                }
+            }
+
         }
 
 
@@ -192,7 +145,7 @@ class PlayerScreen : Fragment() {
     }
 
     private val animateTextJob = Job()
-    private val animateTextcoroutineScope =
+    private val animateTextCoroutineScope =
         CoroutineScope(lifecycleScope.coroutineContext + animateTextJob)
 
     private fun showBuffering() {
@@ -209,7 +162,7 @@ class PlayerScreen : Fragment() {
             repeatMode = Animation.REVERSE
         }
 
-        animateTextcoroutineScope.launch {
+        animateTextCoroutineScope.launch {
             binder.durationCounter.startAnimation(animation)
             var dotCount = 0
             while (true) {
@@ -229,8 +182,4 @@ class PlayerScreen : Fragment() {
         animateTextJob.cancel()
     }
 
-    class Dependency(
-        val factory: PlayerViewModel.Factory,
-
-    )
 }

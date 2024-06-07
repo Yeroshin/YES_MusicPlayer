@@ -10,26 +10,28 @@
                     <corners
                         android:topRightRadius="10dp"
                         android:bottomRightRadius="10dp" />
-                    <padding
-                        android:left="0dp"
-                        android:top="1dp"
-                        android:right="0dp"
-                        android:bottom="0dp" />
-                    <solid
-                        android:color="@color/light" />
+                    <gradient
+                        android:angle="90"
+                        android:startColor="?attr/shadow"
+                        android:endColor="?attr/light"
+                        android:type="linear" />
                 </shape>
             </item>
-            <item >
+            <item
+                android:bottom="2dp"
+                android:left="0dp"
+                android:right="0dp"
+                android:top="2dp"
+                >
                 <shape android:shape="rectangle">
                     <corners
-                        android:topRightRadius="10dp"
-                        android:bottomRightRadius="10dp" />
+                        android:topRightRadius="9dp"
+                        android:bottomRightRadius="9dp" />
 
                     <gradient
                         android:angle="90"
-                        android:startColor="@color/button_startColor"
-                        android:centerColor="@color/button_centerColor"
-                        android:endColor="@color/button_endColor"
+                        android:startColor="?attr/primary_endColor"
+                        android:endColor="?attr/primary_startColor"
                         android:type="linear" />
                 </shape>
             </item>
@@ -46,16 +48,31 @@
                         android:bottomRightRadius="10dp" />
                     <gradient
                         android:angle="90"
-                        android:startColor="@color/button_startColor_pressed"
-                        android:centerColor="@color/button_centerColor_pressed"
-                        android:endColor="@color/button_endColor_pressed"
+                        android:startColor="?attr/shadow"
+                        android:endColor="?attr/light"
                         android:type="linear" />
                 </shape>
             </item>
+            <item
+                android:bottom="2dp"
+                android:left="0dp"
+                android:right="0dp"
+                android:top="2dp"
+                >
+                <shape android:shape="rectangle">
+                    <corners
+                        android:topRightRadius="10dp"
+                        android:bottomRightRadius="10dp" />
 
+                    <gradient
+                        android:angle="90"
+                        android:startColor="?attr/primary_startColor"
+                        android:endColor="?attr/primary_endColor"
+                        android:type="linear" />
+                </shape>
+            </item>
         </layer-list>
 
     </item>
 
 </selector>
-

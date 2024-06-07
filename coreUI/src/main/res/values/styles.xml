@@ -5,25 +5,26 @@
         <!-- для Android 5+ вы можете поменять цвет colorPrimaryDark, чтобы соответствовать цвету windowBackground -->
         <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
     </style>
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
     <!-- Base application theme. -->
     <style name="text" >
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#00ff00</item>
-        <item name="android:shadowColor">#333333</item>
-        <item name="android:shadowDx">5</item>
-        <item name="android:shadowDy">5</item>
-        <item name="android:shadowRadius">2</item>
+        <item name="android:shadowColor">?attr/shadow</item>
+        <item name="android:shadowDx">3</item>
+        <item name="android:shadowDy">3</item>
+        <item name="android:shadowRadius">5</item>
         <item name="android:singleLine">true</item>
     </style >
 
     <style name="textLabel" parent="margin">
-        <item name="android:textColor">@color/text_gray</item>
         <item name="android:textSize">14sp</item>
         <item name="android:singleLine">true</item>
     </style >
     <style name="textSmall" parent="margin">
-
-        <item name="android:textColor">@color/text_gray</item>
         <item name="android:textSize">12sp</item>
         <item name="android:singleLine">true</item>
     </style >
@@ -40,6 +41,12 @@
         <item name="colorControlNormal">#ffa800</item>
         <item name="colorControlActivated">#ffa800</item>
     </style>
+    <style name="container">
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
     <style name="margin">
         <item name="android:layout_marginLeft">4dp</item>
         <item name="android:layout_marginTop">4dp</item>
@@ -52,10 +59,11 @@
         <item name="android:background">@drawable/display</item>
     </style>
     <style name="buttonStyle">
+        <item name="android:tint">?attr/on_primary</item>
         <item name="android:layout_marginTop">1dp</item>
-        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:layout_marginBottom">1dp</item>
         <item name="android:layout_weight">1</item>
-        <item name="tint">@color/tint_pressed_state_list</item>
+        <item name="on_primary">@color/pressable_color</item>
         <item name="android:layout_width">match_parent</item>
     </style>
     <style name="buttonStyleTall" parent="buttonStyle">
@@ -65,16 +73,15 @@
         <item name="android:layout_height">@dimen/button_height_small</item>
     </style>
     <style name="buttonLeftLow" parent="buttonStyleLow">
-        <item name="android:layout_marginLeft">2dp</item>
-        <item name="android:layout_marginRight">1dp</item>
+        <item name="android:layout_marginLeft">1dp</item>
     </style>
     <style name="buttonRightLow" parent="buttonStyleLow">
-        <item name="android:layout_marginLeft">1dp</item>
-        <item name="android:layout_marginRight">2dp</item>
+        <item name="android:layout_marginRight">1dp</item>
     </style>
     <style name="buttonSingleLow" parent="buttonStyleLow">
-        <item name="android:layout_marginLeft">2dp</item>
-        <item name="android:layout_marginRight">2dp</item>
+        <item name="android:background">@drawable/button_single</item>
+        <item name="android:layout_marginLeft">1dp</item>
+        <item name="android:layout_marginRight">1dp</item>
     </style>
     <style name="buttonLeftTall" parent="buttonStyleLow">
         <item name="android:layout_marginLeft">2dp</item>
@@ -85,8 +92,8 @@
         <item name="android:layout_marginRight">2dp</item>
     </style>
     <style name="buttonSingleTall" parent="buttonStyleLow">
-        <item name="android:layout_marginLeft">2dp</item>
-        <item name="android:layout_marginRight">2dp</item>
+        <item name="android:layout_marginLeft">1dp</item>
+        <item name="android:layout_marginRight">1dp</item>
     </style>
 
     <style name="textInListSmall" >
@@ -97,8 +104,8 @@
         <item name="android:marqueeRepeatLimit">marquee_forever</item>
         <item name="android:scrollHorizontally">true</item>
         <item name="android:singleLine">true</item>
-        <item name="android:textColor">@color/item_activatable_state_list</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/activatable_color</item>
+
     </style>
     <style name="textInListLarge">
         <item name="android:layout_width">match_parent</item>
@@ -107,10 +114,12 @@
         <item name="android:clickable">false</item>
         <item name="android:focusable">true</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textColor">@color/item_activatable_state_list</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/activatable_color</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginLeft">16dp</item>
+
     </style>
     <style name="TrailingIcon">
         <item name="android:layout_width">25dp</item>
@@ -118,7 +127,7 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
-        <item name="android:buttonTint">@color/tint</item>
+        <item name="android:buttonTint">?attr/on_primary</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">false</item>
@@ -131,12 +140,16 @@
         <item name="android:layout_marginRight">16dp</item>
         <item name="android:layout_marginBottom">8dp</item>
     </style>
+    <style name="leadingText">
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">@dimen/font_size_regular</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
 
-
-    <declare-styleable name="CustomDrawable">
-        <attr name="customText" format="string" />
-        <attr name="customColor" format="color" />
-        <attr name="customTextSize" format="dimension" />
-    </declare-styleable>
 
 </resources>

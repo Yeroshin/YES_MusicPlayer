@@ -8,5 +8,6 @@ data class PlayerStateUI(
     val durationInt:Int?=null,
     val stateBuffering:Boolean=false,
     val progress:Int?=null,
-    val visualizerData:FloatArray?=null
+    val visualizerData:FloatArray?=null,
+    val isPlaying:Boolean?=null
 )

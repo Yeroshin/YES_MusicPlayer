@@ -1,9 +1,9 @@
 package com.yes.playlistfeature.presentation.contract
 
 
-import com.yes.core.presentation.UiEffect
-import com.yes.core.presentation.UiEvent
-import com.yes.core.presentation.UiState
+import com.yes.core.presentation.ui.UiEffect
+import com.yes.core.presentation.ui.UiEvent
+import com.yes.core.presentation.ui.UiState
 import com.yes.playlistfeature.presentation.model.TrackUI
 
 class PlaylistContract {
@@ -14,19 +14,16 @@ class PlaylistContract {
         data class OnPlayTrack(val position:Int):Event()
     }
     data class State(
-        val playlistState: PlaylistState
+        val playlistState: PlaylistState,
+        val mode:Int?=null,
+        val tracks: List<TrackUI>?=null,
+        val currentTrack:Int?=null
     ) : UiState
     sealed class PlaylistState {
         data object Idle : PlaylistState()
         data object Loading : PlaylistState()
-        data class Success(
-            val tracks: List<TrackUI>?=null,
-            val mode:Int?=null,
-            val currentTrack:Int?=null
-        ) : PlaylistState()
-        data class CurrentTrack(
-            val currentTrack:Int
-        ) : PlaylistState()
+        data object Success: PlaylistState()
+
 
     }
     sealed class Effect : UiEffect {

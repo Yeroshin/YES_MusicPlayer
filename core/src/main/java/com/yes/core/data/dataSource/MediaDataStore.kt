@@ -89,7 +89,7 @@ class MediaDataStore(private val context: Context) {
         val selection = mapStringToConst(where)
         what.forEach {  mapStringToConst(it) }
 
-        val mediaList = mutableListOf<MediaDataStoreEntity>()
+        val mediaList = LinkedHashSet<MediaDataStoreEntity>()
         val collection =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 MediaStore.Audio.Media.getContentUri(
@@ -130,7 +130,7 @@ class MediaDataStore(private val context: Context) {
             }
         }
 
-        return mediaList
+        return mediaList.toList()
     }
 
 

@@ -13,8 +13,9 @@ class SetEqualizerValueUseCase(
     private val equalizerRepository: EqualizerRepositoryImpl
 ) : UseCase<SetEqualizerValueUseCase.Params?, Equalizer>(dispatcher) {
     override suspend fun run(params: Params?): DomainResult<Equalizer> {
-
+        val currentPreset=0
         return params?.let {
+            settingsRepository.setCurrentPreset(currentPreset)
             settingsRepository.setCustomPreset(params.seekBarValues)
             equalizerRepository.setBandLevel(params.band, params.value)
 
@@ -26,9 +27,11 @@ class SetEqualizerValueUseCase(
             bands.forEach { band ->
                 levels.add(equalizerRepository.getBandLevel(band))
             }
+            println("SetEqualizerValueUseCase")
             DomainResult.Success(
                 Equalizer(
-                    equalizerValuesInfo = levels
+                    equalizerValues = levels,
+                    currentPreset = currentPreset
                 )
             )
         } ?: return DomainResult.Error(DomainResult.UnknownException)

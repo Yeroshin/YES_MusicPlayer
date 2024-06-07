@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         minSdk 21
-        targetSdk 33
-        // multiDexEnabled true
+
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -37,7 +37,7 @@ android {
 }
 
 dependencies {
-    // androidTestImplementation 'androidx.multidex:multidex:2.0.1'
+     androidTestImplementation 'androidx.multidex:multidex:2.0.1'
 
     implementation libs.material
     implementation libs.androidx.annotation.jvm

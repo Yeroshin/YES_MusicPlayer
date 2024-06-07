@@ -1,57 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    style="@style/padding"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/player_controls"
+        android:name="com.yes.player.presentation.ui.PlayerScreen"
+        style="@style/margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </androidx.fragment.app.FragmentContainerView>
 
     <LinearLayout
-        android:id="@+id/LinearLayout1"
+        style="@style/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="8dp">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/player_controls"
-            android:name="com.yes.player.presentation.ui.PlayerScreen"
+        android:orientation="vertical">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            style="@style/margin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp">
-
-        </androidx.fragment.app.FragmentContainerView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="@dimen/button_height_regular"
             android:background="@drawable/panel_flat"
-            android:orientation="vertical">
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/button_height_regular"
-                android:background="#00FFFFFF"
-                android:theme="@style/text"
-                app:tabGravity="center"
-                app:tabIndicator="@android:drawable/menuitem_background"
-                app:tabIndicatorColor="@color/tint"
-                app:tabIndicatorHeight="5dp"
-                app:tabMode="scrollable"
-                app:tabSelectedTextColor="@color/tint"
-                app:tabTextColor="#000000" />
+            android:theme="@style/text"
+            app:tabGravity="center"
+            app:tabIndicatorColor="?attr/on_primary_activated"
+            app:tabIndicatorHeight="5dp"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="?attr/on_primary_activated"
+            app:tabTextColor="?attr/on_primary" />
 
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/viewPager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                android:layout_weight="1">
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            style="@style/margin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            </androidx.viewpager2.widget.ViewPager2>
+        </androidx.viewpager2.widget.ViewPager2>
 
-
-        </LinearLayout>
 
     </LinearLayout>
-</layout>
+
+</LinearLayout>

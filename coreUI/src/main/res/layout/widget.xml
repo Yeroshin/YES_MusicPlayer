@@ -34,7 +34,7 @@
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:textColor="@color/black"
+            android:textColor="?attr/shadow"
             android:textSize="@dimen/font_size_regular"
             android:visibility="visible"
             tools:text="hello">
@@ -61,7 +61,7 @@
             android:layout_marginBottom="3dp"
             android:layout_weight="1"
             android:background="@drawable/button_left"
-            app:tint="@color/tint" />
+            app:tint="?attr/on_primary" />
 
         <ImageButton
             android:id="@+id/play_button"
@@ -73,7 +73,7 @@
             android:layout_marginBottom="3dp"
             android:layout_weight="1"
             android:background="@drawable/button_center"
-            app:tint="@color/tint_pressed_state_list" />
+            app:tint="@color/selectable_color" />
 
         <ImageButton
             android:id="@+id/fwd_button"
@@ -84,7 +84,7 @@
             android:layout_marginBottom="3dp"
             android:layout_weight="1"
             android:background="@drawable/button_right"
-            app:tint="@color/tint" />
+            app:tint="?attr/on_primary" />
     </LinearLayout>
 
 </LinearLayout>

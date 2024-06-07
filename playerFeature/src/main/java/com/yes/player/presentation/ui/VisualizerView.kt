@@ -22,7 +22,8 @@ class VisualizerView(context: Context, attrs: AttributeSet?) : View(context, att
     }
 
     private var update: Boolean = false
-    private val value= mutableListOf<Float>()
+
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         if (update) {
@@ -34,21 +35,23 @@ class VisualizerView(context: Context, attrs: AttributeSet?) : View(context, att
             paint.color = Color.BLACK
             paint.style = Paint.Style.STROKE
             paint.strokeWidth = rectSide.toFloat()
-            for ((barIndex, value) in frequencies.withIndex()) {
-                oldFrequencies[barIndex]=if (value > oldFrequencies[barIndex]) {
-                    oldFrequencies[barIndex] + abs(interpolationFactor * (value - oldFrequencies[barIndex]))
-                } else if (value < oldFrequencies[barIndex]) {
-                     oldFrequencies[barIndex] - abs(interpolationFactor * (value - oldFrequencies[barIndex]))
-                } else {
-                    value
-                }
-                val barCount = ((oldFrequencies[barIndex] * maxHeightCount) / maxValue).toInt()
+            for ((frequenciesIndex, frequenciesValue) in frequencies.withIndex()) {
+                oldFrequencies[frequenciesIndex] =
+                    if (frequenciesValue > oldFrequencies[frequenciesIndex]) {
+                        oldFrequencies[frequenciesIndex] + abs(interpolationFactor * (frequenciesValue - oldFrequencies[frequenciesIndex]))
+                    } else if (frequenciesValue < oldFrequencies[frequenciesIndex]) {
+                        oldFrequencies[frequenciesIndex] - abs(interpolationFactor * (frequenciesValue - oldFrequencies[frequenciesIndex]))
+                    } else {
+                        frequenciesValue
+                    }
+                val barCount =
+                    ((oldFrequencies[frequenciesIndex] * maxHeightCount) / maxValue).toInt()
 
                 for (valIndex in 0..<barCount) {
                     canvas.drawLine(
-                        (barIndex * rect).toFloat(),
+                        (frequenciesIndex * rect).toFloat(),
                         (height - ((valIndex * rect) + (rect))).toFloat(),
-                        ((barIndex * rect) + rectSide).toFloat(),
+                        ((frequenciesIndex * rect) + rectSide).toFloat(),
                         (height - ((valIndex * rect) + (rect))).toFloat(),
                         paint
                     )
@@ -67,9 +70,9 @@ class VisualizerView(context: Context, attrs: AttributeSet?) : View(context, att
             }
             frequencies.clear()
             frequencies.addAll(values.asList())
-            update = true
-            invalidate()
-        }
+             update = true
+             invalidate()
 
+        }
     }
 }

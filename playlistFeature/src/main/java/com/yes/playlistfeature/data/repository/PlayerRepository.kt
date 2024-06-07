@@ -8,6 +8,7 @@ import com.yes.core.data.dataSource.PlayerDataSource
 import com.yes.playlistfeature.data.mapper.Mapper
 import com.yes.playlistfeature.domain.entity.Track
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import java.io.File
 
 class PlayerRepository(
@@ -47,6 +48,7 @@ class PlayerRepository(
     fun subscribeCurrentTrackIndex(): Flow<Int> {
         return playerDataSource.subscribeCurrentTrackIndex()
     }
+
 
 
 }

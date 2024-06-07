@@ -15,9 +15,9 @@
                 android:gradientRadius="50dp"
                 android:centerX="0.5"
                 android:centerY="0.5"
-                android:startColor="@color/light"
-                android:centerColor="@color/light"
-                android:endColor="@color/transparent"
+                android:startColor="?attr/light"
+                android:centerColor="?attr/light"
+                android:endColor="?attr/transparent"
                 android:type="radial"
                 android:useLevel="false" />
         </shape>
@@ -35,9 +35,9 @@
                 android:gradientRadius="30dp"
                 android:centerX="0.5"
                 android:centerY="0.8"
-                android:startColor="@color/black"
-                android:centerColor="@color/black"
-                android:endColor="@color/transparent"
+                android:startColor="?attr/shadow"
+                android:centerColor="?attr/shadow"
+                android:endColor="?attr/transparent"
                 android:type="radial"
                 android:useLevel="false" />
         </shape>
@@ -50,7 +50,7 @@
         >
         <shape android:shape="oval">
 
-            <solid android:color="@color/branded_color" />
+            <solid android:color="?attr/surface" />
         </shape>
     </item>
     <item
@@ -61,7 +61,7 @@
         >
         <shape android:shape="oval">
 
-            <solid android:color="@color/gray" />
+            <solid android:color="?attr/gray" />
         </shape>
     </item>
     <item
@@ -76,8 +76,8 @@
                 android:gradientRadius="50dp"
                 android:centerX="0.5"
                 android:centerY="0.5"
-                android:endColor="@color/shadow"
-                android:startColor="@color/light"
+                android:endColor="?attr/shadow"
+                android:startColor="?attr/light"
                 android:type="linear"
                 android:useLevel="false" />
         </shape>
@@ -90,7 +90,7 @@
         >
         <shape android:shape="oval">
 
-            <solid android:color="@color/black" />
+            <solid android:color="?attr/shadow" />
         </shape>
     </item>
     <item
@@ -105,9 +105,9 @@
                 android:gradientRadius="50dp"
                 android:centerX="0.5"
                 android:centerY="0.5"
-                android:endColor="@color/light"
-                android:centerColor="@color/gray"
-                android:startColor="@color/shadow"
+                android:endColor="?attr/light"
+                android:centerColor="?attr/gray"
+                android:startColor="?attr/shadow"
                 android:type="linear"
                 android:useLevel="false" />
         </shape>
@@ -130,9 +130,9 @@
                 android:gradientRadius="50dp"
                 android:centerX="0.5"
                 android:centerY="0.5"
-                android:endColor="@color/shadow"
-                android:centerColor="@color/gray"
-                android:startColor="@color/light"
+                android:endColor="?attr/shadow"
+                android:centerColor="?attr/gray"
+                android:startColor="?attr/light"
                 android:type="linear"
                 android:useLevel="false" />
         </shape>
@@ -149,8 +149,8 @@
                 android:gradientRadius="50dp"
                 android:centerX="0.5"
                 android:centerY="0.5"
-                android:endColor="@color/light"
-                android:startColor="@color/shadow"
+                android:endColor="?attr/light"
+                android:startColor="?attr/shadow"
                 android:type="linear"
                 android:useLevel="false" />
         </shape>
@@ -162,7 +162,7 @@
         android:top="176dp"
         >
         <shape android:shape="oval">
-            <solid android:color="@color/light" />
+            <solid android:color="?attr/light" />
         </shape>
     </item>
     <item

@@ -11,15 +11,14 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import org.json.JSONArray
-
+@Deprecated("not used")
 class SettingsDataStore(
     private val dataStore: DataStore<Preferences>,
     private val context: Context
 ) {
-    private object PreferencesKeys {
+     object PreferencesKeys {
         val CURRENT_PLAYLIST_ID = longPreferencesKey("currentPlaylistId")
-        val CURRENT_TRACK_INDEX = intPreferencesKey("currentTrackIndex")
+        val CURRENT_TRACK_INDEX = longPreferencesKey("currentTrackIndex")
         val CUSTOM_PRESET_NAME = stringPreferencesKey("customPresetNames")
         val EQUALIZER_ENABLED = booleanPreferencesKey("equalizerEnabled")
         val CURRENT_PRESET = intPreferencesKey("currentPreset")
@@ -46,13 +45,13 @@ class SettingsDataStore(
         }
     }
 
-    suspend fun setCurrentTrackIndex(currentTrackIndex: Int) {
+    suspend fun setCurrentTrackIndex(currentTrackIndex: Long) {
         dataStore.edit { preferences ->
             preferences[PreferencesKeys.CURRENT_TRACK_INDEX] = currentTrackIndex
         }
     }
 
-    fun subscribeTrackIndex(): Flow<Int> {
+    fun subscribeTrackIndex(): Flow<Long> {
         return dataStore.data
             .map { preferences ->
                 preferences[PreferencesKeys.CURRENT_TRACK_INDEX] ?: run {
@@ -81,14 +80,14 @@ class SettingsDataStore(
             preferences[PreferencesKeys.CUSTOM_PRESET_NAME] = name
         }
     }
-    fun getEqualizerEnabled():Flow<Boolean>{
+    fun subscribeEqualizerEnabled():Flow<Boolean>{
         return dataStore.data
             .map { preferences ->
                 preferences[PreferencesKeys.EQUALIZER_ENABLED]?:run {
                     setEqualizerEnabled(false)
                     false
                 }
-            }
+            }.distinctUntilChanged()
     }
     suspend fun setEqualizerEnabled(enabled:Boolean){
         dataStore.edit { preferences ->

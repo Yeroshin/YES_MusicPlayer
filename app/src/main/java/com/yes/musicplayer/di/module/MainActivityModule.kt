@@ -1,14 +1,16 @@
 package com.yes.musicplayer.di.module
 
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentFactory
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.yes.alarmclockfeature.presentation.ui.AlarmsScreen
-import com.yes.musicplayer.presentation.UniversalFragmentAdapter
-import com.yes.playlistfeature.presentation.ui.PlaylistScreen
+import com.yes.core.data.dataSource.SettingsDataSource
+import com.yes.core.data.repository.SettingsRepositoryImpl
+import com.yes.core.di.module.IoDispatcher
+import com.yes.core.presentation.ui.ActivityDependency
+import com.yes.musicplayer.presentation.vm.ActivityViewModel
+import com.yes.settings.domain.usecase.GetThemeUseCase
+import com.yes.settings.domain.usecase.SetThemeUseCase
 
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.CoroutineDispatcher
 
 
 private const val USER_PREFERENCES = "user_preferences"
@@ -31,7 +33,7 @@ class MainActivityModule {
         )
        // return PlayerFragment()
     }*/
-    
+
    /* @Provides
     fun provideMainActivityFragmentFactory(
        activity: FragmentActivity
@@ -57,5 +59,42 @@ class MainActivityModule {
         )
         return UniversalFragmentAdapter(activity, fragmentsList, fragmentFactory)
     }*/
+ /*  @Provides
+   fun providesSettingsRepositoryImpl(
+       settingsDataSource: SettingsDataSource
+   ): SettingsRepositoryImpl {
+       return SettingsRepositoryImpl(
+           settingsDataSource
+       )
+   }*/
 
+   @Provides
+   fun providesGetThemeUseCase(
+       @IoDispatcher dispatcher: CoroutineDispatcher,
+       settingsRepositoryImpl: SettingsRepositoryImpl
+   ): GetThemeUseCase {
+       return GetThemeUseCase(
+           dispatcher,
+           settingsRepositoryImpl
+       )
+   }
+
+   @Provides
+   fun providesActivityViewModelFactory(
+
+       ): ActivityViewModel.Factory {
+       return ActivityViewModel.Factory(
+
+           )
+   }
+   @Provides
+   fun providesDependency(
+       factory: ActivityViewModel.Factory,
+       settingsRepositoryImpl: SettingsRepositoryImpl
+   ): ActivityDependency{
+       return ActivityDependency(
+           factory,
+           settingsRepositoryImpl
+       )
+   }
 }

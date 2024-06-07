@@ -27,7 +27,8 @@ class Mapper {
             playerStateDataSourceEntity.mediaMetadata?.artist?.toString(),
             playerStateDataSourceEntity.mediaMetadata?.title?.toString(),
             playerStateDataSourceEntity.stateBuffering,
-            playerStateDataSourceEntity.duration
+            playerStateDataSourceEntity.duration,
+            playerStateDataSourceEntity.isPlaying
         )
     }
 

@@ -12,8 +12,10 @@ import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.dataSource.MediaDataStore
 import com.yes.core.data.dataSource.YESDataBase
 import com.yes.core.data.dataSource.PlayerDataSource
-import com.yes.core.data.dataSource.SettingsDataStore
+import com.yes.core.data.dataSource.SettingsDataSource
+
 import com.yes.core.data.factory.RendererFactory
+import com.yes.core.data.repository.SettingsRepositoryImpl
 import com.yes.core.domain.repository.IAlarmDao
 import com.yes.core.util.EspressoIdlingResource
 import dagger.Module
@@ -24,7 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import javax.inject.Qualifier
 import javax.inject.Singleton
-private const val USER_PREFERENCES = "user_preferences"
+private const val USER_PREFERENCES = "YES_preferences"
 @Module
 class DataModule(
     private val context: Context
@@ -86,15 +88,24 @@ class DataModule(
         )
     }
     @Provides
-    fun providesSettingsDataStore(
+    @Singleton
+    fun providesSettingsDataSource(
         dataStore: DataStore<Preferences>,
-        context: Context
-    ): SettingsDataStore {
-        return SettingsDataStore(
+    ): SettingsDataSource {
+        return SettingsDataSource(
             dataStore,
-            context
         )
     }
+    @Provides
+    @Singleton
+    fun providesSettingsRepositoryImpl(
+        settingsDataSource: SettingsDataSource
+    ):SettingsRepositoryImpl{
+        return SettingsRepositoryImpl(
+            settingsDataSource
+        )
+    }
+
     @Provides
     @Singleton
     fun providesPlayerDataSource(
@@ -115,14 +126,14 @@ class DataModule(
             context
         )
     }
-    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+  /*  @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     @Provides
     @Singleton
     fun providesRendererFactory(
         context: Context
     ): RendererFactory {
         return RendererFactory(context)
-    }
+    }*/
 
 }
 @Retention(AnnotationRetention.BINARY)

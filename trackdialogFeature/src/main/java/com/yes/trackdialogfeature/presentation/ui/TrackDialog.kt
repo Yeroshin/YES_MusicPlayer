@@ -1,22 +1,26 @@
 package com.yes.trackdialogfeature.presentation.ui
 
-import android.os.Build
+import android.content.Context
+import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Display
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
+import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.yes.core.presentation.BaseDialog
-import com.yes.core.presentation.BaseViewModel
+import com.yes.core.presentation.ui.BaseDialog
+import com.yes.core.presentation.ui.BaseViewModel
 import com.yes.trackdialogfeature.R
 import com.yes.trackdialogfeature.databinding.TrackDialogBinding
 import com.yes.trackdialogfeature.di.component.TrackDialogComponent
@@ -31,12 +35,10 @@ class TrackDialog : BaseDialog() {
         fun getTrackDialogComponent(): TrackDialogComponent
     }
 
-    private val component by lazy {
-        (requireActivity().application as DependencyResolver)
-            .getTrackDialogComponent()
-    }
+
     private val dependency: Dependency by lazy {
-        component.getDependency()
+        (requireActivity().application as DependencyResolver)
+            .getTrackDialogComponent().getDependency()
     }
     private val binder by lazy {
         binding as TrackDialogBinding
@@ -80,7 +82,7 @@ class TrackDialog : BaseDialog() {
         binder.buttons.okBtn.setOnClickListener {
             viewModel.setEvent(
                 TrackDialogContract.Event.OnButtonOkClicked(
-                    if (binder.networkBtn.isChecked) {
+                    if (!binder.networkBtn.isChecked) {
                         adapter.getItems()
                     } else {
                         listOf(
@@ -96,7 +98,7 @@ class TrackDialog : BaseDialog() {
         }
         binder.networkBtn.setOnCheckedChangeListener { _, isChecked ->
             // write here your code for example ...
-            if (isChecked) {
+            if (!isChecked) {
                 binder.recyclerViewContainer.disableView.visibility = GONE
                 binder.networkPath.isEnabled = false
                 binder.buttons.okBtn.isClickable= true
@@ -152,6 +154,8 @@ class TrackDialog : BaseDialog() {
                         is TrackDialogContract.Effect.UnknownException -> {
                             showError(com.yes.coreui.R.string.UnknownException)
                         }
+
+                        TrackDialogContract.Effect.UnknownException -> TODO()
                     }
                 }
             }
@@ -185,69 +189,47 @@ class TrackDialog : BaseDialog() {
         }
     }
 
+
     private fun setNetworkPathStatus(status: Boolean) {
         binder.buttons.okBtn.isClickable= status
         binder.buttons.okBtn.isPressed = !status
-        if (status) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                binder.networkPath.setTextColor(
-                    resources.getColor(
-                        com.yes.coreui.R.color.green,
-                        activity?.theme
-                    )
-                );
-            } else {
-                binder.networkPath.setTextColor(resources.getColor(com.yes.coreui.R.color.green))
-            }
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                binder.networkPath.setTextColor(
-                    resources.getColor(
-                        com.yes.coreui.R.color.red,
-                        activity?.theme
-                    )
-                );
-            } else {
-                binder.networkPath.setTextColor(resources.getColor(com.yes.coreui.R.color.red))
-            }
-        }
+        binder.networkPath.isActivated=status
+
     }
 
     private fun idleView() {
-        // binder.recyclerViewContainer.dialogTitle.text = ""
         binder.recyclerViewContainer.progressBar.visibility = GONE
         binder.recyclerViewContainer.disableView.visibility = GONE
+
     }
 
     private fun showLoading() {
+
         binder.recyclerViewContainer.progressBar.visibility = VISIBLE
         binder.recyclerViewContainer.disableView.visibility = VISIBLE
+
     }
 
     private fun dataLoaded(title: String, items: List<MenuUi.ItemUi>) {
 
-        binder.recyclerViewContainer.dialogTitle.text = title
-        adapter.setItems(items)
+
         binder.recyclerViewContainer.progressBar.visibility = GONE
         binder.recyclerViewContainer.disableView.visibility = GONE
+        binder.recyclerViewContainer.dialogTitle.text = title
+        adapter.setItems(items)
+
     }
 
     private fun showError(message: Int) {
         binder.recyclerViewContainer.progressBar.visibility = GONE
         binder.recyclerViewContainer.disableView.visibility = GONE
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+
     }
 
     class Dependency(
         val factory: TrackDialogViewModel.Factory,
     )
-
-    /* class TrackDialogDependency(
-         val viewModel: IBaseViewModel<TrackDialogContract.Event, TrackDialogContract.State, TrackDialogContract.Effect>,
-         val adapter: TrackDialogAdapter
-     )*/
-
-
 }
 
 

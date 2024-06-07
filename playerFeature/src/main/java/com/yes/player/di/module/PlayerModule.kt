@@ -1,14 +1,20 @@
 package com.yes.player.di.module
 
 import android.media.audiofx.Visualizer
+import androidx.annotation.OptIn
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.ExoPlayer
 import com.yes.core.domain.repository.IPlayListDao
 import com.yes.core.data.dataSource.PlayerDataSource
-import com.yes.core.data.dataSource.SettingsDataStore
+import com.yes.core.data.dataSource.SettingsDataSource
+
+import com.yes.core.presentation.ui.BaseDependency
 import com.yes.player.data.mapper.Mapper
 import com.yes.player.data.repository.PlayerRepository
 import com.yes.player.data.repository.PlaylistRepositoryImpl
 import com.yes.player.data.repository.SettingsRepositoryImpl
 import com.yes.player.data.repository.VisualizerRepository
+import com.yes.player.di.PlayerScope
 import com.yes.player.domain.usecase.PlayUseCase
 import com.yes.player.domain.usecase.SeekToNextUseCase
 import com.yes.player.domain.usecase.SeekToPreviousUseCase
@@ -18,22 +24,27 @@ import com.yes.player.domain.usecase.SubscribePlayerStateUseCase
 import com.yes.player.domain.usecase.SubscribeDurationCounterUseCase
 import com.yes.player.domain.usecase.SubscribeVisualizerUseCase
 import com.yes.player.presentation.mapper.MapperUI
-import com.yes.player.presentation.ui.PlayerScreen
 import com.yes.player.presentation.vm.PlayerViewModel
 import dagger.Module
 import dagger.Provides
 
 @Module
 class PlayerModule {
-    @Provides
+    @OptIn(UnstableApi::class) @Provides
     fun providesVisualizer(
-        audioSessionId: Int
+        exoPlayer: ExoPlayer
     ): Visualizer {
-        val visualizer=Visualizer( audioSessionId)
-        visualizer.enabled = false
-        return visualizer
+      /*  var visualizer=Visualizer( audioSessionId)
+      if (visualizer.enabled){
+           visualizer.release()
+       }
+        visualizer=Visualizer( audioSessionId)
+        val e =visualizer.enabled
+        visualizer.enabled = false*/
+        return Visualizer( exoPlayer.audioSessionId)
     }
     @Provides
+    @PlayerScope
     fun providesVisualizerRepository(
         visualizer: Visualizer
     ): VisualizerRepository {
@@ -44,10 +55,10 @@ class PlayerModule {
 
     @Provides
     fun providesSettingsRepository(
-        dataStore: SettingsDataStore
+        settingsDataSource: SettingsDataSource
     ): SettingsRepositoryImpl {
         return SettingsRepositoryImpl(
-            dataStore
+            settingsDataSource
         )
     }
 
@@ -120,8 +131,8 @@ class PlayerModule {
     @Provides
     fun providesDependency(
         factory: PlayerViewModel.Factory,
-    ): PlayerScreen.Dependency {
-        return PlayerScreen.Dependency(
+    ): BaseDependency {
+        return BaseDependency(
             factory
         )
     }

@@ -10,7 +10,6 @@ import com.yes.core.data.entity.MediaDataStoreEntity
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.mockk
-import org.junit.Assert.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
@@ -80,7 +79,7 @@ class MediaRepositoryImplTest {
                 any()
             )
         } returnsMany mediaItemsDomain
-        val actual = cut.getMenuItems(
+        val actual = cut.getMediaItems(
             inputParam[0] as String,
             inputParam[1],
             inputParam[2] as String

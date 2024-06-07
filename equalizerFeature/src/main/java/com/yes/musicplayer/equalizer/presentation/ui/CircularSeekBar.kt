@@ -10,30 +10,30 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
-import android.graphics.Rect
 import android.graphics.RectF
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.util.TypedValue.applyDimension
 import android.view.MotionEvent
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
 
-@SuppressLint("UseCompatLoadingForDrawables", "ResourceType")
+
+@SuppressLint("ResourceType")
 class CircularSeekBar(context: Context, attrs: AttributeSet) :
     androidx.appcompat.widget.AppCompatSeekBar(context, attrs) {
 
     private var onProgressChangeListener: OnProgressChangeListener? = null
 
     interface OnProgressChangeListener {
-        fun onProgressChanged(progress: Int)
+        fun onStartTrackingTouch(progress: Int)
+        fun onStopTrackingTouch(progress: Int)
     }
 
     fun setOnProgressChangeListener(listener: OnProgressChangeListener) {
@@ -65,9 +65,9 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
         ).apply {
 
             try {
-                attrProgressDrawable = resources.getDrawable(
-                    getResourceId(0, 0),
-                    context.theme
+                attrProgressDrawable = ContextCompat.getDrawable(
+                    context,
+                    getResourceId(0, 0)
                 ) as LayerDrawable
 
 
@@ -190,55 +190,60 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
             (centerX + radius).toFloat(),
             (centerY + radius).toFloat()
         )
+
         updateProgressBitmap()
 
     }
 
     private fun updateProgressBitmap() {
         layers.clear()
+        if (rect.right>0&&rect.bottom>0){
+            val background = drawable
+                .findDrawableByLayerId(android.R.id.progress).toBitmap(
+                    rect.right.toInt(),
+                    rect.bottom.toInt()
+                )
+            val progress = (progressDrawable as LayerDrawable)
+                .findDrawableByLayerId(android.R.id.background).toBitmap(
+                    rect.right.toInt(),
+                    rect.bottom.toInt()
+                )
+            if (isEnabled) {
+                clipDrawable(
+                    progress,
+                    (progressValue - startValue).toFloat()
+                )
+            }
 
-        val background = drawable
-            .findDrawableByLayerId(android.R.id.progress).toBitmap(
-                rect.right.toInt(),
-                rect.bottom.toInt()
+            val secondaryProgress = (progressDrawable as LayerDrawable)
+                .findDrawableByLayerId(android.R.id.secondaryProgress).toBitmap(
+                    rect.right.toInt(),
+                    rect.bottom.toInt()
+                )
+            val thumb = if (isEnabled) {
+                (progressDrawable as LayerDrawable)
+                    .findDrawableByLayerId(android.R.id.button1)
+            } else {
+                (progressDrawable as LayerDrawable)
+                    .findDrawableByLayerId(android.R.id.button2)
+            }
+
+            val rotatedThumb = rotateDrawable(
+                thumb,
+                progressValue.toFloat(),
+                thumbOffset
             )
-        val progress = (progressDrawable as LayerDrawable)
-            .findDrawableByLayerId(android.R.id.background).toBitmap(
-                rect.right.toInt(),
-                rect.bottom.toInt()
-            )
-        if (isEnabled) {
-            clipDrawable(
-                progress,
-                (progressValue - startValue).toFloat()
-            )
+
+            layers.add(background)
+            layers.add(progress)
+            layers.add(secondaryProgress)
+            layers.add(rotatedThumb)
+
+            invalidate()
+        }else{
+            println("width and height is less than 0")
         }
 
-        val secondaryProgress = (progressDrawable as LayerDrawable)
-            .findDrawableByLayerId(android.R.id.secondaryProgress).toBitmap(
-                rect.right.toInt(),
-                rect.bottom.toInt()
-            )
-        val thumb = if (isEnabled) {
-            (progressDrawable as LayerDrawable)
-                .findDrawableByLayerId(android.R.id.button1)
-        } else {
-            (progressDrawable as LayerDrawable)
-                .findDrawableByLayerId(android.R.id.button2)
-        }
-
-        val rotatedThumb = rotateDrawable(
-            thumb,
-            progressValue.toFloat(),
-            thumbOffset
-        )
-
-        layers.add(background)
-        layers.add(progress)
-        layers.add(secondaryProgress)
-        layers.add(rotatedThumb)
-
-        invalidate()
 
     }
 
@@ -318,12 +323,17 @@ class CircularSeekBar(context: Context, attrs: AttributeSet) :
                 /////////////////////
                 updateProgressBitmap()
                 //////////////////////
-                onProgressChangeListener?.onProgressChanged(
+                onProgressChangeListener?.onStartTrackingTouch(
                     (progressValue-startValue)*100/(endValue-startValue)
                 )
                 true
             }
-
+            MotionEvent.ACTION_UP ->{
+                onProgressChangeListener?.onStopTrackingTouch(
+                    (progressValue-startValue)*100/(endValue-startValue)
+                )
+                true
+            }
             else -> {
                 return false
             }

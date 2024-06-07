@@ -12,7 +12,7 @@
     <ImageView
         android:id="@+id/icon"
         app:srcCompat="@drawable/icon_media_item_level_list"
-        app:tint="@color/tint"
+        app:tint="?attr/on_primary"
         style="@style/leadingIcon" />
 
     <TextView

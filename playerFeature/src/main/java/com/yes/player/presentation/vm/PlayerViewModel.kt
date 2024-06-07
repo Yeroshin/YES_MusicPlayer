@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yes.core.domain.models.DomainResult
-import com.yes.core.presentation.BaseViewModel
+import com.yes.core.presentation.ui.BaseViewModel
 import com.yes.player.domain.usecase.PlayUseCase
 import com.yes.player.domain.usecase.SeekToNextUseCase
 import com.yes.player.domain.usecase.SeekToPreviousUseCase
@@ -17,6 +17,7 @@ import com.yes.player.domain.usecase.SubscribeVisualizerUseCase
 import com.yes.player.presentation.contract.PlayerContract.*
 import com.yes.player.presentation.mapper.MapperUI
 import com.yes.player.presentation.model.PlayerStateUI
+import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
@@ -30,7 +31,7 @@ class PlayerViewModel(
     private val seekUseCase: SeekUseCase,
     private val subscribeVisualizerUseCase: SubscribeVisualizerUseCase,
 ) : BaseViewModel<Event, State, Effect>() {
-
+     private val frameRate:Long=16//60 frames per sec
     init {
         subscribeDurationCounter()
         subscribeCurrentPlaylist()
@@ -44,18 +45,25 @@ class PlayerViewModel(
                 val result = subscribeVisualizerUseCase()
             ) {
                 is DomainResult.Success -> {
-                    result.data.collect {
+
+                    result.data
+                        .sample(frameRate)
+                       // .distinctUntilChanged()
+                        .collect {
                         setState {
                             copy(
-                                playerState = PlayerState.Success(
-                                    PlayerStateUI(
-                                        visualizerData = mapperUI.map(it)
-                                    )
+                                playerState = PlayerState.Success,
+                                info=info?.copy(
+                                    visualizerData = mapperUI.map(it)
+                                )?: PlayerStateUI(
+                                    visualizerData = mapperUI.map(it)
                                 )
                             )
+
                         }
                     }
                 }
+
                 is DomainResult.Error -> setEffect {
                     Effect.UnknownException
                 }
@@ -70,10 +78,17 @@ class PlayerViewModel(
                 is DomainResult.Success -> {
                     result.data.collect {
                         setState {
+                            val state=mapperUI.map(it)
                             copy(
-                                playerState = PlayerState.Success(
-                                    mapperUI.map(it)
-                                )
+                                playerState = PlayerState.Success,
+                                info= info?.copy(
+                                    trackTitle = state.trackTitle,
+                                    stateBuffering = state.stateBuffering,
+                                    durationInt = state.durationInt,
+                                    duration = state.duration,
+                                    isPlaying = state.isPlaying
+                                )?:state
+
                             )
                         }
                     }
@@ -94,8 +109,11 @@ class PlayerViewModel(
                     result.data.collect {
                         setState {
                             copy(
-                                playerState = PlayerState.Success(
-                                    mapperUI.map(it)
+                                playerState = PlayerState.Success,
+                                info= info?.copy(
+                                    playListName = mapperUI.map(it).playListName
+                                )?: PlayerStateUI(
+                                    playListName = mapperUI.map(it).playListName
                                 )
                             )
                         }
@@ -115,10 +133,13 @@ class PlayerViewModel(
             when (val result = subscribeDurationCounterUseCase()) {
                 is DomainResult.Success -> {
                     result.data.collect {
+                        val state=mapperUI.map(it)
                         setState {
                             copy(
-                                playerState = PlayerState.Success(
-                                    mapperUI.map(it)
+                                playerState = PlayerState.Success,
+                                info=info?.copy(
+                                    durationCounter = state.durationCounter,
+                                    progress = state.progress
                                 )
                             )
                         }
@@ -176,12 +197,13 @@ class PlayerViewModel(
 
     private fun play() {
         viewModelScope.launch {
-          //  subscribeVisualizerUseCase()//tmp!
+            //  subscribeVisualizerUseCase()//tmp!
             val result = playUseCase()
             when (result) {
                 is DomainResult.Success -> {
-                  //  subscribeVisualizer()
+                    //  subscribeVisualizer()
                 }
+
                 is DomainResult.Error -> setEffect {
                     Effect.UnknownException
                 }
@@ -237,7 +259,7 @@ class PlayerViewModel(
                 seekUseCase,
                 subscribeVisualizerUseCase,
 
-            ) as T
+                ) as T
         }
     }
 }

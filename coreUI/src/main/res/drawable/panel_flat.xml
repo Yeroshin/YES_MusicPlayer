@@ -6,55 +6,23 @@
             <corners
                 android:radius="5dp" />
             <solid
-                android:color="@color/light" />
-            <padding
-                android:left="0dp"
-                android:top="1dp"
-                android:right="0dp"
-                android:bottom="1dp" />
+                android:color="?attr/light" />
         </shape>
     </item>
-    <item>
+    <item
+        android:left="0dp"
+        android:top="2dp"
+        android:right="0dp"
+        android:bottom="2dp">
         <shape
             android:shape="rectangle">
             <corners
                 android:radius="5dp" />
-            <padding
-                android:left="2dp"
-                android:top="2dp"
-                android:right="2dp"
-                android:bottom="0dp" />
+            <stroke
+                android:width="2dp"
+                android:color="?attr/shadow" />
                 <solid
-                    android:color="@color/black" />
-        </shape>
-    </item>
-
-    <item>
-        <shape
-            android:shape="rectangle">
-            <corners
-                android:radius="3dp" />
-            <padding
-                android:left="0dp"
-                android:top="0dp"
-                android:right="0dp"
-                android:bottom="2dp" />
-            <solid
-                android:color="@color/black" />
-        </shape>
-    </item>
-    <item>
-        <shape
-            android:shape="rectangle">
-            <corners
-                android:radius="3dp" />
-            <padding
-                android:left="0dp"
-                android:top="0dp"
-                android:right="0dp"
-                android:bottom="0dp" />
-            <solid
-                android:color="@color/branded_color" />
+                    android:color="?attr/primary" />
         </shape>
     </item>
 </layer-list>
